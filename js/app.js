@@ -1,0 +1,1 @@
+/* LocalStorage kayıt ve test kontrol mekanizmaları */
