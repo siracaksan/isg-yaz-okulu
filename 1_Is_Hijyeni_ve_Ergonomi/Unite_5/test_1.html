@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 5 Test 1 - Ergonominin Tanımı ve Gelişimi</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; }
+
+        /* Ekran (Web) Tasarımı */
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .unit-subtitle { display: inline-block; background-color: #f8fafc; color: #0f172a; padding: 0.5rem 1.5rem; border-radius: 2rem; font-size: 1.15rem; font-weight: 700; margin-top: 0.75rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #ffffff; }
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
+
+        .test-header { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--secondary-color); }
+        .test-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); }
+        
+        .pdf-btn { background-color: var(--danger-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; font-size: 1rem;}
+        .pdf-btn:hover { background-color: #b91c1c; transform: translateY(-2px); }
+
+        /* Soru Konteynerleri (Ekran) */
+        .question-container { background: white; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+        .question-text { font-size: 1.1rem; font-weight: 600; color: var(--dark-color); margin-bottom: 1.5rem; }
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+        .option-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left; padding: 1rem 1.5rem; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 0.5rem; font-size: 1rem; color: #334155; cursor: pointer; transition: all 0.2s ease; }
+        .option-btn:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+        
+        .option-btn.correct { background-color: #dcfce7; border-color: #22c55e; color: #166534; font-weight: 600; }
+        .option-btn.wrong { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .option-btn:disabled { cursor: default; }
+
+        /* İnteraktif Çözüm Butonu ve Kutusu */
+        .toggle-solution-btn { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; transition: all 0.2s; margin-top: 1rem; }
+        .toggle-solution-btn:hover { background-color: #bae6fd; }
+
+        .screen-solution { display: none; margin-top: 1rem; padding: 1.5rem; background-color: #f0fdf4; border-left: 5px solid #22c55e; border-radius: 0.5rem; color: #166534; font-size: 0.95rem; line-height: 1.6; }
+        .screen-solution.show { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(-5px);} to {opacity: 1; transform: translateY(0);} }
+
+        /* Yazdırma İçin Toplu Çözüm Alanı (Ekranda Gizli) */
+        .print-solutions-container { display: none; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; margin-top: 3rem; }
+
+        /* =========================================================
+           PDF (YAZDIRMA) STİLLERİ - ÇİFT SÜTUN & GİZLEMELER 
+           ========================================================= */
+        @media print {
+            body { background: white; font-size: 10pt; color: black; }
+            header, footer, .header-buttons, .pdf-btn, .test-header, .toggle-solution-btn { display: none !important; }
+            
+            /* Sayfa başına Test Başlığı */
+            main::before {
+                content: "ÜNİTE 5: ERGONOMİNİN TANIMI VE GELİŞİMİ - DEĞERLENDİRME TESTİ (20 SORU)";
+                display: block;
+                text-align: center;
+                font-size: 16pt;
+                font-weight: bold;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid black;
+            }
+
+            /* Soruları Çift Sütun Yapma ve Araya Çizgi Koyma */
+            .questions-grid {
+                column-count: 2;
+                column-gap: 40px;
+                column-rule: 1px solid #94a3b8; /* Orta Çizgi */
+            }
+
+            /* Soruların sayfa sonlarında bölünmesini engelleme */
+            .question-container {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+            }
+            .question-text { font-size: 10pt; margin-bottom: 8px; }
+            .options-container { gap: 2px; margin-bottom: 5px; }
+            .option-btn { 
+                padding: 2px 0; 
+                border: none; 
+                background: transparent; 
+                font-size: 10pt; 
+                color: black;
+            }
+
+            /* Ekranda gösterilen inline çözümleri PDF'de gizle */
+            .screen-solution { display: none !important; }
+
+            /* Toplu Çözüm Alanını PDF'in en sonunda yeni sayfada göster */
+            .print-solutions-container { 
+                display: block !important; 
+                page-break-before: always; /* Çözümleri yeni sayfaya atar */
+            }
+            
+            .print-solutions-container h2 {
+                text-align: center;
+                border-bottom: 2px solid black;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+            .print-solution-item {
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 1px dashed #ccc;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="konu_anlatimi.html" class="back-btn"><i class="fa-solid fa-book-open"></i> Konu Anlatımı</a>
+        </div>
+        <h1>5. Ergonominin Tanımı ve Gelişimi</h1>
+        <div class="unit-subtitle">Ünite 5: Test 1</div>
+    </header>
+
+    <main>
+        <div class="test-header">
+            <div class="test-title"><i class="fa-solid fa-list-check"></i> Bölüm Sonu Deneme Sınavı (20 Soru)</div>
+            <button class="pdf-btn" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> Sıkışık Format (PDF Olarak Kaydet)</button>
+        </div>
+
+        <div class="questions-grid">
+            
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 1:</strong> İş Güvenliği konusundaki çalışmalar hangi bilim dalının kapsamında değerlendirilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Ergonomi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Fizyoloji</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Antropoloji</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Biyoloji</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Anatomi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 1:</strong> Doğru Yanıt: A. İş güvenliği konuları çalışma ortamında insan performansını ve güvenliğini temel alan ergonomi disiplini kapsamında değerlendirilir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 2:</strong> Ergonomi bilimine Almanya’da ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İş ve insan</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İş biyolojisi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İş kimyası</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İş fizyolojisi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İş tarihi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 2:</strong> Doğru Yanıt: D. Almanya ve çevresindeki literatürde ergonomi genellikle "İş Fizyolojisi (Arbeitsphysiologie)" olarak isimlendirilmiştir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 3:</strong> İnsan biyodinamiği, endüstriyel psikoloji, iş psikolojisi, iş etüdü ve mühendislik psikolojisi olarak da adlandırılan bilim dalı aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Yönetim ve organizasyon</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İnsan kaynakları yönetimi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Optimizasyon</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Mühendislik</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ergonomi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 3:</strong> Doğru Yanıt: E. Sayılan tüm bu alt dallar "Ergonomi" biliminin farklı perspektiflerden isimlendirilmiş halleri veya çalışma sahalarıdır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 4:</strong> Aşağıdakilerden hangisi ergonomi terimine bazı Türkçe kaynaklarda verilen adlardan biridir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İş psikolojisi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İş hiyerarşisi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İş bilimi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İş ve insan</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İş etiği</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 4:</strong> Doğru Yanıt: C. Ergonomi, Türkçe literatürde doğrudan insan-iş uyumunu ifade eden "İş Bilimi" adıyla da anılmaktadır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 5:</strong> Aşağıdakilerden hangisi ergonominin çalışma alanlarını fiziksel, bilişsel ve örgütsel olarak üç gruba ayırmıştır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Rusya Ergonomi Derneği</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Uluslararası Ergonomi Derneği (IEA)</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Amerika Ergonomi Derneği</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İtalya Ergonomi Derneği</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İsviçre Ergonomi Derneği</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 5:</strong> Doğru Yanıt: B. Ergonominin günümüzde kabul gören fiziksel, bilişsel ve örgütsel şeklindeki üç ana çalışma alanı Uluslararası Ergonomi Derneği (International Ergonomics Association - IEA) tarafından belirlenmiştir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 6:</strong> Makro ergonomi ……. olarak da anılmaktadır. Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru olarak tamamlar?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Verimlilik Yaklaşımı</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Etkinlik Bilimi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Performans Endüstrisi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Fabrika Organizasyonu</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İnsan Organizasyon Etkileşimi Teknolojisi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 6:</strong> Doğru Yanıt: E. Örgütsel yapıyı, politikaları ve süreçleri inceleyen Makro Ergonomi, literatürde "İnsan Organizasyon Etkileşimi Teknolojisi" adıyla da anılır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 7:</strong> İnsanların ihtiyaçları, yetenekleri ve sınırlamaları ile uyumlu hâle getirmek için görevlerin, işlerin, ürünlerin, ortamların ve sistemlerin tasarımına ve değerlendirilmesine katkıda bulunan meslek dalı aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İş hijyenisti</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Biyolog</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Ergonomist</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Antropolog</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Hekim</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 7:</strong> Doğru Yanıt: C. Bahsedilen görev ve tanımlamalar doğrudan ergonomi profesyoneli olan "Ergonomist" mesleğine aittir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 8:</strong> "Ergonomi" terimi ilk olarak aşağıdakilerden hangisinin makalesinde yer almıştır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Frederick Winslow Taylor</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Wojciech Jastrzębowski</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Bernardino Ramazzini</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Henry Ford</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Frank Bunker Gilbreth</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 8:</strong> Doğru Yanıt: B. Polonyalı bilim insanı Wojciech Jastrzębowski, 1857 tarihli makalesinde "Ergonomi" terimini tarihte kullanan ilk kişidir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 9:</strong> İnsan makine arayüzü (Human machine interface) kavramı günümüzde hangi adla anılmaktadır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İnsan bilgisayar etkileşimi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Yazılım mühendisliği</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Zaman ve hareket etüdü</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Çevre ve insan bilimi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İnsan araştırma teknikleri</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 9:</strong> Doğru Yanıt: A. Bilgisayarların hayatımıza girmesiyle birlikte eski "İnsan-Makine Arayüzü" kavramı, modern dünyada "İnsan-Bilgisayar Etkileşimi (HCI)" şekline dönüşmüştür.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 10:</strong> Türkiye’de ergonomi konusundaki ilk sunum hangi tarihte ve kim tarafından yapılmıştır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 2010 yılında Ali Niyazi Meşe</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 2000 yılında Salim Yan Muşlu</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 1990 yılında Hamdi Kemal Çınar</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 1968 yılında Prof. Dr. Ahmet Fahri Özok</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 1910 yılında Alaattin Yaver Sıralı</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 10:</strong> Doğru Yanıt: D. Türkiye'de akademik anlamda ergonomi alanındaki ilk ciddi adımlar İTÜ'de 1968 yılında Prof. Dr. Ahmet Fahri Özok'un öncülüğünde atılmıştır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 11:</strong> Avrupa Ergonomi Dernekleri Federasyonuna (FEES) göre ergonominin temel amacı aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sadece makinelerin üretim hızını artırmak</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İnsan refahını ve genel sistem performansını optimize etmek</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İş yeri maliyetlerini en aza indirmek</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sadece iş kazası sonrası raporlama yapmak</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Endüstriyel psikoloji teorilerini geliştirmek</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 11:</strong> Doğru Yanıt: B. Avrupa Ergonomi Dernekleri Federasyonuna (FEES) göre Ergonomi; insan refahını ve genel sistem performansını optimize etmek için uygulanan bir meslektir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 12:</strong> Günümüzde iş kazalarının sebeplerini daha iyi anlamaya çalışan ergonomistler, hangi isimlerle de anılmaktadır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Üretim planlamacıları</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Zaman etütçüleri</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Mühendislik Psikologları veya İnsan Hatası araştırmacıları</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sistem mühendisleri</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Klasik yöneticiler</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 12:</strong> Doğru Yanıt: C. Modern çağda ergonomistler; "Mühendislik Psikologları" veya "İnsan Hatası" (Human Error) araştırmacıları olarak iş kazalarının altındaki kök nedenleri incelerler.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 13:</strong> "Üretim alanındaki ana unsurun insan faktörü yönetimi" olduğu görüşünü savunarak F.W. Taylor'un bilimsel yönetim anlayışının yetersiz kaldığını ileri süren ve Taylorizm'e yapıcı eleştiriler getiren araştırmacılar aşağıdakilerden hangileridir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Frank ve Lillian Gilbreth</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Henry Ford ve Bernardino Ramazzini</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Ahmet Fahri Özok ve Ali Niyazi Meşe</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Frederick W. Taylor ve Henry L. Gantt</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Wojciech Jastrzębowski ve Karl Marx</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 13:</strong> Doğru Yanıt: A. Frank Bunker Gilbreth ile Lillian Moller Gilbreth; Taylor'un fikirlerinin insan faktörünü göz ardı etmesi sebebiyle yetersiz kaldığını savunarak ergonominin temel felsefesine büyük katkı yapmışlardır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 14:</strong> Aşağıdakilerden hangisi ergonominin bilişsel (kognitif) çalışma alanına giren konulardan biridir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Gürültü ve aydınlatma</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Zihinsel iş yükü ve karar verme</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Malzeme taşıma</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Vardiyalı çalışma saatleri</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ekip çalışması</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 14:</strong> Doğru Yanıt: B. Bilişsel ergonomi; algı, bellek, muhakeme, zihinsel iş yükü, karar verme ve insan-bilgisayar etkileşimi gibi zihinsel süreçlerle ilgilenir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 15:</strong> Aşağıdakilerden hangisi örgütsel (organizasyonel) ergonominin konuları arasında yer alır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İnsan anatomisi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Bellek ve algı</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İş yeri yerleşimi ve duruş bozuklukları</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İletişim, ekip çalışması ve çalışma saatlerinin yönetimi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İş stresi ve insan-bilgisayar etkileşimi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 15:</strong> Doğru Yanıt: D. Örgütsel ergonomi (makro ergonomi); organizasyon yapıları, politikalar, süreçler, iletişim, ekip çalışması, iş tasarımı ve vardiya saatleri gibi daha geniş sistem konularını ele alır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 16:</strong> Çalışma ortamındaki fiziksel faktörler (titreşim, sıcaklık, aydınlatma vb.) ile insanın anatomik ve antropometrik özellikleri arasındaki uyumu inceleyen ergonomi alt dalı aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Bilişsel Ergonomi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Makro Ergonomi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Fiziksel Ergonomi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Örgütsel Ergonomi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Yazılım Ergonomisi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 16:</strong> Doğru Yanıt: C. İnsan anatomisi, antropometri, biyomekanik özellikler ve çevresel faktörlerle (titreşim, gürültü vb.) ilişkili olan dal Fiziksel Ergonomidir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 17:</strong> Ergonominin temel prensibi aşağıdakilerden hangisinde en doğru şekilde ifade edilmiştir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İnsanı işe uydurmak</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İşi (görevi) insana uydurmak</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İş hızını maksimuma çıkarmak</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Maliyeti sıfıra indirmek</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Teknolojiyi insan faktöründen bağımsız geliştirmek</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 17:</strong> Doğru Yanıt: B. Ergonominin ana felsefesi "çalışanı işe değil, işi ve çalışma ortamını çalışana (insana) uydurmak" prensibidir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 18:</strong> Taylor'un bilimsel yönetim yaklaşımının (Taylorizm) ergonomi açısından en çok eleştirilen yönü aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Çalışanların zihinsel ve fiziksel sınırlarını (insan faktörünü) yeterince dikkate almaması</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Sadece makine tasarımına odaklanması</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Çok yüksek ücretler önermesi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Eğitim maliyetlerini artırması</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Sadece ofis çalışanlarını hedef alması</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 18:</strong> Doğru Yanıt: A. Taylorizm; işi parçalara bölerek verimliliği artırmayı hedeflemiş ancak insanın psikolojik, fiziksel yorgunluk sınırlarını ve insani ihtiyaçlarını büyük oranda göz ardı etmiştir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 19:</strong> İkinci Dünya Savaşı yıllarında karmaşık askerî teçhizatların ve uçak kokpitlerinin insan kapasitesini aşacak şekilde tasarlanması, hangi bilim dalının hızla gelişmesine ve modern anlamda ortaya çıkmasına neden olmuştur?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Endüstri Mühendisliği</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İşletme Yönetimi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Ergonomi (İnsan Faktörleri Mühendisliği)</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sibernetik</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Mekatronik</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 19:</strong> Doğru Yanıt: C. Modern ergonominin (insan faktörleri) sıçrama noktası II. Dünya Savaşı'dır. Karmaşık uçakların tasarım hataları (pilot hatalarına sebep olması), sistemlerin insan sınırlarına göre tasarlanması zorunluluğunu doğurmuştur.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 20:</strong> Ergonomi kelimesi etimolojik olarak Yunanca kökenli iki kelimenin birleşmesinden oluşur: "Ergon" ve "Nomos". Bu kelimelerin anlamı sırasıyla aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İnsan ve Bilim</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Sistem ve Makine</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İş ve Yasa (Kural)</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Zaman ve Hareket</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Tasarım ve Ölçüm</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 20:</strong> Doğru Yanıt: C. Yunancada "Ergon" İş/Çalışma, "Nomos" ise Yasa/Kural anlamına gelir. Birleştiğinde "İş Yasaları" veya "İş Bilimi" manasını taşır.
+                </div>
+            </div>
+
+        </div> 
+        
+        <div class="print-solutions-container">
+            <h2>Cevap Anahtarı ve Detaylı Çözümler</h2>
+            
+            <div class="print-solution-item"><strong>Soru 1 (A):</strong> İş güvenliği konuları çalışma ortamında insan performansını ve güvenliğini temel alan ergonomi disiplini kapsamında değerlendirilir.</div>
+            <div class="print-solution-item"><strong>Soru 2 (D):</strong> Almanya ve çevresindeki literatürde ergonomi genellikle "İş Fizyolojisi (Arbeitsphysiologie)" olarak isimlendirilmiştir.</div>
+            <div class="print-solution-item"><strong>Soru 3 (E):</strong> Sayılan tüm bu alt dallar "Ergonomi" biliminin farklı perspektiflerden isimlendirilmiş halleri veya çalışma sahalarıdır.</div>
+            <div class="print-solution-item"><strong>Soru 4 (C):</strong> Ergonomi, Türkçe literatürde doğrudan insan-iş uyumunu ifade eden "İş Bilimi" adıyla da anılmaktadır.</div>
+            <div class="print-solution-item"><strong>Soru 5 (B):</strong> Ergonominin fiziksel, bilişsel ve örgütsel şeklindeki üç ana çalışma alanı Uluslararası Ergonomi Derneği (IEA) tarafından belirlenmiştir.</div>
+            <div class="print-solution-item"><strong>Soru 6 (E):</strong> Örgütsel yapıyı inceleyen Makro Ergonomi, literatürde "İnsan Organizasyon Etkileşimi Teknolojisi" adıyla da anılır.</div>
+            <div class="print-solution-item"><strong>Soru 7 (C):</strong> Görev, iş, ürün ve ortam tasarımlarını insanların sınırlarına göre optimize eden meslek "Ergonomist"tir.</div>
+            <div class="print-solution-item"><strong>Soru 8 (B):</strong> Polonyalı bilim insanı Wojciech Jastrzębowski, 1857 tarihli makalesinde "Ergonomi" terimini tarihte kullanan ilk kişidir.</div>
+            <div class="print-solution-item"><strong>Soru 9 (A):</strong> Eski "İnsan-Makine Arayüzü" kavramı, modern dünyada "İnsan-Bilgisayar Etkileşimi" (HCI) şekline dönüşmüştür.</div>
+            <div class="print-solution-item"><strong>Soru 10 (D):</strong> Türkiye'de ergonomi alanındaki ilk ciddi adımlar İTÜ'de 1968 yılında Prof. Dr. Ahmet Fahri Özok'un öncülüğünde atılmıştır.</div>
+            <div class="print-solution-item"><strong>Soru 11 (B):</strong> Avrupa Ergonomi Dernekleri Federasyonuna (FEES) göre Ergonomi; insan refahını ve genel sistem performansını optimize etmek için uygulanan bir meslektir.</div>
+            <div class="print-solution-item"><strong>Soru 12 (C):</strong> Modern çağda ergonomistler; "Mühendislik Psikologları" veya "İnsan Hatası" araştırmacıları olarak kazaların kök nedenlerini incelerler.</div>
+            <div class="print-solution-item"><strong>Soru 13 (A):</strong> Frank Bunker ve Lillian Moller Gilbreth; Taylor'un fikirlerinin insan faktörünü göz ardı etmesi sebebiyle yetersiz kaldığını savunmuşlardır.</div>
+            <div class="print-solution-item"><strong>Soru 14 (B):</strong> Bilişsel ergonomi; zihinsel iş yükü, karar verme, hafıza gibi süreçleri inceler. Gürültü fiziksel, vardiyalar ise örgütsel ergonomiye girer.</div>
+            <div class="print-solution-item"><strong>Soru 15 (D):</strong> Örgütsel ergonomi (makro ergonomi); organizasyon yapıları, ekip çalışması ve çalışma saatleri yönetimi gibi geniş sistemleri ele alır.</div>
+            <div class="print-solution-item"><strong>Soru 16 (C):</strong> İnsan anatomisi, biyomekanik özellikler ve çevresel faktörlerle (titreşim vb.) ilişkili olan dal Fiziksel Ergonomidir.</div>
+            <div class="print-solution-item"><strong>Soru 17 (B):</strong> Ergonominin ana felsefesi "çalışanı işe değil, işi ve çalışma ortamını çalışana uydurmak" prensibidir.</div>
+            <div class="print-solution-item"><strong>Soru 18 (A):</strong> Taylorizm; işi parçalara bölerek verimliliği artırmayı hedeflemiş ancak insanın sınırlarını ve insani ihtiyaçlarını büyük oranda göz ardı etmiştir.</div>
+            <div class="print-solution-item"><strong>Soru 19 (C):</strong> II. Dünya Savaşı sırasında karmaşık sistemlerin (uçaklar vb.) insan sınırlarına göre tasarlanması zorunluluğu modern ergonomiyi doğurmuştur.</div>
+            <div class="print-solution-item"><strong>Soru 20 (C):</strong> Yunancada "Ergon" İş, "Nomos" ise Yasa/Kural anlamına gelir.</div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.question-container');
+            
+            containers.forEach(container => {
+                const options = container.querySelectorAll('.option-btn');
+                const correctAnswer = container.getAttribute('data-correct-answer');
+                const toggleBtn = container.querySelector('.toggle-solution-btn');
+                const solutionBox = container.querySelector('.screen-solution');
+
+                // Şık Tıklama Olayı
+                options.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Tıklama yapıldığında tüm şıkları kilitle
+                        options.forEach(opt => opt.disabled = true);
+
+                        const selectedOption = this.getAttribute('data-option');
+
+                        if (selectedOption === correctAnswer) {
+                            // Doğru cevap
+                            this.classList.add('correct');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-check"></i>';
+                        } else {
+                            // Yanlış cevap
+                            this.classList.add('wrong');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-xmark"></i>';
+                            
+                            // Doğru cevabı yeşil yap
+                            options.forEach(opt => {
+                                if (opt.getAttribute('data-option') === correctAnswer) {
+                                    opt.classList.add('correct');
+                                    opt.innerHTML += ' <i class="fa-solid fa-circle-check" style="opacity:0.8;"></i>';
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Çözümü Gör Butonu Olayı (Artık otomatik açılmıyor, tıklanınca açılıyor)
+                if(toggleBtn && solutionBox) {
+                    toggleBtn.addEventListener('click', function() {
+                        if(solutionBox.classList.contains('show')) {
+                            solutionBox.classList.remove('show');
+                            this.innerHTML = '<i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör';
+                        } else {
+                            solutionBox.classList.add('show');
+                            this.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Çözümü Gizle';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

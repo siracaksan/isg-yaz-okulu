@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 2: Meslek Hastalıkları - İş Sağlığı Yönetimi</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
+        .unit-subtitle { 
+            display: inline-block; 
+            background-color: #f8fafc; 
+            color: #0f172a; 
+            padding: 0.5rem 1.5rem; 
+            border-radius: 2rem; 
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            margin-top: 0.75rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding-bottom: 3rem; }
+
+        .content-header { display: flex; justify-content: flex-end; align-items: center; padding: 1.5rem 0; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; }
+        h2 { color: var(--primary-color); margin: 2rem 0 1rem 0; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-left: 4px solid var(--secondary-color); padding-left: 0.75rem; }
+        h3 { color: #334155; margin: 1.5rem 0 0.75rem 0; font-size: 1.25rem; }
+        p { margin-bottom: 1rem; color: #475569; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #475569; }
+        strong { color: var(--dark-color); }
+
+        .concept-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .concept-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1.25rem; text-align: center; transition: all 0.2s; }
+        .concept-card:hover { border-color: var(--secondary-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transform: translateY(-2px); }
+        .concept-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 0.75rem; }
+        .concept-title { font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .concept-desc { font-size: 0.9rem; color: #64748b; }
+
+        .alert-box { border-left: 5px solid; padding: 1.25rem; border-radius: 0.5rem; margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start; }
+        .alert-icon { font-size: 1.5rem; margin-top: 0.2rem; }
+        .alert-content h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
+        .alert-content p { margin: 0; font-size: 0.95rem; }
+
+        .exam-focus { background-color: #fef2f2; border-color: var(--danger-color); }
+        .exam-focus .alert-icon { color: var(--danger-color); }
+        .exam-focus h4 { color: var(--danger-color); }
+
+        .memory-hack { background-color: #fffbeb; border-color: var(--warning-color); }
+        .memory-hack .alert-icon { color: var(--warning-color); }
+        .memory-hack h4 { color: #b45309; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        .comparison-table th, .comparison-table td { padding: 1rem; border: 1px solid #cbd5e1; text-align: left; }
+        .comparison-table th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        .comparison-table tr:nth-child(even) { background-color: #f8fafc; }
+        .highlight-cell { font-weight: 700; color: var(--danger-color); }
+
+        .regulation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .regulation-item { background: #f1f5f9; padding: 1.25rem; border-radius: 0.75rem; border-left: 4px solid var(--secondary-color); }
+        .regulation-item h4 { color: var(--primary-color); margin-bottom: 0.25rem; }
+
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+        .info-card { background: #f8fafc; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e2e8f0; transition: all 0.2s; }
+        .info-card:hover { border-color: var(--secondary-color); }
+        .info-card h4 { color: var(--primary-color); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .header-buttons { position: relative; top: 0; left: 0; justify-content: center; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .regulation-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Üniteler</a>
+        </div>
+        <h1>2. Meslek Hastalıkları</h1>
+        <div class="unit-subtitle">Ünite 2: Meslek Hastalıkları Kavramı, Epidemiyoloji, Sınıflandırma ve Korunma Yöntemleri</div>
+    </header>
+
+    <main>
+        <div class="content-header">
+            <span style="background: #dbeafe; color: #1e40af; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 600;"><i class="fa-regular fa-clock"></i> Tahmini Okuma: 18 Dk</span>
+        </div>
+
+        <div style="background: white; border: 1px solid #e2e8f0; border-left: 5px solid var(--primary-color); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bullseye"></i> Bölümün Amacı</h3>
+            <p style="color: #475569; margin-bottom: 0;">Bu ünitede, meslek hastalıkları kavramı, işle ilgili hastalıklardan farkı, epidemiyolojik veriler, tanı yöntemleri, sınıflandırma sistemleri ve korunma stratejileri (primordiyal, primer, sekonder, tersiyer) detaylı olarak ele alınmaktadır. Meslek hastalıklarının iş sağlığı güvenliği çalışmaları içindeki yeri ve önemi vurgulanmaktadır.</p>
+        </div>
+
+        <!-- 1. Meslek Hastalıkları Kavramı -->
+        <h2><i class="fa-solid fa-stethoscope"></i> 1. Meslek Hastalıkları Kavramı</h2>
+        <p><strong>Meslek hastalığı</strong>, iş yerlerinde karşılaşılan fiziksel, kimyasal veya biyolojik etkene maruz kalma sonucu ortaya çıkan süreğen hastalıklardır. 6331 sayılı İş Sağlığı Güvenliği Kanunu'nda "mesleki risklere maruziyet sonucu ortaya çıkan hastalık" olarak tanımlanır.</p>
+
+        <div class="concept-map">
+            <div class="concept-card">
+                <i class="fa-solid fa-virus concept-icon"></i>
+                <div class="concept-title">Meslek Hastalığı</div>
+                <div class="concept-desc">İş yerinde fiziksel, kimyasal veya biyolojik etkene maruz kalma sonucu ortaya çıkan <strong>süreğen hastalık</strong>. Yapılan işle hastalık arasında <strong>nedensellik bağı</strong> kurulabilir.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-people-arrows concept-icon"></i>
+                <div class="concept-title">İşle İlgili Hastalık</div>
+                <div class="concept-desc">Toplumda da görülen, ancak iş yeri ortamı ve çalışma şeklinin hastalığın ortaya çıkmasında veya şiddetlenmesinde rol oynadığı hastalıklar.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-globe concept-icon"></i>
+                <div class="concept-title">Küresel Veriler</div>
+                <div class="concept-desc">Yılda <strong>2,3 milyon</strong> ölüm (2 milyonu meslek hastalığı). <strong>160 milyon</strong> kişi ölümcül olmayan işle ilgili hastalığa maruz kalıyor.</div>
+            </div>
+        </div>
+
+        <div class="alert-box exam-focus">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <div class="alert-content">
+                <h4>Sınav Bilgisi: Meslek Hastalığı ve İşle İlgili Hastalık Farkı</h4>
+                <p><strong>Meslek hastalığı</strong> sadece o işi yapanlarda görülür ve <strong>nedensellik bağı</strong> kurulabilir. <strong>İşle ilgili hastalık</strong> toplumda da yaygındır, iş koşulları hastalığı şiddetlendirir. Tanı koymak ve bildirmek en önemli sorunlardır.</p>
+            </div>
+        </div>
+
+        <!-- 2. Epidemiyoloji, Nedenler ve Tanı Yöntemleri -->
+        <h2><i class="fa-solid fa-chart-line"></i> 2. Epidemiyoloji, Nedenler ve Tanı Yöntemleri</h2>
+        <p>Meslek hastalıkları epidemiyolojisinde en büyük sorun <strong>bildirim</strong>dir. ILO verilerine göre yılda 2 milyon kişi meslek hastalıkları nedeniyle ölmektedir. DSÖ Avrupa Bölgesi verilerine göre sağlıksız çalışma koşulları hastalık yükünün en az %1,6'sına katkı yapmaktadır.</p>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h4><i class="fa-solid fa-skull"></i> Ölüm Nedenleri (ILO)</h4>
+                <ul style="margin: 0; padding-left: 1.2rem;">
+                    <li><strong>Kanserler:</strong> %32</li>
+                    <li><strong>Kardiyovasküler:</strong> %23</li>
+                    <li><strong>Bulaşıcı:</strong> %17</li>
+                    <li><strong>Yaralanmalar:</strong> %18</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h4><i class="fa-solid fa-triangle-exclamation"></i> Risk Faktörleri (DSÖ)</h4>
+                <ul style="margin: 0; padding-left: 1.2rem;">
+                    <li><strong>Yaralanmalar:</strong> %40</li>
+                    <li><strong>Gürültü:</strong> %22</li>
+                    <li><strong>Kanserojenler:</strong> %18</li>
+                    <li><strong>Partikül madde:</strong> %17</li>
+                    <li><strong>Ergonomik:</strong> %3</li>
+                </ul>
+            </div>
+            <div class="info-card" style="grid-column: 1 / -1;">
+                <h4><i class="fa-solid fa-turkey"></i> Türkiye Verileri (2018, SGK)</h4>
+                <ul style="margin: 0; padding-left: 1.2rem;">
+                    <li><strong>Toplam tanı:</strong> 1.044 (966 erkek, 78 kadın).</li>
+                    <li><strong>Sektörler:</strong> Mineral ve metal sanayi, kömür madenciliği.</li>
+                    <li><strong>İller:</strong> İstanbul, Kocaeli, Zonguldak.</li>
+                    <li>Ölüm bildirimi yok.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Nedensellik Kriterleri (Tanı İçin)</h3>
+        <ul>
+            <li><strong>Zamansallık:</strong> Maruziyet hastalıktan önce olmalı.</li>
+            <li><strong>Tutarlılık:</strong> Farklı çalışmalarda benzer sonuçlar.</li>
+            <li><strong>Güçlü İlişki:</strong> Maruziyet ile hastalık arasında kuvvetli bağ.</li>
+            <li><strong>Özgünlük:</strong> Hastalığın spesifik maruziyete bağlanabilmesi.</li>
+        </ul>
+
+        <div class="alert-box memory-hack">
+            <i class="fa-solid fa-brain alert-icon"></i>
+            <div class="alert-content">
+                <h4>Hafıza Taktikleri: Tanı ve Nedensellik</h4>
+                <p>Tanı için <strong>sadece klinik bulgular yeterli değildir</strong>. Ayrıntılı <strong>meslek ve çalışma öyküsü</strong> alınmalıdır. <strong>Zamansallık</strong> (önce maruziyet, sonra hastalık) ve <strong>tutarlılık</strong> (benzer sonuçlar) en önemli kriterlerdendir.</p>
+            </div>
+        </div>
+
+        <!-- 3. Meslek Hastalıklarının Sınıflandırılması -->
+        <h2><i class="fa-solid fa-list"></i> 3. Meslek Hastalıklarının Sınıflandırılması</h2>
+        <p>ILO ilk olarak <strong>antraks</strong> hastalığını meslek hastalığı olarak tanımlamıştır. 1925'ten itibaren meslek hastalıkları listeleri yayımlanmıştır. Türkiye'de ise <strong>2008</strong> yılında Çalışma Gücü ve Meslekte Kazanma Kaybı Tespit İşlemleri Yönetmeliği'nde yer alan liste kullanılmaktadır.</p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Grup</th>
+                    <th>Açıklama</th>
+                    <th>Örnekler</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>A Grubu</strong></td>
+                    <td>Kimyasal maddelerle olan hastalıklar</td>
+                    <td>Kurşun, cıva, arsenik zehirlenmeleri</td>
+                </tr>
+                <tr>
+                    <td><strong>B Grubu</strong></td>
+                    <td>Mesleki deri hastalıkları</td>
+                    <td>Kanser ve kanser dışı lezyonlar</td>
+                </tr>
+                <tr>
+                    <td><strong>C Grubu</strong></td>
+                    <td>Pnömokonyozlar ve solunum sistemi</td>
+                    <td>Silikoz, asbestoz, toz hastalıkları</td>
+                </tr>
+                <tr>
+                    <td><strong>D Grubu</strong></td>
+                    <td>Mesleki bulaşıcı hastalıklar</td>
+                    <td>Antraks, bruselloz, tüberküloz</td>
+                </tr>
+                <tr>
+                    <td><strong>E Grubu</strong></td>
+                    <td>Fiziki etkenlerle olan hastalıklar</td>
+                    <td>Gürültü, titreşim, radyasyon, basınç</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 4. Korunma Yöntemleri -->
+        <h2><i class="fa-solid fa-shield-halved"></i> 4. Korunma Yöntemleri</h2>
+        <p>Meslek hastalıklarından korunma dört düzeyde gerçekleştirilir. İş yerlerinde alınan önlemler ön plandadır, ancak tıbbi önlemler de destekleyici rol oynar.</p>
+
+        <div class="regulation-grid">
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-earth-americas"></i> Primordiyal Korunma</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Ekonomik, sosyal ve çevresel koşullara müdahale.</li>
+                    <li>Politika geliştirme ve yasal önlemler.</li>
+                    <li>Örnek: Sağlık eğitimi, sosyal politikalar.</li>
+                </ul>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-circle-check"></i> Primer Korunma</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Spesifik nedensel faktörlere odaklanır.</li>
+                    <li>Risk faktörü ile karşılaşmayı engeller.</li>
+                    <li>Örnek: <strong>İşe giriş muayeneleri</strong>, kaynakta kontrol.</li>
+                </ul>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-clock"></i> Sekonder Korunma</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Amaç: <strong>Erken tanı</strong> ve erken müdahale.</li>
+                    <li>Örnek: <strong>Periyodik muayeneler</strong>, sağlık taramaları.</li>
+                </ul>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-hand-holding-heart"></i> Tersiyer Korunma</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Hastalığın kalıcı bozukluklarını azaltma.</li>
+                    <li>Örnek: <strong>Rehabilitasyon</strong>, tedavi, yaşam kalitesini artırma.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background: #f0fdf4; border-left: 4px solid #22c55e; padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
+            <p style="margin: 0; color: #166534;"><i class="fa-solid fa-circle-check" style="color: #22c55e;"></i> <strong>Önemli:</strong> Primer korunmada <strong>işe giriş muayeneleri</strong> (çalışanı uygun işe yerleştirme), sekonder korunmada <strong>periyodik muayeneler</strong> (erken tanı) en belirgin uygulamalardır. Tersiyer korunma ise tedavi ve rehabilitasyonu kapsar.</p>
+        </div>
+
+        <div style="background: #e0f2fe; border-radius: 0.75rem; padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;"><i class="fa-regular fa-lightbulb"></i> Ünite Özeti</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div><strong>Meslek Hastalığı:</strong> Fiziksel/kimyasal/biyolojik maruziyet → süreğen hastalık</div>
+                <div><strong>İşle İlgili Hastalık:</strong> Toplumda da görülür, iş koşulları şiddetlendirir</div>
+                <div><strong>Küresel Ölüm:</strong> 2,3 milyon/yıl (2 milyonu meslek hastalığı)</div>
+                <div><strong>Ölüm Nedenleri (ILO):</strong> Kanser %32, Kardiyovasküler %23</div>
+                <div><strong>Türkiye (2018):</strong> 1.044 tanı, en çok mineral/metal sanayi</div>
+                <div><strong>Tanı Kriterleri:</strong> Zamansallık, Tutarlılık, Güçlü ilişki</div>
+                <div><strong>Sınıflandırma:</strong> A (kimyasal), B (deri), C (solunum), D (bulaşıcı), E (fiziki)</div>
+                <div><strong>Korunma Düzeyleri:</strong> Primordiyal → Primer → Sekonder → Tersiyer</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3.5rem;">
+            <a href="test_2.html" style="background-color: var(--secondary-color); color: white; text-decoration: none; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: bold; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(13, 148, 136, 0.3); transition: all 0.2s;">
+                Konuyu Anladım, Ünite 2 Test-1'e Başla <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+    </footer>
+
+</body>
+</html>

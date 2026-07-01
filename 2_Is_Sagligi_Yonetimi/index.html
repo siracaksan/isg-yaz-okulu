@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İş Sağlığı Yönetimi - 2026 İSG Yaz Okulu</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header / Üst Bilgi */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Ana İçerik Alanı */
+        main {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title::after {
+            content: '';
+            flex-grow: 1;
+            height: 2px;
+            background-color: #e2e8f0;
+            margin-left: 1rem;
+        }
+
+        /* Üniteler Grid Yapısı */
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .unit-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary-color);
+        }
+
+        .unit-card h3 {
+            font-size: 1.25rem;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .unit-card h3 span {
+            font-size: 0.8rem;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+        }
+
+        /* Buton Stilleri */
+        .btn-konu {
+            display: block;
+            width: 100%;
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            transition: background 0.2s;
+        }
+
+        .btn-konu:hover {
+            background-color: #0f766e;
+        }
+
+        .tests-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+        }
+
+        .btn-test {
+            background-color: #f1f5f9;
+            color: #475569;
+            text-decoration: none;
+            text-align: center;
+            padding: 0.5rem 0;
+            border-radius: 0.4rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid #cbd5e1;
+            transition: all 0.2s;
+        }
+
+        .btn-test:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Çıkmış Sorular ve Denemeler Bölümü */
+        .extra-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .extra-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .extra-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .exams-title { color: var(--primary-color); }
+        .deneme-title { color: var(--danger-color); }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .btn-exam {
+            flex: 1;
+            min-width: 80px;
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            text-decoration: none;
+            text-align: center;
+            padding: 0.6rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-exam:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            flex: 1;
+            min-width: 100px;
+            background-color: white;
+            color: var(--danger-color);
+            border: 2px solid var(--danger-color);
+            text-decoration: none;
+            text-align: center;
+            padding: 0.6rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-danger:hover {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: #94a3b8;
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .back-btn { position: relative; top: 0; left: 0; display: inline-flex; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .extra-sections { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Ana Sayfaya Dön</a>
+        <h1>2. İş Sağlığı Yönetimi</h1>
+        <p>Ünite Konu Anlatımları, Ünite Testleri ve Sınav Arşivi</p>
+    </header>
+
+    <main>
+        <h2 class="section-title"><i class="fa-solid fa-book-open"></i> Eğitim Üniteleri (1-8)</h2>
+        
+        <div class="units-grid">
+            
+            <div class="unit-card">
+                <h3>Ünite 1 <span>%0</span></h3>
+                <a href="Unite_1/konu_anlatimi.html" class="btn-konu"><i class="fa-solid fa-file-lines"></i> Konu Anlatımı</a>
+                <div class="tests-container">
+                    <a href="Unite_1/test_1.html" class="btn-test" title="Test 1">T1</a>
+                    <a href="Unite_1/test_2.html" class="btn-test" title="Test 2">T2</a>
+                    <a href="Unite_1/test_3.html" class="btn-test" title="Test 3">T3</a>
+                    <a href="Unite_1/test_4.html" class="btn-test" title="Test 4">T4</a>
+                    <a href="Unite_1/test_5.html" class="btn-test" title="Test 5">T5</a>
+                </div>
+            </div>
+
+            <div class="unit-card">
+                <h3>Ünite 2 <span>%0</span></h3>
+                <a href="Unite_2/konu_anlatimi.html" class="btn-konu"><i class="fa-solid fa-file-lines"></i> Konu Anlatımı</a>
+                <div class="tests-container">
+                    <a href="Unite_2/test_1.html" class="btn-test" title="Test 1">T1</a>
+                    <a href="Unite_2/test_2.html" class="btn-test" title="Test 2">T2</a>
+                    <a href="Unite_2/test_3.html" class="btn-test" title="Test 3">T3</a>
+                    <a href="Unite_2/test_4.html" class="btn-test" title="Test 4">T4</a>
+                    <a href="Unite_2/test_5.html" class="btn-test" title="Test 5">T5</a>
+                </div>
+            </div>
+
+            <div class="unit-card">
+                <h3>Ünite 3 <span>%0</span></h3>
+                <a href="Unite_3/konu_anlatimi.html" class="btn-konu"><i class="fa-solid fa-file-lines"></i> Konu Anlatımı</a>
+                <div class="tests-container">
+                    <a href="Unite_3/test_1.html" class="btn-test" title="Test 1">T1</a>
+                    <a href="Unite_3/test_2.html" class="btn-test" title="Test 2">T2</a>
+                    <a href="Unite_3/test_3.html" class="btn-test" title="Test 3">T3</a>
+                    <a href="Unite_3/test_4.html" class="btn-test" title="Test 4">T4</a>
+                    <a href="Unite_3/test_5.html" class="btn-test" title="Test 5">T5</a>
+                </div>
+            </div>
+
+            <div class="unit-card">
+                <h3>Ünite 4 <span>%0</span></h3>
+                <a href="Unite_4/konu_anlatimi.html" class="btn-konu"><i class="fa-solid fa-file-lines"></i> Konu Anlatımı</a>
+                <div class="tests-container">
+                    <a href="Unite_4/test_1.html" class="btn-test" title="Test 1">T1</a>
+                    <a href="Unite_4/test_2.html" class="btn-test" title="Test 2">T2</a>
+                    <a href="Unite_4/test_3.html" class="btn-test" title="Test 3">T3</a>
+                    <a href="Unite_4/test_4.html" class="btn-test" title="Test 4">T4</a>
+                    <a href="Unite_4/test_5.html" class="btn-test" title="Test 5">T5</a>
+                </div>
+            </div>
+
+            <div class="unit-card">
+                <h3>Ünite 5 <span>%0</span></h3>
+                <a href="Unite_5/konu_anlatimi.html" class="btn-konu"><i class="fa-solid fa-file-lines"></i> Konu Anlatımı</a>
+                <div class="tests-container">
+                    <a href="Unite_5/test_1.html" class="btn-test" title="Test 1">T1</a>
+                    <a href="Unite_5/test_2.html" class="btn-test" title="Test 2">T2</a>
+                    <a href="Unite_5/test_3.html" class="btn-test" title="Test 3">T3</a>
+                    <a href="Unite_5/test_4.html" class="btn-test" title="Test 4">T4</a>
+                    <a href="Unite_5/test_5.html" class="btn-test" title="Test 5">T5</a>
+                </div>
+            </div>
+
+            <div class="unit-card">
+                <h3>Ünite 6 <span>%0</span></h3>
+                <a href="Unite_6/konu_anlatimi.html" class="btn-konu"><i class="fa-solid fa-file-lines"></i> Konu Anlatımı</a>
+                <div class="tests-container">
+                    <a href="Unite_6/test_1.html" class="btn-test" title="Test 1">T1</a>
+                    <a href="Unite_6/test_2.html" class="btn-test" title="Test 2">T2</a>
+                    <a href="Unite_6/test_3.html" class="btn-test" title="Test 3">T3</a>
+                    <a href="Unite_6/test_4.html" class="btn-test" title="Test 4">T4</a>
+                    <a href="Unite_6/test_5.html" class="btn-test" title="Test 5">T5</a>
+                </div>
+            </div>
+
+            <div class="unit-card">
+                <h3>Ünite 7 <span>%0</span></h3>
+                <a href="Unite_7/konu_anlatimi.html" class="btn-konu"><i class="fa-solid fa-file-lines"></i> Konu Anlatımı</a>
+                <div class="tests-container">
+                    <a href="Unite_7/test_1.html" class="btn-test" title="Test 1">T1</a>
+                    <a href="Unite_7/test_2.html" class="btn-test" title="Test 2">T2</a>
+                    <a href="Unite_7/test_3.html" class="btn-test" title="Test 3">T3</a>
+                    <a href="Unite_7/test_4.html" class="btn-test" title="Test 4">T4</a>
+                    <a href="Unite_7/test_5.html" class="btn-test" title="Test 5">T5</a>
+                </div>
+            </div>
+
+            <div class="unit-card">
+                <h3>Ünite 8 <span>%0</span></h3>
+                <a href="Unite_8/konu_anlatimi.html" class="btn-konu"><i class="fa-solid fa-file-lines"></i> Konu Anlatımı</a>
+                <div class="tests-container">
+                    <a href="Unite_8/test_1.html" class="btn-test" title="Test 1">T1</a>
+                    <a href="Unite_8/test_2.html" class="btn-test" title="Test 2">T2</a>
+                    <a href="Unite_8/test_3.html" class="btn-test" title="Test 3">T3</a>
+                    <a href="Unite_8/test_4.html" class="btn-test" title="Test 4">T4</a>
+                    <a href="Unite_8/test_5.html" class="btn-test" title="Test 5">T5</a>
+                </div>
+            </div>
+
+        </div>
+
+        <h2 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Sınav Merkezi</h2>
+        
+        <div class="extra-sections">
+            
+            <div class="extra-card">
+                <h3 class="exams-title"><i class="fa-solid fa-clock-rotate-left"></i> Son 5 Yılın Çıkmış Soruları</h3>
+                <p style="margin-bottom: 1.5rem; color: #64748b; font-size: 0.95rem;">Anadolu Üniversitesi Yaz Okulu geçmiş sınav arşivi. Gerçek sınav formatında hazırlanmıştır.</p>
+                <div class="btn-group">
+                    <a href="Cikmis_Sorular/yaz_okulu_2021.html" class="btn-exam">2021</a>
+                    <a href="Cikmis_Sorular/yaz_okulu_2022.html" class="btn-exam">2022</a>
+                    <a href="Cikmis_Sorular/yaz_okulu_2023.html" class="btn-exam">2023</a>
+                    <a href="Cikmis_Sorular/yaz_okulu_2024.html" class="btn-exam">2024</a>
+                    <a href="Cikmis_Sorular/yaz_okulu_2025.html" class="btn-exam">2025</a>
+                </div>
+            </div>
+
+            <div class="extra-card">
+                <h3 class="deneme-title"><i class="fa-solid fa-skull-crossbones"></i> Zor Seviye Denemeler</h3>
+                <p style="margin-bottom: 1.5rem; color: #64748b; font-size: 0.95rem;">Eleyici sorular, güçlü çeldiriciler ve çoklu öncüller barındıran üst düzey deneme serisi.</p>
+                <div class="btn-group">
+                    <a href="Zor_Denemeler/deneme_1.html" class="btn-danger">Deneme 1</a>
+                    <a href="Zor_Denemeler/deneme_2.html" class="btn-danger">Deneme 2</a>
+                    <a href="Zor_Denemeler/deneme_3.html" class="btn-danger">Deneme 3</a>
+                    <a href="Zor_Denemeler/deneme_4.html" class="btn-danger">Deneme 4</a>
+                    <a href="Zor_Denemeler/deneme_5.html" class="btn-danger">Deneme 5</a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | saracaksan@gmail.com</p>
+    </footer>
+
+    </body>
+</html>

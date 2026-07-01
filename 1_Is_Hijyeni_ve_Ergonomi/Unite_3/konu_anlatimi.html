@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 3: İş Hijyeni Test ve Ölçümü</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
+        .unit-subtitle { 
+            display: inline-block; 
+            background-color: #f8fafc; 
+            color: #0f172a; 
+            padding: 0.5rem 1.5rem; 
+            border-radius: 2rem; 
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            margin-top: 0.75rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding-bottom: 3rem; }
+
+        .content-header { display: flex; justify-content: flex-end; align-items: center; padding: 1.5rem 0; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; }
+        h2 { color: var(--primary-color); margin: 2rem 0 1rem 0; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-left: 4px solid var(--secondary-color); padding-left: 0.75rem; }
+        h3 { color: #334155; margin: 1.5rem 0 0.75rem 0; font-size: 1.25rem; }
+        p { margin-bottom: 1rem; color: #475569; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #475569; }
+        strong { color: var(--dark-color); }
+
+        .concept-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .concept-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1.25rem; text-align: center; transition: all 0.2s; }
+        .concept-card:hover { border-color: var(--secondary-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transform: translateY(-2px); }
+        .concept-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 0.75rem; }
+        .concept-title { font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .concept-desc { font-size: 0.9rem; color: #64748b; }
+
+        .alert-box { border-left: 5px solid; padding: 1.25rem; border-radius: 0.5rem; margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start; }
+        .alert-icon { font-size: 1.5rem; margin-top: 0.2rem; }
+        .alert-content h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
+        .alert-content p { margin: 0; font-size: 0.95rem; }
+
+        .exam-focus { background-color: #fef2f2; border-color: var(--danger-color); }
+        .exam-focus .alert-icon { color: var(--danger-color); }
+        .exam-focus h4 { color: var(--danger-color); }
+
+        .memory-hack { background-color: #fffbeb; border-color: var(--warning-color); }
+        .memory-hack .alert-icon { color: var(--warning-color); }
+        .memory-hack h4 { color: #b45309; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        .comparison-table th, .comparison-table td { padding: 1rem; border: 1px solid #cbd5e1; text-align: left; }
+        .comparison-table th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        .comparison-table tr:nth-child(even) { background-color: #f8fafc; }
+        .highlight-cell { font-weight: 700; color: var(--danger-color); }
+
+        .regulation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .regulation-item { background: #f1f5f9; padding: 1.25rem; border-radius: 0.75rem; border-left: 4px solid var(--secondary-color); }
+        .regulation-item h4 { color: var(--primary-color); margin-bottom: 0.25rem; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .header-buttons { position: relative; top: 0; left: 0; justify-content: center; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .regulation-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Üniteler</a>
+        </div>
+        <h1>3. İş Hijyeni Test ve Ölçümü</h1>
+        <div class="unit-subtitle">Ünite 3: Yükümlülükler, Metot Seçimi, Laboratuvarlar ve Belgelendirme</div>
+    </header>
+
+    <main>
+        <div class="content-header">
+            <span style="background: #dbeafe; color: #1e40af; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 600;"><i class="fa-regular fa-clock"></i> Tahmini Okuma: 15 Dk</span>
+        </div>
+
+        <div style="background: white; border: 1px solid #e2e8f0; border-left: 5px solid var(--primary-color); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bullseye"></i> Bölümün Amacı</h3>
+            <p style="color: #475569; margin-bottom: 0;">Bu ünitede, iş hijyeni test ve ölçümlerinin yasal zorunluluklarını, doğru metot seçimini, laboratuvarların sahip olması gereken nitelikleri ve Çalışma ve Sosyal Güvenlik Bakanlığı'nın belgelendirme/denetleme süreçlerini kavrayacaksınız. İşveren ve laboratuvar yükümlülükleri, numune alma stratejileri ve akreditasyon süreçleri üzerinde durulacaktır.</p>
+        </div>
+
+        <h2><i class="fa-solid fa-scale-balanced"></i> 1. İşveren ve Laboratuvar Yükümlülükleri</h2>
+        <p>İş hijyeni test ve ölçümleri, çalışanların maruz kaldığı fiziksel, kimyasal ve biyolojik risklerin belirlenmesi için zorunludur. Bu süreçte işveren ve yetkili laboratuvarlara belirli yükümlülükler düşer.</p>
+
+        <div class="regulation-grid">
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-user-tie"></i> İşveren Yükümlülükleri</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Test, ölçüm ve analizleri <strong>ön yeterlik/yeterlik belgesi</strong> olan laboratuvarlara yaptırmak.</li>
+                    <li>Gelen laboratuvar personelini <strong>bilgilendirmek</strong> ve güvenlik önlemlerini almak.</li>
+                    <li>Tüm sonuçları <strong>10 yıl</strong> süreyle iş yerinde saklamak.</li>
+                </ul>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-flask"></i> Laboratuvar Yükümlülükleri</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Ölçümleri <strong>ulusal/uluslararası standartlara</strong> uygun yapmak.</li>
+                    <li>Sonuçları <strong>doğru, tarafsız ve açık</strong> şekilde raporlamak.</li>
+                    <li>Yeterlilik testlerine <strong>en geç 4 yılda bir</strong> katılıp olumlu sonuç almak.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="alert-box exam-focus">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <div class="alert-content">
+                <h4>Sınav Bilgisi: Saklama Süresi ve Standart</h4>
+                <p><strong>10 yıl</strong> saklama zorunluluğu ve <strong>TS EN 689</strong> standardı (İşyeri Havası-Solunumla Maruz Kalınan Kimyasal Maddeler) sınavlarda sıkça sorulur.</p>
+            </div>
+        </div>
+
+        <h2><i class="fa-solid fa-vial"></i> 2. Metot Seçimi ve Numune Hazırlama</h2>
+        <p>Numune alma işlemi, maruziyeti temsil edecek şekilde planlanmalıdır. Süre ve sayı, işin niteliğine göre belirlenir. Kişisel maruziyet seviyesini göstermeyen ölçümler, sınır değerlerle kıyaslanmaz.</p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Metot Seçiminde Dikkat Edilecekler</th>
+                    <th>Açıklama</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Standartlara Uygunluk</strong></td>
+                    <td>TS EN 689, NIOSH, OSHA gibi ulusal/uluslararası metotlar kullanılır.</td>
+                </tr>
+                <tr>
+                    <td><strong>Numune Süresi</strong></td>
+                    <td>Maruziyeti temsil etmeli; kısa süreli (15 dk) ve uzun süreli (8 saat) ölçümler ayrı ayrı yapılabilir.</td>
+                </tr>
+                <tr>
+                    <td><strong>Numune Sayısı</strong></td>
+                    <td>İstatistiksel olarak anlamlı sonuçlar için yeterli sayıda numune alınmalıdır.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="alert-box memory-hack">
+            <i class="fa-solid fa-brain alert-icon"></i>
+            <div class="alert-content">
+                <h4>Hafıza Taktikleri: Kısaltmalar</h4>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li><strong>TS EN 689:</strong> Kimyasal maddeler için ölçme stratejisi kılavuzu.</li>
+                    <li><strong>NIOSH:</strong> Ulusal Mesleki Güvenlik ve Sağlık Enstitüsü (ABD).</li>
+                    <li><strong>OSHA:</strong> Mesleki Güvenlik ve Sağlık İdaresi (ABD).</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2><i class="fa-solid fa-laboratory"></i> 3. Laboratuvar Şartları ve Personel</h2>
+        <p>İş hijyeni laboratuvarlarının belirli asgari şartları sağlaması gerekir. Ayrıca laboratuvar bünyesinde bulunması zorunlu personel tanımlanmıştır.</p>
+
+        <ul>
+            <li><strong>Fiziksel Koşullar:</strong> Farklı etken analizleri birbirini etkilemeyecek şekilde ayrılmalı, gerekli önlemler alınmalıdır.</li>
+            <li><strong>Atık Yönetimi:</strong> Tıbbi ve tehlikeli atıklar, ilgili mevzuata (Tıbbi Atıkların Kontrolü Yönetmeliği) uygun şekilde bertaraf edilmelidir.</li>
+            <li><strong>Personel Yapısı:</strong> Laboratuvar Yöneticisi, Kalite Yöneticisi ve Deney Personeli bulunmalıdır.</li>
+        </ul>
+
+        <div style="background: #f0fdf4; border-left: 4px solid #22c55e; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
+            <p style="margin: 0; color: #166534;"><i class="fa-solid fa-circle-check" style="color: #22c55e;"></i> <strong>Önemli:</strong> Laboratuvar, hizmet aldığı alt laboratuvarların işlemlerinden ÇSGB ve işverene karşı sorumludur.</p>
+        </div>
+
+        <h2><i class="fa-solid fa-certificate"></i> 4. Belgelendirme ve Denetleme Süreci</h2>
+        <p>İş Sağlığı ve Güvenliği Genel Müdürlüğü (İSGÜM), laboratuvarların belgelendirilmesi, denetlenmesi ve kapsam genişletme işlemlerinden sorumludur.</p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Belge Türü</th>
+                    <th>Açıklama</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Ön Yeterlik Belgesi</strong></td>
+                    <td>İSGÜM tarafından verilir. Laboratuvarın asgari şartları sağladığını gösterir.</td>
+                </tr>
+                <tr>
+                    <td><strong>Yeterlik Belgesi</strong></td>
+                    <td>Akreditasyon Kurumu denetim sonuçlarına göre verilir.</td>
+                </tr>
+                <tr>
+                    <td><strong>Kapsam Genişletme</strong></td>
+                    <td>Laboratuvar yeni parametreler ekleyerek yetki alanını genişletebilir.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="alert-box exam-focus">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <div class="alert-content">
+                <h4>Sınavda Çıkar: İhtar Puanı 300</h4>
+                <p>İhtar puanı <strong>300</strong>'e ulaşan laboratuvarın belgesi <strong>6 ay</strong> süreyle askıya alınır. Belge yenileme sonrası ihtar puanları <strong>en az 1 yıl</strong> geçmiş olanlar silinir.</p>
+                <p style="margin-top: 0.5rem;"><strong>Denetim Yetkisi:</strong> 3146 ve 6331 sayılı Kanun’a göre yerinde denetim, şikâyet veya programlı olarak yapılabilir.</p>
+            </div>
+        </div>
+
+        <div style="background: #e0f2fe; border-radius: 0.75rem; padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;"><i class="fa-regular fa-lightbulb"></i> Özet Tablosu</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div><strong>İşveren</strong> → Test yaptırma, bilgilendirme, 10 yıl saklama</div>
+                <div><strong>Laboratuvar</strong> → TS EN 689, doğru raporlama, 4 yılda yeterlilik</div>
+                <div><strong>Metot</strong> → Ulusal/uluslararası standartlar, temsili numune</div>
+                <div><strong>Belgelendirme</strong> → Ön yeterlik, Yeterlik, Kapsam genişletme</div>
+                <div><strong>Denetleme</strong> → İhtar puanı 300 → 6 ay askı, 1 yıl sonra silinir</div>
+                <div><strong>Personel</strong> → Yönetici, Kalite Yöneticisi, Deney Personeli</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3.5rem;">
+            <a href="test_3.html" style="background-color: var(--secondary-color); color: white; text-decoration: none; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: bold; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(13, 148, 136, 0.3); transition: all 0.2s;">
+                Konuyu Anladım, Ünite 3 Test-1'e Başla <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+    </footer>
+
+</body>
+</html>

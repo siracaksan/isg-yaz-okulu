@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 7 Test 1 - Ergonomi ve Çalışma Ortamı</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; }
+
+        /* Ekran (Web) Tasarımı */
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .unit-subtitle { display: inline-block; background-color: #f8fafc; color: #0f172a; padding: 0.5rem 1.5rem; border-radius: 2rem; font-size: 1.15rem; font-weight: 700; margin-top: 0.75rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #ffffff; }
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
+
+        .test-header { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--secondary-color); }
+        .test-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); }
+        
+        .pdf-btn { background-color: var(--danger-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; font-size: 1rem;}
+        .pdf-btn:hover { background-color: #b91c1c; transform: translateY(-2px); }
+
+        /* Soru Konteynerleri (Ekran) */
+        .question-container { background: white; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+        .question-text { font-size: 1.1rem; font-weight: 600; color: var(--dark-color); margin-bottom: 1.5rem; }
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+        .option-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left; padding: 1rem 1.5rem; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 0.5rem; font-size: 1rem; color: #334155; cursor: pointer; transition: all 0.2s ease; }
+        .option-btn:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+        
+        .option-btn.correct { background-color: #dcfce7; border-color: #22c55e; color: #166534; font-weight: 600; }
+        .option-btn.wrong { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .option-btn:disabled { cursor: default; }
+
+        /* İnteraktif Çözüm Butonu ve Kutusu */
+        .toggle-solution-btn { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; transition: all 0.2s; margin-top: 1rem; }
+        .toggle-solution-btn:hover { background-color: #bae6fd; }
+
+        .screen-solution { display: none; margin-top: 1rem; padding: 1.5rem; background-color: #f0fdf4; border-left: 5px solid #22c55e; border-radius: 0.5rem; color: #166534; font-size: 0.95rem; line-height: 1.6; }
+        .screen-solution.show { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(-5px);} to {opacity: 1; transform: translateY(0);} }
+
+        /* Yazdırma İçin Toplu Çözüm Alanı (Ekranda Gizli) */
+        .print-solutions-container { display: none; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; margin-top: 3rem; }
+
+        /* =========================================================
+           PDF (YAZDIRMA) STİLLERİ - ÇİFT SÜTUN & GİZLEMELER 
+           ========================================================= */
+        @media print {
+            body { background: white; font-size: 10pt; color: black; }
+            header, footer, .header-buttons, .pdf-btn, .test-header, .toggle-solution-btn { display: none !important; }
+            
+            /* Sayfa başına Test Başlığı */
+            main::before {
+                content: "ÜNİTE 7: ERGONOMİ VE ÇALIŞMA ORTAMI - DEĞERLENDİRME TESTİ (20 SORU)";
+                display: block;
+                text-align: center;
+                font-size: 16pt;
+                font-weight: bold;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid black;
+            }
+
+            /* Soruları Çift Sütun Yapma ve Araya Çizgi Koyma */
+            .questions-grid {
+                column-count: 2;
+                column-gap: 40px;
+                column-rule: 1px solid #94a3b8; /* Orta Çizgi */
+            }
+
+            /* Soruların sayfa sonlarında bölünmesini engelleme */
+            .question-container {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+            }
+            .question-text { font-size: 10pt; margin-bottom: 8px; }
+            .options-container { gap: 2px; margin-bottom: 5px; }
+            .option-btn { 
+                padding: 2px 0; 
+                border: none; 
+                background: transparent; 
+                font-size: 10pt; 
+                color: black;
+            }
+
+            /* Ekranda gösterilen inline çözümleri PDF'de gizle */
+            .screen-solution { display: none !important; }
+
+            /* Toplu Çözüm Alanını PDF'in en sonunda yeni sayfada göster */
+            .print-solutions-container { 
+                display: block !important; 
+                page-break-before: always; /* Çözümleri yeni sayfaya atar */
+            }
+            
+            .print-solutions-container h2 {
+                text-align: center;
+                border-bottom: 2px solid black;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+            .print-solution-item {
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 1px dashed #ccc;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="konu_anlatimi.html" class="back-btn"><i class="fa-solid fa-book-open"></i> Konu Anlatımı</a>
+        </div>
+        <h1>7. Ergonomi ve Çalışma Ortamı</h1>
+        <div class="unit-subtitle">Ünite 7: Test 1</div>
+    </header>
+
+    <main>
+        <div class="test-header">
+            <div class="test-title"><i class="fa-solid fa-list-check"></i> Bölüm Sonu Deneme Sınavı (20 Soru)</div>
+            <button class="pdf-btn" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> Sıkışık Format (PDF Olarak Kaydet)</button>
+        </div>
+
+        <div class="questions-grid">
+            
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 1:</strong> Aşağıdakilerden hangisi birim hacim (1 m³) havada bulunan su buharı miktarının, doymuş havada (bulunduğu sıcaklık ve basınç koşullarında) bulunması gereken su (buharı) miktarına oranını ifade eder?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Bağıl nem</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Oransal sıcaklık</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Rölatif ısı</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Nisbi radyasyon</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Maksimum nem</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 1:</strong> <strong>Doğru Yanıt: A.</strong> İklimlendirme çalışmalarında havanın nem doygunluğunu ifade etmek için "Bağıl Nem" terimi kullanılır. Bu oran, havanın sıcaklık ve basınca bağlı olarak taşıyabileceği maksimum su buharına ne kadar yaklaştığını gösterir. Yüksek bağıl nem, ortamda terlemenin buharlaşmasını zorlaştırarak ısıl konforu bozar.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 2:</strong> İnsan bedeni metabolik enerji yardımıyla kaç °C iç ısıya ayarlanmıştır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 34</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 35</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 36</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 37</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 38</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 2:</strong> <strong>Doğru Yanıt: D.</strong> İnsan organizması homeostatik bir yapıya sahiptir ve hayati fonksiyonların ideal şekilde sürdürülebilmesi için iç vücut sıcaklığını metabolik süreçlerle yaklaşık 37 °C'de sabit tutmaya (terleme veya titreme yoluyla) programlanmıştır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 3:</strong> Psikometreyle ölçülen ortamın nemi ile anemometreyle ölçülen hava akımı değerinin, nomogramda (efektif ısı tespit grafiği) bir araya getirilmesiyle aşağıdakilerden hangisi belirlenir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Psikometrik sıcaklık</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Anemometrik ısı</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Hava akımı değeri</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Nomogram artış oranı</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ortamın efektif ısısı</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 3:</strong> <strong>Doğru Yanıt: E.</strong> Kuru termometre sıcaklığı, ortamdaki havanın gerçek ısısını verirken; nem (psikometre) ve hava akım hızı (anemometre) parametrelerinin nomogram yardımıyla birleştirilmesi, çalışanın bu ortamda hissettiği asıl sıcaklığı, yani "Ortamın efektif (hissedilen) ısısını" ortaya çıkarır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 4:</strong> Gözün değişik aydınlıklara, ortama alışma ve uyum sağlama sürecine ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Görme</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Akomondasyon</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Adaptasyon</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Görsel aydınlık</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ortam aydınlatması</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 4:</strong> <strong>Doğru Yanıt: C.</strong> Göz bebeğinin büyüyüp küçülerek veya retinadaki fotoreseptörlerin hassasiyetini değiştirerek, karanlık bir ortamdan aydınlığa (veya tam tersine) geçildiğinde ışık şiddetine alışma ve uyum sağlama sürecine "Adaptasyon" denir. (Akomodasyon ise göz merceğinin uzaklık-yakınlık odaklanmasıdır).
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 5:</strong> Aydınlatma birimi aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Lümen</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Lüks</span></button>
+                    <button class="option-btn" data-option="C"><span>C) m²</span></button>
+                    <button class="option-btn" data-option="D"><span>D) cm²</span></button>
+                    <button class="option-btn" data-option="E"><span>E) mm²</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 5:</strong> <strong>Doğru Yanıt: B.</strong> Lümen ışık akısını (kaynağın yaydığı toplam ışık miktarını) ifade ederken; çalışma yüzeyine (1 metrekareye) düşen ışık akısı miktarına "Aydınlık Düzeyi" denir ve bunun ölçü birimi "Lüks"tür. Ergonomik standartlar yüzeydeki lüks değeri üzerinden belirlenir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 6:</strong> İnsan kulağı hangi aralıktaki seslere karşı duyarlıdır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 1 - 5 Hz</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 5 - 50 Hz</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 12 – 1000 Hz</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 15 - 10000 Hz</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 16 - 20000 Hz</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 6:</strong> <strong>Doğru Yanıt: E.</strong> Sesin frekansı (saniyedeki titreşim sayısı) Hertz (Hz) birimiyle ölçülür. Sağlıklı genç bir insan kulağı fizyolojik olarak en pes 16 Hz ile en tiz 20.000 Hz frekans aralığındaki mekanik dalgaları ses olarak algılayabilir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 7:</strong> 0,0002 mikrobar (dyn/cm²) basınç yapan ve 0 dB olarak kabul edilen sese ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Mikrobar aralığı</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Mikrobar ses</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Duyma eşiği</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İşitme kaybı</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Sağırlık sınırı</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 7:</strong> <strong>Doğru Yanıt: C.</strong> İnsan kulağının 1000 Hz frekansında algılayabildiği, havada oluşturulan en zayıf akustik basınç değeri 0,0002 mikrobardır. Bu en düşük basınca, ses şiddeti ölçüm skalasının başlangıç noktası olarak 0 Desibel (dB) atanır ve bu seviyeye fizyolojide "Duyma eşiği" (İşitme eşiği) denir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 8:</strong> Sesin şiddeti hangi cihaz ile ölçülür?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Şiddetmetre</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Odyometre</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Sesmikrobarı</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Desibelmatik</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Globetermometre</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 8:</strong> <strong>Doğru Yanıt: B.</strong> Literatürde ortam sesi dozimetre/sonometre ile ölçülse de, iş hijyeni değerlendirmelerinde "çalışanın duyabildiği/maruz kaldığı işitme sınırını ve ses frekans/şiddet kaybını" tespit eden temel klinik cihaz "Odyometre"dir. Sınav müfredatı bağlamında, çalışan odaklı ses şiddeti/işitme testi ölçümleri bu cihazla anılır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 9:</strong> Aşağıdakilerden hangisi bedensel, ruhsal ve sosyal yönden iyilik hâli anlamına gelir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sağlık</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Ruh bilimi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Vücut bilimi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Antropoloji</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Antropometri</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 9:</strong> <strong>Doğru Yanıt: A.</strong> Dünya Sağlık Örgütü'nün (WHO) evrensel tanımına göre "Sağlık", sadece sakatlığın veya hastalığın olmayışı değil; insanın fiziksel (bedensel), ruhsal (psikolojik) ve sosyal yönden tam bir iyilik/denge hâli içinde bulunmasıdır. İş sağlığı da bu bütünselliği hedefler.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 10:</strong> İş sağlığı ve güvenliği hangi bilim dalının kapsamında yer alır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Çalışma</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İşletme</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İktisat</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Ergonomi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Savunma</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 10:</strong> <strong>Doğru Yanıt: D.</strong> Çalışma ortamının tüm şartlarının insanın fiziksel ve bilişsel kapasitesine uygun, güvenli şekilde tasarlanması "Ergonomi" biliminin ana hedefidir. Dolayısıyla İş Sağlığı ve Güvenliği uygulamaları, doğrudan ergonomi disiplininin çatısı altında yürütülür.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 11:</strong> Yapılan bilimsel çalışmalara göre; çalışma ortamının sıcaklık değeri 32 °C'ye ulaştığında çalışanın performansında yüzde kaç oranında bir düşüş yaşanması beklenir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) %5</span></button>
+                    <button class="option-btn" data-option="B"><span>B) %10</span></button>
+                    <button class="option-btn" data-option="C"><span>C) %30</span></button>
+                    <button class="option-btn" data-option="D"><span>D) %50</span></button>
+                    <button class="option-btn" data-option="E"><span>E) %70</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 11:</strong> <strong>Doğru Yanıt: C.</strong> Çalışanların rahatlığı ve performansı iklimsel şartlara doğrudan bağlıdır. Sıcaklığın 29 °C olması %5, 30 °C olması %10, 31 °C olması %17 ve 32 °C'ye çıkması performansta büyük bir kayba yol açarak ortalama %30 oranında düşüşe sebep olmaktadır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 12:</strong> Çalışma ortamında sıcaklığın 30 °C olarak ölçüldüğü bir işletmede, iklimlendirme sorunları nedeniyle çalışanların performansında tahminen ne kadarlık bir kayıp yaşanır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) %5</span></button>
+                    <button class="option-btn" data-option="B"><span>B) %10</span></button>
+                    <button class="option-btn" data-option="C"><span>C) %17</span></button>
+                    <button class="option-btn" data-option="D"><span>D) %25</span></button>
+                    <button class="option-btn" data-option="E"><span>E) %30</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 12:</strong> <strong>Doğru Yanıt: B.</strong> Termal konfor değerlerinin bozulması verimi hızla düşürür. İstatistiksel verilere göre ortam sıcaklığı 30 °C olduğunda, ideal çalışma koşullarına kıyasla işçi performansında %10'luk bir kayıp gerçekleşir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 13:</strong> İşe bağlı psikososyal risk etmenlerinin (aşırı iş yükü, stres vb.) pek çoğunun tetiklediği; insanın hislerini, düşüncelerini ve davranışlarını olumsuz etkileyen tıbbi rahatsızlık (majör bozukluk) aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Depresyon</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Odyometrik kayıp</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Kas iskelet sendromu</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Akomodasyon zorluğu</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Akustik travma</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 13:</strong> <strong>Doğru Yanıt: A.</strong> Çalışma ortamındaki psikososyal riskler doğrudan zihinsel sağlığı hedef alır. En yaygın sonuçlarından biri, kişide sürekli mutsuzluk ve isteksizliğe yol açan tıbbi bir hastalık olan majör depresif bozukluktur (depresyon).
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 14:</strong> Aşağıdakilerden hangisi çalışma hayatında depresyon yaşayan kişilerin iş yerinde sergilediği olumsuz tutumlardan biri olarak belirtilmiştir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İş yerindeki termal konforu manuel olarak değiştirme eğilimi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Sinyalleri (akustik ve görsel) daha hızlı algılama çabası</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İş arkadaşlarıyla aşırı sosyalleşme</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Liderlik ve inisiyatif alma becerisinde ani artış</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Görevlerini yerine getirme yeteneğinde azalma ve problemlere karşı tepkisizleşme</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 14:</strong> <strong>Doğru Yanıt: E.</strong> Depresyonlu kişiler yaşadıkları isteksizlik ve zihinsel yorgunluk nedeniyle, işte verilen görevleri tam olarak yerine getirme yeteneklerini kaybederler. Ayrıca çalışma koşullarını bozan acil durumlara ve problemlere karşı da duyarsızlaşıp tepkisizleşme hâli içine girerler.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 15:</strong> Ergonomik tasarımda, çalışma ortamındaki enformasyon ve uyarıların "akustik sinyaller (ses)" aracılığıyla verilmesinin en büyük avantajı aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Çok daha ucuza mal edilmesi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Görsel aydınlatma maliyetlerini sıfırlaması</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İnsanın belli bir yöne bakmasına gerek kalmadan bu sinyalleri algılayabilmesi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Çalışma ortamının sıcaklığını dengelemesi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Sadece seçilmiş işçiler tarafından duyulabilmesi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 15:</strong> <strong>Doğru Yanıt: C.</strong> Görsel uyarıları görmek için işçinin panoya veya ışığa bakması gerekir, bu da işine olan dikkatini dağıtır. Akustik sinyallerin (ses) en büyük ergonomik avantajı, çalışanın işini bırakmadan veya başını çevirmeden her yönden bu enformasyonu algılayabilmesidir; böylece çalışana daha az yüklenme olur.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 16:</strong> Ortak çalışma alanlarında herkesi ilgilendiren tehlike sirenleri veya mola saatleri haricinde, sadece belirli bir operatöre yönelik akustik sinyaller (sesli uyarılar) kullanılırken dikkat edilmesi gereken en temel ergonomik kural aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sesin şiddetinin mutlaka 85 dB üzerinde olması</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Sinyalin sürekli ve kesintisiz şekilde çalması</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Ses sinyalinin daima titreşimle desteklenmesi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sinyalin diğer çalışanları rahatsız etmeyecek ve dikkatini dağıtmayacak düzeyde olması</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Sinyalin her saat başı zorunlu olarak test edilmesi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 16:</strong> <strong>Doğru Yanıt: D.</strong> Sadece makinenin başındaki kişiyi ilgilendiren uyarı sesleri, yan masadaki veya banttaki diğer çalışanları ilgilendirmez. Bu tür sesler gereğinden yüksek olursa, diğer çalışanlar için gürültü kirliliğine, rahatsızlığa ve dikkat dağınıklığına neden olacağından bölgesel/yönsel olarak ayarlanmalıdır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 17:</strong> Çalışma ortamlarının güvenliği ve sağlıklı tasarımına ilişkin tüm İSG (İş Sağlığı ve Güvenliği) çalışmalarının "çatı disiplini" olarak kabul edilen alan aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Fizyoloji</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Ergonomi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Antropoloji</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Endüstriyel İktisat</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Biyomekanik</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 17:</strong> <strong>Doğru Yanıt: B.</strong> İş güvenliğinin sağlanması, makinelerin, ortam şartlarının ve süreçlerin insan kapasitesine uygun hale getirilmesiyle mümkündür. İşi insana uydurma felsefesine sahip olan Ergonomi, tüm İSG çalışmalarını kapsayan ana çatı bilim dalıdır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 18:</strong> İnsan sağlığını temel alan iş yeri tasarımında, çalışma ortamı havasının kuru ve ıslak (yaş) termometre ile tespit edilen sıcaklıklarına ek olarak, ortam havasının taşıdığı nem miktarı ve hareketinin ortak etkisini tanımlayan kavram aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Mutlak radyasyon</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Psikometrik kuruluk</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Efektif Isı (Hissedilen Sıcaklık)</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Lümen akısı</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Termal izolasyon</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 18:</strong> <strong>Doğru Yanıt: C.</strong> Çalışanların iklimsel olarak nasıl hissettiği sadece termometrenin gösterdiği sayıya bağlı değildir. Sıcaklık, nem ve rüzgarın (hava akımı) birleşerek insan teninde yarattığı nihai ısıl konfor hissine "Efektif Isı" veya hissedilen sıcaklık denir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 19:</strong> İş yerinde "gürültü" seviyelerini yönetmek isteyen bir ergonomist, 0 dB olarak kabul edilen "duyma eşiği"nin fiziksel basınç karşılığı olan değeri bilmek zorundadır. Bu temel fiziksel akustik basınç değeri hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 0,0002 mikrobar (dyn/cm²)</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 1000 Hz</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 20000 mikrobar</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 10 Lüks</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 1 atmosfer basıncı</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 19:</strong> <strong>Doğru Yanıt: A.</strong> İnsan kulağının duyabildiği en hafif ses (0 dB) havada çok küçük bir basınç yaratır. Bu bilimsel referans basınç değeri 0,0002 mikrobardır (veya dyn/cm²). Tüm gürültü ölçüm logaritmaları bu taban değer üzerinden hesaplanır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 20:</strong> Çalışanların görme keskinliğini ve iş kalitesini artırmak için çalışma yüzeyinde sağlanan aydınlık seviyesi, ergonomik normlarda hangi ölçü birimi (birim alana düşen akı) kullanılarak raporlanır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Desibel (dB)</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Hertz (Hz)</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Santigrat (°C)</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Candela (cd)</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Lüks (lx)</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 20:</strong> <strong>Doğru Yanıt: E.</strong> Aydınlatmanın şiddeti kaynağın özelliğine (Lümen) bağlı olsa da, iş güvenliği ve masa başı ergonomisinde önemli olan şey kaynaktan masaya (yüzeye) ulaşan aydınlık miktarıdır. Bir metrekare yüzeye düşen bir lümenlik ışık akısına 1 "Lüks" adı verilir ve standartlar Lüks (lx) ile belirlenir.
+                </div>
+            </div>
+
+        </div> 
+
+        <div class="print-solutions-container">
+            <h2>Cevap Anahtarı ve Detaylı Çözümler</h2>
+            
+            <div class="print-solution-item"><strong>Soru 1 (A):</strong> Havanın sıcaklık ve basınca bağlı olarak taşıyabileceği maksimum su buharına ne kadar yaklaştığını gösteren orana "Bağıl Nem" denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 2 (D):</strong> İnsan organizması hayati fonksiyonların sürebilmesi için iç vücut sıcaklığını metabolik süreçlerle yaklaşık 37 °C'de sabit tutmaya programlanmıştır.</div>
+            
+            <div class="print-solution-item"><strong>Soru 3 (E):</strong> Nem (psikometre) ve hava akım hızı (anemometre) parametrelerinin nomogram yardımıyla birleştirilmesi, çalışanın hissettiği "Ortamın efektif ısısını" belirler.</div>
+            
+            <div class="print-solution-item"><strong>Soru 4 (C):</strong> Göz bebeğinin karanlık bir ortamdan aydınlığa geçildiğinde ışık şiddetine alışma ve uyum sağlama sürecine "Adaptasyon" denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 5 (B):</strong> Çalışma yüzeyine (1 metrekareye) düşen ışık akısı miktarına aydınlık düzeyi denir ve bunun ölçü birimi "Lüks"tür.</div>
+            
+            <div class="print-solution-item"><strong>Soru 6 (E):</strong> Sağlıklı bir insan kulağı en pes 16 Hz ile en tiz 20.000 Hz frekans aralığındaki mekanik dalgaları ses olarak algılayabilir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 7 (C):</strong> 0 dB olarak kabul edilen ve algılanabilen en düşük basınca (0,0002 mikrobar) fizyolojide "Duyma eşiği" denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 8 (B):</strong> İş hijyeni değerlendirmelerinde çalışanın duyabildiği/maruz kaldığı işitme sınırını ve ses kayıp değerini tespit eden cihaz "Odyometre"dir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 9 (A):</strong> "Sağlık", sadece sakatlığın olmayışı değil; insanın fiziksel, ruhsal ve sosyal yönden tam bir iyilik/denge hâli içinde bulunmasıdır.</div>
+            
+            <div class="print-solution-item"><strong>Soru 10 (D):</strong> Çalışma ortamının tüm şartlarının insan kapasitesine uygun hale getirilmesi "Ergonomi" biliminin ana hedefidir. İSG çalışmaları bu çatı altında yürütülür.</div>
+
+            <div class="print-solution-item"><strong>Soru 11 (C):</strong> Sıcaklığın 32 °C'ye çıkması, termal rahatsızlık ve aşırı terleme yoluyla çalışanın performansında %30 oranında yüksek bir düşüşe sebep olmaktadır.</div>
+            
+            <div class="print-solution-item"><strong>Soru 12 (B):</strong> Termal konfor istatistiklerine göre, ortam sıcaklığı 30 °C olduğunda ideal çalışma koşullarına kıyasla işçi performansında %10'luk bir kayıp gerçekleşir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 13 (A):</strong> Psikososyal risklerin en yaygın sonuçlarından biri, kişide sürekli mutsuzluk ve isteksizliğe yol açan tıbbi hastalık olan majör "Depresyon"dur.</div>
+            
+            <div class="print-solution-item"><strong>Soru 14 (E):</strong> Depresyonlu kişiler isteksizlik ve zihinsel yorgunluk nedeniyle, verilen görevleri yerine getirme yeteneklerini kaybedip problemlere karşı tepkisizleşirler.</div>
+            
+            <div class="print-solution-item"><strong>Soru 15 (C):</strong> Akustik sinyallerin (ses) en büyük ergonomik avantajı, çalışanın işini bırakmadan veya başını çevirmeden her yönden bu uyarıyı algılayabilmesidir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 16 (D):</strong> Belirli bir operatöre yönelik sesli uyarılar, diğer çalışanlar için gürültü kirliliğine ve dikkat dağınıklığına neden olmaması amacıyla özel ayarlanmalıdır.</div>
+            
+            <div class="print-solution-item"><strong>Soru 17 (B):</strong> Makinelerin ve ortam şartlarının insana uydurma felsefesine sahip olan "Ergonomi", tüm İSG çalışmalarını kapsayan ana bilim dalıdır.</div>
+            
+            <div class="print-solution-item"><strong>Soru 18 (C):</strong> Sıcaklık, nem ve hava akımının birleşerek insan teninde yarattığı nihai ısıl konfor hissine "Efektif Isı" veya hissedilen sıcaklık denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 19 (A):</strong> İnsan kulağının duyabildiği en hafif ses (0 dB) olan duyma eşiği, havada 0,0002 mikrobar (dyn/cm²) düzeyinde bir fiziksel basınç yaratır.</div>
+            
+            <div class="print-solution-item"><strong>Soru 20 (E):</strong> Çalışma ortamı aydınlatmasında önemli olan kaynaktan masaya ulaşan aydınlık miktarıdır. Bu durum ergonomik olarak Lüks (lx) birimiyle ölçülür.</div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.question-container');
+            
+            containers.forEach(container => {
+                const options = container.querySelectorAll('.option-btn');
+                const correctAnswer = container.getAttribute('data-correct-answer');
+                const toggleBtn = container.querySelector('.toggle-solution-btn');
+                const solutionBox = container.querySelector('.screen-solution');
+
+                // Şık Tıklama Olayı
+                options.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Tıklama yapıldığında tüm şıkları kilitle
+                        options.forEach(opt => opt.disabled = true);
+
+                        const selectedOption = this.getAttribute('data-option');
+
+                        if (selectedOption === correctAnswer) {
+                            // Doğru cevap
+                            this.classList.add('correct');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-check"></i>';
+                        } else {
+                            // Yanlış cevap
+                            this.classList.add('wrong');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-xmark"></i>';
+                            
+                            // Doğru cevabı yeşil yap
+                            options.forEach(opt => {
+                                if (opt.getAttribute('data-option') === correctAnswer) {
+                                    opt.classList.add('correct');
+                                    opt.innerHTML += ' <i class="fa-solid fa-circle-check" style="opacity:0.8;"></i>';
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Çözümü Gör Butonu Olayı
+                if(toggleBtn && solutionBox) {
+                    toggleBtn.addEventListener('click', function() {
+                        if(solutionBox.classList.contains('show')) {
+                            solutionBox.classList.remove('show');
+                            this.innerHTML = '<i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör';
+                        } else {
+                            solutionBox.classList.add('show');
+                            this.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Çözümü Gizle';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

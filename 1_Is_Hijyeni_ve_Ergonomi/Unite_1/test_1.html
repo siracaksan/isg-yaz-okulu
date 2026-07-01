@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 1 Test 1 - İş Hijyeni ve Ergonomi</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
+        .unit-subtitle { 
+            display: inline-block; 
+            background-color: #f8fafc; 
+            color: #0f172a; 
+            padding: 0.5rem 1.5rem; 
+            border-radius: 2rem; 
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            margin-top: 0.75rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; }
+
+        .test-header { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--secondary-color); }
+        .test-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); }
+        .test-stats { font-size: 0.95rem; color: #64748b; font-weight: 600; background: #f1f5f9; padding: 0.5rem 1rem; border-radius: 2rem; }
+
+        /* Soru Konteyner Stilleri */
+        .question-container { background: white; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+        .question-text { font-size: 1.1rem; font-weight: 600; color: var(--dark-color); margin-bottom: 1.5rem; line-height: 1.5; }
+        
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; }
+        
+        .option-btn { 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+            width: 100%; 
+            text-align: left; 
+            padding: 1rem 1.5rem; 
+            background: #f8fafc; 
+            border: 2px solid #cbd5e1; 
+            border-radius: 0.5rem; 
+            font-size: 1rem; 
+            color: #334155; 
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .option-btn:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+        
+        /* Doğru / Yanlış Tıklama Sonrası Değişimler */
+        .option-btn.correct { background-color: #dcfce7; border-color: #22c55e; color: #166534; font-weight: 600; }
+        .option-btn.wrong { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .option-btn:disabled { cursor: default; }
+
+        /* Çözüm Kutusu Başlangıçta Gizlidir */
+        .solution-box {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: #f0fdf4;
+            border-left: 5px solid #22c55e;
+            border-radius: 0.5rem;
+            color: #166534;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .solution-box.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .solution-title { font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(-10px);} to {opacity: 1; transform: translateY(0);} }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .header-buttons { position: relative; top: 0; left: 0; justify-content: center; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .question-container { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="konu_anlatimi.html" class="back-btn"><i class="fa-solid fa-book-open"></i> Konu Anlatımı</a>
+        </div>
+        <h1>1. İş Hijyeni ve Ergonomi</h1>
+        <div class="unit-subtitle">Ünite 1: Tarihsel Gelişim ve Ölçüm Metotları</div>
+    </header>
+
+    <main>
+        <div class="test-header">
+            <div class="test-title"><i class="fa-solid fa-pen-to-square"></i> Test 1 (Bölüm Sonu Değerlendirmesi)</div>
+            <div class="test-stats" id="score-display"><i class="fa-solid fa-list-ol"></i> Toplam 20 Soru</div>
+        </div>
+
+        <div class="question-container" data-correct-answer="A">
+            <div class="question-text">
+                <p><strong>Soru 1:</strong> Çalışma yaşamından kaynaklanan ve sağlığa zarar verecek risklerden korunmaya ne ad verilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) İş hijyeni</span></button>
+                <button class="option-btn" data-option="B"><span>B) Risk analizi</span></button>
+                <button class="option-btn" data-option="C"><span>C) Çalışma analizi</span></button>
+                <button class="option-btn" data-option="D"><span>D) Endüstri analizi</span></button>
+                <button class="option-btn" data-option="E"><span>E) Sağlık çalışmaları</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>İş hijyeni; çalışma ortamında oluşan, hastalığa neden olan, sağlık ve iyilik hâlini bozan faktörleri tespit edip değerlendiren ve bu çevresel risklerden korunmayı amaçlayan bilim dalıdır. Doğru cevap A seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="D">
+            <div class="question-text">
+                <p><strong>Soru 2:</strong> “Hıfzıssıhha” kelimesinin anlamı aşağıdakilerden hangisidir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Sağlık Bakanlığı</span></button>
+                <button class="option-btn" data-option="B"><span>B) Halk Sağlığı Kurumu</span></button>
+                <button class="option-btn" data-option="C"><span>C) Spor ve dinç yaşam</span></button>
+                <button class="option-btn" data-option="D"><span>D) Sıhhatin hıfz edilmesi, sağlığın korunması</span></button>
+                <button class="option-btn" data-option="E"><span>E) Pnömokonyoz tedavi önlemleri</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Hıfz (korumak) ve sıhhat (sağlık) kelimelerinin birleşiminden oluşan hıfzıssıhha; sağlığın korunması, sağlık bilgisi ve sağlığa zarar verecek ortamlardan korunmak için yapılacak uygulamaların bütünü demektir. Doğru cevap D seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="E">
+            <div class="question-text">
+                <p><strong>Soru 3:</strong> Çalışma ortamında oluşan hastalıklara veya geri kazanılması olanaksız sağlık koşullarına ya da çalışanın iyilik halini kaybetmesine neden olan zararlıları belirleyen, değerlendirmesini yapan ve kontrol yollarını gösteren bilim dalı aşağıdakilerden hangisidir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) İşyeri doktorluğu</span></button>
+                <button class="option-btn" data-option="B"><span>B) Zararlı faktör analizi</span></button>
+                <button class="option-btn" data-option="C"><span>C) Sağlıksız koşul takibi</span></button>
+                <button class="option-btn" data-option="D"><span>D) Tıbbi diyet</span></button>
+                <button class="option-btn" data-option="E"><span>E) İş hijyeni</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>AÖF kitabındaki resmi tanıma göre; çalışanların çalışma ortamında maruz kaldıkları fiziksel, kimyasal ve biyolojik tehlikeleri belirleyen ve kontrolünü sağlayan bilim dalı İş Hijyeni'dir. Diğer şıklar uydurma terimlerdir. Doğru cevap E seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="C">
+            <div class="question-text">
+                <p><strong>Soru 4:</strong> Tüm çalışanların fiziksel, ruhsal ve sosyal iyilik hallerini en yüksek düzeye getirmek, bu düzeyi sürdürmek için çalışma ortamı ve koşullarının yol açabileceği sağlık sorunlarını ortaya koymak ve çalışanı korumak şeklinde tanımlanan disiplin hangisidir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Çevre analizi</span></button>
+                <button class="option-btn" data-option="B"><span>B) İş gerekleri</span></button>
+                <button class="option-btn" data-option="C"><span>C) İş hijyeni</span></button>
+                <button class="option-btn" data-option="D"><span>D) İş analizi</span></button>
+                <button class="option-btn" data-option="E"><span>E) İş değerlemesi</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Bu tanım, Dünya Sağlık Örgütü (WHO) ve ILO'nun iş sağlığı tanımıyla birebir örtüşen genişletilmiş "İş Hijyeni" tanımıdır. Fiziksel, ruhsal ve sosyal iyilik hali vurgusu İSG'nin ve hijyenin merkezindedir. Doğru cevap C seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="B">
+            <div class="question-text">
+                <p><strong>Soru 5:</strong> Fiziksel, kimyasal, biyolojik, ergonomik ya da psikososyal etkenlere maruz kalınması sonucu oluşabilecek sağlık risklerinin önlenmesi için sahadaki analiz çalışmalarını yürüten profesyonellere ne ad verilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Fiziksel faktör analisti</span></button>
+                <button class="option-btn" data-option="B"><span>B) İş hijyenisti</span></button>
+                <button class="option-btn" data-option="C"><span>C) Kimyasal faktör analisti</span></button>
+                <button class="option-btn" data-option="D"><span>D) Biyolojik faktör analisti</span></button>
+                <button class="option-btn" data-option="E"><span>E) İş güvenliği mühendisi</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>ISCO (Uluslararası Meslek Sınıflandırması) standardına göre işle ilgili çevresel ölçümleri, numune alımlarını ve tehlike kontrollerini gerçekleştiren profesyoneller "İş Hijyenisti" unvanını taşır. Doğru cevap B seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="E">
+            <div class="question-text">
+                <p><strong>Soru 6:</strong> İş hijyeni eğitim programlarının sonunda verilen “İş Hijyenistliği Sertifikası” (CIHs) ile hangi uluslararası unvan alınmaktadır?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) İş süreçleri analizcisi</span></button>
+                <button class="option-btn" data-option="B"><span>B) İş ve eğitim uzman</span></button>
+                <button class="option-btn" data-option="C"><span>C) İş hijyeni laborantı</span></button>
+                <button class="option-btn" data-option="D"><span>D) İş hijyeni mühendisi</span></button>
+                <button class="option-btn" data-option="E"><span>E) Sertifikalı iş hijyenisti (Registered occupational hygienist, ROH)</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Birçok ülkede OHTA gibi uluslararası akredite iş hijyeni eğitim programları sonunda başarılı olan profesyonellere "Registered Occupational Hygienist" (Sertifikalı İş Hijyenisti - ROH) unvanı verilir. Doğru cevap E seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="C">
+            <div class="question-text">
+                <p><strong>Soru 7:</strong> MÖ 2000’lerde Babil İmparatorluğu tarafından düzenlenen, içeriğinde hastaları ve hekimleri koruyan, mesleğin icrasını düzenleyen maddeler ve cezai müeyyideler yer alan kanun aşağıdakilerden hangisidir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Çocukların Korunması Kanunu</span></button>
+                <button class="option-btn" data-option="B"><span>B) Fabrikalar Kanunu</span></button>
+                <button class="option-btn" data-option="C"><span>C) Hammurabi Kanunları</span></button>
+                <button class="option-btn" data-option="D"><span>D) Kaza Sigortası Kanunu</span></button>
+                <button class="option-btn" data-option="E"><span>E) Madencilik Kanunu</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Tarihte iş sağlığı, tıp pratiği ve hekim-hasta ilişkilerini hukuki olarak düzenleyen ve katı cezalar içeren ilk yazılı kurallar bütünü Babil Kralı tarafından hazırlanan Hammurabi Kanunları'dır. Doğru cevap C seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="B">
+            <div class="question-text">
+                <p><strong>Soru 8:</strong> 1713 yılında yayımlanan ve meslek hastalıklarına ilişkin tam bir inceleme olarak değerlendirilebilecek “De Morbis Artificum Diatriba” isimli kitabında, işyerlerinde koruyucu güvenlik önlemlerinin alınmasını öneren "Endüstriyel Tıbbın Babası" bilim insanı kimdir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Notker Stammerer</span></button>
+                <button class="option-btn" data-option="B"><span>B) Bernardino Ramazzini</span></button>
+                <button class="option-btn" data-option="C"><span>C) Dioscorides Pedanius</span></button>
+                <button class="option-btn" data-option="D"><span>D) Hipokrat</span></button>
+                <button class="option-btn" data-option="E"><span>E) Georgius Agricola</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>İş sağlığının kurucusu ve endüstriyel tıbbın babası olarak kabul edilen kişi İtalyan hekim Bernardino Ramazzini'dir. "De Morbis Artificum Diatriba" (İşçi Hastalıkları Üzerine) eseriyle tarihe geçmiştir. Doğru cevap B seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="A">
+            <div class="question-text">
+                <p><strong>Soru 9:</strong> 1847 yılında İngiltere’de çıkarılan hangi kanunla fabrikaların denetimi için müfettiş atanması zorunlu kılınmış, 9 yaşın altındaki çocukların işe alınması ve 18 yaşından küçüklerin ise 12 saatten fazla çalıştırılmaları yasaklanmıştır?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Fabrikalar Kanunu (Factory Act)</span></button>
+                <button class="option-btn" data-option="B"><span>B) Çalışanların Korunması Kanunu</span></button>
+                <button class="option-btn" data-option="C"><span>C) Prusya Maden Kanunu</span></button>
+                <button class="option-btn" data-option="D"><span>D) Metal ve Metal Dışı Maden Güvenliği Kanunu</span></button>
+                <button class="option-btn" data-option="E"><span>E) Mesleki Güvenlik ve Sağlık Yardımları Kanunu</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Sanayi devrimi sonrası İngiltere'de çalışma şartlarını düzenleyen, "On Saat Yasası" olarak da bilinen bu tarihi düzenlemenin yasal adı Fabrikalar Kanunu (Factory Act)'dur. Modern İSG'nin atası sayılır. Doğru cevap A seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="D">
+            <div class="question-text">
+                <p><strong>Soru 10:</strong> 1865 yılında uygulanmaya başlanan, gerçek adı “Ereğli Maden-i Hümayun İdaresinin Nizamnamesi” olan ve işçilerin hastalıklarının tedavi edilmesi hükümlerini barındıran Dilaver Paşa Nizamnamesi’nin mevzuattaki konumu aşağıdakilerden hangisidir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Kanun</span></button>
+                <button class="option-btn" data-option="B"><span>B) Yönetmelik</span></button>
+                <button class="option-btn" data-option="C"><span>C) Fasikül</span></button>
+                <button class="option-btn" data-option="D"><span>D) Tüzük (Nizamname)</span></button>
+                <button class="option-btn" data-option="E"><span>E) Kural</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Nizamname kelimesinin modern hukuktaki tam karşılığı "Tüzük"tür. Osmanlı'daki bu ilk yasal düzenleme bir kanun değil, padişah iradesiyle yürürlüğe konan bir tüzüktür. Doğru cevap D seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="B">
+            <div class="question-text">
+                <p><strong>Soru 11:</strong> İş yerinde ortaya çıkan tehlikelerin öngörülmesi, tanınması, değerlendirilmesi ve kontrolü yoluyla işçilerin ve halkın sağlığının korunması olgusu, aşağıdaki disiplinlerden hangisinin "temel felsefesini" oluşturur?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Sosyoloji</span></button>
+                <button class="option-btn" data-option="B"><span>B) İş Hijyeni</span></button>
+                <button class="option-btn" data-option="C"><span>C) Çevre Mühendisliği</span></button>
+                <button class="option-btn" data-option="D"><span>D) İnsan Kaynakları</span></button>
+                <button class="option-btn" data-option="E"><span>E) Örgütsel Davranış</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Tehlikelerin "öngörülmesi, tanınması, değerlendirilmesi ve kontrolü" doğrudan İş Hijyeni (Mesleki Hijyen) disiplininin dört temel sacayağını ifade eder. Doğru cevap B seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="C">
+            <div class="question-text">
+                <p><strong>Soru 12:</strong> Kişi, çalışma ortamında bir tehlikeyi fark ettiğinde sadece kendini korumak için değil, aynı zamanda diğer çalışanların korunması için de teknik veya idari adımlar atıyorsa, bu kişi aslında hangi profesyonel rolün "kaynağını ve özünü" sergilemektedir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) İş Güvenliği Uzmanı</span></button>
+                <button class="option-btn" data-option="B"><span>B) Şantiye Şefi</span></button>
+                <button class="option-btn" data-option="C"><span>C) İş Hijyenisti</span></button>
+                <button class="option-btn" data-option="D"><span>D) İşyeri Hekimi</span></button>
+                <button class="option-btn" data-option="E"><span>E) İnsan Kaynakları Uzmanı</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>AÖF ders kitabının felsefi yaklaşımına göre; tehlikeyi fark edip diğer çalışanların da sağlığını (maruziyetini) kontrol altına almaya çalışmak, "İş Hijyenistliği" ruhunun ve mesleki felsefesinin tam karşılığıdır. Doğru cevap C seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="A">
+            <div class="question-text">
+                <p><strong>Soru 13:</strong> İslam felsefesinde "kuddûs" (temiz/pak olma) kavramıyla da ilişkilendirilen; bireyin sadece maddi çevresini değil, bedenini ve ruhunu hastalıklardan (kirlerden) korumasını öngören genel kavrama ne ad verilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Hijyen</span></button>
+                <button class="option-btn" data-option="B"><span>B) Ergonomi</span></button>
+                <button class="option-btn" data-option="C"><span>C) İzolasyon</span></button>
+                <button class="option-btn" data-option="D"><span>D) Sterilizasyon</span></button>
+                <button class="option-btn" data-option="E"><span>E) İklimlendirme</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Kitabın "Araştır" köşesindeki bilgiye göre, İslamiyet'teki Kuddüs ismi ve maddi/manevi temizlik felsefesi doğrudan "Hijyen" kültürünün ve sağlığı koruma anlayışının kavramsal boyutunu oluşturur. Doğru cevap A seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="E">
+            <div class="question-text">
+                <p><strong>Soru 14:</strong> İş Hijyeni yetkili laboratuvarları, katıldıkları yeterlilik deneyleri ve karşılaştırma testi sonuçlarını, sonuçlar kendilerine ulaştıktan sonra en geç ne kadar süre içerisinde İSGÜM’e bildirmekle yükümlüdür?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) 3 iş günü içinde</span></button>
+                <button class="option-btn" data-option="B"><span>B) 5 iş günü içinde</span></button>
+                <button class="option-btn" data-option="C"><span>C) 15 gün içinde</span></button>
+                <button class="option-btn" data-option="D"><span>D) 30 iş günü içinde</span></button>
+                <button class="option-btn" data-option="E"><span>E) 10 iş günü içinde</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Mevzuat gereği laboratuvarların denetim otoritelerine karşı sorumlulukları çok kesindir. Yeterlilik deney sonuçları laboratuvara ulaştıktan sonra, 10 iş günü içerisinde bakanlığa (İSGÜM) bildirilmelidir. Doğru cevap E seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="D">
+            <div class="question-text">
+                <p><strong>Soru 15:</strong> I. Kurşun ve ağır metallerin miktarını tayin eder. <br>II. Optik yöntemler kullanarak ortamdaki toz konsantrasyonunu anlık ölçer. <br>Yukarıda görevleri verilen iş hijyeni laboratuvar cihazları sırasıyla aşağıdakilerden hangisidir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Dozimetre - Kanimetre</span></button>
+                <button class="option-btn" data-option="B"><span>B) Tindalometre - İyon Kromatografi (IC)</span></button>
+                <button class="option-btn" data-option="C"><span>C) İyon Kromatografi (IC) - AAS</span></button>
+                <button class="option-btn" data-option="D"><span>D) Atomik Absorpsiyon (AAS) - Tindalometre</span></button>
+                <button class="option-btn" data-option="E"><span>E) Tindalometre - Dozimetre</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Ağır metallerin (kurşun vb.) analizinde Atomik Absorpsiyon Spektrometresi (AAS); ortam tozunun ışık kırılması prensibiyle optik ölçümünde ise Tindalometre kullanılır. Sırasıyla AAS ve Tindalometre doğru yanıttır. Doğru cevap D seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="B">
+            <div class="question-text">
+                <p><strong>Soru 16:</strong> 1857 yılında "Ergonomi" kelimesini literatürde ilk kez kullanan ve "Ergonomi Anahtarları, Doğa Bilimlerinden Alınan Gerçeklere Dayalı İş Bilimi" makalesini yayınlayan bilim insanı kimdir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Bernardino Ramazzini</span></button>
+                <button class="option-btn" data-option="B"><span>B) Wojciech Jastrzębowski</span></button>
+                <button class="option-btn" data-option="C"><span>C) Frederick W. Taylor</span></button>
+                <button class="option-btn" data-option="D"><span>D) Georgius Agricola</span></button>
+                <button class="option-btn" data-option="E"><span>E) Alice Hamilton</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Ergonomi terimini (Yunanca Ergon=İş ve Nomos=Yasa) dünya literatürüne kazandıran kişi Polonyalı doğa bilimci Wojciech Jastrzębowski'dir. Ramazzini ise endüstriyel tıbbın babasıdır. Doğru cevap B seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="C">
+            <div class="question-text">
+                <p><strong>Soru 17:</strong> Çalışma sisteminin ergonomikliğinde (insancıllığında) birbirini hiyerarşik olarak izleyen beş ölçüt bulunmaktadır. Aşağıdakilerden hangisi bu hiyerarşinin <u>en son (beşinci) ve en üst</u> basamağını oluşturur?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Yapılabilirlik (Biyolojik sınırlar)</span></button>
+                <button class="option-btn" data-option="B"><span>B) Hoşlanılabilirlik (Psikolojik beklenti)</span></button>
+                <button class="option-btn" data-option="C"><span>C) Kendini gerçekleştirebilirlik</span></button>
+                <button class="option-btn" data-option="D"><span>D) Kabul edilebilirlik (Sosyal sınırlar)</span></button>
+                <button class="option-btn" data-option="E"><span>E) Dayanabilirlik (Sürdürülebilirlik)</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Hiyerarşi şöyledir: 1) Yapılabilirlik, 2) Dayanabilirlik, 3) Kabul edilebilirlik, 4) Hoşlanılabilirlik ve en zirvede yer alan 5) Kendini gerçekleştirebilirlik (Bireysel yetenek tatmini). Doğru cevap C seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="E">
+            <div class="question-text">
+                <p><strong>Soru 18:</strong> MÖ 25 yılında tasarlanıp inşa edilen ve sanitasyon, arıtma sistemleri ile toplumsal hijyenin yapısal öncüsü kabul edilen "Therme" (kaplıca ve hamam) yapıları hangi medeniyete aittir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Hitit İmparatorluğu</span></button>
+                <button class="option-btn" data-option="B"><span>B) Antik Yunan</span></button>
+                <button class="option-btn" data-option="C"><span>C) Babil İmparatorluğu</span></button>
+                <button class="option-btn" data-option="D"><span>D) Antik Mısır</span></button>
+                <button class="option-btn" data-option="E"><span>E) Roma İmparatorluğu</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>AÖF kitabında geçen tarihi bilgilere göre; toplumsal su kullanımı, arıtma sistemleri ve hijyenin sembolü olan Therme yapıları Roma İmparatorluğu döneminde inşa edilmiştir. Doğru cevap E seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="B">
+            <div class="question-text">
+                <p><strong>Soru 19:</strong> Gözün nesnelerin en ince ayrıntılarını, en küçük ışık ve renk kontrastlarını ayırt etme yeteneğine ne ad verilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Akomodasyon</span></button>
+                <button class="option-btn" data-option="B"><span>B) Görme keskinliği</span></button>
+                <button class="option-btn" data-option="C"><span>C) Adaptasyon</span></button>
+                <button class="option-btn" data-option="D"><span>D) İllüzyon</span></button>
+                <button class="option-btn" data-option="E"><span>E) Binoküler görüş</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Uzaklık-odaklanma uyumuna Akomodasyon; Işık uyumuna Adaptasyon; ancak detayları ve ince kontrastları ayırabilme kapasitesine "Görme keskinliği" denir. AÖF bunu çeldirici olarak çok sorar. Doğru cevap B seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="D">
+            <div class="question-text">
+                <p><strong>Soru 20:</strong> Bir insandaki maksimum kas kasılma kuvvetinin miktarı ve bu kuvvetin boy değişimiyle olan ilişkisi hakkında aşağıdaki ifadelerden hangisi doğrudur?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Her cm² için yaklaşık 100 N'dur ve kas boyu kısaldıkça kuvvet artar.</span></button>
+                <button class="option-btn" data-option="B"><span>B) Her cm² için yaklaşık 40 N'dur ve kas boyu uzadıkça kuvvet maksimuma çıkar.</span></button>
+                <button class="option-btn" data-option="C"><span>C) Her cm² için yaklaşık 80 N'dur ve kuvvet sabittir, boy değişiminden etkilenmez.</span></button>
+                <button class="option-btn" data-option="D"><span>D) Her cm² için yaklaşık 40 N'dur ve kasılmanın başlangıcında maksimum olan kuvvet, kas boyu kısaldıkça azalır.</span></button>
+                <button class="option-btn" data-option="E"><span>E) Her cm² için yaklaşık 40 N'dur ve kasın boyu kısaldıkça kuvvet logaritmik olarak artar.</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>İş fizyolojisindeki altın kuraldır: Maksimum kas kuvveti santimetrekare başına 40 Newton'dur. Kas kasılmaya başladığı ilk anda en güçlüdür, ancak kas boyu kısaldıkça (kontraksiyon ilerledikçe) ürettiği kuvvet azalır. Doğru cevap D seçeneğidir.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.question-container');
+            
+            containers.forEach(container => {
+                const options = container.querySelectorAll('.option-btn');
+                const correctAnswer = container.getAttribute('data-correct-answer');
+                const solutionBox = container.querySelector('.solution-box');
+
+                options.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Tıklama yapıldığında tüm şıkları kilitle
+                        options.forEach(opt => opt.disabled = true);
+
+                        const selectedOption = this.getAttribute('data-option');
+
+                        if (selectedOption === correctAnswer) {
+                            // Doğru cevaplandıysa yeşil yap
+                            this.classList.add('correct');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-check"></i>';
+                        } else {
+                            // Yanlış cevaplandıysa kırmızı yap
+                            this.classList.add('wrong');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-xmark"></i>';
+                            
+                            // Doğru cevabı bulup yeşil ile göster
+                            options.forEach(opt => {
+                                if (opt.getAttribute('data-option') === correctAnswer) {
+                                    opt.classList.add('correct');
+                                    opt.innerHTML += ' <i class="fa-solid fa-circle-check" style="opacity:0.8;"></i>';
+                                }
+                            });
+                        }
+
+                        // Cevaplandıktan sonra çözüm kutusunu göster
+                        if(solutionBox) {
+                            solutionBox.classList.add('show');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

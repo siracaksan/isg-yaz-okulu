@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 2 Test 1 - İş Hijyeni ve Ergonomi</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
+        .unit-subtitle { 
+            display: inline-block; 
+            background-color: #f8fafc; 
+            color: #0f172a; 
+            padding: 0.5rem 1.5rem; 
+            border-radius: 2rem; 
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            margin-top: 0.75rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; }
+
+        .test-header { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--secondary-color); }
+        .test-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); }
+        .test-stats { font-size: 0.95rem; color: #64748b; font-weight: 600; background: #f1f5f9; padding: 0.5rem 1rem; border-radius: 2rem; }
+
+        /* Soru Konteyner Stilleri */
+        .question-container { background: white; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+        .question-text { font-size: 1.1rem; font-weight: 600; color: var(--dark-color); margin-bottom: 1.5rem; line-height: 1.5; }
+        
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; }
+        
+        .option-btn { 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+            width: 100%; 
+            text-align: left; 
+            padding: 1rem 1.5rem; 
+            background: #f8fafc; 
+            border: 2px solid #cbd5e1; 
+            border-radius: 0.5rem; 
+            font-size: 1rem; 
+            color: #334155; 
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .option-btn:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+        
+        /* Doğru / Yanlış Tıklama Sonrası Değişimler */
+        .option-btn.correct { background-color: #dcfce7; border-color: #22c55e; color: #166534; font-weight: 600; }
+        .option-btn.wrong { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .option-btn:disabled { cursor: default; }
+
+        /* Çözüm Kutusu Başlangıçta Gizlidir */
+        .solution-box {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: #f0fdf4;
+            border-left: 5px solid #22c55e;
+            border-radius: 0.5rem;
+            color: #166534;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .solution-box.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .solution-title { font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(-10px);} to {opacity: 1; transform: translateY(0);} }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .header-buttons { position: relative; top: 0; left: 0; justify-content: center; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .question-container { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="konu_anlatimi.html" class="back-btn"><i class="fa-solid fa-book-open"></i> Konu Anlatımı</a>
+        </div>
+        <h1>1. İş Hijyeni ve Ergonomi</h1>
+        <div class="unit-subtitle">Ünite 2: İş Hijyeni ve Risk Etmenleri</div>
+    </header>
+
+    <main>
+        <div class="test-header">
+            <div class="test-title"><i class="fa-solid fa-pen-to-square"></i> Test 1 (Bölüm Sonu Değerlendirmesi)</div>
+            <div class="test-stats" id="score-display"><i class="fa-solid fa-list-ol"></i> Toplam 20 Soru</div>
+        </div>
+
+        <div class="question-container" data-correct-answer="A">
+            <div class="question-text">
+                <p><strong>Soru 1:</strong> Çalışanların gürültü ile ilgili risklerden korunması açısından, en düşük maruziyet eylem değeri aşağıdakilerden hangisidir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) (LEX, 8 saat) = 80 dB(A)</span></button>
+                <button class="option-btn" data-option="B"><span>B) (LEX, 8 saat) = 82 dB(A)</span></button>
+                <button class="option-btn" data-option="C"><span>C) (LEX, 8 saat) = 85 dB(A)</span></button>
+                <button class="option-btn" data-option="D"><span>D) (LEX, 8 saat) = 88 dB(A)</span></button>
+                <button class="option-btn" data-option="E"><span>E) (LEX, 8 saat) = 90 dB(A)</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Gürültü yönetmeliğine göre; en düşük maruziyet eylem değeri 80 dB(A), en yüksek maruziyet eylem değeri 85 dB(A) ve maruziyet sınır değeri 87 dB(A)'dir. Doğru cevap A seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="D">
+            <div class="question-text">
+                <p><strong>Soru 2:</strong> Günlük gürültü maruziyetinin günden güne belirgin şekilde farklılık gösterdiğinin kesin olarak tespit edildiği işlerde, maruziyet sınır değerleri ile maruziyet eylem değerlerinin uygulanmasında günlük gürültü maruziyet düzeyi yerine aşağıdakilerden hangisi kullanılabilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Yıllık gürültü maruziyet düzeyi</span></button>
+                <button class="option-btn" data-option="B"><span>B) Altı aylık gürültü maruziyet düzeyi</span></button>
+                <button class="option-btn" data-option="C"><span>C) Aylık gürültü maruziyet düzeyi</span></button>
+                <button class="option-btn" data-option="D"><span>D) Haftalık gürültü maruziyet düzeyi</span></button>
+                <button class="option-btn" data-option="E"><span>E) Saatlik gürültü maruziyet düzeyi</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Gürültünün günden güne çok değiştiği özel durumlarda, maruziyet hesaplaması 8 saatlik 5 iş gününü kapsayan "haftalık gürültü maruziyet düzeyi" (zaman ağırlıklı ortalama) kullanılarak yapılır. Doğru cevap D seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="E">
+            <div class="question-text">
+                <p><strong>Soru 3:</strong> El-kol titreşiminde sekiz saatlik çalışma süresi için günlük maruziyet sınır değeri aşağıdakilerden hangisidir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) 1 m/s²</span></button>
+                <button class="option-btn" data-option="B"><span>B) 2 m/s²</span></button>
+                <button class="option-btn" data-option="C"><span>C) 3 m/s²</span></button>
+                <button class="option-btn" data-option="D"><span>D) 4 m/s²</span></button>
+                <button class="option-btn" data-option="E"><span>E) 5 m/s²</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>El-kol titreşimi için 8 saatlik maruziyet eylem değeri 2,5 m/s² iken, kesinlikle aşılmaması gereken maruziyet sınır değeri 5 m/s²'dir. Doğru cevap E seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="C">
+            <div class="question-text">
+                <p><strong>Soru 4:</strong> Aerodinamik eşdeğer çapı 0,1–5,0 mikron büyüklüğünde kristal veya amorf yapıda toz ile çapı üç mikrondan küçük, uzunluğu çapının en az üç katı olan lifsi tozlara ne ad verilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Aerostatik toz</span></button>
+                <button class="option-btn" data-option="B"><span>B) Aerodinamik toz</span></button>
+                <button class="option-btn" data-option="C"><span>C) Solunabilir toz</span></button>
+                <button class="option-btn" data-option="D"><span>D) Kristal toz</span></button>
+                <button class="option-btn" data-option="E"><span>E) Çok katlı toz</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Boyutları itibarıyla üst solunum yollarını geçip akciğerlerdeki alveollere (keseciklere) kadar ulaşabilen bu spesifik mikron aralığındaki tozlara "Solunabilir toz" denir. Doğru cevap C seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="B">
+            <div class="question-text">
+                <p><strong>Soru 5:</strong> 100 nm ya da daha kısa dalga boyunda veya 3x10^15 Hertz ya da daha yüksek frekansta elektromanyetik dalga veya parçacık şeklinde transfer edilen, doğrudan veya dolaylı olarak iyon oluşturma kapasitesine sahip enerji aşağıdakilerden hangisidir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Orta dalga radyasyon</span></button>
+                <button class="option-btn" data-option="B"><span>B) İyonlaştırıcı radyasyon</span></button>
+                <button class="option-btn" data-option="C"><span>C) Parçacık radyasyon</span></button>
+                <button class="option-btn" data-option="D"><span>D) Sievert doz radyasyon</span></button>
+                <button class="option-btn" data-option="E"><span>E) Denetimli radyasyon</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Röntgen (X) ışınları ve gama ışınları gibi maddelerden geçerken onlardan elektron kopararak iyonlaşmaya sebep olan yüksek enerjili radyasyon türü "İyonlaştırıcı radyasyon"dur. Doğru cevap B seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="E">
+            <div class="question-text">
+                <p><strong>Soru 6:</strong> Radyasyon uygulamalarında radyasyondan korunmanın, kaynakların güvenli bir şekilde kullanılmasının ve kaynakların çalınması, kaybolması, yetkisiz kişilerin eline geçmesi gibi durumları önlemek üzere kaynakların emniyetinin sağlanmasını, kazaların önlenmesini ve kaza sonuçlarının hafifletilmesi için gerekli tedbirlerin alınmasını içeren sisteme ne ad verilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Radyasyon kaynağı</span></button>
+                <button class="option-btn" data-option="B"><span>B) Radyasyon idaresi</span></button>
+                <button class="option-btn" data-option="C"><span>C) Radyasyon sistematiği</span></button>
+                <button class="option-btn" data-option="D"><span>D) Radyasyon uygulaması</span></button>
+                <button class="option-btn" data-option="E"><span>E) Radyasyon güvenliği</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Radyoaktif maddelerin yetkisiz ellere geçmesini ve zararlarını önlemek amacıyla alınan idari ve teknik tüm tedbirlerin oluşturduğu bütünsel sisteme "Radyasyon güvenliği" denir. Doğru cevap E seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="C">
+            <div class="question-text">
+                <p><strong>Soru 7:</strong> Radyasyon görevlilerinin giriş ve çıkışlarının özel denetime, çalışmalarının radyasyondan korunma bakımından özel kurallara bağlı olduğu ve görevi gereği radyasyon ile çalışan kişilerin ardışık beş yılın ortalama yıllık doz sınırlarının 3/10’undan fazla radyasyon dozuna maruz kalabilecekleri alanlara ne ad verilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Serbest alanlar</span></button>
+                <button class="option-btn" data-option="B"><span>B) Görevli giriş-çıkış alanları</span></button>
+                <button class="option-btn" data-option="C"><span>C) Denetimli alanlar</span></button>
+                <button class="option-btn" data-option="D"><span>D) Maruziyetsiz alanlar</span></button>
+                <button class="option-btn" data-option="E"><span>E) Pasif alanlar</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Yüksek radyasyon dozu alma ihtimali bulunan, giriş-çıkışların kayıt altına alındığı ve özel güvenlik kurallarının (kurşun önlük, dozimetre kullanımı) geçerli olduğu bölgelere "Denetimli alanlar" denir. Doğru cevap C seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="B">
+            <div class="question-text">
+                <p><strong>Soru 8:</strong> Mevzuata uygun olarak asbest ile ilgili işlemlerin uygulanması aşamasında işveren tarafından sorumluluk verilen ve Çalışma ve Sosyal Güvenlik Bakanlığı’nca kurulan komisyon tarafından oluşturulan eğitim programını bitirip sınavda başarılı olarak kurs bitirme belgesi alan kişilere ne ad verilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Asbest işlemcisi</span></button>
+                <button class="option-btn" data-option="B"><span>B) Asbest söküm uzmanı</span></button>
+                <button class="option-btn" data-option="C"><span>C) Asbest eğitmeni</span></button>
+                <button class="option-btn" data-option="D"><span>D) Asbest söküm çalışanı</span></button>
+                <button class="option-btn" data-option="E"><span>E) Asbest sorumlusu</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Asbest söküm, yıkım ve bakım işlerinde işveren adına teknik sorumluluğu üstlenen ve ÇSGB tarafından sertifikalandırılan profesyonellere "Asbest söküm uzmanı" denir. Asbest söküm çalışanı ise bu uzmanın nezaretinde çalışan kişidir. Doğru cevap B seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="A">
+            <div class="question-text">
+                <p><strong>Soru 9:</strong> İş hijyeninde biyolojik etmenler, enfeksiyon risk düzeyine göre kaç risk grubunda sınıflandırılır?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) 4</span></button>
+                <button class="option-btn" data-option="B"><span>B) 5</span></button>
+                <button class="option-btn" data-option="C"><span>C) 6</span></button>
+                <button class="option-btn" data-option="D"><span>D) 7</span></button>
+                <button class="option-btn" data-option="E"><span>E) 8</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Biyolojik etmenler, insanda hastalık yapma ihtimali, çalışanlara zarar verme potansiyeli ve topluma yayılma riskine göre Grup 1'den Grup 4'e kadar olmak üzere toplam 4 risk grubuna ayrılır. Doğru cevap A seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="D">
+            <div class="question-text">
+                <p><strong>Soru 10:</strong> Aşağıdakilerden hangisi doğal halde bulunan, üretilen, herhangi bir işlem sırasında kullanılan veya atıklar da dâhil olmak üzere ortaya çıkan, bizzat üretilmiş olup olmadığına ve piyasaya arz olunup olunmadığına bakılmaksızın her türlü element, bileşik ya da karışımları ifade eder?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Doğal madde</span></button>
+                <button class="option-btn" data-option="B"><span>B) Atıksal madde</span></button>
+                <button class="option-btn" data-option="C"><span>C) Üretilmiş madde</span></button>
+                <button class="option-btn" data-option="D"><span>D) Kimyasal madde</span></button>
+                <button class="option-btn" data-option="E"><span>E) Alevlenir madde</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Bu tanım Kimyasal Maddelerle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik'te geçen en kapsayıcı "Kimyasal madde" tanımıdır. İster doğal ister atık olsun tüm element ve karışımları kapsar. Doğru cevap D seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="C">
+            <div class="question-text">
+                <p><strong>Soru 11:</strong> Çalışma hayatında tozla ilgili konularda ihtiyaç ve öncelikleri belirleyerek teknik ve tıbbi açıdan rehberler hazırlayan "Tozla Mücadele Komisyonu"nun üyelerinin görev süresi kaç yıldır ve yılda olağan olarak kaç kez toplanır?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Görev süresi 2 yıl, yılda 1 defa toplanır</span></button>
+                <button class="option-btn" data-option="B"><span>B) Görev süresi 5 yıl, yılda 3 defa toplanır</span></button>
+                <button class="option-btn" data-option="C"><span>C) Görev süresi 3 yıl, yılda 2 defa toplanır</span></button>
+                <button class="option-btn" data-option="D"><span>D) Görev süresi 4 yıl, yılda 4 defa toplanır</span></button>
+                <button class="option-btn" data-option="E"><span>E) Görev süresi 1 yıl, ayda 1 defa toplanır</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>İSGGM Başkanlığında kurulan Tozla Mücadele Komisyonu (TMK) üyelerinin görev süresi mevzuata göre 3 yıldır ve komisyon olağan olarak yılda 2 defa toplanır. Doğru cevap C seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="E">
+            <div class="question-text">
+                <p><strong>Soru 12:</strong> Tıbbi amaçlı iyonlaştırıcı radyasyon kaynaklarının alınması, bulundurulması ve kullanılması için gerekli olan lisans, Türkiye'de hangi kurum tarafından verilmektedir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Sağlık Bakanlığı (SABİM)</span></button>
+                <button class="option-btn" data-option="B"><span>B) İş Sağlığı ve Güvenliği Genel Müdürlüğü (İSGGM)</span></button>
+                <button class="option-btn" data-option="C"><span>C) İş Sağlığı ve Güvenliği Merkezi (İSGÜM)</span></button>
+                <button class="option-btn" data-option="D"><span>D) Çevre, Şehircilik ve İklim Değişikliği Bakanlığı</span></button>
+                <button class="option-btn" data-option="E"><span>E) Türkiye Atom Enerjisi Kurumu (TAEK)</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Radyasyon Güvenliği Tüzüğü gereğince, Türkiye'de her türlü tıbbi veya endüstriyel radyasyon kaynağının lisanslandırılması ve denetimi TAEK (Türkiye Atom Enerjisi Kurumu) tarafından yapılmaktadır. Doğru cevap E seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="B">
+            <div class="question-text">
+                <p><strong>Soru 13:</strong> Asbest söküm, yıkım ve bakım çalışmalarına başlamadan önce işverence hazırlanan "Asbest Bildirimi" Çalışma ve İş Kurumu İl Müdürlüğüne verilir. Aşağıdakilerden hangisi bu bildirimde bulunması <u>zorunlu olan</u> hususlardan biri değildir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Sökümü yapılacak asbestin türü ve miktarı</span></button>
+                <button class="option-btn" data-option="B"><span>B) Asbest sökümünde kullanılacak koruyucu maskelerin maliyet faturası</span></button>
+                <button class="option-btn" data-option="C"><span>C) Çalışan sayısı ve işin tahmini süresi</span></button>
+                <button class="option-btn" data-option="D"><span>D) Asbest söküm uzmanı belgesi</span></button>
+                <button class="option-btn" data-option="E"><span>E) İş yerinin ticari unvanı ve adresi</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Asbest bildirim formunda teknik ve operasyonel bilgiler (çalışan sayısı, işin süresi, asbest türü, uzman belgeleri vb.) yer alır; ancak şirketlerin iç maliyet veya fatura bilgilerini bakanlığa bildirme zorunluluğu yoktur. Doğru cevap B seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="D">
+            <div class="question-text">
+                <p><strong>Soru 14:</strong> Piyasaya arz edilen zararlı maddelerin ve karışımların insan sağlığı ve çevre üzerinde oluşturabileceği olumsuz etkilere karşı ayrıntılı bilgileri içeren ve bu maddelerle çalışılırken alınacak güvenlik önlemlerini açıklayan belgeye ne ad verilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Kimyasal Taahhütname Formu</span></button>
+                <button class="option-btn" data-option="B"><span>B) Tehlikeli Madde Taşıma Belgesi (ADR)</span></button>
+                <button class="option-btn" data-option="C"><span>C) İşyeri Risk Değerlendirme Raporu</span></button>
+                <button class="option-btn" data-option="D"><span>D) Güvenlik Bilgi Formu (SDS/MSDS)</span></button>
+                <button class="option-btn" data-option="E"><span>E) Çevresel Etki Analiz Raporu</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Kimyasalların kimliğini, zararlarını, ilkyardım ve yangınla mücadele yöntemlerini detaylıca açıklayan ve üretici tarafından Türkçe olarak işyerine sağlanması zorunlu olan evrak Güvenlik Bilgi Formu'dur (GBF / MSDS). Doğru cevap D seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="A">
+            <div class="question-text">
+                <p><strong>Soru 15:</strong> İnsan vücudunda ışınlanan bütün doku ve organlar için hesaplanmış eşdeğer dozun, her doku ve organın doku ağırlık faktörleri ile çarpılması sonucunda elde edilen dozların toplamına ne ad verilir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Etkin Doz</span></button>
+                <button class="option-btn" data-option="B"><span>B) Maksimum Doz</span></button>
+                <button class="option-btn" data-option="C"><span>C) Toplum Etkin Dozu</span></button>
+                <button class="option-btn" data-option="D"><span>D) Soğurulmuş Doz</span></button>
+                <button class="option-btn" data-option="E"><span>E) Eşdeğer Doz</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Sadece bir dokunun aldığı doz "Eşdeğer Doz"dur. Ancak radyasyonun tüm vücutta farklı dokulara olan zarar ağırlığının (faktörünün) çarpılıp toplanmasıyla bulunan ve asıl maruziyeti gösteren kavrama "Etkin Doz" denir. Doğru cevap A seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="C">
+            <div class="question-text">
+                <p><strong>Soru 16:</strong> Çalışanların gürültüye maruziyetinin hesaplanmasında, çalışanın kullandığı Kişisel Kulak Koruyucu Donanımların (KKD) koruyucu etkisi (zayıflatma değeri) aşağıdaki değerlendirmelerin hangisinde dikkate alınır, hangisinde <u>alınmaz</u>?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Eylem değerlerinde dikkate alınır, sınır değerlerde dikkate alınmaz.</span></button>
+                <button class="option-btn" data-option="B"><span>B) Her iki değerde de kesinlikle dikkate alınmaz.</span></button>
+                <button class="option-btn" data-option="C"><span>C) Sınır değerlerinde dikkate alınır, eylem değerlerinde dikkate alınmaz.</span></button>
+                <button class="option-btn" data-option="D"><span>D) Sadece haftalık maruziyet hesaplanırken dikkate alınır.</span></button>
+                <button class="option-btn" data-option="E"><span>E) Her iki değerde de (eylem ve sınır) dikkate alınır.</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>İSG mevzuatındaki en büyük çeldiricidir: Kulak koruyucuların etkisi, kesinlikle aşılmaması gereken "Maruziyet Sınır Değeri"nde hesaba katılırken; işverenin aksiyon almasını gerektiren "Maruziyet Eylem Değerleri"nde (80 ve 85 dB) sanki kulaklık yokmuş gibi hesaplanır. Doğru cevap C seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="B">
+            <div class="question-text">
+                <p><strong>Soru 17:</strong> İnsanda ağır hastalıklara neden olan, çalışanlar için ciddi tehlike oluşturan, <u>topluma yayılma riski yüksek olan</u> ve genellikle etkili bir korunma veya tedavi yöntemi <u>bulunmayan</u> biyolojik etmenler hangi risk grubuna girer?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Grup 3</span></button>
+                <button class="option-btn" data-option="B"><span>B) Grup 4</span></button>
+                <button class="option-btn" data-option="C"><span>C) Grup 1</span></button>
+                <button class="option-btn" data-option="D"><span>D) Grup 2</span></button>
+                <button class="option-btn" data-option="E"><span>E) Pandemik Grup</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Grup 3 ve Grup 4 ağır hastalık yapar. Aralarındaki fark; Grup 4'ün "topluma yayılma riskinin çok yüksek olması ve tedavisinin olmaması" (Örneğin Ebola virüsü) durumudur. Doğru cevap B seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="D">
+            <div class="question-text">
+                <p><strong>Soru 18:</strong> Bütün vücut titreşimi maruziyetinde, çalışanın sağlığını korumak için 8 saatlik çalışma süresinde <u>kesinlikle aşılmaması gereken</u> (maruziyet sınır değeri) limit aşağıdakilerden hangisidir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) 0,5 m/s²</span></button>
+                <button class="option-btn" data-option="B"><span>B) 2,5 m/s²</span></button>
+                <button class="option-btn" data-option="C"><span>C) 5 m/s²</span></button>
+                <button class="option-btn" data-option="D"><span>D) 1,15 m/s²</span></button>
+                <button class="option-btn" data-option="E"><span>E) 1,5 m/s²</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Bütün vücut titreşiminde eylem değeri 0,5 m/s² iken, sınır değer 1,15 m/s²'dir. (El-kol titreşimindeki 5 m/s² ile karıştırılmamalıdır). Doğru cevap D seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="E">
+            <div class="question-text">
+                <p><strong>Soru 19:</strong> "<u>Az miktarlarda</u> solunduğunda, ağız yoluyla alındığında veya deri yoluyla emildiğinde insan sağlığı üzerinde akut veya kronik hasarlara ya da ölüme neden olan maddelerdir." <br>Yukarıdaki tanım hangi tehlikeli kimyasal madde sınıfına aittir?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Aşındırıcı madde</span></button>
+                <button class="option-btn" data-option="B"><span>B) Zararlı madde</span></button>
+                <button class="option-btn" data-option="C"><span>C) Tahriş edici madde</span></button>
+                <button class="option-btn" data-option="D"><span>D) Kanserojen madde</span></button>
+                <button class="option-btn" data-option="E"><span>E) Toksik (Zehirli) madde</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Zararlı maddeler büyük miktarlarda, Toksik maddeler ise "çok az miktarlarda" bile vücuda girdiğinde anında ölüme veya akut hasara sebep olabilen çok tehlikeli zehirlerdir. "Az miktar" ifadesi toksik maddenin anahtar kelimesidir. Doğru cevap E seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div class="question-container" data-correct-answer="C">
+            <div class="question-text">
+                <p><strong>Soru 20:</strong> Aktinolit, antofilit, grünerit (amosit), krizotil, krosidolit ve tremolit mineralleri, endüstriyel hijyende hangi tehlikeli ve lifsi grubun üyeleri olarak sınıflandırılır?</p>
+            </div>
+            <div class="options-container">
+                <button class="option-btn" data-option="A"><span>A) Radyoaktif mineraller</span></button>
+                <button class="option-btn" data-option="B"><span>B) Ağır metaller</span></button>
+                <button class="option-btn" data-option="C"><span>C) Asbest türleri</span></button>
+                <button class="option-btn" data-option="D"><span>D) İnert tozlar</span></button>
+                <button class="option-btn" data-option="E"><span>E) Cıva bileşenleri</span></button>
+            </div>
+            <div class="solution-box">
+                <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                <p>Bu isimler, silikat grubu mineraller olan ve solunduğunda akciğer zarı kanserine (mezotelyoma) sebep olan "Asbest" (amyant) çeşitlerinin bilimsel adlarıdır. En yaygınları krizotil (beyaz asbest) ve amosit (kahverengi asbest)'tir. Doğru cevap C seçeneğidir.</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3.5rem; margin-bottom: 2rem;">
+            <button id="finish-test-btn" style="background-color: var(--primary-color); color: white; border: none; padding: 1rem 3rem; border-radius: 0.5rem; font-weight: bold; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 6px rgba(30, 58, 138, 0.3); transition: all 0.2s;">
+                <i class="fa-solid fa-flag-checkered"></i> Testi Bitir ve Sonucumu Gör
+            </button>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.question-container');
+            
+            containers.forEach(container => {
+                const options = container.querySelectorAll('.option-btn');
+                const correctAnswer = container.getAttribute('data-correct-answer');
+                const solutionBox = container.querySelector('.solution-box');
+
+                options.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Tıklama yapıldığında tüm şıkları kilitle
+                        options.forEach(opt => opt.disabled = true);
+
+                        const selectedOption = this.getAttribute('data-option');
+
+                        if (selectedOption === correctAnswer) {
+                            // Doğru cevaplandıysa yeşil yap
+                            this.classList.add('correct');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-check"></i>';
+                        } else {
+                            // Yanlış cevaplandıysa kırmızı yap
+                            this.classList.add('wrong');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-xmark"></i>';
+                            
+                            // Doğru cevabı bulup yeşil ile göster
+                            options.forEach(opt => {
+                                if (opt.getAttribute('data-option') === correctAnswer) {
+                                    opt.classList.add('correct');
+                                    opt.innerHTML += ' <i class="fa-solid fa-circle-check" style="opacity:0.8;"></i>';
+                                }
+                            });
+                        }
+
+                        // Cevaplandıktan sonra çözüm kutusunu göster
+                        if(solutionBox) {
+                            solutionBox.classList.add('show');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

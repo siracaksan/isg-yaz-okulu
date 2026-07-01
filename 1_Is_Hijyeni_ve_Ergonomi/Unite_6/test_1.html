@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 6 Test 1 - Ergonomi ve İnsan (20 Soru)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; }
+
+        /* Ekran (Web) Tasarımı */
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .unit-subtitle { display: inline-block; background-color: #f8fafc; color: #0f172a; padding: 0.5rem 1.5rem; border-radius: 2rem; font-size: 1.15rem; font-weight: 700; margin-top: 0.75rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #ffffff; }
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
+
+        .test-header { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--secondary-color); }
+        .test-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); }
+        
+        .pdf-btn { background-color: var(--danger-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; font-size: 1rem;}
+        .pdf-btn:hover { background-color: #b91c1c; transform: translateY(-2px); }
+
+        /* Soru Konteynerleri (Ekran) */
+        .question-container { background: white; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+        .question-text { font-size: 1.1rem; font-weight: 600; color: var(--dark-color); margin-bottom: 1.5rem; }
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+        .option-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left; padding: 1rem 1.5rem; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 0.5rem; font-size: 1rem; color: #334155; cursor: pointer; transition: all 0.2s ease; }
+        .option-btn:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+        
+        .option-btn.correct { background-color: #dcfce7; border-color: #22c55e; color: #166534; font-weight: 600; }
+        .option-btn.wrong { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .option-btn:disabled { cursor: default; }
+
+        /* İnteraktif Çözüm Butonu ve Kutusu */
+        .toggle-solution-btn { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; transition: all 0.2s; margin-top: 1rem; }
+        .toggle-solution-btn:hover { background-color: #bae6fd; }
+
+        .screen-solution { display: none; margin-top: 1rem; padding: 1.5rem; background-color: #f0fdf4; border-left: 5px solid #22c55e; border-radius: 0.5rem; color: #166534; font-size: 0.95rem; line-height: 1.6; }
+        .screen-solution.show { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(-5px);} to {opacity: 1; transform: translateY(0);} }
+
+        /* Yazdırma İçin Toplu Çözüm Alanı (Ekranda Gizli) */
+        .print-solutions-container { display: none; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; margin-top: 3rem; }
+
+        /* =========================================================
+           PDF (YAZDIRMA) STİLLERİ - ÇİFT SÜTUN & GİZLEMELER 
+           ========================================================= */
+        @media print {
+            body { background: white; font-size: 10pt; color: black; }
+            header, footer, .header-buttons, .pdf-btn, .test-header, .toggle-solution-btn { display: none !important; }
+            
+            /* Sayfa başına Test Başlığı */
+            main::before {
+                content: "ÜNİTE 6: ERGONOMİ VE İNSAN - DEĞERLENDİRME TESTİ (20 SORU)";
+                display: block;
+                text-align: center;
+                font-size: 16pt;
+                font-weight: bold;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid black;
+            }
+
+            /* Soruları Çift Sütun Yapma ve Araya Çizgi Koyma */
+            .questions-grid {
+                column-count: 2;
+                column-gap: 40px;
+                column-rule: 1px solid #94a3b8; /* Orta Çizgi */
+            }
+
+            /* Soruların sayfa sonlarında bölünmesini engelleme */
+            .question-container {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+            }
+            .question-text { font-size: 10pt; margin-bottom: 8px; }
+            .options-container { gap: 2px; margin-bottom: 5px; }
+            .option-btn { 
+                padding: 2px 0; 
+                border: none; 
+                background: transparent; 
+                font-size: 10pt; 
+                color: black;
+            }
+
+            /* Ekranda gösterilen inline çözümleri PDF'de gizle */
+            .screen-solution { display: none !important; }
+
+            /* Toplu Çözüm Alanını PDF'in en sonunda yeni sayfada göster */
+            .print-solutions-container { 
+                display: block !important; 
+                page-break-before: always; /* Çözümleri yeni sayfaya atar */
+            }
+            
+            .print-solutions-container h2 {
+                text-align: center;
+                border-bottom: 2px solid black;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+            .print-solution-item {
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 1px dashed #ccc;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="konu_anlatimi.html" class="back-btn"><i class="fa-solid fa-book-open"></i> Konu Anlatımı</a>
+        </div>
+        <h1>6. Ergonomi ve İnsan</h1>
+        <div class="unit-subtitle">Ünite 6: Test 1</div>
+    </header>
+
+    <main>
+        <div class="test-header">
+            <div class="test-title"><i class="fa-solid fa-list-check"></i> Bölüm Sonu Deneme Sınavı (20 Soru)</div>
+            <button class="pdf-btn" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> Sıkışık Format (PDF Olarak Kaydet)</button>
+        </div>
+
+        <div class="questions-grid">
+            
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 1:</strong> Kafatası organları ile vücut organları arasındaki bağlantıyı sağlayan organ aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Omurilik</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Lumbar</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Beyin</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sinir</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ön lob</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 1:</strong> <strong>Doğru Yanıt: A.</strong> Omurilik, merkezi sinir sisteminin bir parçasıdır ve insan anatomisinde komuta merkezi olan beyin (kafatası organı) ile çevresel sinir sistemi (vücut organları) arasındaki çift yönlü veri iletimini sağlayan temel otoyoldur. Beyinden gelen motor komutlar omurilik üzerinden kaslara giderken, vücuttan gelen duyu sinyalleri de omurilik üzerinden beyne ulaşır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 2:</strong> İskeleti oluşturan kemiklerin birbirine bağlanmasını sağlayan yapılara ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Bağlantı</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Göğüs kafesi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Uyluk kemiği</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Eklem</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Kaburga</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 2:</strong> <strong>Doğru Yanıt: D.</strong> İnsan hareket sistemini (lokomotor sistem) oluşturan kemiklerin birbirleriyle olan bağlantı noktalarına eklem (artikülasyon) adı verilir. Eklemler; kıkırdak yapıları, sinoviyal sıvıları ve bağlarıyla iskelete hareket kabiliyeti kazandırır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 3:</strong> Akciğerde gaz değişimini sağlayan birimler aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Arter</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Bronş</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Gırtlak</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Geniz</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Alveol</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 3:</strong> <strong>Doğru Yanıt: E.</strong> Alveoller (hava kesecikleri), solunum ağacının en uç kısmında yer alan mikroskobik odacıklardır. Etrafları zengin bir kılcal damar ağıyla çevrilidir. Kana oksijen geçişi ve kandan karbondioksitin atılması şeklindeki hayati gaz alışverişi, yüzey alanı son derece geniş olan bu alveollerde gerçekleşir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 4:</strong> Kanın sol karıncıktan büyük atardamarlara pompalanması esnasında uç noktalardaki atardamarlarda oluşturduğu dalgalanmaya ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Basınç</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Astım</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Nabız</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Yüksek tansiyon</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Düşük tansiyon</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 4:</strong> <strong>Doğru Yanıt: C.</strong> Kalbin sol karıncığı kasıldığında, yüksek basınçlı kan aort damarına fırlatılır. Bu atım hareketi, damar çeperlerinde elastik bir genişleme ve daralma dalgası yaratır. Özellikle el bileği veya boyun gibi uç atardamarlarda parmak uçlarıyla hissedilen bu ritmik dalgalanmaya "nabız" denir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 5:</strong> Aşağıdakilerden hangisi alyuvarlarında Rh proteinleri olan kan gruplarını ifade eder?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Rh-</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Rh+</span></button>
+                    <button class="option-btn" data-option="C"><span>C) A</span></button>
+                    <button class="option-btn" data-option="D"><span>D) B</span></button>
+                    <button class="option-btn" data-option="E"><span>E) AB</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 5:</strong> <strong>Doğru Yanıt: B.</strong> Kan grupları, alyuvarların yüzeyindeki antijen yapılarına göre belirlenir. Kırmızı kan hücrelerinde D antijeni olarak da bilinen "Rhesus (Rh) faktörü" proteini mevcut ise o kan grubu "Rh Pozitif (Rh+)" olarak sınıflandırılır.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 6:</strong> Tüketilen enerjinin yiyecek ve içeceklerden alınan besinlerin vücutta bir dizi işleme tabi tutularak enerji ham maddesi ve yapı taşı ögelerine ayrılması ve sonrasında kana geçmesine ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Yutkunma</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Öğütme</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Doyma</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Çiğneme</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Sindirim</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 6:</strong> <strong>Doğru Yanıt: E.</strong> Organların çalışması için gerekli enerjiyi sağlayan karbonhidrat, yağ ve protein gibi kompleks besin maddelerinin, ağızdan başlayıp mide ve bağırsaklarda devam eden işlemlerle kana emilebilecek kadar küçük yapı taşlarına parçalanması sürecine "Sindirim" denir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 7:</strong> Kasları kemiklere bağlayan sık lifli bağ dokusundan yapılmış kısma ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Çizgili kaslar</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Düz kaslar</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Tendon (kasın kirişi)</span></button>
+                    <button class="option-btn" data-option="D"><span>D) ATP</span></button>
+                    <button class="option-btn" data-option="E"><span>E) ADP</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 7:</strong> <strong>Doğru Yanıt: C.</strong> Çizgili kasların, ürettikleri mekanik çekme kuvvetini kemiklere güvenle iletebilmesini sağlayan, kasın uçlarında daralarak kemiğe yapışan sert kolajen liflerden oluşan yapıya "Tendon (kas kirişi)" denir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 8:</strong> İnsan vücudunun tam dinlenme hâlinde iken temel yaşam fonksiyonlarını devam ettirebilmesi için gerekli olan en düşük enerji miktarına ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Kalori</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Bazal metabolizma</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Biyolojik ritim</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Glikojen</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Glikoz</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 8:</strong> <strong>Doğru Yanıt: B.</strong> Organizma istirahat halindeyken dahi kalbin atması, nefes alma ve vücut ısısının sabit tutulması gibi otonom süreçler için enerji harcar. Bu zorunlu ve en düşük hayati enerji tüketim miktarına "Bazal Metabolizma" hızı denir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 9:</strong> Aşağıdakilerden hangisi aerobik yoldan karşılanan enerjinin üst sınır değerini ifade eder?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Maksimum aerobik kapasite</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Derin nefes alma</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Nefes nefese kalma</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Soluk alamama</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Üst sınırdan nefeslenme</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 9:</strong> <strong>Doğru Yanıt: A.</strong> Bedenin oksijeni kullanarak enerji üretme sisteminin bir tavan noktası vardır. Kalbin ve akciğerin kapasitesinin zirveye ulaştığı, kişinin kullanabileceği en yüksek oksijen hacmine "Maksimum aerobik kapasite (VO2 max)" denir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 10:</strong> 4857 sayılı İş Kanunu’na göre, genel olarak çalışma süresi haftada en çok kaç saattir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 30</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 35</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 40</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 45</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 50</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 10:</strong> <strong>Doğru Yanıt: D.</strong> Türkiye Cumhuriyeti yasalarında işçi sağlığını, ergonomiyi ve dinlenme hakkını güvence altına alan 4857 sayılı İş Kanunu'nun 63. maddesine göre; genel bakımdan normal çalışma süresi haftada en çok 45 saattir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 11:</strong> İnsan vücudunun komuta merkezi olmasına rağmen, vücutta sinirlerden (acı/ağrı reseptörlerinden) yoksun tek organ aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Kalp</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Beyin</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Karaciğer</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Mide</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Akciğer</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 11:</strong> <strong>Doğru Yanıt: B.</strong> Beyin, tüm vücudun sinir sistemini ve acı hissini yöneten merkez olmasına rağmen, kendi dokusu içinde ağrı reseptörleri barındırmaz. Bu nedenle beyin dokusunun kendisi fiziksel acıyı hissetmez; cerrahi beyin ameliyatları bazen hasta uyanıkken bile yapılabilir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 12:</strong> İnsan midesinde bulunan ve yiyeceklerin sindirilmesinde büyük rol oynayıp pek çok metali bile eritebilecek güce sahip olan salgı aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Safra</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Pankreas özsuyu</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Tükürük</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Hidroklorik asit</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Laktik asit</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 12:</strong> <strong>Doğru Yanıt: D.</strong> Mide özsuyunun içinde bulunan hidroklorik asit (HCl), çok güçlü bir asittir. O kadar güçlüdür ki bazı metalleri eritebilir. Mide duvarı kendini 3-4 günde bir yenileyerek bu yakıcı asitten korunur.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 13:</strong> Aşağıdakilerden hangisi insan vücudunda 500'ün üzerinde fonksiyonu bulunan karaciğerin görevlerinden biri değildir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Safra üretimi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Toksinlerden arındırma (Detoksifikasyon)</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Kanı vücuda pompalama</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Plazma protein sentezi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Kırmızı kan hücrelerinin ayrıştırılması</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 13:</strong> <strong>Doğru Yanıt: C.</strong> Karaciğer metabolizmanın fabrikasıdır; safra üretir, toksinleri atar ve protein sentezler. Ancak kanı tüm damar ağına yüksek basınçla pompalama görevi doğrudan kalbe aittir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 14:</strong> Kalbin sol karıncığından çıkarak oksijence zengin (temiz) kanı tüm vücuda dağıtan ve çapı ortalama bir bahçe hortumu genişliğinde olan ana atardamar hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Aort damarı</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Üst ana toplardamar</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Akciğer atardamarı</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Şah damarı (Karotis)</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Kılcal damarlar</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 14:</strong> <strong>Doğru Yanıt: A.</strong> Aort damarı vücuttaki en büyük damardır. Kalbin yüksek basınçla fırlattığı temiz kanı tüm organlara dağıtan ana otoyol olduğu için basınca dayanıklı ve çapı oldukça geniştir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 15:</strong> Ergonomik iş tasarımı ilkelerine göre, bir hareket yapılırken gereksiz iş gücü kullanımını ve fiziksel yaralanma riskini azaltmak için ellerin çalışmasıyla ilgili aşağıdakilerden hangisi doğrudur?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sadece baskın olan el kullanılmalıdır.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İki el sırayla, biri dururken diğeri çalışacak şekilde hareket etmelidir.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İki el aynı anda harekete başlamalı ve aynı anda durmalıdır.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sağ el her zaman soldan önce başlamalıdır.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Eller gövdeden olabildiğince uzak mesafede tutulmalıdır.</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 15:</strong> <strong>Doğru Yanıt: C.</strong> Ergonomik hareket ekonomisi prensiplerine göre, kolların ve ellerin hareketi simetrik ve karşılıklı olmalı; iki el aynı anda işe başlayıp aynı anda bitirmelidir. Bu sayede bedensel denge korunur ve kas iskelet sistemi üzerindeki asimetrik yüklenme önlenir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 16:</strong> Bir günden daha uzun süren "hissedilen yorgunluk" durumlarında, ergonomik ve fizyolojik açıdan alınması gereken önlemler arasında aşağıdakilerden hangisi yer almaz?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Çalışma temposuna ara vermek</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İş yükünü (tempoyu) azaltmak</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Besin değeri yüksek gıdalar tüketmek</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Günlük kafein tüketimini sürekli artırarak uykuyu engellemek</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Uzun vadede fiziksel kondisyonu artırmak</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 16:</strong> <strong>Doğru Yanıt: D.</strong> Uzun süreli yorgunluklarda (kronikleşme eğilimi gösteren) temel çözüm dinlenmek, doğru beslenmek ve sporla kondisyon kazanmaktır. Uyku baskılayıcı maddelere veya aşırı kafeine yüklenmek fizyolojik çöküşü hızlandırır, bir çözüm değildir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 17:</strong> İnsan vücudundaki en büyük (en uzun) iç organ hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Kalın bağırsak</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İnce bağırsak</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Karaciğer</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Mide</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Akciğer</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 17:</strong> <strong>Doğru Yanıt: B.</strong> İnce bağırsaklar, insanın kendi boyunun yaklaşık dört katı uzunluğa ulaşabilen, vücudumuzdaki en uzun ve en büyük hacim kaplayan iç organdır. Besin emiliminin (kana geçişin) çok büyük bir kısmı bu uzun hat boyunca gerçekleşir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 18:</strong> Çevresel ortamdan (ışık, ses, sıcaklık vb.) gelen uyarıları alarak beyne ve omuriliğe ileten sinir sistemi bölümüne ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Otonom sinir sistemi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Duyu (Afferent) sinirleri</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Motor (Efferent) sinirleri</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Parasempatik sinir sistemi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Sempatik sinir sistemi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 18:</strong> <strong>Doğru Yanıt: B.</strong> Çevreden veya vücut içinden alınan uyarıları (sıcak, soğuk, acı, temas) algılayıp merkezi sinir sistemine taşıyan yollara duyu sinirleri (afferent yollar) denir. Karar verildikten sonra beyinden kaslara hareket emrini götürenler ise motor (efferent) sinirlerdir.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 19:</strong> Kasların uzunluğunun değişmeden sadece geriliminin arttığı, kasılma sırasında dışarıdan fark edilen bir hareketin (yer değiştirmenin) olmadığı ve kan akışını bozduğu için çabuk yorgunluğa yol açan kas çalışması tipine ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Dinamik çalışma</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İzokinetik çalışma</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Statik (İzometrik) çalışma</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Otonom çalışma</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Aerobik çalışma</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 19:</strong> <strong>Doğru Yanıt: C.</strong> Elde ağır bir yükü hareket ettirmeden tutmak veya sabit bir pozisyonda (örneğin kollar yukarıda veya beli bükük) uzun süre kalmak statik (izometrik) kas çalışmasıdır. Kas sürekli gergin olduğu için damarları sıkıştırır, kan akışı ve oksijenlenmeyi bozduğu için dinamik (hareketli) çalışmaya göre çok daha çabuk ağrı ve yorgunluk yapar.
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 20:</strong> Ergonomide iş yükü ve enerji tüketimi değerlendirilirken, çalışanın aşırı yorulmasını önlemek amacıyla günlük çalışma süresi içine yerleştirilen ve hukuken "çalışma süresinden sayılmayan ancak işin gereği olan" dinlenmelere ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Yıllık izin</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Hafta tatili</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Mazeret izni</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Ara dinlenmesi (Mola)</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Rapor izni</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 20:</strong> <strong>Doğru Yanıt: D.</strong> Günlük çalışma süresi içinde işin yoğunluğuna ve yoruculuğuna göre verilen, işçinin yemek içmek ve dinlenmek için kullandığı, iş kazalarını önleyip verimi koruyan kısa veya uzun süreli günlük aralara "ara dinlenmesi" (mola) adı verilir. Kanunen bu süreler günlük çalışma süresine dahil edilmez.
+                </div>
+            </div>
+
+        </div> 
+
+        <div class="print-solutions-container">
+            <h2>Cevap Anahtarı ve Detaylı Çözümler</h2>
+            
+            <div class="print-solution-item"><strong>Soru 1 (A):</strong> Omurilik, merkezi sinir sisteminin bir parçasıdır ve insan anatomisinde komuta merkezi olan beyin (kafatası organı) ile çevresel sinir sistemi (vücut organları) arasındaki çift yönlü veri iletimini sağlayan temel otoyoldur.</div>
+            
+            <div class="print-solution-item"><strong>Soru 2 (D):</strong> İnsan hareket sistemini oluşturan kemiklerin birbirleriyle olan bağlantı noktalarına eklem (artikülasyon) adı verilir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 3 (E):</strong> Alveoller (hava kesecikleri), solunum ağacının en uç kısmında yer alan mikroskobik odacıklardır. Kana oksijen geçişi bu alveollerde gerçekleşir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 4 (C):</strong> Kalbin sol karıncığı kasıldığında yüksek basınçlı kan aort damarına fırlatılır. Uç ve yüzeyel atardamarlarda hissedilen bu ritmik dalgalanmaya "nabız" denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 5 (B):</strong> Kan grupları alyuvarların yüzeyindeki antijen yapılarına göre belirlenir. Kırmızı kan hücrelerinde "Rhesus (Rh) faktörü" proteini mevcut ise kan grubu "Rh Pozitif (+)" olarak sınıflandırılır.</div>
+            
+            <div class="print-solution-item"><strong>Soru 6 (E):</strong> Tüketilen yiyeceklerin kana emilebilecek kadar küçük yapı taşlarına parçalanması sürecinin tamamına "Sindirim" denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 7 (C):</strong> İskelet sisteminin hareket etmesini sağlayan çizgili kasların, ürettikleri mekanik çekme kuvvetini kemiklere ileten yapıya "Tendon (kas kirişi)" denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 8 (B):</strong> İnsan organizması tamamen istirahat halindeyken dahi yaşamsal süreçler için enerji harcar. Bu zorunlu ve en düşük hayati enerji tüketim miktarına "Bazal Metabolizma" hızı denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 9 (A):</strong> Kalbin kan pompalama ve akciğerin oksijen taşıma kapasitesinin zirveye ulaştığı noktaya "Maksimum aerobik kapasite" denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 10 (D):</strong> 4857 sayılı İş Kanunu'na göre; genel bakımdan normal çalışma süresi yasal olarak haftada en çok 45 saattir.</div>
+
+            <div class="print-solution-item"><strong>Soru 11 (B):</strong> Beyin, tüm vücudun sinir sistemini yönetmesine rağmen kendi dokusunda ağrı reseptörü barındırmaz, bu nedenle fiziksel acıyı hissetmez.</div>
+            
+            <div class="print-solution-item"><strong>Soru 12 (D):</strong> Mide özsuyunun içinde bulunan hidroklorik asit (HCl), metalleri eritebilecek kadar güçlüdür. Mide kendini sürekli yenileyerek bundan korunur.</div>
+            
+            <div class="print-solution-item"><strong>Soru 13 (C):</strong> Karaciğer; safra üretir, toksinleri atar ve protein sentezler. Kanı vücuda pompalama görevi kalbe aittir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 14 (A):</strong> Aort damarı, kalbin pompaladığı temiz kanı tüm organlara dağıtan ve çapı bahçe hortumu genişliğinde olan en büyük atardamardır.</div>
+            
+            <div class="print-solution-item"><strong>Soru 15 (C):</strong> Ergonomik prensiplere göre kolların ve ellerin hareketi simetrik olmalı, iki el aynı anda işe başlayıp bitirmelidir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 16 (D):</strong> Uzun süreli yorgunluklarda çözüm dinlenmek ve kondisyon kazanmaktır. Uykuyu kafeinle baskılamak fizyolojik çöküşü hızlandırır.</div>
+            
+            <div class="print-solution-item"><strong>Soru 17 (B):</strong> İnce bağırsaklar, insanın kendi boyunun yaklaşık dört katı uzunluğa ulaşabilen vücudumuzdaki en uzun iç organdır.</div>
+            
+            <div class="print-solution-item"><strong>Soru 18 (B):</strong> Çevreden alınan uyarıları algılayıp merkezi sinir sistemine (beyne ve omuriliğe) taşıyan yollara duyu (afferent) sinirleri denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 19 (C):</strong> Hareket olmaksızın kasın sadece kasılarak gergin kaldığı ve çabuk yorgunluk yaratan çalışma tipine statik (izometrik) çalışma denir.</div>
+            
+            <div class="print-solution-item"><strong>Soru 20 (D):</strong> İşçinin günlük mesaisi içinde yorulmasını önlemek ve verimini artırmak için verilen kısa veya uzun süreli aralara "ara dinlenmesi" denir.</div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.question-container');
+            
+            containers.forEach(container => {
+                const options = container.querySelectorAll('.option-btn');
+                const correctAnswer = container.getAttribute('data-correct-answer');
+                const toggleBtn = container.querySelector('.toggle-solution-btn');
+                const solutionBox = container.querySelector('.screen-solution');
+
+                // Şık Tıklama Olayı
+                options.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Tıklama yapıldığında tüm şıkları kilitle
+                        options.forEach(opt => opt.disabled = true);
+
+                        const selectedOption = this.getAttribute('data-option');
+
+                        if (selectedOption === correctAnswer) {
+                            // Doğru cevap
+                            this.classList.add('correct');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-check"></i>';
+                        } else {
+                            // Yanlış cevap
+                            this.classList.add('wrong');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-xmark"></i>';
+                            
+                            // Doğru cevabı yeşil yap
+                            options.forEach(opt => {
+                                if (opt.getAttribute('data-option') === correctAnswer) {
+                                    opt.classList.add('correct');
+                                    opt.innerHTML += ' <i class="fa-solid fa-circle-check" style="opacity:0.8;"></i>';
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Çözümü Gör Butonu Olayı
+                if(toggleBtn && solutionBox) {
+                    toggleBtn.addEventListener('click', function() {
+                        if(solutionBox.classList.contains('show')) {
+                            solutionBox.classList.remove('show');
+                            this.innerHTML = '<i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör';
+                        } else {
+                            solutionBox.classList.add('show');
+                            this.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Çözümü Gizle';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

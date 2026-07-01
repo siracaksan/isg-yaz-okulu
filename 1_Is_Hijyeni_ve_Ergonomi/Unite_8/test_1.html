@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 8 Test 1 - Ergonomi ve Tasarım</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; }
+
+        /* Ekran (Web) Tasarımı */
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .unit-subtitle { display: inline-block; background-color: #f8fafc; color: #0f172a; padding: 0.5rem 1.5rem; border-radius: 2rem; font-size: 1.15rem; font-weight: 700; margin-top: 0.75rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #ffffff; }
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
+
+        .test-header { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--secondary-color); }
+        .test-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); }
+        
+        .pdf-btn { background-color: var(--danger-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; font-size: 1rem;}
+        .pdf-btn:hover { background-color: #b91c1c; transform: translateY(-2px); }
+
+        /* Soru Konteynerleri (Ekran) */
+        .question-container { background: white; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+        .question-text { font-size: 1.1rem; font-weight: 600; color: var(--dark-color); margin-bottom: 1.5rem; }
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+        .option-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left; padding: 1rem 1.5rem; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 0.5rem; font-size: 1rem; color: #334155; cursor: pointer; transition: all 0.2s ease; }
+        .option-btn:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+        
+        .option-btn.correct { background-color: #dcfce7; border-color: #22c55e; color: #166534; font-weight: 600; }
+        .option-btn.wrong { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .option-btn:disabled { cursor: default; }
+
+        /* İnteraktif Çözüm Butonu ve Kutusu */
+        .toggle-solution-btn { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; transition: all 0.2s; margin-top: 1rem; }
+        .toggle-solution-btn:hover { background-color: #bae6fd; }
+
+        .screen-solution { display: none; margin-top: 1rem; padding: 1.5rem; background-color: #f0fdf4; border-left: 5px solid #22c55e; border-radius: 0.5rem; color: #166534; font-size: 0.95rem; line-height: 1.6; }
+        .screen-solution.show { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(-5px);} to {opacity: 1; transform: translateY(0);} }
+
+        /* Yazdırma İçin Toplu Çözüm Alanı (Ekranda Gizli) */
+        .print-solutions-container { display: none; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; margin-top: 3rem; }
+
+        /* =========================================================
+           PDF (YAZDIRMA) STİLLERİ - ÇİFT SÜTUN & GİZLEMELER 
+           ========================================================= */
+        @media print {
+            body { background: white; font-size: 10pt; color: black; }
+            header, footer, .header-buttons, .pdf-btn, .test-header, .toggle-solution-btn { display: none !important; }
+            
+            /* Sayfa başına Test Başlığı */
+            main::before {
+                content: "ÜNİTE 8: ERGONOMİ VE TASARIM - DEĞERLENDİRME TESTİ 1";
+                display: block;
+                text-align: center;
+                font-size: 16pt;
+                font-weight: bold;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid black;
+            }
+
+            /* Soruları Çift Sütun Yapma ve Araya Çizgi Koyma */
+            .questions-grid {
+                column-count: 2;
+                column-gap: 40px;
+                column-rule: 1px solid #94a3b8; /* Orta Çizgi */
+            }
+
+            /* Soruların sayfa sonlarında bölünmesini engelleme */
+            .question-container {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+            }
+            .question-text { font-size: 10pt; margin-bottom: 8px; }
+            .options-container { gap: 2px; margin-bottom: 5px; }
+            .option-btn { 
+                padding: 2px 0; 
+                border: none; 
+                background: transparent; 
+                font-size: 10pt; 
+                color: black;
+            }
+
+            /* Ekranda gösterilen inline çözümleri PDF'de gizle */
+            .screen-solution { display: none !important; }
+
+            /* Toplu Çözüm Alanını PDF'in en sonunda yeni sayfada göster */
+            .print-solutions-container { 
+                display: block !important; 
+                page-break-before: always; 
+            }
+            
+            .print-solutions-container h2 {
+                text-align: center;
+                border-bottom: 2px solid black;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+            .print-solution-item {
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 1px dashed #ccc;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="konu_anlatimi.html" class="back-btn"><i class="fa-solid fa-book-open"></i> Konu Anlatımı</a>
+        </div>
+        <h1>8. Ergonomi ve Tasarım</h1>
+        <div class="unit-subtitle">Ünite 8: Test 1</div>
+    </header>
+
+    <main>
+        <div class="test-header">
+            <div class="test-title"><i class="fa-solid fa-list-check"></i> Profesyonel Değerlendirme Sınavı (20 Soru)</div>
+            <button class="pdf-btn" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> Sıkışık Format (PDF Olarak Kaydet)</button>
+        </div>
+
+        <div class="questions-grid">
+            
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 1:</strong> İnsan vücut ölçülerinin belirlenmesi ve uygulanması ile uğraşan bilim dalı aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Antropometri</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Vücut gelişimi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Vücut analizi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Anatomi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Antropoloji</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 1:</strong> İnsan vücut ölçülerinin belirlenmesi, istatistiksel olarak sınıflandırılması ve tasarım süreçlerinde uygulanması ile uğraşan temel ergonomi dalına "Antropometri" adı verilir. (Cevap: A)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 2:</strong> Aşağıdakilerden hangisi Yunanca “antropos” (insan) ve “metikos” (ölçü) sözcükleri ile anılmakta ve kısaca “vücut ölçü bilimi” olarak tanımlanmaktadır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Yunan atletizmi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Yunan spor bilimi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Yunan vücut bilimi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Antropometri</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Antroposmetikos</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 2:</strong> Kelime kökeni olarak Yunanca "antropos" (insan) ve "metrikos/metikos" (ölçü) kelimelerinin birleşiminden oluşan ve kısaca vücut ölçü bilimi olarak tanımlanan kavram Antropometri'dir. (Cevap: D)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 3:</strong> Antropometrik ürün tasarımları istatistiksel olarak kullanıcıların yüzde kaçına hitap eder?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 50</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 60</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 70</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 80</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 90</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 3:</strong> Antropometrik ürün tasarımları genellikle uçlardaki %5'lik kısımları (en küçük %5 ve en büyük %5) dışarıda bırakarak ortadaki geniş kitle olan %90'lık dilime (kullanıcıların %90'ına) hitap edecek şekilde tasarlanır. (Cevap: E)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 4:</strong> Antropometrik tasarımlarda en küçük ölçüler için, %90, %95 veya %99 gibi üst sınır değerlerinden sadece birinin esas alındığı ölçülere ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sınır ölçüleri</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Uzanma ölçüleri</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Sığışma ölçüleri</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Bütün vücut ölçüleri</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Antropolojik ölçüler</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 4:</strong> Bir hacme sığabilmek, oradan geçebilmek veya altında oturabilmek için en iri yapıdaki kişilerin baz alındığı (üst sınırlar: %90, %95, %99) ölçülere "Sığışma (Clearance) Ölçüleri" denir. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 5:</strong> “Öğrenci sıralarının altında, dizlerin rahat edebileceği bir ortam tasarımında öncelik uzun boylu insanlardır.” ifadesi aşağıdakilerden hangisiyle ilişkilidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sıra altı ölçüleriyle</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Sığışma ölçüsüyle</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Ortam ölçüleriyle</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Uzun boyluların ölçüleriyle</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Diz rahatlığı ölçüleriyle</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 5:</strong> Sıra altında dizlerin sığabileceği bir boşluk (clearance) bırakılırken en uzun boylu (diz kapağı mesafesi en yüksek) insanlar dikkate alınır. Bu durum ergonomide "Sığışma Ölçüsü" prensibi ile ifade edilir. (Cevap: B)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 6:</strong> Kullanıcıların uzanması, yakalaması, kavraması gereken yerlerde, küçük boyutlu kişilerin zorlanmadan ulaşabileceği küçük ölçülerin (%1, %5 veya %10’luk değerler vb.) esas alındığı ölçüler aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Kullanıcı ölçüleri</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Sığışma ölçüleri</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Büyük boyutlar</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Kapsama ölçüleri</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Erişme ölçüleri</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 6:</strong> Erişilebilirlik söz konusu olduğunda (örneğin bir rafa ulaşmak), toplumdaki en küçük yapılı kişilerin o noktaya ulaşabilmesi hedeflenir. Bu duruma erişme ölçüleri (reach dimensions) adı verilir. (Cevap: E)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 7:</strong> Aşağıdakilerden hangisi belirli bir anatomik yapıdan (noktadan), diğer bir anatomik yapıya (noktaya) yapılan ölçümlerle elde edilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Belirli anatomik ölçüler</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Noktasal veriler</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Statik antropometrik veriler</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Anatomik veriler</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Yapısal veriler</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 7:</strong> İnsan vücudunun hareket halinde değilken, belirli anatomik referans noktaları arasında alınan durağan ölçümlerine "Statik (Yapısal) Antropometrik Veriler" denir. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 8:</strong> Aşağıdakilerden hangisi vücudun sabit bir referans noktasından, (diğer) hareketli bir kısmı ile arasındaki boyutların ölçülmesi ile elde edilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sabit veriler</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Dinamik antropometrik veriler</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Referans veriler</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Boyutsal veriler</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ölçümsel veriler</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 8:</strong> Vücut hareket halindeyken, sabit bir referans noktası ile hareketli bir vücut uzvu (örneğin kolların dönme çapı, erişim mesafeleri) arasındaki ölçümlere "Dinamik (İşlevsel) Antropometrik Veriler" denir. (Cevap: B)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 9:</strong> Günümüzde antropometrik ölçümler sonucu elde edilecek boyutlar için hangi standart kullanılmaktadır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) TS EN ISO 7250-1: Teknoloji Tasarımı İçin Temel İnsan Vücudu Ölçümleri</span></button>
+                    <button class="option-btn" data-option="B"><span>B) TS EN ISO 14738: Makinelerde Güvenlik</span></button>
+                    <button class="option-btn" data-option="C"><span>C) TS EN ISO 18000: İş Sağlığı ve Güvenliği Yönetim Sistemleri</span></button>
+                    <button class="option-btn" data-option="D"><span>D) TS EN 614-2+A1: Ergonomik Tasarım Prensipleri</span></button>
+                    <button class="option-btn" data-option="E"><span>E) TS EN ISO 9241: İnsan Sistem Etkileşiminin Ergonomisi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 9:</strong> Günümüzde teknolojik ekipmanların ve çalışma alanlarının tasarımında referans alınan insan vücut boyutlarını tanımlayan temel standart TS EN ISO 7250-1 standardıdır. (Cevap: A)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 10:</strong> ISO 7250 standardında temel antropometrik ölçüler kaç sınıf (grup) altında tanımlanmıştır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 12</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 10</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 8</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 4</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 2</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 10:</strong> ISO 7250 standardında antropometrik ölçüler ayakta ölçümler, oturarak ölçümler, belirli vücut parçalarına ait ölçümler gibi spesifik başlıkları içeren toplam 4 ana sınıf altında toplanmıştır. (Cevap: D)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 11:</strong> Antropometrik verilerin cinsiyetler arasındaki farklılıkları dikkate alındığında, erkeklerin kadınlara oranla yaklaşık ne kadar daha uzun olduğu kabul edilmektedir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 5 cm</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 8 cm</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 13 cm</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 18 cm</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 25 cm</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 11:</strong> Antropometrik araştırmalar ve istatistiklere göre, genel ortalama olarak erkekler kadınlara kıyasla yaklaşık 13 cm daha uzun bir boy yapısına sahiptir. Tasarımlarda bu fark göz önünde bulundurulmalıdır. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 12:</strong> Toplumdaki en kısa boylu kadın ile en uzun boylu erkek kıyaslandığında; ergonomik tasarımlarda hesaba katılması gereken "kuvvet farkı" potansiyel olarak yüzde kaça kadar ulaşabilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) %100</span></button>
+                    <button class="option-btn" data-option="B"><span>B) %200</span></button>
+                    <button class="option-btn" data-option="C"><span>C) %300</span></button>
+                    <button class="option-btn" data-option="D"><span>D) %400</span></button>
+                    <button class="option-btn" data-option="E"><span>E) %500</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 12:</strong> Cinsiyetler ve uç değerler arasındaki anatomik farklar oldukça yüksek olabilir. En kısa kadın ile en uzun erkek arasında boy (%30-40), ağırlık (%100) ve fiziksel kuvvet açısından %500'e varan devasa farklar bulunabileceği öngörülmektedir. (Cevap: E)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 13:</strong> İnsan anatomisine göre standart istatistiksel antropometrik ölçümlerde "ortalama oturma yüksekliği" genel olarak kaç santimetre (cm) kabul edilmektedir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 35</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 40</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 45</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 50</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 55</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 13:</strong> Araştırma verilerine göre insanların oturma yüksekliği istatistiksel ortalaması yaklaşık 45 cm olarak ölçülmektedir. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 14:</strong> Ortalama 45 cm'lik bir oturma yüksekliği baz alındığında, bu ideal ölçüden oluşacak sapmaların insandaki algısı düşünüldüğünde aşağıdakilerden hangisi doğrudur?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Yukarı doğru olan sapmalar her zaman daha rahat algılanır.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Hem yukarı hem aşağı sapmalar eşit derecede rahatsızlık verir.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Aşağı doğru olan sapmalar, yüksek rahatlık hissi verirken; yukarı sapmalar rahatsız edicidir.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İnsanlar sapmaların yönünü psikolojik olarak algılayamazlar.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 45 cm'den daha düşük ölçüler kesinlikle omurgaya hasar verir.</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 14:</strong> Ergonomide antropometrik bir ortalama olan 45 cm'den aşağı doğru olan sapmalar (daha alçak oturmalar) insanlarda daha yüksek bir rahatlık hissi verirken, yukarı doğru olan sapmalar genellikle daha rahatsız edici algılanır. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 15:</strong> Aşağıdakilerden hangisi ayakta çalışma konumunun, oturarak çalışma konumuna kıyasla sağladığı avantajlardan biri <u>değildir</u>?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Ayaktaki insan oturma konumuna göre daha uzağa uzanabilir.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Bel omurlarındaki disklerde oluşan basınç daha azdır.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Kullanılabilen kas gücü miktarı oturma postürüne göre çok daha düşüktür.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Ayakların titreşim duyarlılığı daha yüksektir.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ayaktaki insan vücut ağırlığından daha iyi destek alabilir.</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 15:</strong> Ayakta çalışmanın dezavantajı değil avantajıdır ki, ayakta dururken elde edilen kas gücü oturma pozisyonuna kıyasla iki kat daha fazladır. Dolayısıyla "kas gücünün düşük olduğu" ifadesi yanlıştır. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 16:</strong> Çalışma postürleri değerlendirildiğinde, ayakta çalışma konumunda bel omurlarındaki disklerde meydana gelen basınç, oturma konumuna göre nasıldır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Çok daha fazladır.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Daha azdır.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Her iki durumda da tamamen eşittir.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Basınç sadece ayakta dururken oluşur.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Basınç ayakta iken üst sırt bölgesinde yoğunlaşır.</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 16:</strong> Ayakta dururken omurganın doğal "S" eğrisi korunur ve yük vücuda daha homojen dağılır. Bu nedenle ayakta çalışma sırasında bel omurlarındaki disklerde oluşan basınç, oturma pozisyonuna göre daha azdır. (Cevap: B)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 17:</strong> Ayakta ve oturarak çalışma karşılaştırıldığında "kolların kavrama alanı" ile ilgili aşağıdaki yargılardan hangisi doğrudur?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Ayaktayken kolların normal kavrama alanı çok daha dardır.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Otururken kolların kavrama alanı ayaktakinden büyüktür.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Kolların kavrama alanı her iki durumda da (ayakta/otururken) temelde farklı değildir.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Ayaktayken sadece sağ kolun kavrama alanı genişler.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Kavrama alanı ayaktayken omuz hizasında yarı yarıya düşer.</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 17:</strong> Kolların saf kavrama (erişim) alanı yapısal (anatomik) bir ölçü olduğu için ayakta veya otururken temelde farklı değildir. Ancak ayakta olan kişi, gövdesini esnetip bükerek veya adım atarak bu alanı çalışma uzayında büyütebilir. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 18:</strong> İnsan beden ölçülerini (kol, bacak uzunluğu, omuz genişliği, oturma yüksekliği vb.) istatistiksel verilere dönüştürerek tasarım sürecinin merkezine alan bilimsel yaklaşım aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sosyoloji</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Biyomekanik çalışma</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Antropometri</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Bilişsel psikoloji</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Enformatik ergonomi</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 18:</strong> Vücut bölümlerinin uzunluğu, ağırlığı, kütlesi gibi statik ve uzanma gibi dinamik ölçümlerin tamamını analiz eden ergonomi dalı Antropometri'dir. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 19:</strong> Ayakta çalışma postüründe çalışanın uygulayabileceği "kas gücü" kapasitesi, oturma postürüne göre yaklaşık olarak hangi seviyededir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Ortalama olarak aynı seviyededir.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Yarı yarıya daha düşüktür.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İki kat daha fazladır.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sadece %10 oranında bir artış gösterir.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Dört kat daha fazladır.</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 19:</strong> Ayakta çalışmanın önemli avantajlarından biri de kas gücü üretimidir. Vücut ağırlığının destek sağlaması ve kaldıraç sistemlerinin daha verimli çalışması sayesinde kas gücü, oturma postürüne göre yaklaşık iki kat daha fazladır. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 20:</strong> Bir sandalye tasarımı yapılırken 45 cm'lik standart antropometrik ölçü yerine, kullanıcıların psikolojik/fizyolojik rahatlık hislerinin de değerlendirilmesi ve tasarımın buna göre revize edilmesi, aşağıdaki görüşlerden hangisini destekler?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Ergonomi sadece katı istatistiksel antropometri demek değildir.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Tasarımlarda her zaman ortalama veriler tek gerçektir.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Sadece en uzun boylu kullanıcılar referans alınmalıdır.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sandalye yükseklikleri asla değiştirilmemelidir.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Antropometrik ölçümler tasarımda gereksizdir.</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 20:</strong> Sadece matematiksel ortalamaya (örn. 45 cm) uymak yeterli olmayabilir; çünkü insanların alçak oturmalarda daha rahat etmesi gibi algısal ve duruşsal farklılıklar vardır. Bu da "Ergonomi, sadece antropometri değildir" yargısını destekler; ergonomi aynı zamanda konforu, psikolojiyi ve insan-makine uyumunu da kapsar. (Cevap: A)
+                </div>
+            </div>
+
+        </div> <div class="print-solutions-container">
+            <h2>Ünite 8 Toplu Çözüm Anahtarı</h2>
+            <div class="print-solution-item"><strong>Soru 1:</strong> İnsan vücut ölçülerinin belirlenmesi, istatistiksel olarak sınıflandırılması ve tasarım süreçlerinde uygulanması ile uğraşan temel ergonomi dalına "Antropometri" adı verilir. (Cevap: A)</div>
+            <div class="print-solution-item"><strong>Soru 2:</strong> Kelime kökeni olarak Yunanca "antropos" (insan) ve "metrikos/metikos" (ölçü) kelimelerinin birleşiminden oluşan ve kısaca vücut ölçü bilimi olarak tanımlanan kavram Antropometri'dir. (Cevap: D)</div>
+            <div class="print-solution-item"><strong>Soru 3:</strong> Antropometrik ürün tasarımları genellikle uçlardaki %5'lik kısımları dışarıda bırakarak ortadaki geniş kitle olan %90'lık dilime hitap edecek şekilde tasarlanır. (Cevap: E)</div>
+            <div class="print-solution-item"><strong>Soru 4:</strong> Bir hacme sığabilmek, oradan geçebilmek veya altında oturabilmek için en iri yapıdaki kişilerin baz alındığı (üst sınırlar) ölçülere "Sığışma (Clearance) Ölçüleri" denir. (Cevap: C)</div>
+            <div class="print-solution-item"><strong>Soru 5:</strong> Sıra altında dizlerin sığabileceği bir boşluk bırakılırken en uzun boylu insanlar dikkate alınır. Bu durum "Sığışma Ölçüsü" prensibi ile ifade edilir. (Cevap: B)</div>
+            <div class="print-solution-item"><strong>Soru 6:</strong> Erişilebilirlik söz konusu olduğunda toplumdaki en küçük yapılı kişilerin o noktaya ulaşabilmesi hedeflenir. Buna erişme ölçüleri adı verilir. (Cevap: E)</div>
+            <div class="print-solution-item"><strong>Soru 7:</strong> İnsan vücudunun hareket halinde değilken, belirli anatomik referans noktaları arasında alınan durağan ölçümlerine "Statik Antropometrik Veriler" denir. (Cevap: C)</div>
+            <div class="print-solution-item"><strong>Soru 8:</strong> Vücut hareket halindeyken, sabit bir referans noktası ile hareketli bir uzuv arasındaki ölçümlere "Dinamik Antropometrik Veriler" denir. (Cevap: B)</div>
+            <div class="print-solution-item"><strong>Soru 9:</strong> Tasarımda referans alınan insan vücut boyutlarını tanımlayan temel standart TS EN ISO 7250-1 standardıdır. (Cevap: A)</div>
+            <div class="print-solution-item"><strong>Soru 10:</strong> ISO 7250 standardında antropometrik ölçüler 4 ana sınıf altında toplanmıştır. (Cevap: D)</div>
+            <div class="print-solution-item"><strong>Soru 11:</strong> İstatistiklere göre, genel ortalama olarak erkekler kadınlara kıyasla yaklaşık 13 cm daha uzundur. (Cevap: C)</div>
+            <div class="print-solution-item"><strong>Soru 12:</strong> En kısa kadın ile en uzun erkek arasında boy, ağırlık ve fiziksel kuvvet açısından %500'e varan devasa farklar bulunabilir. (Cevap: E)</div>
+            <div class="print-solution-item"><strong>Soru 13:</strong> İnsanların oturma yüksekliği istatistiksel ortalaması yaklaşık 45 cm olarak ölçülmektedir. (Cevap: C)</div>
+            <div class="print-solution-item"><strong>Soru 14:</strong> 45 cm'den aşağı doğru olan sapmalar (daha alçak oturmalar) insanlarda daha yüksek bir rahatlık hissi verirken, yukarı doğru olan sapmalar rahatsız edicidir. (Cevap: C)</div>
+            <div class="print-solution-item"><strong>Soru 15:</strong> Ayakta dururken kas gücü üretimi, oturma pozisyonuna kıyasla iki kat daha fazladır. "Kas gücünün düşük olduğu" ifadesi yanlıştır. (Cevap: C)</div>
+            <div class="print-solution-item"><strong>Soru 16:</strong> Ayakta dururken omurganın doğal "S" eğrisi korunur; bu nedenle bel omurlarındaki disklerde oluşan basınç oturma pozisyonuna göre daha azdır. (Cevap: B)</div>
+            <div class="print-solution-item"><strong>Soru 17:</strong> Kolların saf kavrama alanı anatomik olduğu için ayakta veya otururken temelde farklı değildir. (Cevap: C)</div>
+            <div class="print-solution-item"><strong>Soru 18:</strong> Vücut bölümlerinin uzunluğu, ağırlığı gibi ölçümlerini istatistiksel analiz eden ergonomi dalı Antropometri'dir. (Cevap: C)</div>
+            <div class="print-solution-item"><strong>Soru 19:</strong> Vücut ağırlığının destek sağlaması sayesinde ayakta çalışma pozisyonunda kas gücü, oturma postürüne göre yaklaşık iki kat daha fazladır. (Cevap: C)</div>
+            <div class="print-solution-item"><strong>Soru 20:</strong> İnsanların psikolojik ve duruşsal farklılıklarını dikkate almak, "Ergonomi, sadece antropometri değildir" yargısını destekler. (Cevap: A)</div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 - İş Hijyeni ve Ergonomi | Ünite 8</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionContainers = document.querySelectorAll('.question-container');
+
+            questionContainers.forEach(container => {
+                const options = container.querySelectorAll('.option-btn');
+                const correctAnswer = container.getAttribute('data-correct-answer');
+                const solutionBox = container.querySelector('.screen-solution');
+                const toggleBtn = container.querySelector('.toggle-solution-btn');
+                let answered = false;
+
+                options.forEach(button => {
+                    button.addEventListener('click', function() {
+                        if (answered) return;
+                        
+                        answered = true;
+                        options.forEach(opt => opt.disabled = true);
+
+                        const selectedOption = this.getAttribute('data-option');
+
+                        if (selectedOption === correctAnswer) {
+                            this.classList.add('correct');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-check"></i>';
+                        } else {
+                            this.classList.add('wrong');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-xmark"></i>';
+                            
+                            options.forEach(opt => {
+                                if (opt.getAttribute('data-option') === correctAnswer) {
+                                    opt.classList.add('correct');
+                                    opt.innerHTML += ' <i class="fa-solid fa-circle-check" style="opacity:0.8;"></i>';
+                                }
+                            });
+                        }
+                    });
+                });
+
+                if(toggleBtn && solutionBox) {
+                    toggleBtn.addEventListener('click', function() {
+                        if(solutionBox.classList.contains('show')) {
+                            solutionBox.classList.remove('show');
+                            this.innerHTML = '<i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör';
+                        } else {
+                            solutionBox.classList.add('show');
+                            this.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Çözümü Gizle';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

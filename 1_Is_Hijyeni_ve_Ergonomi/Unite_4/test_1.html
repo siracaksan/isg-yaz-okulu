@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 4 Test 1 - İş Hijyeni ve Ergonomi</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
+        .unit-subtitle { 
+            display: inline-block; 
+            background-color: #f8fafc; 
+            color: #0f172a; 
+            padding: 0.5rem 1.5rem; 
+            border-radius: 2rem; 
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            margin-top: 0.75rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        
+        .pdf-btn { background-color: var(--danger-color); }
+        .pdf-btn:hover { background-color: #b91c1c; }
+
+        main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; }
+
+        .test-header { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--secondary-color); }
+        .test-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); }
+        .test-stats { font-size: 0.95rem; color: #64748b; font-weight: 600; background: #f1f5f9; padding: 0.5rem 1rem; border-radius: 2rem; }
+
+        /* Soru Konteyner Stilleri */
+        .questions-wrapper { display: block; }
+        .question-container { background: white; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+        .question-text { font-size: 1.1rem; font-weight: 600; color: var(--dark-color); margin-bottom: 1.5rem; line-height: 1.5; }
+        
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; }
+        
+        .option-btn { 
+            display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left; padding: 1rem 1.5rem; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 0.5rem; font-size: 1rem; color: #334155; cursor: pointer; transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+        }
+        .option-btn:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+        
+        .option-btn.correct { background-color: #dcfce7; border-color: #22c55e; color: #166534; font-weight: 600; }
+        .option-btn.wrong { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .option-btn:disabled { cursor: default; }
+
+        /* Çözüm Kutusu (Web Görünümü) */
+        .solution-box { display: none; margin-top: 1.5rem; padding: 1.5rem; background-color: #f0fdf4; border-left: 5px solid #22c55e; border-radius: 0.5rem; color: #166534; font-size: 0.95rem; line-height: 1.6; }
+        .solution-box.show { display: block; animation: fadeIn 0.5s ease; }
+        .solution-title { font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(-10px);} to {opacity: 1; transform: translateY(0);} }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        /* PDF / Yazdırma Alanı Sadece Printte Görünür */
+        .print-solutions-container { display: none; }
+
+        /* ======== PDF AKTARMA (PRINT) STİLLERİ ======== */
+        @media print {
+            body { background: white; font-size: 10pt; color: #000; }
+            header, footer, .header-buttons, #finish-test-btn, .test-header { display: none !important; }
+            main { max-width: 100%; margin: 0; padding: 0; }
+            
+            /* Soruları Çift Sütun Yap ve Araya Çizgi Koy */
+            .questions-wrapper {
+                column-count: 2;
+                column-gap: 30px;
+                column-rule: 1px solid #cbd5e1;
+            }
+
+            .question-container {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: none;
+                border-bottom: 1px dashed #cbd5e1;
+                margin-bottom: 15px;
+                padding: 0 0 15px 0;
+                border-radius: 0;
+            }
+            .question-text { font-size: 10pt; margin-bottom: 0.5rem; }
+            .option-btn { border: none; padding: 2px 0; background: transparent !important; color: #000 !important; font-size: 9.5pt; }
+            .option-btn i { display: none !important; } /* İkonları gizle */
+            
+            /* Soru Altındaki Çözümleri PDF'de Gizle */
+            .question-container .solution-box { display: none !important; }
+
+            /* Toplu Çözüm Alanını PDF'nin En Sonunda Göster */
+            .print-solutions-container {
+                display: block !important;
+                page-break-before: always; /* Yeni sayfadan başla */
+                column-count: 2;
+                column-gap: 30px;
+                column-rule: 1px solid #cbd5e1;
+            }
+            .print-solution-item {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+                padding-bottom: 15px;
+                border-bottom: 1px dashed #cbd5e1;
+            }
+            .print-sol-q-title { font-weight: bold; margin-bottom: 5px; color: #000; }
+            .print-sol-text { font-size: 9.5pt; color: #333; }
+            .print-header { text-align: center; font-size: 16pt; font-weight: bold; margin-bottom: 20px; column-span: all; border-bottom: 2px solid #000; padding-bottom: 10px; display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="konu_anlatimi.html" class="back-btn"><i class="fa-solid fa-book-open"></i> Konu Anlatımı</a>
+            <a href="#" class="back-btn pdf-btn" onclick="window.print(); return false;"><i class="fa-solid fa-file-pdf"></i> PDF'ye Aktar</a>
+        </div>
+        <h1>1. İş Hijyeni ve Ergonomi</h1>
+        <div class="unit-subtitle">Ünite 4: İş Hijyeni ve Genel Korunma Yöntemleri</div>
+    </header>
+
+    <main>
+        <div class="test-header">
+            <div class="test-title"><i class="fa-solid fa-pen-to-square"></i> Test 1 (Bölüm Sonu Değerlendirmesi)</div>
+            <div class="test-stats"><i class="fa-solid fa-list-ol"></i> Toplam 20 Soru</div>
+        </div>
+
+        <div class="questions-wrapper">
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 1:</strong> Gürültünün, iş organizasyonu ile azaltılması için göz önünde bulundurulması gereken husus aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Maruziyet süresi ile düzeyinin sınırlandırılması ve yeterli dinlenme aralarıyla çalışma sürelerinin düzenlenmesi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Çalışanlara gerekli bilgi ve eğitimin verilmesi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Gürültüye maruziyetin daha az olduğu başka çalışma yöntemlerinin seçilmesi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) En düşük düzeyde gürültü yayan uygun iş ekipmanının seçilmesi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Gürültüye maruz kalınan çalışma yerlerinin uygun şekilde işaretlenmesi</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>İş organizasyonu ile gürültünün azaltılması, çalışma sürelerinin ve maruziyet limitlerinin idari olarak planlanmasını kapsar. Doğru cevap A seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 2:</strong> İşverenin, tüm kontrol tedbirleri alınmasına rağmen titreşime maruziyet sınır değerinin aşıldığının tespit edildiği durumlarda ne yapması gerekir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Çalışanların hangi şartlarda sağlık gözetimine tabi tutulacağını belirlemesi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Maruziyet sınır ve maruziyet eylem değerlerini tekrar değerlendirmesi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Kullanılan iş ekipmanlarından kaynaklanabilecek yaralanmaları tespit etmesi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Maruziyeti sınır değerin altına indirmek üzere tedbir alması, aşılma nedenlerini belirlemesi ve tekrarını önlemek amacıyla gerekli tedbirleri alması</span></button>
+                    <button class="option-btn" data-option="E"><span>E) El-kol sistemine aktarılan titreşimi azaltan yardımcı ekipmanları sağlaması</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Sınır değerin aşılması acil bir ihlaldir. İşveren derhal maruziyeti sınırın altına çekecek tedbirleri almalı, neden aşıldığını araştırmalı ve tekrarlanmasını engellemelidir. Doğru cevap D seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 3:</strong> Asbest ve türleri ile kuvars içeren tozların bulunabileceği iş yerlerinde, risk değerlendirmesi ve ölçüm sonuçları ile çalışanların sağlık durumları dikkate alınarak standart akciğer radyografilerinin hangi sıklıkla çekilmesi gerektiği aşağıdakilerden hangisi tarafından belirlenir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Asbest uzmanı</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Risk değerlendirme uzmanı</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İş Güvenliği Uzmanı</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İşveren</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İşyeri Hekimi</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Sağlık gözetiminin ve tıbbi tetkiklerin (radyografi vb.) hangi periyotlarla yapılacağına tıbbi yetkisi gereği İşyeri Hekimi karar verir. Doğru cevap E seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 4:</strong> Tıbbi ışınlamalar hariç, izin verilen tüm ışınlamaların neden olduğu ilgili organ veya dokudaki eşdeğer doz ve etkin dozun yıllık doz sınırlarını aşamayacağı, radyasyondan korunmada kullanılan doz sınırlama sisteminin temel ilkelerinin hangisinde tanımlanmıştır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Radyasyondan korunma</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Tıbbi ışınlamalar</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Doz sınırlaması</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Organ dozu</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Etkin doz</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Radyasyon güvenliği temel ilkeleri 3 tanedir: Gereklilik (Justification), Optimizasyon (ALARA) ve Doz Sınırlaması. Yıllık doz sınırlarının aşılamaması kuralı "Doz Sınırlaması" ilkesiyle tanımlanır. Doğru cevap C seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 5:</strong> Yıllık etkin dozun kaç katından fazla radyasyon dozu almış radyasyon görevlileri ile çocuk doğurma çağındaki radyasyon görevlileri özel bir durum için planlanmış ışınlamalarda görevlendirilemez?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 6</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 5</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 4</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 3</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 2</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Mevzuata göre; yıllık etkin dozun 5 katından fazla radyasyon dozu almış olanlar ve doğurganlık çağındaki kadınlar planlanmış özel ışınlamalarda risk nedeniyle çalıştırılamaz. Doğru cevap B seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 6:</strong> Asbest yıkım izni için aşağıdakilerden hangisinin hükümleri uygulanır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Yapı İşlerinde Asbest Önlemleri Tüzüğü</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İnşaat İşlerinde Güvenlik Tedbirleri Tebliği</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Asbest Söküm ve Yıkım Yönetmeliği</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Asbest Tamir ve Bakım Yönetmeliği</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Hafriyat Toprağı, İnşaat ve Yıkıntı Atıklarının Kontrolü Yönetmeliği</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Asbestli binaların yıkım işlemleri ve atıkların güvenli şekilde bertarafı "Hafriyat Toprağı, İnşaat ve Yıkıntı Atıklarının Kontrolü Yönetmeliği" çerçevesinde izne tabidir. Doğru cevap E seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 7:</strong> Biyolojik etmenlere mesleki maruziyet sonucu meydana gelen her hastalık veya ölüm vakası aşağıdakilerden hangisine bildirilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sağlık Bakanlığına</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Çevre ve Şehircilik Bakanlığına</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Çalışma ve Sosyal Güvenlik Bakanlığına</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Tarım ve Orman Bakanlığına</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Sanayi ve Teknoloji Bakanlığına</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Biyolojik etmenlerle çalışmalarda meydana gelen mesleki hastalık veya iş kazası kaynaklı ölümler İSG mevzuatı gereği resmi olarak Çalışma ve Sosyal Güvenlik Bakanlığı'na bildirilir. Doğru cevap C seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 8:</strong> Biyolojik etmen riskine tedbir olarak sağlık gözetiminin yapıldığı durumlarda kişisel tıbbi kayıtlar, maruziyetin son bulmasından sonra en az kaç yıl süre ile saklanır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 25</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 15</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 10</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 5</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 2</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Biyolojik etmenlere maruziyet söz konusu olduğunda genel kural olarak tıbbi kayıtlar, maruziyet sonlandıktan sonra en az 15 yıl boyunca saklanmak zorundadır (Özel bazı istisnalarda 40 yıla kadar çıkabilir). Doğru cevap B seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 9:</strong> Aşağıdakilerden hangisi kanserojen veya mutajen maddelerle kirlenme ihtimali olan işlerde işveren tarafından alınan iş hijyeni önlemlerinden biri değildir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Balgam sitoloji testi, bilgisayarlı tomografi, tomodansitometri gibi ileri tetkikler yaptırmak</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Çalışanların, bu işlerin yapıldığı yerlerde yemelerini, içmelerini ve sigara kullanmalarını önlemek</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Koruyucu giysi vermek ve bunları günlük kıyafetlerden ayrı elbise dolaplarında saklatmak</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Çalışanlara uygun ve yeterli yıkanma yeri, tuvalet ve temizlik malzemesi sağlamak</span></button>
+                    <button class="option-btn" data-option="E"><span>E) KKD'lerin özel şartlarda saklanmasını ve her kullanımdan sonra temizlenmesini sağlamak</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Balgam sitolojisi ve tomografi gibi uygulamalar işverenin alacağı "hijyen" önlemi değil; ancak işyeri hekimi veya hastaneler tarafından yapılabilecek ileri tıbbi tetkiklerdir. Doğru cevap A seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 10:</strong> Tehlikeli kimyasal maddelerle çalışmalarda çalışanların sağlık ve güvenliği yönünden riskler ortadan kaldırılmış veya en az düzeye indirilmişken, iş yerinde çalışanların kimyasal maddelere maruziyetini etkileyebilecek koşullarda herhangi bir değişiklik olduğunda ne yapılması gerekir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Kullanılması gereken kimyasal madde miktarının tekrar ayarlanması</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Alınan önlemler için yeterli kontrol, denetim ve gözetim sağlanması</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Tehlikeli kimyasal maddelerle çalışmalardaki çalışan sayısının artırılması</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Kimyasal maddelere maruziyet ölçümlerinin tekrarlanması</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İş yeri bina ve eklentilerinin her zaman düzenli ve temiz tutulması</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Çalışma ortamının koşullarında (üretim yöntemi, havalandırma, kimyasalın türü vb.) değişiklik meydana gelirse eski risk değerleri geçerliliğini yitirir, bu nedenle maruziyet ölçümleri mutlaka yenilenmelidir (tekrarlanmalıdır). Doğru cevap D seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 11:</strong> İş hijyeni kapsamında toz hastalıklarının tespiti için yapılan "ILO Uluslararası Pnömokonyoz Radyografi Sınıflandırılması Okuyucu" eğitimi hangi kurum tarafından düzenlenir ve bu eğitimi alan kişilere verilen unvan nedir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) SGK - İş Güvenliği Uzmanı</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Sağlık Bakanlığı - Toz Ölçüm Uzmanı</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İSGÜM - Hekim</span></button>
+                    <button class="option-btn" data-option="D"><span>D) TAEK - Radyoloji Teknikeri</span></button>
+                    <button class="option-btn" data-option="E"><span>E) ÇSGB - A Sınıfı Uzman</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Kitabın 'Araştır' bölümünde belirtildiği üzere, Pnömokonyoz Radyografi Sınıflandırması Okuyucu eğitimi doğrudan İSGÜM tarafından düzenlenir ve başarı sağlayan hekimlere sertifika verilir. Doğru cevap C seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 12:</strong> Radyasyon alanlarının ölçümünde kullanılan cihazların ve dozimetrelerin kalibrasyonları, hangi kurum bünyesinde bulunan "İkincil Standart Dozimetre Laboratuvarı" tarafından yapılmaktadır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) TÜBİTAK</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Çevre Referans Laboratuvarı</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İSGÜM</span></button>
+                    <button class="option-btn" data-option="D"><span>D) TAEK (Türkiye Atom Enerjisi Kurumu)</span></button>
+                    <button class="option-btn" data-option="E"><span>E) TSE</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Radyasyon ölçüm cihazlarının düzenli kalibrasyonları, Türkiye'de bu konudaki en üst otorite olan TAEK'in İkincil Standart Dozimetre Laboratuvarında gerçekleştirilir. Doğru cevap D seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 13:</strong> Biyolojik etmen riskinden korunma kapsamında işverenin çalışanlara vereceği eğitimlerin "zamanlaması" ile ilgili aşağıda verilen ifadelerden hangisi doğrudur?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sadece bir kaza veya enfeksiyon vakası yaşandıktan hemen sonra verilir.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Çalışmaların bitiminde, değerlendirme amacıyla verilir.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Sadece işe giriş muayenesi esnasında bir kez verilir ve tekrarlanmaz.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Çalışan talep ettiği zaman, mesai saatleri dışında verilir.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Biyolojik etmenlerle çalışmalara başlanmadan önce verilir, yeni risklere göre güncellenir ve periyodik tekrarlanır.</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>İSG mevzuatının temel felsefesi "proaktif" olmaktır. Bu nedenle eğitimler işe (maruziyete) başlanmadan önce verilmeli ve yeni risklere göre sürekli revize edilerek tekrarlanmalıdır. Doğru cevap E seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 14:</strong> Kanserojen veya mutajen maddelerin karayoluyla taşınmasında uyulması gereken "Tehlikeli Malların Karayolu ile Uluslararası Taşımacılığına İlişkin Avrupa Anlaşması"nın evrensel kısa adı aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) MSDS</span></button>
+                    <button class="option-btn" data-option="B"><span>B) ADR</span></button>
+                    <button class="option-btn" data-option="C"><span>C) IOSH</span></button>
+                    <button class="option-btn" data-option="D"><span>D) REACH</span></button>
+                    <button class="option-btn" data-option="E"><span>E) TMK</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Kanserojen dahil tehlikeli kimyasalların karayolunda güvenli taşınmasına yönelik uluslararası anlaşmanın ismi ADR (Accord Dangereux Routier)'dir. Doğru cevap B seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 15:</strong> İş hijyeni risklerinin önlenmesinde uygulanacak "Genel Korunma Yöntemleri Hiyerarşisinde" en etkili ve öncelikli olan birinci adım aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Çalışana Kişisel Koruyucu Donanım (KKD) verilmesi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Çalışma saatlerinin idari olarak kısaltılması</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Tehlikenin kaynağında yok edilmesi veya ikame edilmesi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Tehlike ile çalışan arasına yalıtım bariyeri kurulması</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Periyodik sağlık taramalarının sıklaştırılması</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Risk kontrol hiyerarşisinin ilk ve en etkili kuralı sorunu kaynağında çözmektir (Eliminasyon veya İkame). Ortama ve kişiye yönelik önlemler bundan sonra gelir. Doğru cevap C seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 16:</strong> Tozla mücadele kapsamında kullanılan aspirasyon sistemleri (davlumbazlar vb.) ile çalışana verilen toz maskesi (FFP2/FFP3), korunma yöntemleri bakımından sırasıyla hangi sınıflara girer?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Kaynağa Yönelik / Ortama Yönelik</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Kişiye Yönelik / Kaynağa Yönelik</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Ortama Yönelik / Kaynağa Yönelik</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Kaynağa Yönelik / Kaynağa Yönelik</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ortama (veya Kaynağa) Yönelik / Kişiye Yönelik</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Aspirasyon veya lokal havalandırma sistemleri riski ortama yayılmadan (veya ortamda) çözmeye çalışan mühendislik önlemleridir. Toz maskesi ise tamamen "Kişiye Yönelik" koruma yöntemidir. Doğru cevap E seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 17:</strong> Tehlikeli gaz ve buharların çalışma ortamına yayılmasını engellemek için kurulan "Lokal Egzoz Havalandırması"nın (kaynağında emme) ergonomik ve hijyenik temel amacı aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İş yerinin ısısını sabit tutmak</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Kirleticinin, çalışanın solunum bölgesine (zonuna) ulaşmadan emilerek ortamdan uzaklaştırılması</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Çalışanların kişisel hijyen kalitesini denetlemek</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Ortamdaki gürültü seviyesini akustik olarak yutmak</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Üretimdeki parça kalitesini artırmak</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Lokal havalandırmaların temel hijyenik prensibi; gaz veya tozun çalışanın yüzüne (solunum zonuna) ulaşmasına fırsat vermeden doğduğu noktadan vakumlanmasıdır. Doğru cevap B seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 18:</strong> İşveren tarafından çalışanlara sağlanan "Kişisel Koruyucu Donanımlar (KKD)" ile ilgili aşağıda verilen kurallardan hangisi yanlıştır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Çalışana tam olarak uymalıdır.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Riskleri kaynağında çözemediğimiz durumlarda en son çare olarak kullanılır.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Çalışanlara kullanımına dair ücretsiz uygulamalı eğitim verilmelidir.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Çalışanlar donanımı evlerine götürüp kendi çamaşır makinelerinde temizlemelidir.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ortak kullanıma uygun değildir, kişiye özel tahsis edilmelidir.</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Tehlikeli kimyasallar, asbest veya biyolojik ajanlarla kirlenmiş iş kıyafetleri veya KKD'ler kesinlikle eve götürülemez. Bunların temizliği, bakımı ve imhası işverenin sorumluluğundadır. Doğru cevap D seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 19:</strong> Meslek hastalıklarından ve iş hijyeni risklerinden korunma prensipleri kapsamında, "İşe giriş muayenesi" ve "Periyodik muayeneler" hangi tür korunma yöntemine girer?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Tıbbi Korunma (Sağlık Gözetimi)</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Mühendislik Önlemi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İkame (Yerine Koyma)</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İdari (Yönetsel) Önlem</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Toplu Korunma Önlemi</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Riskleri ortadan kaldırma süreçleri Mühendislik veya İdari önlemlerdir. Çalışanın sağlığının hekim tarafından izlenmesi (işe giriş, periyodik testler, aşılar vb.) ise "Tıbbi Korunma" (Sağlık gözetimi) kapsamındadır. Doğru cevap A seçeneğidir.</p>
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 20:</strong> Asbest veya kanserojen tozların bulunduğu kapalı ortamlarda, zorunlu olarak solunum koruyucu maskeyle çalışan işçiler için, maskenin fizyolojik yükü dikkate alınarak çalışma süresi nasıl ayarlanmalıdır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İşçi maskeyi hiç çıkarmadan 8 saat aralıksız çalışmalıdır.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Çalışma süresi işin ve kişinin fizyolojik özelliklerine göre sınırlandırılmalı ve yeterli dinlenme araları (molalar) verilmelidir.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Maskeyle çalışma süresini işçi kendisi inisiyatifiyle belirlemelidir.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Ortama oksijen basılarak dinlenme arası vermeden işin bitirilmesi sağlanmalıdır.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Maske sadece müfettiş denetimlerinde takılmalı, diğer zamanlarda çıkarılmalıdır.</span></button>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title"><i class="fa-solid fa-lightbulb"></i> Detaylı Çözüm:</div>
+                    <p>Solunum koruyucu donanımlar solunum direncini artırdığı için ciddi bir fizyolojik iş yükü yaratır. Bu yüzden kişi maskeyle aralıksız çalıştırılamaz; çalışma kesinlikle sınırlandırılmalı ve dinlenme araları verilmelidir. Doğru cevap B seçeneğidir.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3.5rem; margin-bottom: 2rem;">
+            <button id="finish-test-btn" style="background-color: var(--primary-color); color: white; border: none; padding: 1rem 3rem; border-radius: 0.5rem; font-weight: bold; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 6px rgba(30, 58, 138, 0.3); transition: all 0.2s;">
+                <i class="fa-solid fa-flag-checkered"></i> Testi Bitir ve Sonucumu Gör
+            </button>
+        </div>
+
+        <div class="print-solutions-container" id="print-solutions-container">
+            <div class="print-header">CEVAP ANAHTARI VE DETAYLI ÇÖZÜMLER</div>
+            </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.question-container');
+            const printSolutionsContainer = document.getElementById('print-solutions-container');
+            let qNumber = 1;
+            
+            containers.forEach(container => {
+                const options = container.querySelectorAll('.option-btn');
+                const correctAnswer = container.getAttribute('data-correct-answer');
+                const solutionBox = container.querySelector('.solution-box');
+                const questionText = container.querySelector('.question-text p').innerText;
+
+                // PDF Çözümler Alanını Dinamik Oluştur
+                const printSolItem = document.createElement('div');
+                printSolItem.className = 'print-solution-item';
+                printSolItem.innerHTML = `
+                    <div class="print-sol-q-title">Soru ${qNumber} (Cevap: ${correctAnswer})</div>
+                    <div class="print-sol-text">${solutionBox.innerText.replace('Detaylı Çözüm:\n', '')}</div>
+                `;
+                printSolutionsContainer.appendChild(printSolItem);
+                qNumber++;
+
+                // Tıklama Etkileşimleri
+                options.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        options.forEach(opt => opt.disabled = true);
+                        const selectedOption = this.getAttribute('data-option');
+
+                        if (selectedOption === correctAnswer) {
+                            this.classList.add('correct');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-check"></i>';
+                        } else {
+                            this.classList.add('wrong');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-xmark"></i>';
+                            
+                            options.forEach(opt => {
+                                if (opt.getAttribute('data-option') === correctAnswer) {
+                                    opt.classList.add('correct');
+                                    opt.innerHTML += ' <i class="fa-solid fa-circle-check" style="opacity:0.8;"></i>';
+                                }
+                            });
+                        }
+
+                        if(solutionBox) {
+                            solutionBox.classList.add('show');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

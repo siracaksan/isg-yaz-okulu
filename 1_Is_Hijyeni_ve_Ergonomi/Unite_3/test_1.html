@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 3 Test 1 - İş Hijyeni Test ve Ölçümü</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; }
+
+        /* Ekran (Web) Tasarımı */
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .unit-subtitle { display: inline-block; background-color: #f8fafc; color: #0f172a; padding: 0.5rem 1.5rem; border-radius: 2rem; font-size: 1.15rem; font-weight: 700; margin-top: 0.75rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #ffffff; }
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
+
+        .test-header { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--secondary-color); }
+        .test-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); }
+        
+        .pdf-btn { background-color: var(--danger-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; font-size: 1rem;}
+        .pdf-btn:hover { background-color: #b91c1c; transform: translateY(-2px); }
+
+        /* Soru Konteynerleri (Ekran) */
+        .question-container { background: white; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+        .question-text { font-size: 1.1rem; font-weight: 600; color: var(--dark-color); margin-bottom: 1.5rem; }
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+        .option-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left; padding: 1rem 1.5rem; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 0.5rem; font-size: 1rem; color: #334155; cursor: pointer; transition: all 0.2s ease; }
+        .option-btn:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+        
+        .option-btn.correct { background-color: #dcfce7; border-color: #22c55e; color: #166534; font-weight: 600; }
+        .option-btn.wrong { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .option-btn:disabled { cursor: default; }
+
+        /* İnteraktif Çözüm Butonu ve Kutusu */
+        .toggle-solution-btn { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; transition: all 0.2s; margin-top: 1rem; }
+        .toggle-solution-btn:hover { background-color: #bae6fd; }
+
+        .screen-solution { display: none; margin-top: 1rem; padding: 1.5rem; background-color: #f0fdf4; border-left: 5px solid #22c55e; border-radius: 0.5rem; color: #166534; font-size: 0.95rem; line-height: 1.6; }
+        .screen-solution.show { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(-5px);} to {opacity: 1; transform: translateY(0);} }
+
+        /* Yazdırma İçin Toplu Çözüm Alanı (Ekranda Gizli) */
+        .print-solutions-container { display: none; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; margin-top: 3rem; }
+
+        /* =========================================================
+           PDF (YAZDIRMA) STİLLERİ - ÇİFT SÜTUN & GİZLEMELER 
+           ========================================================= */
+        @media print {
+            body { background: white; font-size: 10pt; color: black; }
+            header, footer, .header-buttons, .pdf-btn, .test-header, .toggle-solution-btn { display: none !important; }
+            
+            /* Sayfa başına Test Başlığı */
+            main::before {
+                content: "ÜNİTE 3: İŞ HİJYENİ TEST VE ÖLÇÜMÜ - DEĞERLENDİRME TESTİ";
+                display: block;
+                text-align: center;
+                font-size: 16pt;
+                font-weight: bold;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid black;
+            }
+
+            /* Soruları Çift Sütun Yapma ve Araya Çizgi Koyma */
+            .questions-grid {
+                column-count: 2;
+                column-gap: 40px;
+                column-rule: 1px solid #94a3b8; /* Orta Çizgi */
+            }
+
+            /* Soruların sayfa sonlarında bölünmesini engelleme */
+            .question-container {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+            }
+            .question-text { font-size: 10pt; margin-bottom: 8px; }
+            .options-container { gap: 2px; margin-bottom: 5px; }
+            .option-btn { 
+                padding: 2px 0; 
+                border: none; 
+                background: transparent; 
+                font-size: 10pt; 
+                color: black;
+            }
+
+            /* Ekranda gösterilen inline çözümleri PDF'de gizle */
+            .screen-solution { display: none !important; }
+
+            /* Toplu Çözüm Alanını PDF'in en sonunda yeni sayfada göster */
+            .print-solutions-container { 
+                display: block !important; 
+                page-break-before: always; /* Çözümleri yeni sayfaya atar */
+            }
+            
+            .print-solutions-container h2 {
+                text-align: center;
+                border-bottom: 2px solid black;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+            .print-solution-item {
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 1px dashed #ccc;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="konu_anlatimi.html" class="back-btn"><i class="fa-solid fa-book-open"></i> Konu Anlatımı</a>
+        </div>
+        <h1>3. İş Hijyeni Test ve Ölçümü</h1>
+        <div class="unit-subtitle">Ünite 3: Test 1</div>
+    </header>
+
+    <main>
+        <div class="test-header">
+            <div class="test-title"><i class="fa-solid fa-list-check"></i> Bölüm Sonu Deneme Sınavı (20 Soru)</div>
+            <button class="pdf-btn" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> Sıkışık Format (PDF Olarak Kaydet)</button>
+        </div>
+
+        <div class="questions-grid">
+            
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 1:</strong> Çalışma ortamında bulunan, çalışanların sağlığını olumsuz yönde etkileyebilecek her türlü gürültü, titreşim, aydınlatma, iyonlaştırıcı olmayan radyasyon gibi fiziksel, toz, gaz, buhar gibi kimyasal ve virüs, bakteri, mantar gibi biyolojik etkenlerin nicelik ve nitelik olarak tayininin yapılmasına ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İş hijyeni ölçüm, test ve analizi</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Çalışma ortamının tetkiki</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Risk değerlendirmesi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Fiziksel ve kimyasal nicelik tayini</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Biyolojik nicelik tayini</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 1:</strong> Fiziksel, kimyasal ve biyolojik tehlikelerin çalışma ortamındaki varlığının sayılarla (nicelik) ve özellikleriyle (nitelik) tespit edilerek raporlanması işlemi mevzuatta doğrudan "İş Hijyeni Ölçüm, Test ve Analizi" olarak tanımlanmaktadır. (Cevap: A)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 2:</strong> Çalışanları iş yerinde bulunan, kullanılan, ortaya çıkan veya herhangi bir şekilde işlem gören maddelerin ve çalışma ortamı koşullarının zararlı etkilerinden koruma yükümlülüğü aşağıdakilerden hangisindedir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İşçide</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İnsan kaynakları departmanında</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Müfettişte</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İşverende</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ustabaşı ya da kalfada</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 2:</strong> 6331 sayılı İş Sağlığı ve Güvenliği Kanununa göre, çalışanların her türlü sağlık ve güvenlik riskine karşı korunması, gerekli ölçümlerin yaptırılması ve tedbirlerin alınması konusundaki asli (ana) yükümlülük her zaman "İşveren"dedir. (Cevap: D)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 3:</strong> Aşağıdakilerden hangisi işverenin iş hijyeni test, ölçüm ve analizleri yaptırmak veya tekrarlatmak zorunda olduğu durumlardan biridir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İş hijyenistinin gerekli görmesi hâlinde</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Test ve ölçüm amirinin gerekli görmesi hâlinde</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İş planlamacısının gerekli görmesi hâlinde</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Vardiya amirinin gerekli görmesi hâlinde</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İş yeri hekimi veya iş güvenliği uzmanının gerekli görmesi hâlinde</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 3:</strong> Mevzuata göre, çalışma ortamındaki risklerin değişmesi, iş kazası veya meslek hastalığı şüphesi durumlarında, iş yerinde görevli "İş yeri hekimi veya İş güvenliği uzmanının (İSG Profesyonelleri) gerekli görmesi hâlinde" işveren ölçümleri tekrarlatmak zorundadır. (Cevap: E)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 4:</strong> Aşağıdakilerden hangisi iş hijyeni test, ölçüm ve analizi kapsamına giren parametrelerden biri değildir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Havadaki asit konsantrasyonu tayini (Kişisel ve işyeri ortamı)</span></button>
+                    <button class="option-btn" data-option="B"><span>B) El-kol titreşim maruziyet ölçümü</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Ayak-bacak titreşim maruziyet ölçümü</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Kişisel gürültü maruziyet ölçümü</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İşyeri ortamı gürültü ölçümü</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 4:</strong> Titreşim maruziyet ölçümleri literatürde ve mevzuatta "El-kol titreşimi" ve "Bütün vücut titreşimi" olmak üzere ikiye ayrılır. "Ayak-bacak titreşim maruziyet ölçümü" diye özel bir standart ölçüm parametresi yoktur. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 5:</strong> İş hijyeni test, ölçüm ve analizi yapmak üzere kurulmuş bir laboratuvar, saklama süresi mevzuatla belirlenmemiş olan kalite yönetim sistemi kayıtlarını en az kaç yıl saklamak zorundadır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 5</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 10</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 15</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 20</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 25</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 5:</strong> Yetkili iş hijyeni laboratuvarları; ölçüm raporlarını, numune kayıtlarını ve kalite yönetim sistemi evraklarını (eğer özel bir mevzuatla farklı bir süre belirtilmemişse) en az 10 yıl boyunca muhafaza etmekle yükümlüdür. (Cevap: B)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 6:</strong> Aşağıdaki durumların hangisinde TS EN 689 "İşyeri Havası-Solunumla Maruz Kalınan Kimyasal Maddelerin Sınır Değerler ile Karşılaştırılması ve Ölçme Stratejisinin Değerlendirilmesi İçin Kılavuz" standardının güncel hâlleri dikkate alınır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İş yerindeki kimyasallar ile ilgili genel numune alma stratejilerinde</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İş yerinde gürültü yoluyla maruz kalınan etkenlerde</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İşyerinde radyasyona maruz kalınan etkenlerde</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İş yerinde vücut titreşimine maruz kalınan etkenlerde</span></button>
+                    <button class="option-btn" data-option="E"><span>E) İş yerinde solunum yoluyla maruz kalınan etkenler ile ilgili olarak numune alma ve değerlendirme stratejileri belirlenirken</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 6:</strong> Standardın isminden de anlaşılacağı üzere (İşyeri Havası - Solunumla Maruz Kalınan), bu standart özellikle toz, gaz, buhar gibi çalışanların soluyarak (nefes yoluyla) maruz kaldığı kimyasal risklerin ölçüm stratejilerini belirlemek için kullanılır. (Cevap: E)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 7:</strong> İş hijyeni test, ölçüm ve analizi yapmak üzere kurulmuş laboratuvarlarda numunelerin teslim alındığı numune kabul bölümü en az kaç metrekare olmalıdır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 2</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 3</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 5</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 7</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 10</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 7:</strong> Laboratuvar fiziki şartlarını belirleyen yönetmeliğe göre; gelen numunelerin (toz filtreleri, kimyasal tüpler vb.) diğer alanlara karışmadan güvenle teslim alındığı "numune kabul bölümü" en az 5 metrekare büyüklüğünde olmalıdır. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 8:</strong> İş hijyeni test, ölçüm ve analizi yapmak üzere kurulmuş laboratuvarın belgelendirilmesi, kapsam genişletilmesi (yeni parametre ilavesi), belgenin geçerliliğinin askıya alınması veya iptal edilmesi yetkisi hangi kuruma aittir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İş Bulma Kurumuna</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İş Sağlığı ve Güvenliği Genel Müdürlüğüne (İSGGM)</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Sosyal Güvenlik Kurumuna</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sosyal Sigortalar Kurumuna</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Laboratuvarlar Denetleme Genel Müdürlüğüne</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 8:</strong> İSG alanında faaliyet gösteren tüm kurum ve kuruluşların (laboratuvarlar dahil) yetkilendirilmesi, denetlenmesi, askıya alınması veya belgelerinin iptali süreçlerini yürüten tek yetkili otorite Çalışma ve Sosyal Güvenlik Bakanlığı'na bağlı İş Sağlığı ve Güvenliği Genel Müdürlüğü (İSGGM)'dür. (Cevap: B)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 9:</strong> İş Hijyeni Ölçüm, Test ve Analiz Yeterlilik Belgesinin geçerlilik süresi kaç yıldır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 4</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 5</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 6</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 7</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 8</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 9:</strong> Laboratuvarlara İSGGM tarafından verilen yeterlilik belgelerinin geçerlilik süresi yönetmelik gereği 4 yıldır. Dört yılın sonunda laboratuvar, belge yenileme sürecine girmek zorundadır. (Cevap: A)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 10:</strong> İş hijyeni test, ölçüm ve analizi yapmak üzere kurulmuş laboratuvarlara, ilgili mevzuat esasları dâhilinde haberli denetimlerde denetim tarihi en az kaç iş günü öncesinde bildirilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) 20</span></button>
+                    <button class="option-btn" data-option="B"><span>B) 15</span></button>
+                    <button class="option-btn" data-option="C"><span>C) 10</span></button>
+                    <button class="option-btn" data-option="D"><span>D) 5</span></button>
+                    <button class="option-btn" data-option="E"><span>E) 1</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 10:</strong> Laboratuvarlar düzenli olarak veya şikayet üzerine denetlenebilir. Şayet denetim "haberli" bir planlı denetim ise, laboratuvarın hazırlık yapabilmesi (evrak vb.) için denetim tarihi kuruma en az 5 iş günü öncesinden resmen bildirilmelidir. (Cevap: D)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 11:</strong> 6331 Sayılı İSG Kanunu'na göre; aynı çalışma alanını birden fazla işverenin paylaştığı durumlarda işverenlerin iş hijyeni önlemlerinin uygulanması ile ilgili temel sorumluluğu nedir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sadece ana yüklenici (asıl işveren) ölçümleri yaptırmakla sorumludur.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İşverenler işbirliği ve koordinasyon içinde riskleri önler, birbirlerini ve çalışan temsilcilerini bilgilendirirler.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Alt işverenler (taşeronlar) birbirlerinden bağımsız hareket edebilir.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Alanın mülkiyet sahibi olan işveren tüm hijyen ölçüm masraflarını karşılar.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Sorumluluk sadece o alanda çalışan iş güvenliği uzmanına devredilir.</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 11:</strong> Birden fazla işverenin aynı alanı paylaşması (örneğin aynı binadaki ofisler veya şantiyeler) durumunda kanun; işverenlerin hijyen önlemlerinde "işbirliği yapmasını", "koordinasyon içinde çalışmasını" ve tehlikeler hakkında birbirlerini "bilgilendirmesini" emreder. (Cevap: B)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 12:</strong> İş sağlığı ve güvenliği ile iş hijyeni uygulamalarından sorumlu çatı bakanlığımız olan kurumun, 21 Nisan 2021 tarihinde yapılan düzenleme ile belirlenen güncel resmi adı aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Aile, Çalışma ve Sosyal Hizmetler Bakanlığı (AÇSHB)</span></button>
+                    <button class="option-btn" data-option="B"><span>B) İş Sağlığı ve Güvenliği Bakanlığı (İSGB)</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Çalışma İş Kurumu Bakanlığı (ÇİKB)</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Çalışma ve Sosyal Güvenlik Bakanlığı (ÇSGB)</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Sosyal Güvenlik ve Aile Bakanlığı (SGAB)</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 12:</strong> Daha önce Aile bakanlığı ile birleştirilmiş olan kurum, 21 Nisan 2021'deki kararname ile tekrar ayrılmış ve güncel/eski ismi olan "Çalışma ve Sosyal Güvenlik Bakanlığı (ÇSGB)" adını geri almıştır. (Cevap: D)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 13:</strong> Ülkemizde iş hijyeni laboratuvarlarının kuruluş, yetkilendirilme ve işleyiş şartlarını belirleyen temel ve güncel mevzuat aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İş Hijyeni Ölçüm, Test ve Analiz Laboratuvarları Hakkında Yönetmelik</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Tıbbi Cihazlar ve Laboratuvar Standartları Yönetmeliği</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Endüstriyel Tesisler Analiz ve Denetim Tüzüğü</span></button>
+                    <button class="option-btn" data-option="D"><span>D) TS EN 689 Kalite Standartları Yönetmeliği</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Ortam Ölçümleri ve Kişisel Maruziyet Sınırları Kanunu</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 13:</strong> Mevzuatımızda İş Hijyeni laboratuvarlarının tüm standartları (2017 tarihli revizyonuyla beraber) resmi adıyla "İş Hijyeni Ölçüm, Test ve Analiz Laboratuvarları Hakkında Yönetmelik" çerçevesinde düzenlenmektedir. (Cevap: A)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 14:</strong> Yetkili laboratuvarlar, iş hijyeni ölçümlerinde kullandıkları standart metotlara ait "Türkçe olarak hazırlanmış deney talimatlarını" ve gerektiğinde metodun tam metnini hangi resmi kuruma bildirmek zorundadır?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Türk Standardları Enstitüsü (TSE)</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Türk Akreditasyon Kurumu (TÜRKAK)</span></button>
+                    <button class="option-btn" data-option="C"><span>C) İş Sağlığı ve Güvenliği Merkezi Müdürlüğü (İSGÜM)</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sağlık Bakanlığı Laboratuvarlar Dairesi</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Çevre ve Şehircilik Bakanlığı</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 14:</strong> Laboratuvarlar, sahada kullandıkları tüm ölçüm metotlarının çevirilerini ve teknik talimatnamelerini (prosedürlerini), kendilerini denetleyen teknik üst kurul olan İSGÜM'e (İSG Merkezi Müdürlüğü) bildirmek zorundadır. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="D">
+                <div class="question-text">
+                    <p><strong>Soru 15:</strong> İş hijyeni ölçümlerinde "Çalışanın maruz kaldığı" riski birebir ölçmek amacıyla, cihaz ucunun (numune alma başlığının) çalışanın solunum bölgesine (yakasına) takılarak yapılan ölçüm tipine ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Ortam / Alan ölçümü</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Biyolojik izleme</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Tıbbi tarama</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Kişisel maruziyet ölçümü</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Statik nokta ölçümü</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 15:</strong> İşçinin çalıştığı ortamda gezinirken tam olarak soluduğu havayı (veya aldığı gürültüyü) temsil edebilmesi için yakasına takılarak yapılan dozimetrik ölçümlere "Kişisel Maruziyet Ölçümü" denir. Sadece odaya konan cihazla yapılan ise ortam ölçümüdür. (Cevap: D)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="E">
+                <div class="question-text">
+                    <p><strong>Soru 16:</strong> İş hijyeni laboratuvarlarının ölçüm sonuçlarının uluslararası geçerliliğe sahip olması için "Deney ve Kalibrasyon Laboratuvarlarının Yeterliliği" kapsamında TÜRKAK'tan almaları gereken akreditasyon standardı hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) ISO 9001</span></button>
+                    <button class="option-btn" data-option="B"><span>B) ISO 45001</span></button>
+                    <button class="option-btn" data-option="C"><span>C) TS EN 689</span></button>
+                    <button class="option-btn" data-option="D"><span>D) OHSAS 18001</span></button>
+                    <button class="option-btn" data-option="E"><span>E) TS EN ISO/IEC 17025</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 16:</strong> Dünyadaki tüm deney ve kalibrasyon laboratuvarlarının kalite, tarafsızlık ve teknik yeterlilik akreditasyonu TS EN ISO/IEC 17025 standardına göre yapılır. Laboratuvarların yetki alabilmesi için bu standart şarttır. (Cevap: E)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 17:</strong> İş hijyeni ölçüm raporları sonuçlandığında, bir parametrenin (örneğin kurşun tozu) yasal "Maruziyet Sınır Değerini" aştığı tespit edilirse işverenin ilk yapması gereken eylem aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sınırı aşan çalışanların derhal işine son vermek.</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Risk değerlendirmesini yenileyerek kaynağında kontrol önlemlerini (havalandırma vb.) derhal almak.</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Çalışanlara çift katlı maske verip eski düzende çalışmaya devam etmek.</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Ölçümü yapan laboratuvarı değiştirip yeni ölçüm istemek.</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Sadece İş Sağlığı Güvenliği Kurulunu toplantıya çağırmak.</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 17:</strong> Maruziyet sınır değerinin aşılması "kabul edilemez" bir durumdur. İSG hiyerarşisi gereği ilk adım; risk analizinin hemen güncellenmesi ve sorunun "kaynağında" çözülmesine yönelik (kapalı sistem, güçlü havalandırma vb.) teknik önlemlerin alınmasıdır. Kişisel koruyucular (maske vb.) en son çaredir. (Cevap: B)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="A">
+                <div class="question-text">
+                    <p><strong>Soru 18:</strong> Çalışma ortamı havasında yapılan testlerde kimyasal gaz, buhar ve partikül ölçüm sonuçları laboratuvar raporlarında genellikle hangi bilimsel birimlerle ifade edilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) mg/m³ veya ppm (Milyonda bir kısım)</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Newton (N) veya Joule (J)</span></button>
+                    <button class="option-btn" data-option="C"><span>C) m/s² veya Sievert (Sv)</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Desibel (dB) veya Hertz (Hz)</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Litre (L) veya Santigrat (°C)</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 18:</strong> Kimyasalların (gaz/buhar/toz) havadaki yoğunluklarını (konsantrasyonlarını) belirtmek için 1 metreküp havadaki miligram (mg/m³) veya milyonda bir hacim birimi olan ppm (parts per million) kullanılır. (Cevap: A)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="C">
+                <div class="question-text">
+                    <p><strong>Soru 19:</strong> İş yerinde ölçüm yapılmadan önce, homojen (benzer) maruziyet gruplarının belirlenmesi, kaç kişiden, hangi noktalardan ve ne kadar süreyle numune alınacağının planlanması işlemine ne ad verilir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) İşbaşı eğitimi ve oryantasyonu</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Acil durum krokisi çizimi</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Ölçüm ve numune alma stratejisi</span></button>
+                    <button class="option-btn" data-option="D"><span>D) Sağlık gözetimi planı</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Kalite denetim prosedürü</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 19:</strong> TS EN 689 standardında da belirtildiği gibi, ölçümlerin bilimsel ve istatistiksel geçerliliğe sahip olması için sahaya çıkmadan önce yapılan bu bilimsel planlamaya "Ölçüm ve Numune Alma Stratejisi" denir. (Cevap: C)
+                </div>
+            </div>
+
+            <div class="question-container" data-correct-answer="B">
+                <div class="question-text">
+                    <p><strong>Soru 20:</strong> İSG mevzuatına göre; işverenlerin hijyen test ve ölçümlerini periyodik olarak hangi sıklıkla tekrarlatması gerektiğine karar verilirken temel dayanak noktası aşağıdakilerden hangisidir?</p>
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" data-option="A"><span>A) Sadece işçilerin hissettikleri koku ve rahatsızlık şikayetlerine göre</span></button>
+                    <button class="option-btn" data-option="B"><span>B) Yapılan risk değerlendirmesi sonuçlarına ve mevzuatın emrettiği asgari sürelere göre</span></button>
+                    <button class="option-btn" data-option="C"><span>C) Laboratuvarların yıllık kampanya veya müsaitlik durumlarına göre</span></button>
+                    <button class="option-btn" data-option="D"><span>D) İşveren vekilinin maddi bütçe ayırabildiği aylara göre</span></button>
+                    <button class="option-btn" data-option="E"><span>E) Şirket insan kaynaklarının performans değerlendirme takvimine göre</span></button>
+                </div>
+                <button class="toggle-solution-btn"><i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör</button>
+                <div class="screen-solution">
+                    <strong>Çözüm 20:</strong> Periyodik ölçüm sıklığı (1 yıl, 2 yıl vb.) keyfi olarak belirlenmez. Mevzuatta belirtilen (asbest, kurşun vb.) zorunlu tekrarlama süreleri baz alınır ve o işyerinin tehlike sınıfına göre hazırlanan "Risk Değerlendirmesi" raporunun sonuçlarına göre İSG profesyonellerince tespit edilir. (Cevap: B)
+                </div>
+            </div>
+
+        </div> <div class="print-solutions-container">
+            <h2>Cevap Anahtarı ve Detaylı Çözümler</h2>
+            
+            <div class="print-solution-item"><strong>Soru 1 (A):</strong> Fiziksel, kimyasal ve biyolojik tehlikelerin çalışma ortamındaki varlığının sayılarla (nicelik) ve özellikleriyle (nitelik) tespit edilerek raporlanması işlemi mevzuatta doğrudan "İş Hijyeni Ölçüm, Test ve Analizi" olarak tanımlanmaktadır.</div>
+            <div class="print-solution-item"><strong>Soru 2 (D):</strong> 6331 sayılı İş Sağlığı ve Güvenliği Kanununa göre, çalışanların her türlü sağlık ve güvenlik riskine karşı korunması, gerekli ölçümlerin yaptırılması ve tedbirlerin alınması konusundaki asli yükümlülük her zaman "İşveren"dedir.</div>
+            <div class="print-solution-item"><strong>Soru 3 (E):</strong> Mevzuata göre, çalışma ortamındaki risklerin değişmesi, iş kazası veya meslek hastalığı şüphesi durumlarında, iş yerinde görevli "İş yeri hekimi veya İş güvenliği uzmanının (İSG Profesyonelleri) gerekli görmesi hâlinde" işveren ölçümleri tekrarlatmak zorundadır.</div>
+            <div class="print-solution-item"><strong>Soru 4 (C):</strong> Titreşim maruziyet ölçümleri literatürde ve mevzuatta "El-kol titreşimi" ve "Bütün vücut titreşimi" olmak üzere ikiye ayrılır. "Ayak-bacak titreşim maruziyet ölçümü" diye özel bir standart ölçüm parametresi yoktur.</div>
+            <div class="print-solution-item"><strong>Soru 5 (B):</strong> Yetkili iş hijyeni laboratuvarları; ölçüm raporlarını, numune kayıtlarını ve kalite yönetim sistemi evraklarını en az 10 yıl boyunca muhafaza etmekle yükümlüdür.</div>
+            <div class="print-solution-item"><strong>Soru 6 (E):</strong> TS EN 689 (İşyeri Havası - Solunumla Maruz Kalınan), özellikle toz, gaz, buhar gibi çalışanların soluyarak maruz kaldığı kimyasal risklerin numune alma stratejilerini belirlemek için kullanılır.</div>
+            <div class="print-solution-item"><strong>Soru 7 (C):</strong> Laboratuvar fiziki şartlarını belirleyen yönetmeliğe göre; gelen numunelerin diğer alanlara karışmadan güvenle teslim alındığı "numune kabul bölümü" en az 5 metrekare büyüklüğünde olmalıdır.</div>
+            <div class="print-solution-item"><strong>Soru 8 (B):</strong> İSG alanında faaliyet gösteren tüm kurumların yetkilendirilmesi, denetlenmesi, askıya alınması veya iptali süreçlerini yürüten tek yetkili otorite Çalışma ve Sosyal Güvenlik Bakanlığı'na bağlı İSGGM'dir.</div>
+            <div class="print-solution-item"><strong>Soru 9 (A):</strong> Laboratuvarlara İSGGM tarafından verilen yeterlilik belgelerinin geçerlilik süresi yönetmelik gereği 4 yıldır. Dört yılın sonunda laboratuvar belge yenileme sürecine girmelidir.</div>
+            <div class="print-solution-item"><strong>Soru 10 (D):</strong> Laboratuvar denetimi "haberli" bir planlı denetim ise, laboratuvarın hazırlık yapabilmesi için denetim tarihi kuruma en az 5 iş günü öncesinden resmen bildirilmelidir.</div>
+            <div class="print-solution-item"><strong>Soru 11 (B):</strong> Birden fazla işverenin aynı alanı paylaşması durumunda kanun; işverenlerin hijyen önlemlerinde "işbirliği yapmasını", "koordinasyon içinde çalışmasını" ve tehlikeler hakkında birbirlerini "bilgilendirmesini" emreder.</div>
+            <div class="print-solution-item"><strong>Soru 12 (D):</strong> 21 Nisan 2021'deki kararname ile bakanlığın güncel/eski ismi olan "Çalışma ve Sosyal Güvenlik Bakanlığı (ÇSGB)" adı geri verilmiştir.</div>
+            <div class="print-solution-item"><strong>Soru 13 (A):</strong> Mevzuatımızda İş Hijyeni laboratuvarlarının standartları resmi adıyla "İş Hijyeni Ölçüm, Test ve Analiz Laboratuvarları Hakkında Yönetmelik" çerçevesinde düzenlenmektedir.</div>
+            <div class="print-solution-item"><strong>Soru 14 (C):</strong> Laboratuvarlar, sahada kullandıkları tüm ölçüm metotlarının çevirilerini ve teknik talimatnamelerini (prosedürlerini), teknik üst kurul olan İSGÜM'e bildirmek zorundadır.</div>
+            <div class="print-solution-item"><strong>Soru 15 (D):</strong> İşçinin çalıştığı ortamda gezinirken tam olarak soluduğu havayı temsil edebilmesi için yakasına takılarak yapılan dozimetrik ölçümlere "Kişisel Maruziyet Ölçümü" denir.</div>
+            <div class="print-solution-item"><strong>Soru 16 (E):</strong> Dünyadaki tüm deney ve kalibrasyon laboratuvarlarının kalite, tarafsızlık ve teknik yeterlilik akreditasyonu TS EN ISO/IEC 17025 standardına göre yapılır.</div>
+            <div class="print-solution-item"><strong>Soru 17 (B):</strong> Maruziyet sınır değerinin aşılması "kabul edilemez"dir. İlk adım; risk analizinin güncellenmesi ve sorunun kaynağında çözülmesine yönelik (kapalı sistem, havalandırma vb.) teknik önlemlerin alınmasıdır.</div>
+            <div class="print-solution-item"><strong>Soru 18 (A):</strong> Kimyasalların havadaki yoğunluklarını (konsantrasyonlarını) belirtmek için 1 metreküp havadaki miligram (mg/m³) veya milyonda bir hacim birimi olan ppm kullanılır.</div>
+            <div class="print-solution-item"><strong>Soru 19 (C):</strong> Ölçümlerin bilimsel geçerliliğe sahip olması için sahaya çıkmadan önce yapılan bu teknik planlamaya "Ölçüm ve Numune Alma Stratejisi" denir.</div>
+            <div class="print-solution-item"><strong>Soru 20 (B):</strong> Periyodik ölçüm sıklığı keyfi belirlenmez. Mevzuatta belirtilen zorunlu tekrarlama süreleri baz alınır ve o işyerinin tehlike sınıfına göre hazırlanan "Risk Değerlendirmesi" raporu dikkate alınır.</div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.question-container');
+            
+            containers.forEach(container => {
+                const options = container.querySelectorAll('.option-btn');
+                const correctAnswer = container.getAttribute('data-correct-answer');
+                const toggleBtn = container.querySelector('.toggle-solution-btn');
+                const solutionBox = container.querySelector('.screen-solution');
+
+                // Şık Tıklama Olayı
+                options.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Tıklama yapıldığında tüm şıkları kilitle
+                        options.forEach(opt => opt.disabled = true);
+
+                        const selectedOption = this.getAttribute('data-option');
+
+                        if (selectedOption === correctAnswer) {
+                            // Doğru cevap
+                            this.classList.add('correct');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-check"></i>';
+                        } else {
+                            // Yanlış cevap
+                            this.classList.add('wrong');
+                            this.innerHTML += ' <i class="fa-solid fa-circle-xmark"></i>';
+                            
+                            // Doğru cevabı yeşil yap
+                            options.forEach(opt => {
+                                if (opt.getAttribute('data-option') === correctAnswer) {
+                                    opt.classList.add('correct');
+                                    opt.innerHTML += ' <i class="fa-solid fa-circle-check" style="opacity:0.8;"></i>';
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Çözümü Gör Butonu Olayı (Artık otomatik açılmıyor, tıklanınca açılıyor)
+                if(toggleBtn && solutionBox) {
+                    toggleBtn.addEventListener('click', function() {
+                        if(solutionBox.classList.contains('show')) {
+                            solutionBox.classList.remove('show');
+                            this.innerHTML = '<i class="fa-solid fa-eye"></i> Detaylı Çözümü Gör';
+                        } else {
+                            solutionBox.classList.add('show');
+                            this.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Çözümü Gizle';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

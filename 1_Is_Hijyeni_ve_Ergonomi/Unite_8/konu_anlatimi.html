@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 8: Ergonomi ve Tasarım</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
+        .unit-subtitle { 
+            display: inline-block; 
+            background-color: #f8fafc; 
+            color: #0f172a; 
+            padding: 0.5rem 1.5rem; 
+            border-radius: 2rem; 
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            margin-top: 0.75rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding-bottom: 3rem; }
+
+        .content-header { display: flex; justify-content: flex-end; align-items: center; padding: 1.5rem 0; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; }
+        h2 { color: var(--primary-color); margin: 2rem 0 1rem 0; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-left: 4px solid var(--secondary-color); padding-left: 0.75rem; }
+        h3 { color: #334155; margin: 1.5rem 0 0.75rem 0; font-size: 1.25rem; }
+        p { margin-bottom: 1rem; color: #475569; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #475569; }
+        strong { color: var(--dark-color); }
+
+        .concept-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .concept-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1.25rem; text-align: center; transition: all 0.2s; }
+        .concept-card:hover { border-color: var(--secondary-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transform: translateY(-2px); }
+        .concept-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 0.75rem; }
+        .concept-title { font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .concept-desc { font-size: 0.9rem; color: #64748b; }
+
+        .alert-box { border-left: 5px solid; padding: 1.25rem; border-radius: 0.5rem; margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start; }
+        .alert-icon { font-size: 1.5rem; margin-top: 0.2rem; }
+        .alert-content h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
+        .alert-content p { margin: 0; font-size: 0.95rem; }
+
+        .exam-focus { background-color: #fef2f2; border-color: var(--danger-color); }
+        .exam-focus .alert-icon { color: var(--danger-color); }
+        .exam-focus h4 { color: var(--danger-color); }
+
+        .memory-hack { background-color: #fffbeb; border-color: var(--warning-color); }
+        .memory-hack .alert-icon { color: var(--warning-color); }
+        .memory-hack h4 { color: #b45309; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        .comparison-table th, .comparison-table td { padding: 1rem; border: 1px solid #cbd5e1; text-align: left; }
+        .comparison-table th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        .comparison-table tr:nth-child(even) { background-color: #f8fafc; }
+        .highlight-cell { font-weight: 700; color: var(--danger-color); }
+
+        .regulation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .regulation-item { background: #f1f5f9; padding: 1.25rem; border-radius: 0.75rem; border-left: 4px solid var(--secondary-color); }
+        .regulation-item h4 { color: var(--primary-color); margin-bottom: 0.25rem; }
+
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+        .info-card { background: #f8fafc; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e2e8f0; transition: all 0.2s; }
+        .info-card:hover { border-color: var(--secondary-color); }
+        .info-card h4 { color: var(--primary-color); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .header-buttons { position: relative; top: 0; left: 0; justify-content: center; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .regulation-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Üniteler</a>
+        </div>
+        <h1>8. Ergonomi ve Tasarım</h1>
+        <div class="unit-subtitle">Ünite 8: Tasarımda Ergonomi, Antropometri, Antropometrik Veri Kullanımı, Çalışma Duruşları ve İş Yüksekliği Tasarımı</div>
+    </header>
+
+    <main>
+        <div class="content-header">
+            <span style="background: #dbeafe; color: #1e40af; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 600;"><i class="fa-regular fa-clock"></i> Tahmini Okuma: 18 Dk</span>
+        </div>
+
+        <div style="background: white; border: 1px solid #e2e8f0; border-left: 5px solid var(--primary-color); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bullseye"></i> Bölümün Amacı</h3>
+            <p style="color: #475569; margin-bottom: 0;">Bu ünitede, ergonomik tasarımın temel prensipleri, antropometri kavramı, antropometrik verilerin tasarımda nasıl kullanılacağı, çalışma duruşları (postür) ve iş yüksekliği tasarımı detaylı olarak ele alınmaktadır. İnsan vücut ölçülerinin ürün ve çalışma ortamı tasarımına entegrasyonu ve "insan kullanımı için tasarım" anlayışı vurgulanmaktadır.</p>
+        </div>
+
+        <!-- 1. Ergonomide Tasarım -->
+        <h2><i class="fa-solid fa-pen-ruler"></i> 1. Ergonomide Tasarım</h2>
+        <p>Ergonomi, insanların kullandığı eşyalar ve çevrelerin tasarımı ile iyileştirme olanaklarını arar. <strong>Antropometri</strong> (insan ölçüleri bilimi), ergonominin en önemli araçlarından biridir. İnsan-sistem uyumu sağlandığında çalışanlar daha güvenli, rahat ve verimli olur.</p>
+
+        <div class="concept-map">
+            <div class="concept-card">
+                <i class="fa-solid fa-ruler-combined concept-icon"></i>
+                <div class="concept-title">Antropometri</div>
+                <div class="concept-desc">"Antropos" (insan) + "metikos" (ölçü). Vücut ölçülerinin belirlenmesi ve değerlendirilmesi.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-people-group concept-icon"></i>
+                <div class="concept-title">Hedef Kitle</div>
+                <div class="concept-desc">Ürünler, kullanıcıların <strong>%90</strong>'ına hitap eder. Ekstrem (uç) değerler tasarım dışı bırakılır.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-triangle-exclamation concept-icon"></i>
+                <div class="concept-title">Tasarım Hatası</div>
+                <div class="concept-desc">Tekrarlayan zorlanma sakatlıkları genelde ergonomik tasarım hatalarından kaynaklanır.</div>
+            </div>
+        </div>
+
+        <div class="alert-box exam-focus">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <div class="alert-content">
+                <h4>Sınav Bilgisi: %90 Kuralı</h4>
+                <p>Umuma açık ürün tasarımlarında en küçükler ve en büyükler dikkate alınmaz. Ürün, kullanıcıların yalnızca <strong>%90</strong>'ına hitap eder. Alt %10 veya üst %10 tasarım dışıdır. Normal dağılımda eteklerdeki alan küçük olduğu için ekstrem değerlere gitmek kullanıcı sayısını anlamlı artırmaz.</p>
+            </div>
+        </div>
+
+        <!-- 2. Antropometrik Ölçüler ve Veri Kullanımı -->
+        <h2><i class="fa-solid fa-ruler"></i> 2. Antropometrik Ölçüler ve Veri Kullanımı</h2>
+        <p>Antropometrik veriler doğrudan tasarıma uygulanamaz; önce hangi uyumsuzlukların olabileceği analiz edilir. Tasarımda ortalama değerler değil, amaca göre belirlenmiş ölçü aralığı (alt ve üst sınırlar) kullanılır.</p>
+
+        <div class="comparison-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ölçü Türü</th>
+                        <th>Açıklama</th>
+                        <th>Kullanım Yeri</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sığışma Ölçüleri</strong></td>
+                        <td>Büyük vücut ölçüleri (%90, %95, %99).</td>
+                        <td>İç ölçüler (oturak genişliği, kapı aralığı).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Erişme Ölçüleri</strong></td>
+                        <td>Küçük vücut ölçüleri (%1, %5, %10).</td>
+                        <td>Dış ölçüler (kumanda butonları, raf yüksekliği).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Statik Antropometri</strong></td>
+                        <td>Sabit duruş (oturma/ayakta) ölçüleri.</td>
+                        <td>Mobilya, çalışma masası tasarımı.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dinamik Antropometri</strong></td>
+                        <td>Hareket halindeki ölçüler (iş alanı hacmi).</td>
+                        <td>Makine buton yerleşimi, ulaşma mesafeleri.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kuvvetsel Antropometri</strong></td>
+                        <td>Fiziksel aktivitelerde kuvvet ve yük analizi.</td>
+                        <td>Kaldırma, itme, çekme gerektiren işler.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h4><i class="fa-solid fa-up-down"></i> Sığışma ve Erişme</h4>
+                <ul style="margin: 0; padding-left: 1.2rem;">
+                    <li><strong>Sığışma:</strong> Büyük ölçüler (herkes sığsın).</li>
+                    <li><strong>Erişme:</strong> Küçük ölçüler (herkes ulaşabilsin).</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h4><i class="fa-solid fa-arrows-spin"></i> Statik ve Dinamik</h4>
+                <ul style="margin: 0; padding-left: 1.2rem;">
+                    <li><strong>Statik:</strong> Sabit pozisyon (oturma, ayakta).</li>
+                    <li><strong>Dinamik:</strong> Hareketli (iş alanı hacmi, ulaşma).</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h4><i class="fa-solid fa-weight-scale"></i> Kuvvetsel</h4>
+                <ul style="margin: 0; padding-left: 1.2rem;">
+                    <li>Vücut üzerindeki yüklerin mekanik analizi.</li>
+                    <li>Eklem açıları ve duruş pozisyonları hesaplanır.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="alert-box memory-hack">
+            <i class="fa-solid fa-brain alert-icon"></i>
+            <div class="alert-content">
+                <h4>Hafıza Taktikleri: Yüzdelik Değerler</h4>
+                <p><strong>Sığışma:</strong> Büyük → %90, %95, %99 (herkes sığsın). <strong>Erişme:</strong> Küçük → %1, %5, %10 (herkes ulaşsın). ISO 7250 standardında 62 antropometrik ölçü tanımlanmıştır.</p>
+            </div>
+        </div>
+
+        <!-- 3. Antropometrik Çalışma Tasarımı (Postür ve İş Yüksekliği) -->
+        <h2><i class="fa-solid fa-person-walking"></i> 3. Antropometrik Çalışma Tasarımı</h2>
+        <p>Postür (duruş biçimi), ergonomik tasarımın temel unsurlarındandır. <strong>Statik postür</strong> (sabit duruş) ve <strong>dinamik postür</strong> (hareketli duruş) olarak ikiye ayrılır. İş yüksekliği tasarımı da verimlilik ve sağlık açısından kritiktir.</p>
+
+        <div class="regulation-grid">
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-chair"></i> Oturma Postürü</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Avantaj: Daha az enerji tüketimi, kan dolaşımı daha az etkilenir.</li>
+                    <li>Dezavantaj: Sürekli oturma kalp, sindirim, mide şikâyetleri yapabilir.</li>
+                    <li>Optimal çalışma yüksekliği: Dirsekten <strong>2,5 cm</strong> aşağıda.</li>
+                </ul>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-person-standing"></i> Ayakta Çalışma</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Yarı oturarak çalışma yüksekliği: <strong>102 cm</strong>.</li>
+                    <li>Doğru duruşta ağırlık eşit dağılır, kulak-altı çizgisi ayak bileklerinden geçer.</li>
+                    <li>Dezavantaj: Kan toplanması, ayak-bacak ağrıları.</li>
+                </ul>
+            </div>
+            <div class="regulation-item" style="grid-column: 1 / -1;">
+                <h4><i class="fa-solid fa-arrow-up-wide-short"></i> İş Yüksekliği Tasarımı</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Çok yüksek:</strong> Kollar yükselir → boyun ve omuz ağrısı.</li>
+                    <li><strong>Çok alçak:</strong> Vücut öne eğilir → sırt ağrısı (ayakta daha ciddi).</li>
+                    <li>Optimal: Dirsek hizasında, yaklaşık <strong>2,5 cm</strong> altında.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background: #fef2f2; border-left: 5px solid var(--danger-color); padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
+            <p style="margin: 0; color: #991b1b;"><i class="fa-solid fa-circle-exclamation" style="color: var(--danger-color);"></i> <strong>En Kötü Postür:</strong> Sürekli aynı olan postürdür. Bu nedenle çalışma sırasında postürün sürekli değiştirilmesi önerilir.</p>
+        </div>
+
+        <h3>Postür Karşılaştırması</h3>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Kriter</th>
+                    <th>Oturma</th>
+                    <th>Ayakta</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Enerji Tüketimi</strong></td>
+                    <td>Düşük</td>
+                    <td>Yüksek</td>
+                </tr>
+                <tr>
+                    <td><strong>Kan Dolaşımı</strong></td>
+                    <td>Daha az etkilenir</td>
+                    <td>Bacaklarda kan toplanması riski</td>
+                </tr>
+                <tr>
+                    <td><strong>Kas Yükü</strong></td>
+                    <td>Daha az statik yük</td>
+                    <td>Bacak ve sırt kasları daha fazla yüklenir</td>
+                </tr>
+                <tr>
+                    <td><strong>Tercih Durumu</strong></td>
+                    <td>Genelde tercih edilir</td>
+                    <td>Makine ile çalışmada veya hareket gerektiren işlerde</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background: #e0f2fe; border-radius: 0.75rem; padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;"><i class="fa-regular fa-lightbulb"></i> Ünite Özeti</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div><strong>Tasarım İlkesi:</strong> İnsan kullanımı için tasarım, %90 kuralı</div>
+                <div><strong>Antropometri:</strong> İnsan ölçüleri bilimi, statik/dinamik</div>
+                <div><strong>Sığışma:</strong> %90-%99 (büyük ölçüler)</div>
+                <div><strong>Erişme:</strong> %1-%10 (küçük ölçüler)</div>
+                <div><strong>Postür:</strong> Statik (sabit) – Dinamik (hareketli)</div>
+                <div><strong>İş Yüksekliği:</strong> Dirsek hizası ±2,5 cm, 102 cm yarı oturma</div>
+                <div><strong>ISO 7250:</strong> 62 antropometrik ölçü</div>
+                <div><strong>En kötü postür:</strong> Sürekli aynı duruş</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3.5rem;">
+            <a href="test_8.html" style="background-color: var(--secondary-color); color: white; text-decoration: none; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: bold; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(13, 148, 136, 0.3); transition: all 0.2s;">
+                Konuyu Anladım, Ünite 8 Test-1'e Başla <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+    </footer>
+
+</body>
+</html>
