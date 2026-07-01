@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 5: Sağlık Kuruluşlarında Riskler ve Risk Analizleri</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
+        .unit-subtitle { 
+            display: inline-block; 
+            background-color: #f8fafc; 
+            color: #0f172a; 
+            padding: 0.5rem 1.5rem; 
+            border-radius: 2rem; 
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            margin-top: 0.75rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding-bottom: 3rem; }
+
+        .content-header { display: flex; justify-content: flex-end; align-items: center; padding: 1.5rem 0; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; }
+        h2 { color: var(--primary-color); margin: 2rem 0 1rem 0; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-left: 4px solid var(--secondary-color); padding-left: 0.75rem; }
+        h3 { color: #334155; margin: 1.5rem 0 0.75rem 0; font-size: 1.25rem; }
+        p { margin-bottom: 1rem; color: #475569; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #475569; }
+        strong { color: var(--dark-color); }
+
+        .concept-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .concept-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1.25rem; text-align: center; transition: all 0.2s; }
+        .concept-card:hover { border-color: var(--secondary-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transform: translateY(-2px); }
+        .concept-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 0.75rem; }
+        .concept-title { font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .concept-desc { font-size: 0.9rem; color: #64748b; }
+
+        .alert-box { border-left: 5px solid; padding: 1.25rem; border-radius: 0.5rem; margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start; }
+        .alert-icon { font-size: 1.5rem; margin-top: 0.2rem; }
+        .alert-content h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
+        .alert-content p { margin: 0; font-size: 0.95rem; }
+
+        .exam-focus { background-color: #fef2f2; border-color: var(--danger-color); }
+        .exam-focus .alert-icon { color: var(--danger-color); }
+        .exam-focus h4 { color: var(--danger-color); }
+
+        .memory-hack { background-color: #fffbeb; border-color: var(--warning-color); }
+        .memory-hack .alert-icon { color: var(--warning-color); }
+        .memory-hack h4 { color: #b45309; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        .comparison-table th, .comparison-table td { padding: 1rem; border: 1px solid #cbd5e1; text-align: left; }
+        .comparison-table th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        .comparison-table tr:nth-child(even) { background-color: #f8fafc; }
+        .highlight-cell { font-weight: 700; color: var(--danger-color); }
+
+        .regulation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .regulation-item { background: #f1f5f9; padding: 1.25rem; border-radius: 0.75rem; border-left: 4px solid var(--secondary-color); }
+        .regulation-item h4 { color: var(--primary-color); margin-bottom: 0.25rem; }
+
+        .risk-matrix { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; text-align: center; }
+        .risk-matrix th, .risk-matrix td { padding: 0.75rem; border: 1px solid #cbd5e1; }
+        .risk-matrix th { background-color: var(--primary-color); color: white; }
+        .risk-high { background-color: #fecaca; color: #991b1b; }
+        .risk-medium { background-color: #fde68a; color: #92400e; }
+        .risk-low { background-color: #bbf7d0; color: #166534; }
+
+        .step-card { background: #f8fafc; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e2e8f0; transition: all 0.2s; margin-bottom: 1rem; }
+        .step-card:hover { border-color: var(--secondary-color); }
+        .step-card h4 { color: var(--primary-color); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .header-buttons { position: relative; top: 0; left: 0; justify-content: center; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .regulation-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Üniteler</a>
+        </div>
+        <h1>5. Sağlık Kuruluşlarında Riskler ve Risk Analizleri</h1>
+        <div class="unit-subtitle">Ünite 5: Risk Analizleri, Kimyasal/Fiziksel/Psikososyal/Ergonomik Risk Etmenleri</div>
+    </header>
+
+    <main>
+        <div class="content-header">
+            <span style="background: #dbeafe; color: #1e40af; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 600;"><i class="fa-regular fa-clock"></i> Tahmini Okuma: 20 Dk</span>
+        </div>
+
+        <div style="background: white; border: 1px solid #e2e8f0; border-left: 5px solid var(--primary-color); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bullseye"></i> Bölümün Amacı</h3>
+            <p style="color: #475569; margin-bottom: 0;">Bu ünitede, sağlık kuruluşlarında risk analizleri ve risk yönetimi süreçleri, kimyasal ve fiziksel risk etmenleri, psikososyal risk faktörleri ve stres yönetimi ile ergonomik risk etmenleri detaylı olarak ele alınmaktadır. Tehlike-risk ayrımı, risk değerlendirme basamakları ve L tipi matris ile risk hesaplama yöntemleri vurgulanmaktadır.</p>
+        </div>
+
+        <!-- 1. Risk Analizleri ve Risk Yönetimi -->
+        <h2><i class="fa-solid fa-magnifying-glass-chart"></i> 1. Risk Analizleri ve Risk Yönetimi</h2>
+        <p><strong>Tehlike</strong> olumsuz etki yaratabilecek zarar potansiyeli iken, <strong>Risk</strong> tehlikeye bağlı ortaya çıkan zarar veya hasar potansiyelidir. 6331 sayılı Kanun ile risk değerlendirmesi yasal zorunluluk haline gelmiştir. Risk değerlendirmesi <strong>proaktif</strong> bir yaklaşımdır.</p>
+
+        <div class="concept-map">
+            <div class="concept-card">
+                <i class="fa-solid fa-biohazard concept-icon"></i>
+                <div class="concept-title">Tehlike</div>
+                <div class="concept-desc">Soyut, genel kavram. Zarar ve hasar potansiyeli. Örn: Aşındırıcı kimyasal madde.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-triangle-exclamation concept-icon"></i>
+                <div class="concept-title">Risk</div>
+                <div class="concept-desc">Somut, bireye özgü. Tehlikeye bağlı zarar görme olasılığı. Örn: Kimyasal nedeniyle cilt yanığı oluşma ihtimali.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-clipboard-list concept-icon"></i>
+                <div class="concept-title">Risk Değerlendirmesi</div>
+                <div class="concept-desc">Tehlikelerin belirlenmesi, risklerin analiz edilmesi ve kontrol önlemlerinin kararlaştırılması işlerinin bütünü.</div>
+            </div>
+        </div>
+
+        <h3>Risk Değerlendirme Süreci Basamakları</h3>
+        <div class="step-card">
+            <h4><i class="fa-solid fa-1"></i> Bilgi Toplama</h4>
+            <p>Çalışan özellikleri, iş ekipmanları, kaza kayıtları, MGBF (Malzeme Güvenlik Bilgi Formları) toplanır.</p>
+        </div>
+        <div class="step-card">
+            <h4><i class="fa-solid fa-2"></i> Tehlikelerin Belirlenmesi</h4>
+            <p><span class="highlight-cell">En önemli adımdır.</span> Kontrol listeleri, gözlem, kaza kayıtları ve MGBF kullanılır.</p>
+        </div>
+        <div class="step-card">
+            <h4><i class="fa-solid fa-3"></i> Risklerin Değerlendirilmesi</h4>
+            <p>Olasılık ve şiddet tahmin edilir, riskin kabul edilebilir olup olmadığına karar verilir.</p>
+        </div>
+        <div class="step-card">
+            <h4><i class="fa-solid fa-4"></i> Kontrol Önlemlerinin Kararlaştırılması</h4>
+            <p>Eliminasyon, ikame, toplu koruma, KKD (son çare) hiyerarşisi uygulanır.</p>
+        </div>
+        <div class="step-card">
+            <h4><i class="fa-solid fa-5"></i> Kontrol Önlemlerinin Uygulanması</h4>
+            <p>Belirlenen önlemler hayata geçirilir.</p>
+        </div>
+        <div class="step-card">
+            <h4><i class="fa-solid fa-6"></i> İzleme ve Gözden Geçirme</h4>
+            <p>Alınan önlemlerin etkinliği denetlenir ve güncellenir.</p>
+        </div>
+
+        <h3>Risk Seviyesi (L Tipi Matris) - Olasılık ve Etki</h3>
+        <table class="risk-matrix">
+            <thead>
+                <tr>
+                    <th>Puan</th>
+                    <th>Olasılık</th>
+                    <th>Etki (Şiddet)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>5</strong></td>
+                    <td class="risk-high">Haftada bir / her gün</td>
+                    <td class="risk-high">Ölüm</td>
+                </tr>
+                <tr>
+                    <td><strong>4</strong></td>
+                    <td class="risk-high">Ayda bir</td>
+                    <td class="risk-high">Sürekli iş göremezlik, ciddi maddi hasar</td>
+                </tr>
+                <tr>
+                    <td><strong>3</strong></td>
+                    <td class="risk-medium">Yılda birkaç kez / 3 ayda bir</td>
+                    <td class="risk-medium">Tedavi gerektiren yaralanma</td>
+                </tr>
+                <tr>
+                    <td><strong>2</strong></td>
+                    <td class="risk-low">Yılda bir kez</td>
+                    <td class="risk-low">İlk yardım gerektiren durum</td>
+                </tr>
+                <tr>
+                    <td><strong>1</strong></td>
+                    <td class="risk-low">5 yılda bir / imkânsıza yakın</td>
+                    <td class="risk-low">İlk yardım gerektirmeyen durum</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="alert-box exam-focus">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <div class="alert-content">
+                <h4>Sınav Bilgisi: Risk Değeri Hesaplama</h4>
+                <p>Risk değeri = <strong>Olasılık × Etki (Şiddet)</strong> ile hesaplanır. "İlk yardım gerektiren durumlar" şiddet açısından <strong>Hafif (2 Puan)</strong> kategorisindedir. Olasılığın 2 puan (Düşük) olması <strong>"Yılda bir kez"</strong> anlamına gelir.</p>
+            </div>
+        </div>
+
+        <!-- 2. Kimyasal ve Fiziksel Risk Etmenleri -->
+        <h2><i class="fa-solid fa-flask"></i> 2. Kimyasal ve Fiziksel Risk Etmenleri</h2>
+        <p>Sağlık kuruluşlarında risk yönetimi, hasta bakımı alan kişilerin, çalışanların, ziyaretçilerin yaralanma riskini ve organizasyonda oluşabilecek zararı belirleme, değerlendirme ve azaltma amaçlı klinik ve yönetsel aktivitelerdir. Risk yöneticileri dört adımlık program uygular: <strong>Risk tanımlama, risk analizi, risk kontrolü ve risk finansmanı</strong>.</p>
+
+        <div class="regulation-grid">
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-vial"></i> Kimyasal Riskler</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Dezenfektanlar, sterilizasyon kimyasalları, ilaçlar.</li>
+                    <li>Teknolojik gelişmeler dikkate alınarak uygun mühendislik kontrol sistemleri seçilir.</li>
+                    <li>Tozlar (300 mikron altı) meslek hastalıklarına neden olur.</li>
+                </ul>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-microscope"></i> Fiziksel Riskler</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Gürültü:</strong> Tıbbi cihazlar, yoğun bakım alarmları.</li>
+                    <li><strong>Aydınlatma:</strong> Yetersiz veya aşırı ışık.</li>
+                    <li><strong>Titreşim:</strong> Tıbbi ekipmanlar.</li>
+                    <li><strong>Termal konfor:</strong> Isı ve nem dengesizlikleri.</li>
+                    <li><strong>Radyasyon:</strong> Röntgen, BT, nükleer tıp.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="alert-box memory-hack">
+            <i class="fa-solid fa-brain alert-icon"></i>
+            <div class="alert-content">
+                <h4>Hafıza Taktikleri: Risk Yönetimi Tanımı</h4>
+                <p><strong>Joint Commission</strong> tanımı: "Hasta bakımı alan kişilerin, çalışanların, ziyaretçilerin yaralanma riskini ve organizasyonda oluşabilecek zarar ziyan riskini belirleme, değerlendirme ve azaltmak amacıyla yapılan klinik ve yönetsel aktiviteler." Bu tanım <strong>Risk Yönetimi</strong>'dir.</p>
+            </div>
+        </div>
+
+        <!-- 3. Psikososyal Risk Etmenleri ve Stres Yönetimi -->
+        <h2><i class="fa-solid fa-face-frown"></i> 3. Psikososyal Risk Etmenleri ve Stres Yönetimi</h2>
+        <p>Sağlık sektörü, yoğun iş yükü, ölümcül hastalara bakım, duygusal destek zorunluluğu gibi nedenlerle yüksek stres içerir. Psikososyal risk faktörleri; çalışma süresi, ücretler, sendikalaşma, mobbing gibi konuları içerir. <strong>Tükenmişlik</strong>, çalışma şartlarından doğan fiziksel ve duygusal çöküştür.</p>
+
+        <ul>
+            <li><strong>Stres Belirtileri:</strong> Depresyon, anksiyete, baş ağrısı, kas gerginliği, uykusuzluk.</li>
+            <li><strong>Kurumsal Sonuçlar:</strong> Verim düşüşü, iş doyumu azalması, devamsızlık, işten ayrılma.</li>
+            <li><strong>Başa Çıkma Yöntemleri:</strong> Etkili iletişim, sosyal destek, duygusal iklim çalışmaları, stres yönetimi eğitimleri.</li>
+        </ul>
+
+        <div style="background: #fef2f2; border-left: 5px solid var(--danger-color); padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
+            <p style="margin: 0; color: #991b1b;"><i class="fa-solid fa-circle-exclamation" style="color: var(--danger-color);"></i> <strong>Önemli:</strong> "Zekâ seviyesi, görme yeteneği, duygusal durum, kaza eğilimi, iş tatmini, yabancılaşma, monotonluk, riski kabullenme, stres, alkol bağımlılığı" gibi faktörlerin tamamı <strong>Psikolojik Etkenler</strong> grubuna girer. Sınavda fizyolojik veya sosyolojik çeldiricilere dikkat!</p>
+        </div>
+
+        <!-- 4. Ergonomik Risk Etmenleri -->
+        <h2><i class="fa-solid fa-user-gear"></i> 4. Ergonomik Risk Etmenleri</h2>
+        <p>Ergonomi, insanlar, makineler ve iş talebi arasındaki kompleks ilişkiyi anlamak ve insan kapasitesi ile iş talebi arasındaki açığı minimize etmek için kullanılan yöntemdir. <strong>Yaşamın insanlaştırılması</strong> ve <strong>işin insana uyumu</strong> temel hedeflerdir.</p>
+
+        <div class="regulation-grid">
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-check"></i> Bir İşin Ergonomik Olma Şartları</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Yapılabilirlik:</strong> Biyolojik denge bozulmamalı.</li>
+                    <li><strong>Katlanabilirlik:</strong> Sürekli performans sınırları içinde.</li>
+                    <li><strong>Sürekli Performans:</strong> 8 saatlik mesai boyunca maksimum efor.</li>
+                    <li><strong>Kabul Edilebilirlik:</strong> Sosyal sınırlar içinde.</li>
+                    <li><strong>Hoşnutluk:</strong> Psikolojik beklentiler karşılanmalı.</li>
+                    <li><strong>Kendini Gerçekleştirebilirlik:</strong> Yetenekler tatmin edilmeli.</li>
+                </ul>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-bolt"></i> Ergonomi Prensipleri</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Araç-gereç ve makineler maksimum konfor ve emniyette kullanılmalı.</li>
+                    <li>İşin insana uyumu ve insanın işe uyumu sağlanmalı.</li>
+                    <li>İnsan sağlığı tehdit edilmemeli.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="alert-box exam-focus">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <div class="alert-content">
+                <h4>Sınav Bilgisi: Ergonominin Özellikleri</h4>
+                <p>Ergonomi ile ilgili aşağıdaki maddelerin <strong>hepsi doğrudur</strong>:
+                <br>I. Yaşamın insana uygun hale getirilmesidir.
+                <br>II. Çalışma yerinin insana uygun olarak düzenlenmesi gerekir.
+                <br>III. Yaşamın insanlaştırılmasıdır.
+                <br>IV. Çalışma araç ve gereçlerinin çalışanın vücut özelliklerine uygun olarak düzenlenmesi gerekir.</p>
+            </div>
+        </div>
+
+        <div style="background: #e0f2fe; border-radius: 0.75rem; padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;"><i class="fa-regular fa-lightbulb"></i> Ünite Özeti</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div><strong>Tehlike:</strong> Zarar potansiyeli (soyut)</div>
+                <div><strong>Risk:</strong> Zarar olasılığı (somut)</div>
+                <div><strong>Risk Değeri:</strong> Olasılık × Etki</div>
+                <div><strong>Risk Değerlendirme:</strong> 6 basamaklı süreç</div>
+                <div><strong>Kimyasal/Fiziksel:</strong> Toz, gürültü, radyasyon, termal konfor</div>
+                <div><strong>Psikososyal:</strong> Stres, tükenmişlik, mobbing</div>
+                <div><strong>Ergonomi:</strong> Yaşamın insanlaştırılması, işin insana uyumu</div>
+                <div><strong>Ergonomi Şartları:</strong> Yapılabilirlik, katlanabilirlik, kabul edilebilirlik, hoşnutluk, kendini gerçekleştirebilirlik</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3.5rem;">
+            <a href="test_5.html" style="background-color: var(--secondary-color); color: white; text-decoration: none; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: bold; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(13, 148, 136, 0.3); transition: all 0.2s;">
+                Konuyu Anladım, Ünite 5 Test-1'e Başla <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+    </footer>
+
+</body>
+</html>

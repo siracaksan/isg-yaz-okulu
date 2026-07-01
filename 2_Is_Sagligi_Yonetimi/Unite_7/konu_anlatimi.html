@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 7: Enfeksiyon Kontrolü, İş Kazaları ve Eğitimler</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
+        .unit-subtitle { 
+            display: inline-block; 
+            background-color: #f8fafc; 
+            color: #0f172a; 
+            padding: 0.5rem 1.5rem; 
+            border-radius: 2rem; 
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            margin-top: 0.75rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding-bottom: 3rem; }
+
+        .content-header { display: flex; justify-content: flex-end; align-items: center; padding: 1.5rem 0; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; }
+        h2 { color: var(--primary-color); margin: 2rem 0 1rem 0; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-left: 4px solid var(--secondary-color); padding-left: 0.75rem; }
+        h3 { color: #334155; margin: 1.5rem 0 0.75rem 0; font-size: 1.25rem; }
+        p { margin-bottom: 1rem; color: #475569; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #475569; }
+        strong { color: var(--dark-color); }
+
+        .concept-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .concept-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1.25rem; text-align: center; transition: all 0.2s; }
+        .concept-card:hover { border-color: var(--secondary-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transform: translateY(-2px); }
+        .concept-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 0.75rem; }
+        .concept-title { font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .concept-desc { font-size: 0.9rem; color: #64748b; }
+
+        .alert-box { border-left: 5px solid; padding: 1.25rem; border-radius: 0.5rem; margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start; }
+        .alert-icon { font-size: 1.5rem; margin-top: 0.2rem; }
+        .alert-content h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
+        .alert-content p { margin: 0; font-size: 0.95rem; }
+
+        .exam-focus { background-color: #fef2f2; border-color: var(--danger-color); }
+        .exam-focus .alert-icon { color: var(--danger-color); }
+        .exam-focus h4 { color: var(--danger-color); }
+
+        .memory-hack { background-color: #fffbeb; border-color: var(--warning-color); }
+        .memory-hack .alert-icon { color: var(--warning-color); }
+        .memory-hack h4 { color: #b45309; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        .comparison-table th, .comparison-table td { padding: 1rem; border: 1px solid #cbd5e1; text-align: left; }
+        .comparison-table th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        .comparison-table tr:nth-child(even) { background-color: #f8fafc; }
+        .highlight-cell { font-weight: 700; color: var(--danger-color); }
+
+        .regulation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .regulation-item { background: #f1f5f9; padding: 1.25rem; border-radius: 0.75rem; border-left: 4px solid var(--secondary-color); }
+        .regulation-item h4 { color: var(--primary-color); margin-bottom: 0.25rem; }
+
+        .do-dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .do-card { background: #f0fdf4; border-radius: 0.75rem; padding: 1.25rem; border-left: 4px solid #22c55e; }
+        .do-card h4 { color: #166534; display: flex; align-items: center; gap: 0.5rem; }
+        .dont-card { background: #fef2f2; border-radius: 0.75rem; padding: 1.25rem; border-left: 4px solid #dc2626; }
+        .dont-card h4 { color: #991b1b; display: flex; align-items: center; gap: 0.5rem; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .header-buttons { position: relative; top: 0; left: 0; justify-content: center; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .regulation-grid, .do-dont-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Üniteler</a>
+        </div>
+        <h1>7. Enfeksiyon Kontrolü, İş Kazaları ve Eğitimler</h1>
+        <div class="unit-subtitle">Ünite 7: Enfeksiyon Korunma, Kesici/Delici Alet Yaralanmaları, Atık Yönetimi ve İSG Eğitimleri</div>
+    </header>
+
+    <main>
+        <div class="content-header">
+            <span style="background: #dbeafe; color: #1e40af; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 600;"><i class="fa-regular fa-clock"></i> Tahmini Okuma: 22 Dk</span>
+        </div>
+
+        <div style="background: white; border: 1px solid #e2e8f0; border-left: 5px solid var(--primary-color); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bullseye"></i> Bölümün Amacı</h3>
+            <p style="color: #475569; margin-bottom: 0;">Bu ünitede, sağlık kuruluşlarında biyolojik riskler ve enfeksiyonlardan korunma yöntemleri, kesici/delici alet yaralanmaları ve iş kazaları, atık yönetimi (tıbbi, tehlikeli, radyoaktif atıklar) ve iş sağlığı güvenliği eğitim konuları ile yasal hak ve sorumluluklar detaylı olarak ele alınmaktadır.</p>
+        </div>
+
+        <!-- 1. Enfeksiyonlardan Korunma -->
+        <h2><i class="fa-solid fa-biohazard"></i> 1. Enfeksiyonlardan Korunma</h2>
+        <p>Biyolojik etkenler, iş yeri kaynaklı olup enfeksiyona, alerjiye veya zehirlenmeye yol açan mikroorganizmalardır. Biyolojik Etkenlere Maruziyet Risklerinin Önlenmesi Hakkındaki Yönetmelik'te dört gruba ayrılırlar. <strong>Grup 3 ve 4</strong> biyolojik etkenlere maruz kalan çalışanların listesi, işin bitiminden itibaren en az <strong>15 yıl</strong> saklanır.</p>
+
+        <div class="concept-map">
+            <div class="concept-card">
+                <i class="fa-solid fa-virus concept-icon"></i>
+                <div class="concept-title">Biyolojik Etken</div>
+                <div class="concept-desc">Enfeksiyon, alerji veya zehirlenmeye yol açan mikroorganizmalar. 4 grupta sınıflandırılır.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-hand-holding-medical concept-icon"></i>
+                <div class="concept-title">Korunma Yöntemleri</div>
+                <div class="concept-desc">Bağışıklama, ilaç tedavisi, beslenme, çevresel düzenleme, kişisel hijyen.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-clock concept-icon"></i>
+                <div class="concept-title">Kayıt Süresi</div>
+                <div class="concept-desc">Grup 3 ve 4 biyolojik etkenler için maruziyet kayıtları <strong>15 yıl</strong> saklanır.</div>
+            </div>
+        </div>
+
+        <ul>
+            <li><strong>Bulaşma Yolları:</strong> Hava, su, temas, zoonoz (hayvan kaynaklı), vektör aracılığı.</li>
+            <li><strong>Temel Korunma Kuralları:</strong> İş giysileri evde yıkanmamalı, çalışma ortamında dezenfekte edilmeli. Biyolojik etken bulunan ortamlarda yeme-içme engellenmeli. Tüm kan ve vücut sıvıları "potansiyel enfekte" kabul edilmeli, temas öncesi eldiven kullanılmalı.</li>
+        </ul>
+
+        <!-- 2. Kesici/Delici Alet Yaralanmaları ve İş Kazaları -->
+        <h2><i class="fa-solid fa-syringe"></i> 2. Kesici/Delici Alet Yaralanmaları ve İş Kazaları</h2>
+        <p>Sağlık sektöründe iş kazalarının %42-74'ü delici-kesici alet yaralanmalarıdır. En sık <strong>iğne ucunun kapağını kapatmaya çalışırken</strong> meydana gelir. HBV geçiş oranı %6-30, HCV %2, HIV %0,3'tür.</p>
+
+        <div class="do-dont-grid">
+            <div class="do-card">
+                <h4><i class="fa-solid fa-circle-check"></i> YAPILMASI GEREKENLER</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Yaralı bölge <strong>su ve sabunla</strong> yıkanmalı.</li>
+                    <li>Cilt antiseptiği (%70 alkol veya %10 povidon iyot) ile silinmeli.</li>
+                    <li>Olay <strong>Hastane Enfeksiyon Kontrol Komitesine</strong> bildirilmeli.</li>
+                    <li>Atıklar en fazla <strong>3/4</strong> oranında doldurulan sarı, delinmeye dayanıklı kutulara atılmalı.</li>
+                </ul>
+            </div>
+            <div class="dont-card">
+                <h4><i class="fa-solid fa-circle-xmark"></i> YAPILMAMASI GEREKENLER</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><span class="highlight-cell">Yaralı bölge KESİNLİKLE SIKILMAMALI ve KANATILMAYA ÇALIŞILMAMALI.</span></li>
+                    <li>İğneler işlem sonrası elle çıkarılmamalı veya kapağı kapatılmamalı.</li>
+                    <li>"Derin olmayan çizikler bildirilmez" anlayışı YANLIŞ.</li>
+                    <li>Atık kapları dolduğunda sıkıştırılmamalı ve boşaltılmamalı.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>İş Kazası Araştırma Raporu</h3>
+        <p>Kazanın kök nedenini bulmak için hazırlanır. Raporda; tarih, saat, kaza yeri, zarar gören ekipman, yaralanma türü, olay akışı ve <strong>görgü şahitlerinin isimleri</strong> yer alır. (Görgü şahitlerinin görev yerleri değil, isimleri ve ifadeleri önemlidir.)</p>
+
+        <div class="alert-box exam-focus">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <div class="alert-content">
+                <h4>Sınav Bilgisi: Kesici-Delici Alet Yaralanması</h4>
+                <p>HBV (%6-30), HCV (%2), HIV (%0,3) geçiş oranları. En sık <strong>iğne kapağını kapatma</strong> sırasında olur. Yaralanma sonrası <strong>sıkma ve kanatma</strong> kesinlikle yanlıştır. Olay <strong>aynı gün</strong> iş kazası başvurusu ve İSG Birimine bildirilmelidir.</p>
+            </div>
+        </div>
+
+        <!-- 3. Atık Yönetimi -->
+        <h2><i class="fa-solid fa-trash-can"></i> 3. Sağlık Kuruluşlarında Atık Yönetimi</h2>
+        <p>Sağlık kuruluşları Çevre, İzin ve Lisans Yönetmeliği'ne göre kirletici işletmeler sınıfındadır. Atıklar; evsel, ambalaj, tıbbi (enfeksiyon yapıcı, patolojik, kesici-delici), tehlikeli, radyoaktif ve tehlikesiz atıklar olarak gruplandırılır.</p>
+
+        <h3>Atık Yönetimi Hiyerarşisi</h3>
+        <ol>
+            <li><strong>Önizleme (Önleme)</strong> - En üstte, en istenen</li>
+            <li><strong>Azaltma</strong></li>
+            <li><strong>Tekrar Kullanım</strong></li>
+            <li><strong>Geri Dönüşüm</strong></li>
+            <li><strong>Enerji Geri Kazanımı</strong></li>
+            <li><strong>Bertaraf</strong> - En altta, son çare</li>
+        </ol>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Atık Türü</th>
+                    <th>Özellikler ve Örnekler</th>
+                    <th>Bertaraf Sorumlusu</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tehlikeli Atık</strong></td>
+                    <td>Fiziksel/kimyasal özelliklerinden dolayı özel işlem gerektirir.</td>
+                    <td>Lisanslı Tesisler</td>
+                </tr>
+                <tr>
+                    <td><strong>Kesici-Delici Atık</strong></td>
+                    <td>Enjektör, lanset, bisturi, kırık cam, ampul, petri kabı.</td>
+                    <td>Belediye</td>
+                </tr>
+                <tr>
+                    <td><strong>Enfeksiyon Yapıcı Atık</strong></td>
+                    <td>Kan, vücut sıvıları, laboratuvar kültürleri, dokular.</td>
+                    <td>Belediye</td>
+                </tr>
+                <tr>
+                    <td><strong>Patolojik Atık</strong></td>
+                    <td>Cerrahi/otopsi sonucu çıkan organ, doku, fetüs.</td>
+                    <td>Belediye</td>
+                </tr>
+                <tr>
+                    <td><strong>Radyoaktif Atık</strong></td>
+                    <td>Nükleer ve radyasyon ünitelerinden çıkan atıklar.</td>
+                    <td><span class="highlight-cell">TAEK / NDK</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Evsel Atık</strong></td>
+                    <td>Enfekte olmamış mutfak atığı, büro atıkları.</td>
+                    <td>Belediye</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background: #fef2f2; border-left: 5px solid var(--danger-color); padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
+            <p style="margin: 0; color: #991b1b;"><i class="fa-solid fa-circle-exclamation" style="color: var(--danger-color);"></i> <strong>Tıbbi Atık Deposu:</strong> En az 2 günlük atığı alabilmeli, kapısı kilitli, <strong>TURUNCU</strong> renkte, üzerinde siyah "Uluslararası Biyotehlike" ve "DİKKAT! TIBBİ ATIK" amblemi olmalı.</p>
+        </div>
+
+        <!-- 4. İSG Eğitimleri -->
+        <h2><i class="fa-solid fa-graduation-cap"></i> 4. İş Sağlığı ve Güvenliği Eğitimleri</h2>
+        <p>İşveren, çalışanlara karşılaşılabilecek sağlık ve güvenlik riskleri, risklerin sağlık etkileri, korunma yolları ve yasal hak/sorumluluklar konularında eğitim vermekle yükümlüdür.</p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>İş Yeri Tehlike Sınıfı</th>
+                    <th>Eğitim Tekrarlama Sıklığı</th>
+                    <th>Minimum Süre</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Çok Tehlikeli</strong> (Hastaneler)</td>
+                    <td><span class="highlight-cell">Yılda en az 1 defa</span></td>
+                    <td>16 Saat</td>
+                </tr>
+                <tr>
+                    <td><strong>Tehlikeli</strong></td>
+                    <td>2 yılda en az 1 defa</td>
+                    <td>12 Saat</td>
+                </tr>
+                <tr>
+                    <td><strong>Az Tehlikeli</strong></td>
+                    <td>3 yılda en az 1 defa</td>
+                    <td>8 Saat</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="alert-box memory-hack">
+            <i class="fa-solid fa-brain alert-icon"></i>
+            <div class="alert-content">
+                <h4>Hafıza Taktikleri: Eğitim Süreleri ve Alt İşveren Sorumluluğu</h4>
+                <p><strong>Çok Tehlikeli:</strong> 1 yıl / 16 saat. <strong>Tehlikeli:</strong> 2 yıl / 12 saat. <strong>Az Tehlikeli:</strong> 3 yıl / 8 saat.</p>
+                <p style="margin-top: 0.5rem;"><span class="highlight-cell">Alt işverenin çalışanlarını eğitmek asıl işverenin sorumluluğu DEĞİLDİR.</span> Asıl işveren sadece alt işverenin eğitim verip vermediğini <strong>kontrol etmekle</strong> yükümlüdür.</p>
+            </div>
+        </div>
+
+        <div style="background: #e0f2fe; border-radius: 0.75rem; padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;"><i class="fa-regular fa-lightbulb"></i> Ünite Özeti</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div><strong>Biyolojik Etken Kayıt:</strong> 15 yıl saklama</div>
+                <div><strong>HBV Geçiş:</strong> %6-30</div>
+                <div><strong>HCV Geçiş:</strong> %2</div>
+                <div><strong>HIV Geçiş:</strong> %0,3</div>
+                <div><strong>En sık yaralanma:</strong> İğne kapağını kapatma</div>
+                <div><strong>Yaralanmada yapılmaz:</strong> Sıkma ve kanatma</div>
+                <div><strong>Tehlikeli Atık Tanımı:</strong> Özel işlem gerektirir</div>
+                <div><strong>Radyoaktif Atık:</strong> TAEK/NDK</div>
+                <div><strong>Tıbbi Atık Deposu:</strong> Turuncu renk</div>
+                <div><strong>Atık Kapağı:</strong> 3/4 doldurulur</div>
+                <div><strong>Çok Tehlikeli Eğitim:</strong> 1 yıl / 16 saat</div>
+                <div><strong>Alt İşveren Eğitimi:</strong> Kontrol sorumluluğu</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3.5rem;">
+            <a href="test_7.html" style="background-color: var(--secondary-color); color: white; text-decoration: none; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: bold; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(13, 148, 136, 0.3); transition: all 0.2s;">
+                Konuyu Anladım, Ünite 7 Test-1'e Başla <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+    </footer>
+
+</body>
+</html>
