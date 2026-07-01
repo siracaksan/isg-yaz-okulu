@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 5: Kimyasal ve Biyolojik Etmenlerin Risk Değerlendirmeleri</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
+        .unit-subtitle { 
+            display: inline-block; 
+            background-color: #f8fafc; 
+            color: #0f172a; 
+            padding: 0.5rem 1.5rem; 
+            border-radius: 2rem; 
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            margin-top: 0.75rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding-bottom: 3rem; }
+
+        .content-header { display: flex; justify-content: flex-end; align-items: center; padding: 1.5rem 0; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; }
+        h2 { color: var(--primary-color); margin: 2rem 0 1rem 0; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-left: 4px solid var(--secondary-color); padding-left: 0.75rem; }
+        h3 { color: #334155; margin: 1.5rem 0 0.75rem 0; font-size: 1.25rem; }
+        p { margin-bottom: 1rem; color: #475569; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #475569; }
+        strong { color: var(--dark-color); }
+
+        .concept-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .concept-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1.25rem; text-align: center; transition: all 0.2s; }
+        .concept-card:hover { border-color: var(--secondary-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transform: translateY(-2px); }
+        .concept-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 0.75rem; }
+        .concept-title { font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .concept-desc { font-size: 0.9rem; color: #64748b; }
+
+        .alert-box { border-left: 5px solid; padding: 1.25rem; border-radius: 0.5rem; margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start; }
+        .alert-icon { font-size: 1.5rem; margin-top: 0.2rem; }
+        .alert-content h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
+        .alert-content p { margin: 0; font-size: 0.95rem; }
+
+        .exam-focus { background-color: #fef2f2; border-color: var(--danger-color); }
+        .exam-focus .alert-icon { color: var(--danger-color); }
+        .exam-focus h4 { color: var(--danger-color); }
+
+        .memory-hack { background-color: #fffbeb; border-color: var(--warning-color); }
+        .memory-hack .alert-icon { color: var(--warning-color); }
+        .memory-hack h4 { color: #b45309; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        .comparison-table th, .comparison-table td { padding: 1rem; border: 1px solid #cbd5e1; text-align: left; }
+        .comparison-table th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        .comparison-table tr:nth-child(even) { background-color: #f8fafc; }
+        .highlight-cell { font-weight: 700; color: var(--danger-color); }
+
+        .regulation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .regulation-item { background: #f1f5f9; padding: 1.25rem; border-radius: 0.75rem; border-left: 4px solid var(--secondary-color); }
+        .regulation-item h4 { color: var(--primary-color); margin-bottom: 0.25rem; }
+
+        .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .method-box { border-radius: 0.75rem; padding: 1.25rem; }
+        .qualitative { background: #fef2f2; border: 1px solid #fecaca; }
+        .quantitative { background: #f0fdf4; border: 1px solid #bbf7d0; }
+        .method-box h4 { margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .qualitative h4 { color: #991b1b; }
+        .quantitative h4 { color: #166534; }
+
+        .step-list { counter-reset: step; list-style: none; padding-left: 0; }
+        .step-list li { counter-increment: step; padding: 0.5rem 0 0.5rem 2.5rem; position: relative; border-bottom: 1px solid #e2e8f0; }
+        .step-list li::before { content: counter(step); position: absolute; left: 0; top: 0.5rem; background: var(--secondary-color); color: white; width: 1.8rem; height: 1.8rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .header-buttons { position: relative; top: 0; left: 0; justify-content: center; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .regulation-grid, .method-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Üniteler</a>
+        </div>
+        <h1>5. Kimyasal ve Biyolojik Etmenlerin Risk Değerlendirmeleri</h1>
+        <div class="unit-subtitle">Ünite 5: Risk Değerlendirme Süreci, Biyolojik/Kimyasal Risk Değerlendirmesi ve Yöntemler</div>
+    </header>
+
+    <main>
+        <div class="content-header">
+            <span style="background: #dbeafe; color: #1e40af; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 600;"><i class="fa-regular fa-clock"></i> Tahmini Okuma: 20 Dk</span>
+        </div>
+
+        <div style="background: white; border: 1px solid #e2e8f0; border-left: 5px solid var(--primary-color); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bullseye"></i> Bölümün Amacı</h3>
+            <p style="color: #475569; margin-bottom: 0;">Bu ünitede, risk değerlendirmesi kavramı ve sürecinin temel adımları, biyolojik ve kimyasal etmenlerin risk değerlendirmesinin nasıl yapıldığı, kalitatif ve kantitatif risk değerlendirme yöntemleri ile kimyasal maruziyet risk değerlendirme yöntemleri detaylı olarak ele alınmaktadır.</p>
+        </div>
+
+        <!-- 1. Risk Değerlendirmesi Kavramı ve Süreci -->
+        <h2><i class="fa-solid fa-clipboard-check"></i> 1. Risk Değerlendirmesi Kavramı ve Süreci</h2>
+        <p>Risk değerlendirmesi, ortamdaki tehlikelerin belirlenerek bu tehlikelerin kontrollerinin yapılması için alınması gereken tedbirleri içeren bir süreçtir. Risk değerlendirmeleri; düzenli aralıklarla, sorunlu bölgelerde daha sık ve çalışma ortamında değişiklikler olduğunda yapılmalıdır.</p>
+
+        <div class="concept-map">
+            <div class="concept-card">
+                <i class="fa-solid fa-people-group concept-icon"></i>
+                <div class="concept-title">Kimler Yapar?</div>
+                <div class="concept-desc">İşveren, iş güvenliği uzmanı, işyeri hekimi ve çalışan temsilcileri.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-clock concept-icon"></i>
+                <div class="concept-title">Ne Zaman Yapılır?</div>
+                <div class="concept-desc">Düzenli aralıklarla, sorunlu bölgelerde sık, değişikliklerde (yeni tesis, ajan, donanım).</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-gears concept-icon"></i>
+                <div class="concept-title">Nasıl Yapılır?</div>
+                <div class="concept-desc">5 adımlı süreç: Bilgi toplama → Risk değerlendirme → Önlem belirleme → Uygulama → Gözden geçirme.</div>
+            </div>
+        </div>
+
+        <h3>Risk Değerlendirme Sürecinin 5 Temel Adımı</h3>
+        <ol class="step-list">
+            <li><strong>Bilgi toplanması ve potansiyel tehlikenin belirlenmesi</strong> – Tehlikeler ve maruz kalabilecek çalışanlar belirlenir. <span class="highlight-cell">Biyolojik riskte "Aşı durumu"</span> kişisel bağışıklık faktörüdür.</li>
+            <li><strong>Riskin değerlendirilmesi ve önceliklerin sıralanması</strong> – Olası zararın ciddiyeti ve olasılığı tahmin edilir.</li>
+            <li><strong>Riskin azaltılması için alınacak ek güvenlik önlemlerinin belirlenmesi</strong></li>
+            <li><strong>Kontrollerin uygulanması</strong> – Denetim hiyerarşisi: Bertaraf Etme → Yer Değiştirme → Mühendislik Kontrolleri → İdari Kontroller → KKD.</li>
+            <li><span class="highlight-cell"><strong>Kontrollerin etkinliğinin gözden geçirilmesi, değerlendirilmesi ve ayarlanması</strong></span> – Sürecin son adımıdır.</li>
+        </ol>
+
+        <!-- 2. Biyolojik Etmenlerin Risk Değerlendirmesi -->
+        <h2><i class="fa-solid fa-biohazard"></i> 2. Biyolojik Etmenlerin Risk Değerlendirmesi</h2>
+        <p>Biyolojik etmenler enfeksiyon risk düzeyine göre risk gruplarına ayrılır. Maruziyetin türü, düzeyi ve süresi belirlenmeli, tehlikeli olmayan veya daha az tehlikeli etmenler tercih edilmelidir.</p>
+
+        <div class="regulation-grid">
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-arrows-spin"></i> İletim Zinciri</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><span class="highlight-cell">1. Rezervuar (Kaynak)</span></li>
+                    <li><span class="highlight-cell">2. Çıkış portalı</span></li>
+                    <li><span class="highlight-cell">3. Bulaşma şekli</span></li>
+                    <li><span class="highlight-cell">4. Giriş portalı</span></li>
+                    <li><span class="highlight-cell">5. Potansiyel ev sahibi</span></li>
+                </ul>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-shield"></i> Kontrol Önlemleri</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Maruz kalan çalışan sayısı en azda tutulur.</li>
+                    <li>Biyolojik etmenin ortama yayılması önlenir.</li>
+                    <li>Toplu koruma ve kişisel korunma uygulanır.</li>
+                    <li>Hijyen önlemleri titizlikle uygulanır.</li>
+                </ul>
+            </div>
+            <div class="regulation-item" style="grid-column: 1 / -1;">
+                <h4><i class="fa-solid fa-rotate"></i> Revizyon</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Risk değerlendirmeleri ve kontrol önlemleri, artık geçerli olmadıklarında veya işin kapsamı/risklerinde önemli değişiklikler olduğunda <span class="highlight-cell">gözden geçirilmeli ve revize edilmelidir</span>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 3. Kimyasal Etmenlerin Risk Değerlendirmesi -->
+        <h2><i class="fa-solid fa-flask"></i> 3. Kimyasal Etmenlerin Risk Değerlendirmesi</h2>
+        <p>Kimyasal risk değerlendirmesi, tehlikeli maddelerin taşınması, depolanması ve kullanılması sırasında maruziyetin belirlenmesini ve önleyici tedbirlerin alınmasını sağlar.</p>
+
+        <h3>Kimyasal Risk Değerlendirme Basamakları</h3>
+        <ol>
+            <li><strong>Tehlikenin Tanımlanması</strong></li>
+            <li><strong>Doz (Konsantrasyon) - Tepki (Cevap) Değerlendirmesi</strong></li>
+            <li><strong>Maruziyet Değerlendirmesi</strong></li>
+            <li><strong>Risk Karakterizasyonu</strong></li>
+        </ol>
+
+        <div class="alert-box memory-hack">
+            <i class="fa-solid fa-brain alert-icon"></i>
+            <div class="alert-content">
+                <h4>Hafıza Taktikleri: Kimyasal Risk Değerlendirme Türleri</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Basit Değerlendirme</strong> – Düşük riskli durumlar.</li>
+                    <li><span class="highlight-cell"><strong>Genel Değerlendirme</strong></span> – Etiket ve Güvenlik Bilgi Formu (SDS) gözden geçirilir.</li>
+                    <li><strong>Ayrıntılı Değerlendirme</strong> – Yüksek riskli, karmaşık durumlar.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 4. Risk Değerlendirme Yöntemleri -->
+        <h2><i class="fa-solid fa-chart-pie"></i> 4. Risk Değerlendirme Yöntemleri</h2>
+
+        <div class="method-grid">
+            <div class="method-box qualitative">
+                <h4><i class="fa-solid fa-list"></i> Kalitatif (Nitel) Yöntemler</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><span class="highlight-cell">Hata Ağacı (FTA)</span></li>
+                    <li><span class="highlight-cell">Tehlike ve İşletilebilirlik Analizi (HAZOP)</span></li>
+                    <li><span class="highlight-cell">Hata Türü ve Etkileri Analizi (FMEA)</span></li>
+                    <li><span class="highlight-cell">Kontrol Listesi (Check-List)</span></li>
+                    <li><span class="highlight-cell">Olursa Ne Olur? (What If)</span></li>
+                </ul>
+            </div>
+            <div class="method-box quantitative">
+                <h4><i class="fa-solid fa-calculator"></i> Kantitatif (Nicel) Yöntemler</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><span class="highlight-cell">3x3 Matris Yöntemi</span></li>
+                    <li><span class="highlight-cell">Fine-Kinney Yöntemi</span></li>
+                    <li><span class="highlight-cell">Olay Ağacı Analizi (ETA)</span></li>
+                    <li><span class="highlight-cell">John-Ridley Yöntemi</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="alert-box exam-focus">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <div class="alert-content">
+                <h4>Sınav Bilgisi: Yöntem Ayrımı</h4>
+                <p><strong>Kalitatif:</strong> Hata Ağacı, HAZOP, FMEA, Kontrol Listesi, What If. <strong>Kantitatif:</strong> Fine-Kinney, 3x3 Matris, John-Ridley, Olay Ağacı. Sınavda <strong>Fine-Kinney</strong> en sık sorulan kantitatif yöntemdir. "Ayrıntılı Değerlendirme" bir basamak değil, değerlendirme türüdür.</p>
+            </div>
+        </div>
+
+        <h3>Kimyasal Maruziyet Risk Değerlendirme Yöntemleri</h3>
+        <ul>
+            <li>HAZOP Yöntemi</li>
+            <li>Stoffenmanager Yöntemi</li>
+            <li>İsviçre Peyniri Modeli</li>
+            <li>Dow Chemical Exposure Index (CEI) Yöntemi</li>
+            <li>Potansiyel Risk Hiyerarşi Yöntemi</li>
+            <li>KjemiRisk Yöntemi</li>
+            <li>Sağlık Açısından Tehlikeli Kimyasalların Kontrolü (COSHH) ve Uluslararası Kimyasalların Kontrolü Aracı (ICCT)</li>
+            <li>Semi-Quantitative Risk Assessment (SQRA) Yöntemi</li>
+        </ul>
+
+        <div style="background: #e0f2fe; border-radius: 0.75rem; padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;"><i class="fa-regular fa-lightbulb"></i> Ünite Özeti</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div><strong>Risk Değerlendirme:</strong> Tehlike kontrol süreci</div>
+                <div><strong>Ne Zaman:</strong> Düzenli, değişikliklerde</div>
+                <div><strong>5. Adım (Son):</strong> Kontrolleri gözden geçir</div>
+                <div><strong>Biyolojik İletim:</strong> Rezervuar → Çıkış → Bulaşma → Giriş → Ev sahibi</div>
+                <div><strong>Biyolojik Risk Faktörü:</strong> Aşı durumu</div>
+                <div><strong>Kimyasal Basamak:</strong> Tehlike Tanımı → Doz-Tepki → Maruziyet → Risk</div>
+                <div><strong>Genel Değerlendirme:</strong> Etiket ve SDS gözden geçirilir</div>
+                <div><strong>Kalitatif:</strong> Hata Ağacı, HAZOP, FMEA, Check-List, What If</div>
+                <div><strong>Kantitatif:</strong> Fine-Kinney, 3x3 Matris, John-Ridley, ETA</div>
+                <div><strong>Fine-Kinney:</strong> En sık sorulan kantitatif yöntem</div>
+                <div><strong>Ayrıntılı Değerlendirme:</strong> Basamak değil, tür</div>
+                <div><strong>Revizyon:</strong> Değişiklikte veya geçerlilik kaybında</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3.5rem;">
+            <a href="test_5.html" style="background-color: var(--secondary-color); color: white; text-decoration: none; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: bold; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(13, 148, 136, 0.3); transition: all 0.2s;">
+                Konuyu Anladım, Ünite 5 Test-1'e Başla <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+    </footer>
+
+</body>
+</html>
