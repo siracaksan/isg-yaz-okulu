@@ -1,25 +1,633 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zor Seviye Deneme 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Zorlu Deneme 3 - İş Sağlığı Yönetimi</title>
+    <style>
+        :root {
+            --primary: #1A5276; 
+            --secondary: #F1C40F; 
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #a9cce3;
+            --timer-bg: #e74c3c;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--secondary);
+        }
+        header h1 { margin: 0; font-size: 1.6em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; color: #d4e6f1; }
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #d35400; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eaf2f8;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid #d4e6f1;
+        }
+        .test-numaralari span { font-weight: bold; color: #1A5276; margin-right: 10px; }
+        .test-numaralari a.active {
+            background: var(--secondary);
+            color: #1A5276;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 1px solid #b7950b;
+        }
+        .analiz-paneli {
+            background: var(--analysis-bg);
+            border: 2px solid var(--analysis-border);
+            border-left: 6px solid var(--primary);
+            color: #154360;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: var(--wrong); display: flex; align-items: center; gap: 8px;}
+        .analiz-paneli p { margin-bottom: 0; font-weight: 500;}
+        .dashboard {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .timer-box {
+            background: var(--timer-bg);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            from { opacity: 1; }
+            to { opacity: 0.8; }
+        }
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 15px;
+        }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--wrong);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #2c3e50;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+        .options.answered li { pointer-events: none; }
+        .options.timeout li { pointer-events: none; opacity: 0.7; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+        }
+        details.solution {
+            margin-top: 15px;
+            background: #fcf3cf;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed #f1c40f;
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #b7950b;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "🔍"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #555; font-size: 0.9em; }
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Zor Seviye Deneme 3</h2>
+        <h1>Anadolu Üniversitesi İş Sağlığı ve Güvenliği</h1>
+        <h2>İş Sağlığı Yönetimi - Üst Düzey Eleyici Deneme 3</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="../index.html">📚 Dersin Ana Sayfasına Dön</a> | 
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📝 Çıkmış Sorulara Git</a>
+        </div>
+        <hr>
+        <div class="test-numaralari">
+            <span>Üst Düzey Denemeler:</span>
+            <a href="deneme_1.html">Deneme 1</a>
+            <a href="deneme_2.html">Deneme 2</a>
+            <a href="deneme_3.html" class="active">Deneme 3</a>
+            <a href="deneme_4.html">Deneme 4</a>
+            <a href="deneme_5.html">Deneme 5</a>
+        </div>
+    </nav>
+
+    <div class="analiz-paneli">
+        <h3>⚠️ DİKKAT: İleri Seviye Sınav Simülasyonu</h3>
+        <p>Bu denemede çeldirici öncüller en zorlayıcı seviyede tutulmuş, PUKO, L Tipi Matris, SKS (Sağlıkta Kalite Standartları) ve Epidemiyolojik formül kavramları birbiriyle entegre edilmiştir. 30 dakikalık zamanlayıcı devrededir.</p>
+    </div>
+
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+        </div>
+        <div class="timer-box" id="timer-display">
+            ⏱️ Kalan Süre: <span id="time">30:00</span>
+        </div>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid" id="quiz-container">
+
+            <div class="question-card">
+                <div class="question-text">1. I. 1593 sayılı Umumi Hıfzıssıhha Kanunu<br>II. Dilaver Paşa Nizamnamesi<br>III. Maadin Nizamnamesi<br><br>Yukarıdakilerden hangisi veya hangileri Osmanlı İmparatorluğu döneminde iş sağlığı ve çalışma hayatına ilişkin düzenlemeler getiren mevzuatlardandır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) I ve II</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yalnız III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) I, II ve III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Dilaver Paşa Nizamnamesi (1865) ve Maadin Nizamnamesi (1869) Osmanlı döneminde çıkarılmıştır. 1593 sayılı Umumi Hıfzıssıhha Kanunu ise (1930) Cumhuriyet dönemine ait bir yasal düzenlemedir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. Gözlemsel epidemiyolojik araştırmalardan olan "Kesitsel Araştırmalar (Prevalans Çalışmaları)" ile ilgili aşağıda verilen ifadelerden hangisi <u>yanlıştır</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Toplumu temsil eden uygun bir örneklem seçilerek hastalığın görülme sıklığı saptanır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Seçilen örneklem üzerinden Nested (Built-in) vaka-kontrol çalışmaları planlanabilir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Sağlıklı insanlardan oluşan toplumların hastalığa yakalanıp yakalanmayacağını zaman ekseninde ileriye doğru (prospektif) izler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Hastalığın ya da olayın bir zaman kesitindeki bulunma sıklığını belirler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Araştırma birimi insan grupları (toplum) değil, doğrudan bireylerdir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Kesitsel çalışmalar "bir zaman kesitinde" durum tespiti yapar, ileriye dönük izleme (prospektif) yapmaz. Sağlıklı grupları geleceğe dönük izleyen epidemiyolojik araştırma yöntemi "Kohort" çalışmalarıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. Epidemiyolojik müdahale araştırmalarında uygulanan girişimin (tedavi, eğitim veya aşının), sağlam kişilerin ne kadarını hastalığa yakalanmaktan koruduğunu gösteren <u>en değerli ölçüt</u> aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Toplumda Atfedilebilir Risk</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Korunabilirlik Hızı (Rölatif Risk Azalması)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İnsidans Hızı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tahmini Rölatif Risk (Odds Ratio)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Prevalans</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Müdahale araştırmalarının başarısı açısından en değerli ölçüt, müdahalenin kişileri ne oranda koruduğunu veren "Korunabilirlik Hızı (Rölatif Risk Azalması)" formülüdür. Formülü: (Müdahalesiz Gruptaki İnsidans - Müdahaleli Gruptaki İnsidans) / Müdahalesiz Gruptaki İnsidans.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. I. İşe giriş muayeneleri ve aşılamalar Primordiyal korumadır.<br>II. Aralıklı (periyodik) muayeneler ve taramalar Sekonder (İkincil) korumadır.<br>III. Sakatlık ve kalıcı bozuklukların en aza indirgenmesi, hastanın rehabilitasyonu Tersiyer (Üçüncül) korumadır.<br><br>Hastalıkların koruma düzeyleri ile ilgili yukarıdaki ifadelerden hangisi/hangileri doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) I ve II</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) I, II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yalnız III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> İşe giriş muayeneleri, kişisel koruyucu donanım ve aşılamalar "Primer (Birincil)" korumadır. Primordiyal koruma ise; kök nedeni oluşturan yasal/ekonomik şartların, mevzuatların iyileştirilmesidir. Dolayısıyla I yanlıştır. II ve III kesinlikle doğrudur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. L Tipi (5x5) Matris kullanılarak yapılan risk değerlendirmesinde, "Üç ayda bir gün" oluşması beklenen bir olayın sonucunda "Tedavi gerektiren yaralanmalar" ortaya çıkıyorsa, bu riskin puanı (değeri) kaçtır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) 3</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) 6</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) 9</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) 12</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) 15</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> L Matris tablosuna göre; Üç ayda bir görülmesi Orta Olasılık = 3 puan, Tedavi gerektiren yaralanma olması Orta Şiddet = 3 puan. Risk = Olasılık x Şiddet -> 3 x 3 = 9 puan (Orta Risk).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Tıbbi Atıkların Kontrolü Yönetmeliği'ne göre, hastanelerde atıkların bekletildiği Tıbbi Atık Deposu'nun kapı rengi ve üzerinde bulunması gereken sembol aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sarı kapı - Siyah Biyotehlike amblemi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kırmızı kapı - Kırmızı Biyotehlike amblemi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Turuncu kapı - Siyah Uluslararası Biyotehlike amblemi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Mavi kapı - Siyah Radyasyon amblemi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Turuncu kapı - Siyah Kuru Kafa amblemi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> İlgili mevzuat gereği tıbbi atık depolarının kapısı 'Turuncu' renkte olmalı ve kapı üzerinde mutlaka siyah renkte 'Uluslararası Biyotehlike' amblemi ile 'DİKKAT! TIBBİ ATIK' yazısı bulunmalıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. Epidemiyolojik analitik araştırma yöntemlerinden olan <strong>Vaka-Kontrol</strong> çalışmaları ile ilgili aşağıda verilen ifadelerden hangisi <u>yanlıştır</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Hastalardan (Vaka) ve sağlamlardan (Kontrol) oluşan iki grup seçilerek geçmiş maruziyetleri sorgulanır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Nadir görülen veya ortaya çıkması için uzun kuluçka dönemi gereken hastalıklarda (ör. kanser) en uygun yöntemdir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Hastalığın toplumdaki yeni vaka hızı (İnsidans hızı) doğrudan ve kesin olarak hesaplanabilir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Etkenin hastalık riskini kaç kat artırdığını bulmak için "Tahmini Rölatif Risk (Odds Ratio)" hesaplanır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Retrospektif (geriye dönük) bir sorgulama yönüne sahiptir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Vaka-Kontrol çalışmalarında İnsidans (yeni vaka hızı) HESAPLANAMAZ, çünkü toplum tabanlı bir risk altındaki nüfus bilinmemektedir, sadece hastaneye başvuran hazır vakalar üzerinden geriye dönülür. İnsidans, İleriye Dönük (Prospektif) Kohort çalışmalarında hesaplanabilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. GHS Sınıflandırmasına göre; &lt;0°C parlama noktası ve &lt;35°C kaynama noktasına sahip olan, parlama ve patlama riski en üst düzeydeki kimyasal maddelere ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Oksitleyici Madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kolay Alevlenir Madde</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Çok Kolay Alevlenir Madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Alevlenir Madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Toksik Madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> 0 derecenin altında parlayan ve 35 derecenin altında kaynayan maddeler yasal olarak "Çok Kolay Alevlenir Madde" sınıfındadır. (0-21 derece arası parlayanlar ise Kolay Alevlenir maddedir).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. İş yerlerinde makine bakım ve onarımı sırasında çalışanları güvence altına almak için uygulanan "Kilitleme ve Etiketleme (EKED)" sisteminin prosedür adımları sırasıyla düşünüldüğünde, aşağıdaki işlemlerden hangisi "Etiket ve Kilitlerin yerleştirilmesinden (4. Adım)" hemen <u>sonra (5. Adım)</u> uygulanır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tüm enerji kaynaklarının izole edilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Ekipmanın durdurulması</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Depolanmış enerjinin boşaltılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Ekipmanın yalıtıldığının test edilip kontrol edilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Duruş için çalışma sahasında hazırlık yapılması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> EKED süreç sırası: 1. Hazırlık, 2. Durdurma, 3. Şalteri İzolasyon, 4. Şaltere Kilit Asma, 5. Sistemde kalan depolanmış (gaz, hava, yay) enerjinin boşaltılması, 6. Kontrol/Test (Dene) adımlarından oluşur. Kilitten sonra depolanmış enerji boşaltılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. "Çalışma ortamında yapılan işin organizasyonuna uygun olarak, sağlıklı bir iş görenin dinlenmek için ekstra bir süre vermeksizin 8 saatlik bir çalışma süresince biyolojik dengesini bozmadan gösterebileceği maksimum performans durumudur."<br><br>Ergonominin temel şartlarını ifade eden yukarıdaki tanım, aşağıdakilerden hangisini açıklar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yapılabilirlik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kabul edilebilirlik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Hoşnutluk</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Katlanabilirlik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sürdürülebilirlik</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Ergonomide "Sürekli performans, biyolojik sınırları koruyarak tam mesai (8 saat) sürdürebilme" ölçütüne "Katlanabilirlik" adı verilir. Psikolojik beklentiyi karşılamaya ise "Hoşnutluk" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">11. Sağlık ve Güvenlik İşaretleri Yönetmeliği'ne göre; Daire biçiminde, beyaz zemin üzerine siyah piktogram, kırmızı çerçeve ve içerisinden geçen kırmızı diyagonal (çapraz) çizgi ile ifade edilen işaretlerin sınıfı nedir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Uyarı İşaretleri</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Yasaklayıcı İşaretler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Emredici İşaretler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Bilgilendirme İşaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yangın İşaretleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Kırmızı çerçeve ve üstünden çapraz diyagonal geçen işaretler "Yasaklayıcı" (Girilmez, Dokunma vb.) levhaların yasal tasarım formatıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Çalışanların İş Sağlığı ve Güvenliği Eğitimlerinin Usul ve Esasları Yönetmeliği'ne göre; "Tehlikeli" sınıfta (ör. Diş polikliniği) yer alan bir işyerinde temel İSG eğitimlerinin verilme sıklığı ve asgari saati aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yılda en az 1 defa - En az 16 saat</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) İki yılda en az 1 defa - En az 12 saat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Üç yılda en az 1 defa - En az 8 saat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Altı ayda 1 defa - En az 4 saat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yılda en az 1 defa - En az 12 saat</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Tehlikeli sınıftaki işletmeler İSG temel eğitimlerini her 2 yılda bir en az 12 saat olacak şekilde tazelemek zorundadır. (Çok tehlikeli: Yılda bir/16 saat, Az tehlikeli: 3 yılda bir/8 saat).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. Meslek Hastalıklarının SGK (Sosyal Sigorta Sağlık İşlemleri Tüzüğü) Listesi'ne göre "C Grubu Meslek Hastalıkları" hangi hastalık türlerini kapsar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kimyasal maddelerle olan hastalıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Mesleki bulaşıcı hastalıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Fiziki etkenlerle olan hastalıklar</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Pnömokonyozlar ve mesleki solunum sistemi hastalıkları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Mesleki deri hastalıkları</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> SGK listesinde; A: Kimyasal, B: Deri, C: Pnömokonyoz (Solunum), D: Bulaşıcı, E: Fiziksel etkenler şeklindedir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Sağlık çalışanlarını dışarıdan alınan iyonlaştırıcı radyasyondan (X-Işınları vb.) korumak için uygulanan "Üç Temel Korunma İlkesi" aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Zaman - Maske - Eldiven</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İkame - Mesafe - Hijyen</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Zaman - Mesafe - Zırhlama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Zırhlama - İzolasyon - İkame</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Mesafe - Maske - Dozimetre</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Dış radyasyona karşı korumanın altın kuralı: 1) Kaynak yanında olabildiğince kısa süre kalmak (Zaman), 2) Kaynaktan uzaklaşmak (Mesafe), 3) Araya koruyucu paravan/beton/kurşun koymak (Zırhlama).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. DuPont Bradley Eğrisi, iş yerlerindeki güvenlik kültürünün gelişim aşamalarını gösterir. Buna göre; "Çalışanların güvenliği tamamen bir ekip işi olarak gördüğü, kendi güvenliği kadar çalışma arkadaşının güvenliğinden de sorumlu olduğu" en olgun aşama aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Reaktif (İçgüdüsel) Aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Bağımlı Aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Bağımsız (Independent) Aşama</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Birbirine Bağımlı (Interdependent) Aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Düzenleyici Aşama</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Bradley eğrisinin en tepe ve en güvenli noktası, takım ruhunun ve herkesin birbirini koruma içgüdüsünün bulunduğu "Birbirine Bağımlı" aşamadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Sağlıkta Kalite Standartları (SKS) "Çalışan Güvenliği" ölçütleri kapsamında aşağıda verilen ifadelerden hangisi <u>yanlıştır</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Çalışanların görüş, öneri ve şikayetlerini bildirmelerine yönelik düzenlemeler yapılmalıdır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Risk durumlarında veya acil tercihlerde, hasta memnuniyeti ve güvenliği daima çalışan güvenliğinden önde tutulmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Gebe ve emziren çalışanların çalışma koşulları tanımlanıp hafifletilmelidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Engelli ve kronik hastalığı olan personele yönelik uygun diyet ve ulaşım düzenlemeleri sağlanmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sağlık çalışanlarının mesleki ve kişisel gelişimini destekleyecek eğitimler planlanmalıdır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Sağlıkta kalite yönetiminin temel felsefesi çalışan ve hasta güvenliğini eşit tutmaktır. Hasta memnuniyetinin veya güvenliğinin çalışan güvenliğini riske atacak şekilde önde tutulması (örneğin şiddete boyun eğilmesi) kesinlikle kabul edilemez.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Meslek hastalığının ortaya çıkış sürecinde, hastalığın nedenine karar verebilmek için "Nedensellik (Causality)" kriterleri incelenir. "Maruz kalınan etkenin, hastalığın ilk belirtilerinden ve semptomlarından daha önce var olması (kronolojik sıralama)" gerekliliği hangi kriterdir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tutarlılık</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Zamansallık (Temporal ilişki)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Özgünlük</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Doz etkisi ilişkisi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Eldeki verilere uygunluk</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Nedenselliğin en temel koşulu olan nedenin sonuçtan (hastalıktan) kronolojik olarak daha önce gerçekleşmesi gerekliliğine "Zamansallık" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Tehlikeli kimyasal maddelerin kontrolünde uygulanan Koruma Hiyerarşisi prensiplerine göre; "Zararlı ve kanserojen olan benzen maddesi yerine, aynı işi görebilen ancak daha az toksik olan ksilen maddesinin kullanılması" aşağıdaki koruma basamaklarından hangisine örnektir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Eliminasyon (Ortadan kaldırma)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Havalandırma ve İzolasyon</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kişisel Koruyucu Donanım kullanma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yönetsel Önlemler (Rotasyon)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) İkame (Yerine koyma / Substitution)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Tehlikeli bir maddenin veya makinenin yerine daha az tehlikelisini koymak, risk kontrol hiyerarşisinin en önemli ikinci basamağı olan "İkame (Yerine Koyma)" işlemidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. Kalite yönetim sistemlerinde kullanılan PUKO döngüsü basamaklarında; "Kontrol ve denetim aşamasında saptanan yeni durumlara, aksaklıklara veya problemlere yönelik kalıcı ve düzeltici uygulamaların hayata geçirilmesi" işlemi hangi basamakta yapılır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Planla</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Uygula</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kontrol Et</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Önlem Al</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Devret</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Kontrol aşamasında eksiklikler tespit edildikten sonra bunlara müdahale edilmesi ve iyileştirmelerin (düzeltici faaliyet) standart prosedüre eklenmesi "Önlem Al" basamağıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Sağlık kurumlarındaki biyolojik risk etmenlerinin değerlendirilmesiyle ilgili olarak mevzuatta geçen ifadeye göre; "Kalıcı veya gizli enfeksiyona neden olabilen, uzun kuluçka dönemi olan ve yıllar sonra ciddi hasar bırakabilen enfeksiyonlara (Örn. Tüberküloz) maruz kalan çalışanların kayıtları" maruziyet sona erdikten sonra <u>en az kaç yıl</u> saklanmak zorundadır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) 5 Yıl</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) 10 Yıl</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) 15 Yıl</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) 40 Yıl</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Süresiz saklanır</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Biyolojik Etkenlere Maruziyet Risklerinin Önlenmesi Yönetmeliği'ne göre normal biyolojik risk kayıtları en az 15 yıl saklanırken; gizli, uzun kuluçkalı ve kalıcı hasar bırakan risk (örn. Verem) kayıtları en az 40 yıl saklanmak zorundadır.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+        let isTimeUp = false;
+
+        function updateScore() {
+            let netScore = correctCount - (wrongCount / 4);
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            if (isTimeUp) return;
+
+            const parentUl = clickedLi.parentElement;
+            
+            if (parentUl.classList.contains('answered')) return;
+            
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            updateScore();
+        }
+
+        let timeLeft = 1800; 
+        const timerElement = document.getElementById("time");
+
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = "00:00";
+                document.getElementById('timer-display').style.background = "#333";
+                document.getElementById('timer-display').innerHTML = "⏳ Süre Bitti!";
+                isTimeUp = true;
+                
+                const allUls = document.querySelectorAll('.options');
+                allUls.forEach(ul => {
+                    ul.classList.add('timeout');
+                });
+                alert("Süreniz doldu! İşaretleme yapamazsınız, ancak doğru cevaplar için çözümleri inceleyebilirsiniz.");
+            } else {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                
+                if(seconds < 10) { seconds = "0" + seconds; }
+                if(minutes < 10) { minutes = "0" + minutes; }
+
+                timerElement.innerText = minutes + ":" + seconds;
+                timeLeft--;
+            }
+        }, 1000);
+    </script>
 </body>
 </html>

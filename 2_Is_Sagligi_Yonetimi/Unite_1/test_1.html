@@ -3,23 +3,633 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 1 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
+    <title>Ünite 1 - Test 1 - 2026 Anadolu Üniversitesi İSG Yaz Okulu</title>
+    <!-- Harici stil dosyası istenirse eklenebilir -->
     <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        /* Genel Renk ve Font Stilleri */
+        :root {
+            --primary: #2980b9; /* Ünite 1 için profesyonel mavi tema */
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #b9d3e8;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 { margin: 0; font-size: 1.5em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; }
+
+        /* Yönlendirme (Nav) Menüsü */
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #1a5276; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+
+        /* Çıkmış Soru Analiz Paneli */
+        .analiz-paneli {
+            background: var(--analysis-bg);
+            border: 2px solid var(--analysis-border);
+            border-left: 6px solid var(--primary);
+            color: #2c3e50;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 8px;}
+        .analiz-paneli ul { margin-bottom: 0; padding-left: 20px; }
+        .analiz-paneli li { margin-bottom: 5px; }
+
+        /* Puanlama Paneli ve PDF Butonu */
+        .dashboard {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .pdf-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pdf-btn:hover { background: #1a5276; }
+
+        /* Çift Sütun Soru Düzeni (Masaüstü için Çift, Mobil için Tek Sütun) */
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 15px;
+        }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #2c3e50;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options li {
+            background: #fdfbfd;
+            border: 1px solid #e1d5e6;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+
+        /* Doğru/Yanlış Stilleri */
+        .options.answered li { pointer-events: none; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(39, 174, 96, 0.3);
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+            box-shadow: 0 2px 4px rgba(192, 57, 43, 0.3);
+        }
+
+        /* Çözüm Paneli (Tıklandığında Açılır) */
+        details.solution {
+            margin-top: 15px;
+            background: #f9f2fb;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed #b9d3e8;
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary);
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        /* Mobil Uyumluluk (Cep Telefonu) */
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+
+        /* PDF / Yazdırma (Sıkışık Format) Ayarları */
+        @media print {
+            body { background: white; font-size: 10pt; }
+            header, .test-menusu, .dashboard, .analiz-paneli, footer { display: none; } 
+            .questions-grid { display: block; column-count: 2; column-gap: 20px; }
+            .question-card { break-inside: avoid; border-left: 2px solid #aaa; box-shadow: none; border: 1px solid #ddd; margin-bottom: 12px; padding: 10px;}
+            .options li { padding: 4px 8px; margin-bottom: 2px; border: none; background: none; }
+            details.solution { display: block; border: none; padding: 5px 0 0 0; background: none; margin-top: 5px; }
+            details.solution summary { display: none; } 
+            details.solution p::before { content: "Çözüm: "; font-weight: bold; text-decoration: underline; }
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
 </head>
 <body>
+
     <header>
         <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 1 - Test 1</h2>
+        <h2>Ünite 1: İş Sağlığına Giriş, Tarihçe, Yönetim ve Etik - Ünite Testi (20 Soru)</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="../index.html">📚 Dersin Ana Sayfası</a> | 
+            <a href="konu_anlatimi.html">📖 Konu Anlatımına Dön</a>
+        </div>
+        <hr>
+        <div class="ileri-geri-linkler">
+            <a href="../Unite_2/test_1.html">Sonraki Ünite Testi (Ünite 2) ➡️</a>
+        </div> 
+    </nav>
+
+    <!-- Çıkmış Soru Analiz Paneli -->
+    <div class="analiz-paneli">
+        <h3>📈 Ünite 1 - Çıkmış Soru Analizi ve Odak Noktaları</h3>
+        <p>Geçmiş yılların (2021-2025) sınav havuzu incelendiğinde bu üniteden her yıl ortalama <strong>3 ila 4 soru</strong> gelmektedir. Soruların yoğunlaştığı temel kavramlar şunlardır:</p>
+        <ul>
+            <li><strong>Tarihçe ve Önemli Şahsiyetler (%35):</strong> Hastalıkların doğaüstü güçlerden gelmediğini savunan <em>Hipokrat</em>, maskeyi ilk öneren <em>Georgius Agricola</em>, işçilere mesleklerini soran <em>B. Ramazzini</em> ile "İşçi" kavramının doğuşuna neden olan <em>Sanayi Devrimi</em> her yıl dönüşümlü olarak sorulmuştur.</li>
+            <li><strong>Yasal Düzenlemeler (%25):</strong> Osmanlı'daki <em>Maadin Nizamnamesi</em>'nin maddeleri ve Cumhuriyet dönemi 50 işçi/hekim zorunluluğu getiren <em>1593 sayılı Umumi Hıfzıssıhha Kanunu</em> mutlaka bilinmelidir.</li>
+            <li><strong>Yönetim ve PUKO (%20):</strong> PUKO döngüsünün 4 ana bileşeni (Planla, Uygula, Kontrol Et, Önlem Al) test edilmektedir. "İhtiyaçları belirle" ya da "Devret" gibi çeldirici şıklar konulur.</li>
+            <li><strong>Koruyucu Sağlık Hizmetleri (%20):</strong> Periyodik Muayenelerin <em>"İkincil Koruma"</em>, rehabilitasyon ve sakatlık uyumunun <em>"Üçüncül Koruma"</em> olduğu çok sık çıkan sorulardandır.</li>
+        </ul>
+    </div>
+
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+            <div style="font-size: 0.85em; margin-top: 8px; color: #512e5f;">(Otomatik Hesaplama: 4 Yanlış 1 Doğruyu Götürür)</div>
+        </div>
+        <button class="pdf-btn" onclick="window.print()">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 8H8v-5h8v5zm3-4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            Sıkışık Formatla PDF İndir / Yazdır
+        </button>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid">
+
+            <!-- ========================================== -->
+            <!-- DERS KİTABI SAYFA 43-44 (1-10) -->
+            <!-- ========================================== -->
+            
+            <div class="question-card">
+                <div class="question-text">1. Tarihsel süreç içinde değerlendirildiğinde aşağıdaki dönemlerden hangisinden itibaren işçi kavramından bahsedilebilir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A. Sanayi Devrimi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Tarım Devrimi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Antik Mısır</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Orta Çağ Avrupası</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Rönesans Dönemi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Günümüz anlamında modern işçi sınıfının ve emek sermaye ilişkisinin ortaya çıkması İngiltere'de başlayan Sanayi Devrimi sonrası yaşanan sosyal dönüşümlerle gerçekleşmiştir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. İşçi kavramını diğer tarihsel dönemlerden ayıran fark aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Doğayı değiştirmek için eylemde bulunmaları</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B. Emeklerini ücret karşılığında satmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Yoksul olmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Bir başka insan için çalışmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Yaşamsal ihtiyaçlarının karşılanması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Kölelik veya köylülükten farklı olarak Sanayi Devrimi sonrasındaki işçi sınıfını ayıran en önemli fark, serbest bireyler olarak emeklerini belirli bir zaman veya ücret karşılığında satmalarıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. Tarih boyunca ilk defa hastalıkların yapılan işle olan ilişkisini ortaya koyan ve hastalık öyküsü alırken mesleklerin de sorgulanması gerektiğini vurgulayan hekim aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Hippocrates</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Paracelsus</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Pervical Pott</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D. Bernardino Ramazzini</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Georgius Agricola</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>İş sağlığının babası sayılan Bernardino Ramazzini, kaleme aldığı eseriyle hastaların mesleklerinin mutlaka sorulması gerektiğini tıbbi rutine yerleştirmiştir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. Birinci Dünya Savaşı sonrasında Versay Antlaşması’nın maddeleri arasında geçen Uluslararası Çalışma Örgütü (ILO) kurma düşüncesinin dayandığı gerekçe aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. İş piyasalarının kontrol edilmesinin verimliliği artıracağı düşüncesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. İşçilerin çalışma verimliliğinin kontrol edilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Küresel ekonominin güçlendirilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Barışın devamlılığının sağlanması</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E. Evrensel barışın sosyal adalete dayalı dünyada mümkün olabileceği düşüncesi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>I. Dünya Savaşı'nın yıkıcı etkisinden sonra kurulan ILO'nun anayasasında; dünyada evrensel ve kalıcı bir barışın ancak sosyal adalet temelinde sağlanabileceği inancı yatar.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. Aşağıdakilerden hangisi yönetim sürecinin klasik PUKO döngüsü sürecinin bileşenlerinden biri değildir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Planla</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Kontrol et</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C. İhtiyaçları belirle</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Uygula</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Önlem al</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>PUKO döngüsünün açılımı Planla (P), Uygula (U), Kontrol Et (K) ve Önlem Al (O) şeklindedir. İhtiyaç belirlemek planlama aşamasının bir alt eylemi olsa da döngünün ana isimlerinden biri değildir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Aşağıdakilerden hangisi iş sağlığı güvenliği ile ilgili bir yönetim standardıdır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A. OHSAS (veya ISO 45001)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. ISO 9001</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. ISO/IEC</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. TSE EN ISO 14001</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. ISO 2200</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>OHSAS (Occupational Health and Safety Assessment Series), iş sağlığı ve güvenliği yönetim standartlarını ifade eder. Yeni ve güncel versiyonu ISO 45001'dir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. Aşağıdakilerden hangisi ikincil koruyucu sağlık hizmetidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Risk değerlendirmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Bağışıklama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Acil tedavi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Fiziksel rehabilitasyon</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E. Periyodik muayene</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>İkincil (sekonder) koruyucu hizmetler erken teşhisi hedefler. İşçi sağlığındaki karşılığı, hastalıklar henüz ağırlaşmadan erken evrede saptamayı sağlayan "Periyodik muayeneler"dir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. Temel iş sağlığı hizmetleri ile ilgili aşağıdaki ifadelerden hangisi doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. İş piyasalarının verimliliği öncelikli kaygıdır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B. İşçinin sağlıklı olabilmesi ülkenin sosyal ve ekonomik kalkınması ile ilgilidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. İş kazası ya da hastalıklarla sınırlı bir yaklaşımdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. İşçilerin tıbbi muayenesi ve tedavisi öncelikli yaklaşımdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Öncelikli olarak büyük ve kayıtlı sektörlere ulaşmak hedeflenmiştir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Temel İş Sağlığı Hizmetleri (TİSH), işçi sağlığının makro düzeyde ele alınması gerektiğini ve bunun genel ülke sosyal/ekonomik kalkınmasıyla doğrudan ilişkili olduğunu savunur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. I. Ahlak ve etik kavramı aynı anlamı taşırlar.<br>II. Etik kavramı moral değerlerden söz eder.<br>III. Etik kavramı eylemlerimiz ve sonuçlarıyla ilgilidir.<br>IV. Ahlak kavramı mesleki sorumluluklarla ilgilidir.<br>Ahlak ve etik kavramları ile ilgili yukarıdaki ifadelerden hangileri doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Yalnız II</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C. Yalnız III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. I ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. II ve IV</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Ahlak toplum içindeki pratik yargılar iken Etik, eylemlerin kendisiyle, mantığıyla, sorumlulukları ve mesleki sonuçlarıyla ilgilenen felsefi boyuttur (Yalnız III doğru).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. İş sağlığı profesyonelleri için ICOH etik kuralları ile ilgili aşağıdakilerden hangisi doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. İş sağlığı profesyonelleri yükümlülükleri iş alanlarıyla sınırlıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. İş sağlığı profesyonelleri öncelikle iş yeri sahibine karşı sorumludur.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Sağlık bilgilerini uygun gördüğü taraflarla paylaşabilir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Görevlerin yerine getirilmesinde iş sahibinin sağladığı etik koşullarla yetinmelidir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E. Mesleki pratikte dürüstlük, tarafsızlık, sağlık verilerinin gizliliği, çalışanların mahremiyetlerinin korunması temel yükümlülüklerdir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Uluslararası İş Sağlığı Komisyonu (ICOH) kurallarına göre işyeri hekimleri dürüst, tamamen bağımsız, tarafsız olmalı ve tıbbi veri gizliliğine tavizsiz uymalıdır.</p>
+                </details>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- ÇIKMIŞ SORU ANALİZİNE DAYALI ÖZGÜN SORULAR -->
+            <!-- ========================================== -->
+
+            <div class="question-card">
+                <div class="question-text">11. İnsanın bedence ve ruhça iyilik haline -------, hedeflenen bir işi uygun bir biçimde yürütebilmeye ------- denir.<br>Yukarıdaki cümlede boş bırakılan yerleri sırasıyla aşağıdakilerden hangisi doğru tamamlar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) kaza - yönetim</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) sağlık - kaza</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) sağlık - yönetim</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) kaza - iş</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) iyilik - çalışma</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Çıkmış sorularda sıkça yer alan bu tanıma göre; Dünya Sağlık Örgütü'ne göre bedenen ve ruhen tam iyilik hali "Sağlık", bir işi uygun şekilde yürütmek ise "Yönetim" olarak tanımlanır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Hastalığa bağlı olarak gelişebilecek sakatlık ve kalıcı bozuklukların en aza indirgenmesi, hastanın yeni duruma uyumunun sağlanarak yaşam kalitesinin artırılması için alınması gereken önlemlerdir.<br>Bu sağlık hizmeti aşağıdaki başlıklardan hangisinin altındadır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Birincil Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sekonder Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İkincil Koruma</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Üçüncül Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Primer Koruma</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Geçmiş yıl (2021) sorularındandır. Hastalık veya kaza oluştuktan sonra sakatlığı azaltma ve yaşama uyumu (rehabilitasyonu) sağlama hizmetlerine Üçüncül (Tersiyer) koruma adı verilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. Aşağıdakilerden hangisi sağlık hizmetlerinin temel düzeydeki (Düzey 1-2-3) sınıflandırılması kapsamında değerlendirilen başlıklarındandır?<br>I. Koruyucu II. Tedavi edici III. Rehabilite edici IV. Geliştirici</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Yalnız II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) I ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) I, II ve IV</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) I, II, III ve IV</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Sağlık hizmetleri genel anlamda bütüncül bir yapıdır. Hem hastalığı önleyici (koruyucu), hem hasta olanı tedavi edici, hem sakat kalanları rehabilite edici hem de genel yaşam kalitesini geliştirici öğeleri tümüyle kapsar.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Tarihte ilk kez hastalıkların tanrıların kızgınlıklarından ya da cin, peri, şeytan ve kötü ruhların olumsuz etkilerinden gelmediğini savunan bilim insanı aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İbn Sina</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Hipokrat (Hippocrates)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Galenos</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Pasteur</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Mondino de Liuzzi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Sınavlarda en az iki kez sorulan bir detaydır. Tıbbın atası olarak kabul edilen Hipokrat, hastalıkların mitolojik/doğaüstü nedenlerle değil; çevresel etkenlerle ve fizyolojik yapıyla ilgili olduğunu öne sürmüştür.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. Cumhuriyet döneminde çalışma koşullarını köklü biçimde iyileştiren, çocuk ve kadınların çalışma şartlarını düzenleyen, 50 ve daha fazla işçi çalıştıran işyerlerinde hekim bulundurma zorunluluğunu getiren temel kanun aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) 1593 sayılı Umumi Hıfzıssıhha Kanunu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Dilaver Paşa Nizamnamesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Maadin Nizamnamesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) 6331 sayılı İş Sağlığı ve Güvenliği Kanunu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) 4857 sayılı İş Kanunu</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2023 Yaz Okulu sınavında sorulmuştur. 1930 yılında kabul edilen 1593 sayılı "Umumi Hıfzıssıhha Kanunu", işyerlerinde koruyucu tıp alanındaki ilk ve en kapsayıcı Cumhuriyet dönemi kanunudur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. 'De Re Metalica' isimli eserinde madencilerin toz hastalıklarından korunması için ağız ve burunlarını kapatmasını (bir nevi maske kullanımını) öneren bilim adamı kimdir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Percival Pott</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Juvenal</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Georgius Agricola</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Galen</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Hipokrat</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2021 ve 2022'de sorulmuştur. Georgius Agricola, 1556'da yayımlanan eserinde madencilikteki tozların akciğerlere zararını betimlemiş ve ilkel formda maske kullanılmasını tavsiye etmiştir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Osmanlı döneminde (1869) maden çalışanlarının haklarını, iş güvenliğini düzenleyen ve kaza anında maden sahibini tazminat ödemekle yükümlü kılan "Maadin Nizamnamesi"nin içerdiği konulardan biri *değildir*?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kaza durumunda hükümete haber verilmesinin zorunlu olması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Zorunlu (angarya) çalışmanın kaldırılması</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Hata maden sahibine aitse ceza ödenmemesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Mühendislerin tehlikeleri işverene bildirmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kaza sonrası masrafların işveren tarafından karşılanması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2025 sınav analizine göre çıkan çeldiricidir. Maadin Nizamnamesine göre eğer hata veya ihmal işverene (maden sahibine) aitse işçiye veya ailesine kesinlikle "tazminat/ceza ödenmesi" hükmü vardır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Dünya Sağlık Örgütü'nün 2002 tarihli raporuna göre günümüz hastalıklarına neden olan "en temel risk faktörleri" sıralamasında aşağıdakilerden hangisi yer almaz?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yüksek kan basıncı (Hipertansiyon)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kolesterol yüksekliği</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Sigara / tütün kullanımı</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Soğuk algınlığı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Alkol tüketimi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2022'de sorulmuştur. DSÖ'ye göre dünyadaki hastalık yükünün en temel ve ağır risk faktörleri; tütün, alkol, hipertansiyon, kolesterol ve obezitedir. Soğuk algınlığı basit ve geçici bir hastalıktır, temel kök neden veya majör risk faktörü değildir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. I. Planla &nbsp; II. Uygula &nbsp; III. Devret &nbsp; IV. Önlem al<br>Yukarıdakilerden hangisi/hangileri yönetimdeki "Sürekli Kalite İyileştirme" veya PUKO döngüsü bileşenlerindendir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) I ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) II ve IV</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) I, II ve IV</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) I, II, III ve IV</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Walter Shewhart ve Deming'in yaygınlaştırdığı PUKO döngüsü: Planla (I), Uygula (II), Kontrol Et ve Önlem Al (IV) adımlarından oluşur. Süreçte işi "Devret" şeklinde bir ana aşama bulunmaz.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Temel Sağlık Hizmetleri kavramı; "bilimsel olarak sağlam temelli, toplumsal olarak kabul edilebilir yöntem ve teknolojilere sahip bir sağlık yaklaşımı" olarak ilk defa hangi yılda ve nerede tanımlanmıştır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) 1919 - Paris (Versay)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) 1948 - Cenevre (DSÖ)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) 1978 - Alma-Ata</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) 1989 - Londra</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) 2002 - New York</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Çıkmış sorudur. Temel Sağlık Hizmetleri (Primary Health Care) manifestosu, 1978 yılında SSCB/Kazakistan'ın başkenti olan Alma-Ata'da düzenlenen uluslararası konferansta kabul edilmiştir.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        // Otomatik Puanlama Scripti (4 Yanlış 1 Doğruyu Götürür)
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+
+        function updateScore() {
+            let netScore = correctCount - (wrongCount / 4);
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            const parentUl = clickedLi.parentElement;
+            
+            // Eğer daha önce cevaplandıysa işlem yapma
+            if (parentUl.classList.contains('answered')) return;
+            
+            // Soruya cevap verildi sınıfını ekle
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            // Seçilen şık doğru mu?
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                // Doğruyu bul ve yeşil yap
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            updateScore();
+        }
+    </script>
 </body>
 </html>

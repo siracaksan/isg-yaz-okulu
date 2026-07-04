@@ -1,25 +1,658 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2023 Yaz Okulu Soruları - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>2023 Yaz Okulu Çıkmış Sorular - İş Sağlığı Yönetimi</title>
+    <style>
+        /* Genel Renk ve Font Stilleri - ÇIKMIŞ SORULAR İÇİN RESMİ SINAV TEMASI (Lacivert/Altın) */
+        :root {
+            --primary: #1A5276; /* Kurumsal Sınav Laciverti */
+            --secondary: #F1C40F; /* Altın Sarısı Vurgu */
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #a9cce3;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--secondary);
+        }
+        header h1 { margin: 0; font-size: 1.6em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; color: #d4e6f1; }
+
+        /* Yönlendirme (Nav) Menüsü - YILLARA GÖRE ÇIKMIŞ SORULAR */
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #d35400; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        
+        /* Sekmeli Test Geçişleri */
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eaf2f8;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid #d4e6f1;
+        }
+        .test-numaralari span { font-weight: bold; color: #1A5276; margin-right: 10px; }
+        .test-numaralari a.active {
+            background: var(--secondary);
+            color: #1A5276;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 1px solid #b7950b;
+        }
+
+        /* Çıkmış Soru Analiz Paneli */
+        .analiz-paneli {
+            background: var(--analysis-bg);
+            border: 2px solid var(--analysis-border);
+            border-left: 6px solid var(--primary);
+            color: #154360;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 8px;}
+        .analiz-paneli p { margin-bottom: 0; }
+
+        /* Puanlama Paneli ve PDF Butonu */
+        .dashboard {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .pdf-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pdf-btn:hover { background: #154360; }
+
+        /* Çift Sütun Soru Düzeni */
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 15px;
+        }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #2c3e50;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+
+        /* Doğru/Yanlış Stilleri */
+        .options.answered li { pointer-events: none; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(39, 174, 96, 0.3);
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+            box-shadow: 0 2px 4px rgba(192, 57, 43, 0.3);
+        }
+
+        /* Çözüm Paneli (Tıklandığında Açılır) */
+        details.solution {
+            margin-top: 15px;
+            background: #fcf3cf;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed #f1c40f;
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #b7950b;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        /* Mobil Uyumluluk */
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+            .test-numaralari a { display: inline-block; }
+        }
+
+        /* PDF / Yazdırma Ayarları */
+        @media print {
+            body { background: white; font-size: 10pt; }
+            header, .test-menusu, .dashboard, .analiz-paneli, footer { display: none; } 
+            .questions-grid { display: block; column-count: 2; column-gap: 20px; }
+            .question-card { break-inside: avoid; border-left: 2px solid #aaa; box-shadow: none; border: 1px solid #ddd; margin-bottom: 12px; padding: 10px;}
+            .options li { padding: 4px 8px; margin-bottom: 2px; border: none; background: none; }
+            details.solution { display: block; border: none; padding: 5px 0 0 0; background: none; margin-top: 5px; }
+            details.solution summary { display: none; } 
+            details.solution p::before { content: "Çözüm: "; font-weight: bold; text-decoration: underline; }
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>2023 Yaz Okulu Soruları</h2>
+        <h1>Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
+        <h2>İş Sağlığı Yönetimi Dersi - 2023 Yılı Çıkmış Soruları (A Grubu)</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../index.html">🏠 Dersin Ana Sayfasına Dön</a> | 
+            <a href="../Unite_8/test_1.html">📚 Ünite Testlerine Dön</a>
+        </div>
+        <hr>
+        
+        <!-- İLERİ/GERİ YÖNLENDİRMELERİ -->
+        <div class="ileri-geri-linkler">
+            <a href="yaz_okulu_2022.html">⬅️ Önceki Sınav (2022 Yaz Okulu)</a> | 
+            <a href="yaz_okulu_2024.html">Sonraki Sınava Geç (2024 Yaz Okulu) ➡️</a>
+        </div> 
+
+        <!-- ÇIKMIŞ SINAV YILLARI SEKMESİ -->
+        <div class="test-numaralari">
+            <span>Çıkmış Sınav Yılları:</span>
+            <a href="yaz_okulu_2021.html">2021 Yaz Okulu</a>
+            <a href="yaz_okulu_2022.html">2022 Yaz Okulu</a>
+            <a href="yaz_okulu_2023.html" class="active">2023 Yaz Okulu</a>
+            <a href="yaz_okulu_2024.html">2024 Yaz Okulu</a>
+            <a href="yaz_okulu_2025.html">2025 Yaz Okulu</a>
+        </div>
+    </nav>
+
+    <!-- Bilgilendirme Paneli -->
+    <div class="analiz-paneli">
+        <h3>ÖSYM/AÖF Sınav Simülasyonu Bilgilendirmesi</h3>
+        <p>Bu testteki tüm sorular, şıklar ve doğru cevap dizilimi <strong>2022-2023 Öğretim Yılı Yaz Okulu A Grubu</strong> orijinal sınav kitapçığından birebir alınmıştır. Çözüm butonları, doğru cevabın mantığını ders kitabı verilerine göre kavramanız için özel olarak eklenmiştir.</p>
+    </div>
+
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+            <div style="font-size: 0.85em; margin-top: 8px; color: #1A5276;">(Otomatik Hesaplama: 4 Yanlış 1 Doğruyu Götürür)</div>
+        </div>
+        <button class="pdf-btn" onclick="window.print()">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 8H8v-5h8v5zm3-4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            Sıkışık Formatla PDF İndir / Yazdır
+        </button>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid">
+
+            <div class="question-card">
+                <div class="question-text">1. Aşağıdakilerden hangisinde çocuk ve kadınların çalışma koşulları düzenlenmekte, 50 ve daha fazla işçi çalıştıran işyerlerinde işyeri hekimi zorunluluğu ile ilgili düzenlemeler yer almaktadır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) 1593 sayılı Umumi Hıfzıssıhha Kanunu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) “Ereğli Havza-i fahmiye maden amelesinin hukukuna müteallik kanun”</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Dilaver Paşa Nizamnamesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Maadin Nizamnamesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Mısır Hidivi Mehmet Ali Paşa Nizamnamesi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Cumhuriyet döneminde yürürlüğe giren "1593 sayılı Umumi Hıfzıssıhha Kanunu", iş sağlığına dair önemli maddeler içerir; 50'den fazla işçi çalıştıran yerlere iş yeri hekimi zorunluluğu ile kadın/çocuk işçilerin çalışma koşulları bu kanunla düzenlenmiştir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. ------- ya da ------- göre meslek hastalığı, yapılan işe özgü neden-sonuç ilişkisi bağlamında, zararlı bir etken ile uzun süre süregelen maruziyet sonucunda ortaya çıkan hastalıklara denilmektedir.<br><br>Yukarıdaki cümlede boş bırakılan yerleri aşağıdakilerden hangisi doğru olarak tamamlar?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Dünya Sağlık Örgütü - Uluslararası Çalışma Örgütü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Dünya Sağlık Örgütü - Uluslararası Kalkınma Ajansı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Dünya Sağlık Örgütü - Birleşmiş Milletler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Uluslararası Kalkınma Ajansı - Uluslararası Çalışma Örgütü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Uluslararası Çalışma Örgütü - Birleşmiş Milletler</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Evrensel meslek hastalığı tanımı literatürde Dünya Sağlık Örgütü (WHO) ve Uluslararası Çalışma Örgütü (ILO) ortak bildirilerine dayandırılarak yapılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. Aşağıdakilerden hangisi iş aktivitelerinden kaynaklanan ajanlara bağlı meslek hastalıklarındandır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Kimyasal ajanlara bağlı hastalıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Cilt hastalıkları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Zihinsel ve davranışsal bozukluklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Solunum sistemi hastalıkları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kas iskelet sistemi bozuklukları</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>ILO Meslek Hastalıkları Sınıflandırmasında "İş aktivitelerinden kaynaklanan ajanlara bağlı hastalıklar" ana başlığı altında biyolojik, fiziksel ve "Kimyasal ajanlara bağlı" hastalıklar yer alır. Diğer seçenekler farklı ana başlıkların konularıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. İşçi kavramının oluşması ve günümüzdeki iş sağlığı kavramının gelişmesi 18. yüzyıl ve sonrasında gelişen ------- ile birlikte olmuştur.<br><br>Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru olarak tamamlar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) telefonun icadı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) ahiliğin ortaya çıkışı</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Sanayi Devrimi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) proletaryanın çöküşü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) telgrafın icadı</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Fabrikaların kurulması, kırsaldan kente göç ve toplu üretimin başladığı 18. Yüzyıl'daki "Sanayi Devrimi" modern anlamda işçi ve iş sağlığı kavramlarının miladı sayılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. Aşağıdakilerden hangisi güvenlik kültürünün özelliklerinden biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Bir organizasyonda olaylardan, kazalardan ve hatalardan öğrenme ve gelişmeyle ilgili gönüllülüğü yansıtır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Bütün çalışanlar tarafından paylaşılan değerlerdir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Çalışanların işteki davranışını etkilemez.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Güvenlik kültürü, tüm çalışanların katılımını gerektirir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yalnızca yönetim ve denetim sistemleriyle sınırlı değil, örgütteki formel güvenlik sorunlarıyla da ilgilidir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Güvenlik kültürünün temel amacı zaten çalışanların zihninde kalıcı bir bilinç oluşturarak onların "işteki davranışlarını olumlu yönde etkilemek ve değiştirmek"tir. Etkilemediğini söylemek yanlıştır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. I. Bahçıvan<br>II. Temizlik elemanı<br>III. Berber<br>IV. Hemşire<br><br>Yukarıdakilerden hangisi/hangileri sağlık çalışanlarındandır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) II, III ve IV</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) I, II, III ve IV</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Ders kitabı örgüt şeması tablosuna göre (Hizmetler Sınıfı), hastane ve sağlık kurumları bünyesinde faaliyet gösteren temizlikçiler, tesisatçılar, bahçıvanlar ve hatta kuaför/berberler "sağlık çalışanı" işyeri bütününün bir parçasıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. Aşağıdakilerden hangisi gözlemsel araştırmanın özelliklerindendir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Neden için kanıtlar tam olarak kesindir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Neden sonuç ilişkisi tam olarak saptanabilir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İncelenen faktör ışındaki değişkenler sabittir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) İncelenen faktörler araştırmacının kontrolü altında değildir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yaşanılan olayın tekrarı mümkündür.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Gözlemsel epidemiyolojik araştırmalarda (kesitsel, kohort vb.) olaylar ve hastalıklar kendi doğal akışında incelenir; "araştırmacı etkenlere/faktörlere (ilaç vb.) dışarıdan müdahalede (kontrolde) bulunmaz".</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. Aşağıdakilerden hangisi epidemiyolojinin kullanım alanlarından biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sağlığı ve hastalıkları tanımlar.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Soruna yönelik korunma ve tedavi yöntemi geliştirmez.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Sorunların çözüm yollarını inceler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Sorunun boyutunu saptar.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sorunun nedenlerini inceler.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Epidemiyoloji, hastalıkların nedenini ve dağılımını inceledikten sonra "tedavi ve koruyucu yöntemler (sağlık politikaları)" geliştirilmesine büyük ölçüde katkı sağlar. Bu nedenle B şıkkındaki ifade yanlıştır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Solunduğunda, ağız yoluyla alındığında, deri yoluyla emildiğinde insan sağlığı üzerinde akut veya kronik hasarlara veya ölüme neden olan maddeler aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kolay alevlenir madde</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Zararlı madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Aşındırıcı madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Oksitleyici madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Toksik madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>2023 Yılı orijinal cevap anahtarına ve yönetmeliklere göre; tanımın başında "Az miktarlarda (düşük dozda)" ifadesi yer almadığı için bu tanım yasal olarak doğrudan <strong>Zararlı Madde</strong> tanımıdır. Toksik madde tanımında cümlenin başında mutlaka "az miktarlarda" ifadesi bulunur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. Çalışanların tehlikelerden korunması için, ekipmanların kontrolsüz hareketini ve enerjisini engelleme metoduna ------- denir.<br><br>Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru olarak tamamlar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) yenileme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) etiketleme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) yağlama</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) kilitleme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) kalibrasyon</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Makinelerde bakım yapılırken şalterden enerjinin fiziksel bir asma kilit ile engellenmesi doğrudan "Kilitleme" işlemidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">11. Solunduğunda, cilde nüfuz edildiğinde aşırı derecede hassasiyet meydana getirme özelliği olan maddelere ------- denir.<br><br>Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru olarak tamamlar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) kolay alevlenir madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) aşındırıcı madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) alevlenir madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) oksitleyici madde</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) alerjik madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Vücudun savunma mekanizmasını tetikleyerek aşırı reaksiyon ve "hassasiyet" oluşumuna neden olan kimyasal maddelere mevzuatta "Alerjik Madde" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. ------- olasılığın ve etkinin bileşkesinden hesaplanır.<br><br>Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru olarak tamamlar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tehdit değeri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Birleşen değeri</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Risk değeri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Ölüm riski</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Olasılık değeri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Risk analizindeki temel formül: Risk Değeri = Olasılık (Olayın Olma İhtimali) x Şiddet (Etki / Zarar Büyüklüğü) şeklindedir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. Yasak işareti, uyarı işareti, emredici işaret, acil çıkış ve ilk yardım işaretleri dışında bilgi veren diğer işaretlere ------- denir.<br><br>Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru olarak tamamlar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) ışıklı işaret</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) sembol</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) bilgilendirme işareti</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) işaret levhası</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) sağlık ve güvenlik işaretleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Temel 4 renk panosu (Yasak, İkaz, Emredici, Acil Çıkış) haricinde kalan ve sadece yön veya bilgi gösteren levhalar yönetmelikte "Bilgilendirme İşareti" olarak geçer.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Aşağıdaki riske karşı koruyucu önlemlerden hangisi <strong>çalışma şartlarına</strong> yönelik düzenlemeleri ifade eder?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kişisel koruma önlemleri</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Yönetsel önlemler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Mühendislik düzenlemeleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Toplu koruma önlemleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kontrol ve izolasyon</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Mesaide rotasyon yapılması, çalışma sürelerinin kısaltılması veya personelin vardiyalarının düzenlenmesi (çalışma şartlarının planlanması) tamamen "Yönetsel (İdari) Önlemler" kapsamında ele alınır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. Enjektör ve diğer tüm tıbbi girişim iğneleri, lanset, kapiller tüp, bisturi, bıçak, serum seti iğnesi, cerrahi sütur iğneleri, biyopsi iğneleri, intraket, kırık cam, ampul, lam-lamel, kırılmış cam tüp ve petri kapları gibi batma, delme, sıyrık ve yaralanmalara neden olabilecek atıkları içeren atık türü aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tehlikeli atık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Enfeksiyon yapıcı atıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Radyoaktif atık</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Kesici-delici atıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Patolojik atıklar</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Sayılmış olan iğne, jilet ve kırık cam türevi malzemeler hastanelerdeki Sarı sert plastik kutulara atılan "Kesici-Delici Atık" sınıfıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. I. Yasal mevzuat uyum yeteneklerinin geliştirilmesi<br>II. Genel olay maliyetlerinin azaltılması<br>III. Sigorta primlerinin maliyetini azaltması<br><br>Yukarıdakilerden hangisi/hangileri ISO 45001 sağlık kuruluşlarına sağladığı faydalardandır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Yalnız II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) II ve III</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) I, II ve III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Her üç madde de ISO 45001 sisteminin kuruma katkılarındandır. Kazaları önlediği için yasal ceza yenmez (I), tazminat ve tedavi masrafı azalır (II) ve risk düştüğü için sigorta şirketine ödenen kasko/sigorta primi düşer (III).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Aşağıdakilerden hangisi iş kazasının tekrarlanmaması için alınan uzun vadeli düzeltici önlemlerden biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yapılan tüm işler için bir risk değerlendirme yaparak çalışanları bu riskler hakkında bilgilendirmek</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Yapılan işleri daha güvenli hale getiren mühendislik çözümleri veya idari değişiklikler yapmak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Çalışanların yaptıkları işler ile ilgili iş güvenliği eğitimleri planlamak</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) İş prosedürlerini iptal etmek</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Ekipmanlar için bakım planları yapmak</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Kazaların ardından prosedürler iyileştirilir ve güncellenir. Güvenli çalışma adımlarını içeren mevcut "İş prosedürlerini tamamen iptal etmek" (kuralsızlık) bir önlem değil, yeni kazalara davetiyedir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Zekâ seviyesi, görme yeteneği, duygusal durumu, kaza eğilimi, iş tatmini, yabancılaşma duygusu, monotonluk, riski kabullenme, stres, psikolojik rahatsızlıklar, alkol ve uyuşturucu bağımlılığı ------- etkenler sayılmaktadır.<br><br>Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru olarak tamamlar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) biyolojik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) patolojik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) fizyolojik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) sosyolojik</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) psikolojik</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Madde bağımlılığı, stres, zeka seviyesi, iş tatmini ve monotonluğun işçide yarattığı hatalı davranış tetikleyicileri İş Kazası Araştırmalarında "Psikolojik Etkenler" olarak gruplanır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. Sağlık hizmetlerinin kalitesini ölçebilmek için <strong>öncelikli olarak</strong> aşağıdakilerden hangisinin yapılması gereklidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sağlık politikalarının değiştirilmesi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Hizmet amacının ortaya konması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Ulusal etkilerin hesaplanması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kamuoyu yoklaması yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Vatandaşların bilinçlendirilmesi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Kaliteyi ölçebilmenin ilk şartı, ulaşmak istenilen hedefin/standardın ne olduğunun, yani "hizmetin amacının ortaya konmasıdır".</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Sağlıkta kalite ölçümüyle ilgili ilk uygulama hangi yılda ve hangi ülkede yapılmıştır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) 1914 - ABD</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) 1925 - İtalya</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) 1936 - Brezilya</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) 1945 - Rusya</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) 1952 - ABD</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözümü Göster</summary>
+                    <p>Hastanelerdeki kalite standardı ölçümleriyle ilgili ilk tıbbi araştırmalar Amerikan Cerrahlar Derneği inisiyatifi ile ilk olarak "1914 yılında Amerika Birleşik Devletleri'nde (ABD)" başlamıştır.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        // Puanlama Algoritması (4 Yanlış 1 Doğruyu Götürür)
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+
+        function updateScore() {
+            // Net hesabı
+            let netScore = correctCount - (wrongCount / 4);
+            
+            // Puan hesaplama (100 üzerinden)
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            // Arayüze yazdır
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            const parentUl = clickedLi.parentElement;
+            
+            // Eğer soru cevaplanmışsa tekrar işlemi engelle
+            if (parentUl.classList.contains('answered')) return;
+            
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                // Cevap yanlışsa, doğru olanı bul yeşile boya
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            updateScore();
+        }
+    </script>
 </body>
 </html>

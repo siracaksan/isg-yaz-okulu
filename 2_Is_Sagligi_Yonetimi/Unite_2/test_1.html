@@ -1,25 +1,642 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 2 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
+    <title>Ünite 2 - Test 1 - 2026 Anadolu Üniversitesi İSG Yaz Okulu</title>
+    <!-- Harici stil dosyası istenirse eklenebilir -->
     <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        /* Genel Renk ve Font Stilleri - Ünite 2 İçin Mor Tema */
+        :root {
+            --primary: #8e44ad; 
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f7f9fa;
+            --card-bg: #ffffff;
+            --analysis-bg: #f9f2fb;
+            --analysis-border: #d2b4de;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 { margin: 0; font-size: 1.5em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; }
+
+        /* Yönlendirme (Nav) Menüsü */
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #5e3370; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+
+        /* Çıkmış Soru Analiz Paneli */
+        .analiz-paneli {
+            background: var(--analysis-bg);
+            border: 2px solid var(--analysis-border);
+            border-left: 6px solid var(--primary);
+            color: #2c3e50;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 8px;}
+        .analiz-paneli ul { margin-bottom: 0; padding-left: 20px; }
+        .analiz-paneli li { margin-bottom: 5px; }
+
+        /* Puanlama Paneli ve PDF Butonu */
+        .dashboard {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .pdf-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pdf-btn:hover { background: #5e3370; }
+
+        /* Çift Sütun Soru Düzeni (Masaüstü için Çift, Mobil için Tek Sütun) */
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 15px;
+        }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #2c3e50;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options li {
+            background: #fdfbfd;
+            border: 1px solid #e1d5e6;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #f4ecf7; }
+
+        /* Doğru/Yanlış Stilleri */
+        .options.answered li { pointer-events: none; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(39, 174, 96, 0.3);
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+            box-shadow: 0 2px 4px rgba(192, 57, 43, 0.3);
+        }
+
+        /* Çözüm Paneli (Tıklandığında Açılır) */
+        details.solution {
+            margin-top: 15px;
+            background: var(--analysis-bg);
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed var(--analysis-border);
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary);
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        /* Mobil Uyumluluk (Cep Telefonu) */
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+
+        /* PDF / Yazdırma (Sıkışık Format) Ayarları */
+        @media print {
+            body { background: white; font-size: 10pt; }
+            header, .test-menusu, .dashboard, .analiz-paneli, footer { display: none; } 
+            .questions-grid { display: block; column-count: 2; column-gap: 20px; }
+            .question-card { break-inside: avoid; border-left: 2px solid #aaa; box-shadow: none; border: 1px solid #ddd; margin-bottom: 12px; padding: 10px;}
+            .options li { padding: 4px 8px; margin-bottom: 2px; border: none; background: none; }
+            details.solution { display: block; border: none; padding: 5px 0 0 0; background: none; margin-top: 5px; }
+            details.solution summary { display: none; } 
+            details.solution p::before { content: "Çözüm: "; font-weight: bold; text-decoration: underline; }
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
 </head>
 <body>
+
     <header>
         <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 2 - Test 1</h2>
+        <h2>Ünite 2: Meslek Hastalıkları - Ünite Testi (20 Soru)</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="../index.html">📚 Dersin Ana Sayfası</a> | 
+            <a href="konu_anlatimi.html">📖 Konu Anlatımına Dön</a>
+        </div>
+        <hr>
+        <div class="ileri-geri-linkler">
+            <a href="../Unite_1/test_1.html">⬅️ Önceki Ünite Testi (Ünite 1)</a> | 
+            <a href="../Unite_3/test_1.html">Sonraki Ünite Testi (Ünite 3) ➡️</a>
+        </div> 
+    </nav>
+
+    <!-- Çıkmış Soru Analiz Paneli -->
+    <div class="analiz-paneli">
+        <h3>📈 Ünite 2 - Çıkmış Soru Analizi ve Odak Noktaları</h3>
+        <p>Geçmiş yılların (2021-2025) sınav havuzu incelendiğinde "Meslek Hastalıkları" ünitesinden her yıl ortalama <strong>3 ila 5 soru</strong> gelmektedir. Soruların yoğunlaştığı temel kavramlar şunlardır:</p>
+        <ul>
+            <li><strong>Tanı ve Nedensellik Kriterleri (%30):</strong> Hastalığı oluşturan etkenle zaman ilişkisi (<em>Zamansallık</em>), maruziyet arttıkça belirti şiddetinin artması (<em>Doz-Cevap İlişkisi</em>) ve farklı çalışmalarda aynı sonucun bulunması (<em>Tutarlılık</em>) en sık sorulan kavramlardır.</li>
+            <li><strong>Sektörel Dağılımlar (%25):</strong> SGK verilerine göre meslek hastalıklarının en çok görüldüğü iller (İstanbul, Zonguldak vb.) ve sektörler (Metalik olmayan mineral ürünleri, madencilik) sıkça test edilir.</li>
+            <li><strong>İşle İlgili vs. Meslek Hastalığı (%20):</strong> Hipertansiyon, obezite gibi toplumda yaygın görülen rahatsızlıkların <em>"İşle İlgili Hastalık"</em>, Silikozis gibi spesifik sorunların ise <em>"Meslek Hastalığı"</em> olduğu kıyaslatılır.</li>
+            <li><strong>Sınıflandırma Sistemleri ve Mevzuat (%25):</strong> Türkiye'de kullanılan SGK Listesindeki hastalık grupları (Örn: D Grubu = Bulaşıcı hastalıklar) ile işverenin meslek hastalığını teşhisten itibaren <strong>3 iş günü</strong> içinde bildirme zorunluluğu banko sorulardandır.</li>
+        </ul>
+    </div>
+
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+            <div style="font-size: 0.85em; margin-top: 8px; color: #512e5f;">(Otomatik Hesaplama: 4 Yanlış 1 Doğruyu Götürür)</div>
+        </div>
+        <button class="pdf-btn" onclick="window.print()">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 8H8v-5h8v5zm3-4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            Sıkışık Formatla PDF İndir / Yazdır
+        </button>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid">
+
+            <!-- ========================================== -->
+            <!-- DERS KİTABI SAYFA 63-64 (1-10) -->
+            <!-- ========================================== -->
+            
+            <div class="question-card">
+                <div class="question-text">1. Meslek hastalığı ile ilgili aşağıdaki ifadelerden hangisi doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Meslek hastalıkları toplumda da yaygın olarak görülebilmektedir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B. Belirli bir iş ortamında yapılan işle hastalık arasında nedensel bir ilişki bulunmaktadır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Hastalıkların tanısının konulması için klinik bulgular yeterlidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Bu hastalıklar birden ortaya çıkan hızlı ilerleyen hastalıklardır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Bu hastalıklar, kolay tanı konulan ve bildirilen hastalıklardır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Meslek hastalığının en temel şartı ve onu diğer hastalıklardan ayıran faktör, kişinin çalışma ortamındaki etkenler (yapılan iş) ile ortaya çıkan hastalık tablosu arasında doğrudan nedensel bir bağ bulunmasıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. Meslek hastalığının ortaya çıkma süreci içinde maruziyetin hastalıktan önce gelmesi kriterine ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. İlişkinin gücü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Özgünlük</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C. Zamansallık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Tutarlılık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Verilere uygunluk</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Epidemiyolojik nedensellik kriterlerinden "Zamansallık (Temporality)", hastalığı oluşturan tehlikeli etkene maruz kalma olayının, fiziksel hastalık belirtilerinden takvim olarak daha önce gerçekleşmesini ifade eder.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. İşle ilgili hastalıkları meslek hastalıklarından ayıran en önemli özellik aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A. Toplumda sık görülmeleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Süreğen hastalık olmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Yapılan işe spesifik olmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Mortalitelerinin yüksek olması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Hukuki boyutlarının olması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Meslek hastalıkları sadece o işe maruz kalan özel bir çalışan grubunda (spesifik) görülürken, işle ilgili hastalıklar (örneğin hipertansiyon, diyabet) çalışma ortamıyla şiddetlenebilen ancak genel toplumda da çok sık görülen hastalıklardır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. Türkiye’deki meslek hastalıkları epidemiyolojisi ile ilgili aşağıdakilerden hangisi doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Kadınlarda daha fazla görülmektedir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Genç yaş gruplarında daha fazla ortaya çıkmaktadır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Hastalıklar kırsal bölgelere daha fazla sıklıkla görülmektedir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D. En fazla mineral, metal sanayi ve kömür madenciliğinde görülmektedir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Meslek hastalığına bağlı ölüm hızları yüksektir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>SGK istatistikleri ve epidemiyolojik raporlara göre, Türkiye'de tespit edilen meslek hastalıkları vakalarının büyük çoğunluğu solunum sistemi kaynaklı olup; mineral/metal sanayi ile kömür madenciliği kollarında yoğunlaşmaktadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. Meslek hastalıklarına tanı koyma süreci ile ilgili aşağıdakilerden hangisi doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Tıbbi tanı süreçleri tek başına yeterlidir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B. Çalışma hayatında yaptığı işlerle ilgili maruziyetler sorgulanmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Tanı koymak için klinik değerlendirmelerin yanında laboratuvar da gerekmektedir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Meslek hastalıkları tanısı içim hastane koşullarında yapılan değerlendirmeler yeterli olur.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. İş yeri dışındaki çevresel maruziyetlerin meslek hastalıkları tanı sürecine bir katkısı yoktur.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Meslek hastalığı teşhisinin en kritik basamağı detaylı iş ve meslek öyküsüdür (anamnez). Hastanın çalışma hayatı boyunca hangi etkenlere ne sıklıkla maruz kaldığının titizlikle sorgulanması şarttır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Aşağıdakilerden hangisi Uluslararası Çalışma Örgütünün (ILO) meslek hastalıkları listesinde yer alan 4 ana gruptan biri değildir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A. Mesleki bulaşıcı hastalıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. İş aktivitelerinden kaynaklı ajanlara bağlı hastalıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Hedef organlara bağlı hastalıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Mesleki kanserler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Diğer hastalıklar (Madenci nistagmusu)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>ILO'nun güncel listesinde hastalıklar ana başlık olarak; 1) Ajanlara bağlı (kimyasal/biyolojik vb), 2) Hedef organa bağlı, 3) Mesleki kanserler ve 4) Diğer hastalıklar olarak geçer. "Mesleki bulaşıcı hastalıklar" diye müstakil bir üst başlık yoktur, bu maddeler "ajanlara bağlı (biyolojik)" başlığı altında yer alır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. Türkiye’de meslek hastalığı sınıflandırılması ile ilgili aşağıdaki ifadelerden hangisi doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Meslek hastalıkları sınıflaması iş aktivitelerine göre yapılmaktadır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Bu listede yer almayan hastalıklar kesinlikle meslek hastalığı sayılmamaktadır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Mesleki kanserler ayrı bir grup olarak tanımlanmıştır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Hedef organ hasarına göre sınıflandırma yapılmaktadır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E. Meslekte kazanma kaybı tespit işlemleri yönetmeliğindeki sınıflama kullanılmaktadır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Türkiye'deki sosyal güvenlik (SGK) sisteminde meslek hastalıkları, "Çalışma Gücü ve Meslekte Kazanma Kaybı Oranı Tespit İşlemleri Yönetmeliği" listesine göre (A, B, C, D, E Grupları şeklinde) sınıflandırılmaktadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. Aşağıdakilerden hangisi meslek hastalıklarından korunmada 'primordiyal' bir korunma önlemi olarak sayılabilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Kaynakta kontrol önlemleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Kişisel koruyucu donanım kullanımı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Periyodik muayeneler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. İş yerlerinde havalandırma koşullarının düzenlenmesi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E. Sağlık eğitimi (Ulusal makro politikalar bağlamında)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Primordiyal (En Temel) Korunma; toplumda hastalıkların daha oluşmasına bile zemin hazırlayacak cehalet, sosyal, çevresel durumların makro düzeyde iyileştirilmesidir. Kitaptaki soru şıklarına göre genel 'Sağlık Eğitimi' bu kapsamdaki temel yaklaşımdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Sekonder korunma uygulamalarını diğer korunma uygulamalarından ayıran en önemli fark aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Sağlık eğitimi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Yasal düzenlemeler yapmak</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C. Erken tanı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Tedavi hizmetleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Rehabilitasyon hizmetleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>İkincil (Sekonder) korumanın odak noktası, hastalık henüz belirti vermeden veya çok başındayken taramalar, testler ve aralıklı (periyodik) muayeneler vasıtasıyla **erken tanı** koymaktır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. Meslek hastalıkları bildirimiyle ilgili aşağıdakilerden hangisi doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Aile hekimleri ilgili uzman konsültasyonu ile meslek hastalığı tanısı koyabilir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Meslek hastalığı bildirimi için maksimum süre iki aydır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Meslek hastalığı bildiriminde işverenin bir sorumluluğu bulunmamaktadır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. İş yeri hekimi meslek hastalığı şüphesi duyduğunda önce işverene bilgi vermelidir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E. Çalışanların meslek hastalığı iddiası ile Sosyal Güvenlik Kurumuna başvurması durumunda meslek hastanesi ya da yetkilendirilmiş hastaneye sevk edilir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Çalışanlar, sağlıklarının bozulduğunu veya hastalığın işten kaynaklandığını düşündüklerinde doğrudan SGK'ya başvurma hakkına sahiptirler. Kurum, başvuruyu değerlendirip kişiyi meslek hastalıkları tespitinde yetkilendirilmiş üst düzey hastanelere sevk eder.</p>
+                </details>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- ÇIKMIŞ SORU ANALİZİNE DAYALI ÖZGÜN SORULAR -->
+            <!-- ========================================== -->
+
+            <div class="question-card">
+                <div class="question-text">11. Bir çalışanın iş yerindeki tehlikeli maddeye maruziyet süresi veya ortamdaki miktar (doz) arttıkça, kişide gözlemlenen zehirlenme/hastalık tablosunun da o derece ağırlaşması, epidemiyolojide hangi nedensellik kriteri ile açıklanır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Zamansallık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Tutarlılık</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C. Doz-cevap (Doz-etki) ilişkisi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Özgünlük</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Biyolojik uygunluk</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Çıkmış sorudur. Tehlikeli etkene maruz kalınan miktar/zaman (doz) arttıkça klinik belirtilerin şiddetinin ve yaygınlığının da artış göstermesi durumu epidemiyolojide "Doz-Cevap (Doz-Etki)" ilişkisidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Ayakkabı atölyelerinde kullanılan yapıştırıcıların içindeki "benzen" maddesi ile "lösemi" arasındaki nedensel bağı kanıtlayarak literatüre geçen ve meslek hastalıkları konusunda dünya çapında tanınan Türk hekim kimdir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A. Dr. Muzaffer Aksoy</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. Dr. Hulusi Behçet</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Dr. Refik Saydam</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Dr. Nusret Fişek</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Dr. Türkan Saylan</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Ders kitabı bilgisidir. İstanbul'da kundura (ayakkabı) işçileri üzerinde yaptığı araştırmalarla aplastik anemi ve lösemi vakalarının "benzen (benzol)" kullanımından kaynaklandığını ispatlayan kişi ünlü Türk Hematolog Dr. Muzaffer Aksoy'dur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. İş yerindeki risk faktörünü tamamen yok etme (eliminasyon) veya daha az tehlikeli bir madde ile değiştirme (ikame) gibi kalıcı mühendislik yaklaşımları, sağlık koruma düzeylerinden hangisine aittir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A. Birincil (Primer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. İkincil (Sekonder) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Üçüncül (Tersiyer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Erken Tanı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Tıbbi Rehabilitasyon</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Hastalıklar oluşmadan çok önce alınan bu tür güçlü mühendislik ve proses önlemleri (eliminasyon, ikame) Birincil (Primer) Korunma aşamasıdır ve risk yönetim hiyerarşisinde en tepede yer alır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Türkiye’deki "Çalışma Gücü ve Meslekte Kazanma Kaybı Oranı Tespit İşlemleri Yönetmeliği" ekindeki listede Mesleki Bulaşıcı Hastalıklar (örneğin sağlıkçıların kanla bulaşan enfeksiyon kapması) hangi grupta sınıflandırılmıştır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. A Grubu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. B Grubu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. C Grubu</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D. D Grubu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. E Grubu</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Türkiye'deki mevzuata göre; A: Kimyasallar, B: Cilt, C: Solunum (Pnömokonyoz vb.), **D Grubu: Bulaşıcı hastalıklar**, E Grubu ise Fiziksel etkenleri (Gürültü vb.) ifade eder.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. Geçmişte yapılan birçok farklı hayvan deneyi, klinik kayıt ve vaka-kontrol çalışmasının tamamında "Asbeste maruz kalanlarda Mezotelyoma kanseri riskinin yüksek olduğunun" tekrar tekrar saptanması, nedensellik ilkelerinden hangisine uyar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Zamansallık</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B. Eldeki verilere uygunluk (Tutarlılık)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Özgünlük</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Doz etkisi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. İlişkinin gücü</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2022 yılı sınav sorusuna benzerdir. Farklı zaman, bölge ve popülasyonlarda yapılmış farklı araştırmaların sürekli benzer (ortak) sonuçlar vermesi nedensellikteki "Tutarlılık / Eldeki Verilere Uygunluk" kriteridir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Aşağıdakilerden hangisi "işle ilgili hastalık" sınıfına girmez ve doğrudan spesifik bir "meslek hastalığı" tablosudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Hipertansiyon</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B. Silikozis</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Mide ülseri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Tip-2 Diyabet</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Kalp krizi (Koroner arter hastalıkları)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Hipertansiyon, ülser veya kalp hastalıkları sokaktaki her insanda görülebilen "işle ilgili" multifaktöriyel kronik hastalıklardır. **Silikozis** ise sadece ve sadece solunabilir serbest silis tozuna (taş kırma, maden vb.) maruz kalan işçilerde görülen yüzde yüz işle bağlantılı bir meslek hastalığıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Meslek hastalıkları tespitinde yaşanan "Eksik Bildirim (Underreporting)" sorununun en temel sebebi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Meslek hastalığı vakalarının gerçekten hiç yaşanmaması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. İş yerlerinde periyodik muayenelerin tamamen yasaklanması</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C. Hekimlerin hasta yoğunluğu içinde detaylı meslek/çalışma öyküsünü (anamnez) sorgulamaması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Bildirim süresinin 1 yıl gibi uzun bir zamana yayılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Meslek hastanelerinin sayısının çok fazla olması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Türkiye'de ve dünyada vakaların kayıtlara girmemesinin (gizli kalmasının) en büyük nedeni, poliklinik yoğunluğu ve bilgi eksikliği sebebiyle doktorların hastaya mesleğini ve iş ortamındaki riskleri ısrarla sormamasıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Meslek hastalığı veya ağır bir iş kazası sonucu kalıcı sakatlık yaşayan bir personelin mevcut yeteneklerini geri kazanmasını, yeni çalışma durumuna veya hayata uyum sağlamasını kolaylaştırmayı amaçlayan hizmetler bütünü hangi kapsamdadır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Birincil (Primer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B. İkincil (Sekonder) Koruma</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C. Üçüncül (Tersiyer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Temel Eğitim Hizmetleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Ramak Kala Gözetimi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Sınavlarda sıkça (2021, 2023) çıkan bir konudur. Olay olup bittikten ve doku/organ hasarı oluştuktan sonra sakatlığı azaltma ve kişinin yaşama tutunmasını (fiziksel/ruhsal rehabilitasyon) sağlama hizmetlerine Üçüncül (Tersiyer) koruma adı verilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. 6331 sayılı İSG Kanunu ve 5510 sayılı Kanun uyarınca, işveren SGK yetkili sağlık hizmet sunucuları tarafından tespit edilen bir meslek hastalığını öğrendiği günden itibaren en geç ne kadar süre içerisinde SGK'ya bildirmekle yükümlüdür?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Aynı gün içinde</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B. 3 iş günü içinde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. 7 iş günü içinde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. 1 ay içinde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. 2 ay içinde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Çıkmış soruların ve genel mevzuatın önemli bilgisidir: İşveren, yetkili makamlarca kesin tanısı konmuş bir iş kazası veya meslek hastalığını öğrendiği tarihten itibaren **en geç 3 (üç) iş günü içerisinde** Sosyal Güvenlik Kurumu'na (SGK) bildirimde bulunmak zorundadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. ILO'nun listesinde solunum sistemi grubu altında değerlendirilen, çalışma hayatında madencilik gibi kollar başta olmak üzere solunabilir inorganik tozların (silis, asbest, kömür tozu) akciğerde birikimiyle ortaya çıkan kalıcı hastalıklara verilen genel tıbbi isim nedir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A. Dermatit</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B. Pnömokonyoz</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C. Hepatotoksisite</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D. Madenci Nistagmusu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E. Radyasyon Pnömonisi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Tozların (toz partiküllerinin) akciğer dokusunda birikerek oluşturduğu sertleşme ve doku reaksiyonlarına genel adıyla tıpta **Pnömokonyoz** (Toz Akciğer Hastalığı) denmektedir. Türkiye'deki C grubu meslek hastalıklarının temelidir.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        // Otomatik Puanlama Scripti (4 Yanlış 1 Doğruyu Götürür)
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+
+        function updateScore() {
+            // Net hesabı
+            let netScore = correctCount - (wrongCount / 4);
+            
+            // 100 Üzerinden Puan hesabı (20 soru x 5 puan)
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; // Eksi puanı sıfırla
+
+            // Değerleri HTML'e yazdır
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            const parentUl = clickedLi.parentElement;
+            
+            // Kullanıcı bu soruyu daha önce cevapladıysa işlemi kes (Birden fazla tıklamayı önler)
+            if (parentUl.classList.contains('answered')) return;
+            
+            // Ul elementine cevaplandı işaretini koy
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            // Tıklanan şık doğru mu kontrol et
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                // Cevap yanlışsa, doğru cevabı bularak yeşil renge boya
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            // Skor tablosunu yenile
+            updateScore();
+        }
+    </script>
 </body>
 </html>

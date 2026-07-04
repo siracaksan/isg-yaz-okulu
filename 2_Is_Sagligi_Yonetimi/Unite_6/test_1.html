@@ -1,25 +1,669 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 6 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
+    <title>Ünite 6 - Test 1 - 2026 Anadolu Üniversitesi İSG Yaz Okulu</title>
+    <!-- Harici stil dosyası istenirse eklenebilir -->
     <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        /* Genel Renk ve Font Stilleri - Ünite 6 İçin Güvenlik Mavisi (Navy) Teması */
+        :root {
+            --primary: #1f618d; /* Kurumsal Güvenlik Mavisi / Lacivert */
+            --correct: #27ae60;
+            --wrong: #e74c3c;
+            --bg-color: #f4f8fb;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #a9cce3;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 { margin: 0; font-size: 1.5em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; }
+
+        /* Yönlendirme (Nav) Menüsü - 5 TESTLİ SİSTEM */
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #154360; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        
+        /* Sekmeli Test Geçişleri */
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #d4e6f1;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .test-numaralari span { font-weight: normal; color: #555; margin-right: 10px; }
+        .test-numaralari a.active {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        /* Çıkmış Soru Analiz Paneli */
+        .analiz-paneli {
+            background: var(--analysis-bg);
+            border: 2px solid var(--analysis-border);
+            border-left: 6px solid var(--primary);
+            color: #154360;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 8px;}
+        .analiz-paneli ul { margin-bottom: 0; padding-left: 20px; }
+        .analiz-paneli li { margin-bottom: 5px; }
+
+        /* Puanlama Paneli ve PDF Butonu */
+        .dashboard {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .pdf-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pdf-btn:hover { background: #154360; }
+
+        /* Çift Sütun Soru Düzeni */
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 15px;
+        }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #2c3e50;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+
+        /* Doğru/Yanlış Stilleri */
+        .options.answered li { pointer-events: none; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(39, 174, 96, 0.3);
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+            box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Çözüm Paneli (Tıklandığında Açılır) */
+        details.solution {
+            margin-top: 15px;
+            background: var(--analysis-bg);
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed var(--analysis-border);
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary);
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        /* Mobil Uyumluluk */
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+            .test-numaralari a { display: inline-block; }
+        }
+
+        /* PDF / Yazdırma Ayarları */
+        @media print {
+            body { background: white; font-size: 10pt; }
+            header, .test-menusu, .dashboard, .analiz-paneli, footer { display: none; } 
+            .questions-grid { display: block; column-count: 2; column-gap: 20px; }
+            .question-card { break-inside: avoid; border-left: 2px solid #aaa; box-shadow: none; border: 1px solid #ddd; margin-bottom: 12px; padding: 10px;}
+            .options li { padding: 4px 8px; margin-bottom: 2px; border: none; background: none; }
+            details.solution { display: block; border: none; padding: 5px 0 0 0; background: none; margin-top: 5px; }
+            details.solution summary { display: none; } 
+            details.solution p::before { content: "Çözüm: "; font-weight: bold; text-decoration: underline; }
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
 </head>
 <body>
+
     <header>
         <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 6 - Test 1</h2>
+        <h2>Ünite 6: Sağlık Kuruluşlarında Farklı Bölümlerde İş Sağlığı ve Güvenliği - Test 1</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="../index.html">📚 Dersin Ana Sayfası</a> | 
+            <a href="konu_anlatimi.html">📖 Konu Anlatımına Dön</a>
+        </div>
+        <hr>
+        
+        <!-- YENİ NAVİGASYON SİSTEMİ -->
+        <div class="ileri-geri-linkler">
+            <a href="../Unite_5/test_5.html">⬅️ Önceki Test (Ünite 5 - Test 5)</a> | 
+            <a href="test_2.html">Sonraki Test (Ünite 6 - Test 2) ➡️</a> |
+            <a href="../Unite_7/test_1.html">Sonraki Üniteye Geç (Ünite 7 - Test 1) ⏭️</a>
+        </div> 
+
+        <!-- ÜNİTE İÇİ 5 TEST SEKMESİ -->
+        <div class="test-numaralari">
+            <span>Bu Ünitenin Testleri:</span>
+            <a href="test_1.html" class="active">Test 1</a>
+            <a href="test_2.html">Test 2</a>
+            <a href="test_3.html">Test 3</a>
+            <a href="test_4.html">Test 4</a>
+            <a href="test_5.html">Test 5</a>
+        </div>
+    </nav>
+
+    <!-- Çıkmış Soru Analiz Paneli -->
+    <div class="analiz-paneli">
+        <h3>📈 Ünite 6 - Çıkmış Soru Analizi ve Odak Noktaları</h3>
+        <p>2021-2025 yılları arasındaki sınav havuzu incelendiğinde bu üniteden her yıl <strong>ortalama 4 soru</strong> gelmektedir. Kesinlikle bilmeniz gereken altın değerindeki kurallar şunlardır:</p>
+        <ul>
+            <li><strong>Kilitleme (EKED) Kavramı (%35):</strong> Çalışanların tehlikelerden korunması için, ekipmanların kontrolsüz hareketini engelleyen metot olan <strong>"Kilitleme"</strong>, son 5 yılın 4'ünde (2021, 2022, 2023, 2024) doğrudan sorulmuştur! Banko sorudur.</li>
+            <li><strong>İşaretlerin Tanımı ve Renkleri (%30):</strong> Yasak (Kırmızı/Daire), Uyarı (Sarı/Üçgen) ve Emredici (Mavi/Daire) işaretlerin tanımları dönüşümlü sorulmaktadır. Tüm bu işaretler dışında kalanlara <strong>"Bilgilendirme İşareti"</strong> dendiği bilgisi de son 5 yılda tam 4 kez çıkmıştır.</li>
+            <li><strong>Kimyasal Madde Sınıfları (%20):</strong> Oksijensiz ortamda patlayanlar (Patlayıcı), O formunda alev sembolü ile gösterilen ve diğer maddelerle ekzotermik reaksiyona girenler (Oksitleyici) tanımları sıkça eşleştirme sorusu olarak gelir.</li>
+            <li><strong>Radyasyon Güvenliği (%15):</strong> Radyoloji ünitelerinde "İyonlaştırıcı Radyasyon" kaynaklarının (Röntgen, Tomografi vb.) bulunduğu "Denetimli Alanlara" giriş uyarıları ve TAEK/NDK mevzuatları sorulur. MR (Manyetik Rezonans) iyonlaştırıcı <u>değildir</u>, çeldirici olarak kullanılır.</li>
+        </ul>
+    </div>
+
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #e74c3c;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+            <div style="font-size: 0.85em; margin-top: 8px; color: #154360;">(Otomatik Hesaplama: 4 Yanlış 1 Doğruyu Götürür)</div>
+        </div>
+        <button class="pdf-btn" onclick="window.print()">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 8H8v-5h8v5zm3-4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            Sıkışık Formatla PDF İndir / Yazdır
+        </button>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid">
+
+            <!-- ========================================== -->
+            <!-- DERS KİTABI SAYFA 185-186 (1-10) -->
+            <!-- ========================================== -->
+            
+            <div class="question-card">
+                <div class="question-text">1. Acil kaçış, acil çıkış ve ilk yardım işaretlerinde genel zemin rengi olarak aşağıdaki renklerden hangisi kullanılır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Yeşil</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sarı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Mavi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kırmızı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Siyah</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Güvenlik ve Sağlık İşaretleri Yönetmeliğine göre; kapılar, kaçış yolları, acil çıkış yönlendirmeleri ve ilk yardım ekipmanlarının yerini belirten levhalar "Yeşil" zemin üzerine beyaz piktogram ile gösterilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. Aşağıdakilerden hangisi temel "Güvenlik ve Sağlık İşaretleri" gruplarından biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Emredici işaretler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Uyarı İşaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Yangınla mücadele işaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Acil kaçış ve ilk yardım işaretleri</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) Sinyal İşaretleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>İşaret levhaları ifade ettiği anlamlara göre 5 ana başlıkta toplanır: Yasaklayıcı, Uyarıcı, Emredici, Acil Çıkış/İlk Yardım ve Yangınla Mücadele İşaretleri. "Sinyal İşaretleri" diye müstakil bir pano grubu yoktur, onlar ışıklı ve sesli uyarı sistemleridir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. Laboratuvarlarda veya depolarda sıklıkla karşılaşılan, <strong>"bir çember (O harfi) üzerinde alev"</strong> şeklindeki piktogramın (sembolün) taşıdığı anlam aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Akut Toksisite</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Aşındırıcı Madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Basınçlı Gaz</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Oksitleyici Madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kolay Alevlenir (Yanıcı) Madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Sadece alev figürü "Yanıcı/Alevlenir" maddeyi ifade ederken; Alevin altında bir çember/halka (Oksijenin O'su) bulunan sembol <strong>Oksitleyici (Yakıcı) Madde</strong> anlamına gelir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. İş sağlığı ve güvenliği mevzuatına göre <strong>"İş Ekipmanı"</strong> kavramının tanımı aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İşin haricinde kullanılan bir yöntemdir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İş sürecinde gerekli olan bir metottur.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) İşin yapılmasında kullanılan herhangi bir makine, alet, tesis ve tesisattır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İşin yapıldığı alanda güvenli çalışmayı engelleyen alet ve tesisattır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İşin yapıldığı alandaki tehlikeli bölgedir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Ders kitabı tanımına göre İş Ekipmanı; işin yürütülmesi ve sürdürülebilirliği için kullanılan her türlü makine, el aleti, tesis veya tesisatın genel adıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. Amerika Birleşik Devletleri'nde (OSHA.147) standartlarıyla yasal zemine oturan ve ülkemizde de uygulanan standart, iş güvenliğinde aşağıdaki uygulamalardan hangisine yöneliktir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Hasta tedavi ve teşhisinde kullanılan basit ekipmanların kullanımına</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Teknik hizmet çalışanlarının el aletleri kullanımına</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Kilitleme ve etiketleme (EKED) sistemine</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Risk değerlendirme metodolojisine</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yapılacak işin ergonomik planlanmasına</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>1990 yılında ABD'de "OSHA.147 (Control of Hazardous Energy)" koduyla yayınlanan standart, endüstride ve sağlıkta kullanılan makinelerin bakım-onarımı sırasındaki <strong>Kilitleme ve Etiketleme</strong> sistemini tanımlar.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Aşağıdakilerden hangisi sağlık kuruluşlarında veya genel iş yerlerinde <strong>yüklerin (ağırlıkların) kaldırılması ve taşınmasında</strong> kullanılan bir iş ekipmanıdır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Forklift</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kesintisiz güç kaynağı (UPS)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Merdiven</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İp merdiven</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Paratoner</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Kaldırma ve iletme ekipmanları periyodik teste tabi olan ağır iş aletleridir. Verilen seçenekler arasında yük kaldırmaya ve taşımaya yarayan ekipman Forklift'tir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. "Kilitleme ve Etiketleme" (EKED) sisteminde yer alan <strong>etiketlemenin</strong> temel tanımı aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kimyasal malzemelerin tehlike sınıflarına göre şişelenmesidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Depolardaki rafların yerleşim için işaretlenmesidir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Kilitleme işleminden sonra (ekipmanın enerji izolasyonunu sağlamak için), tüm çalışanların fark edebilmeleri için asılan güvenlik uyarı işaretidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Malzemelerin depoya girişinde kullanılan kayıt metodudur.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kalite yönetim sisteminde hastaların yönlendirilmesi yöntemidir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Etiketleme; bir makinenin bakıma alındığı ve şalterinin kilitlendiği bilgisini, diğer çalışma arkadaşlarına görsel olarak bildirmek amacıyla asılan "ÇALIŞTIRMAYIN / BAKIM VAR" uyarısıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. İş ekipmanlarının güvenliği bağlamında <strong>"Tehlikeli Bölge"</strong> kavramının tanımı aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tüm iş ekipmanlarının bir arada depolandığı kapalı alanlardır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Çalışanların mesai dışında mola için toplandığı alanlardır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Afet ve acil durumlarda çalışanların tahliye edildiği toplanma alanıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İş ekipmanının bulunduğu alanın tamamen haricindeki yerlerdir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) İş ekipmanının bünyesinde veya çevresinde yer alan, kişiler için sağlık ve güvenlik yönünden risklerin bulunduğu (hareketli parçalar vb.) bölgedir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Makinelerin ezici, kesici veya yüksek gerilimli uçlarının bulunduğu, kişinin uzvunu kaptırma veya zarar görme ihtimali olan makine içi ve yakın çevresi "Tehlikeli Bölge" olarak adlandırılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Aşağıdakilerden hangisi sağlık kuruluşlarında kurulan radyoloji vb. üniteler için <strong>"Radyasyon Güvenliği"</strong> ile ilgili yasal mevzuat kaynağı veya denetim yönetmeliği <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Radyasyon Güvenliği Tüzüğü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sağlık Hizmetlerinde İyonlaştırıcı Radyasyon Kaynakları ile Çalışan Personelin Doz Limitleri Yönetmeliği</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Tıpta Tedavi Amacıyla Kullanılan İyonlaştırıcı Radyasyon Kaynaklarını İçeren Tesislere Lisans Verme Yönetmeliği</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Tehlikeli Kimyasallar Yönetmeliği</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Radyasyon Güvenliği Yönetmeliği</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Tehlikeli Kimyasallar Yönetmeliği, kimyevi laboratuvar maddelerini ve gazlarını (toksik, oksitleyici vb.) düzenler. Doğrudan TAEK/NDK kontrolündeki radyasyon ve iyonlaştırıcı ışın mevzuatı ile ilgisi yoktur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. Hastanelerde ve endüstride <strong>Sarı zemin üzerine Siyah renkli "Üç Yapraklı Yonca" (Trefoil)</strong> piktogramı ile gösterilen uyarı levhası, o alanda hangi tehlikenin olduğunu ifade eder?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Biyolojik Risk ve Enfeksiyon</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Yüksek Gerilim (Elektrik)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Denetimli Radyasyon Alanı (İyonlaştırıcı Işın)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Zehirli (Toksik) Madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Lazer Işını Tehlikesi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Sarı üçgen veya dikdörtgen zemin içindeki üç yapraklı pervane/yonca figürü, uluslararası evrensel "Radyasyon Alanı / Radyasyon Tehlikesi" sembolüdür. X-ışını yayan röntgen, tomografi vb. odaların kapısında mutlaka bulunur.</p>
+                </details>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- ÇIKMIŞ SORU ANALİZİNE DAYALI ÖZGÜN SORULAR -->
+            <!-- ========================================== -->
+
+            <div class="question-card">
+                <div class="question-text">11. Yasak işareti, uyarı işareti, emredici işaret, acil çıkış ve ilk yardım işaretleri dışında kalan; sadece yol gösterme, mahal tanıtma ve bilgi verme amacı taşıyan diğer işaretlere ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Işıklı işaret</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Bilgilendirme işareti</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İşaret levhası</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Sağlık ve güvenlik işaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sembol (Piktogram)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Çıkmış soruların en popüleridir (2021, 2023, 2024, 2025 yıllarında tam 4 kez sorulmuştur). Temel 4 güvenlik panosu dışında kalan ve yön/bilgi veren tüm levhalar mevzuatta "Bilgilendirme İşareti" olarak geçer.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Makine ve ekipmanlarda bakım, onarım veya temizlik yapılırken; çalışanların tehlikelerden korunması için, <strong>ekipmanların kontrolsüz hareketini ve içeride kalmış enerjisini engelleme metoduna</strong> ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Kilitleme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Yenileme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Topraklama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kalibrasyon</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İzole etme</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2021, 2022, 2023 ve 2024 yıllarında tam 4 yıl üst üste sorulmuş garanti banko sorudur! Ana güç bağlantısının kesilip, fiziki bir asma kilit ile kontrol dışı açılmasının (enerjinin engellenmesi) metodu doğrudan <strong>Kilitleme</strong>'dir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. Daire biçiminde, beyaz zemin üzerine siyah piktogram, <strong>kırmızı çerçeve ve resmi çapraz kesen diyagonal kırmızı çizgiden</strong> oluşan işaretler aşağıdakilerden hangisini ifade eder?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Uyarı İşaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Acil Çıkış İşaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Emredici İşaretler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yangınla Mücadele İşaretleri</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) Yasaklayıcı İşaretler</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2021 Yılı Sınav Sorusu. Kırmızı çerçeveli yuvarlak ve ortasından çapraz geçen çizgi evrensel <strong>YASAK</strong> anlamına gelir (Örn: Sigara İçilmez, Girilmez vb.). Kırmızı alan, işaretin %35'ini kapsamalıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Geometrik şekli <strong>üçgen</strong> olan ve <strong>sarı zemin üzerine siyah piktogram</strong> (siyah çerçeve) ile resmedilen levhalara ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yasaklayıcı İşaretler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Uyarı İşaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Emredici İşaretler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kurtarma İşaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Bilgilendirme İşaretleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2022 ve 2024 Yılı çıkmış sorusudur. Sarı üçgen panolar çalışma ortamındaki potansiyel tehlikeye karşı dikkatli olunmasını bildiren <strong>Uyarı (İkaz) İşaretleridir</strong>.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. Çalışma sahasında mutlaka uyulması gereken zorunlu bir davranışı (Örn: Baret Tak, Eldiven Kullan vb.) gösteren, <strong>Daire biçiminde ve Mavi zemin üzerine Beyaz piktogramdan</strong> oluşan işaretler aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Emredici (Zorunluluk) İşaretler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Yangınla Mücadele İşaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Yasaklayıcı İşaretler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Acil Kaçış İşaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Tehlike Uyarı İşaretleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2025 yılında rengi sorulmuştur. Mavi renk daire şeklindeki levhalar (içinde beyaz KKD figürleri olanlar), o alanda yapılması/giyilmesi mecburi olan <strong>Emredici</strong> davranışları belirtir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Özellikle yanıcı maddeler olmak üzere diğer kimyasal maddelerle temas ettiğinde, önemli ölçüde <strong>ekzotermik reaksiyona</strong> giren ve alevlenmeyi/patlamayı körükleyen maddelere genel olarak ne denir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kolay alevlenir madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Toksik (Zehirli) madde</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Oksitleyici (Yakıcı) madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Aşındırıcı (Korozif) madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Alerjik madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2021 Yılı Sınav Sorusu. Ortama oksijen vererek mevcut yanmayı şiddetlendiren ve ekzotermik (ısı veren) hızlı tepkimeye giren maddelere "Oksitleyici Madde" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Atmosferik oksijen olmadan da ani gaz yayılımı ile ekzotermik reaksiyon verebilen ve/veya kısmen kapatıldığında ısınma ile kendiliğinden veya belirlenmiş test koşullarında aniden tepkimeye giren katı, sıvı veya jelatinimsi haldeki maddelere ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Patlayıcı madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Çevre için tehlikeli madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kolay alevlenir madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Aşındırıcı madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Radyoaktif madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2022 Yılı Çıkmış Sorusu. Oksijene bile ihtiyaç duymadan, sarsıntı, şok veya ısıyla ani gaz yayarak devasa tepkime veren maddelerin yasal tanımı "Patlayıcı Madde"dir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Solunduğunda, ağız yoluyla (yutularak) alındığında veya deri yoluyla emildiğinde insan sağlığı üzerinde <strong>akut veya kronik çok ağır hasarlara ve ölüme</strong> neden olan tehlikeli madde grubu aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tahriş edici madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Oksitleyici madde</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Toksik (Zehirli) madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Alerjik madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kanserojen madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2023 Yılı Sınav Sorusu. Genellikle kurukafa (☠️) piktogramı ile gösterilen, çok düşük dozlarda bile bedene girdiğinde ağır hasar veya ölüm getiren kimyasallara "Toksik (Zehirli) Madde" adı verilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. Solunduğunda veya cilde nüfuz ettiğinde aşırı derecede hassasiyet, döküntü veya solunum zorluğu reaksiyonu meydana getirme özelliği olan kimyasal maddelere ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Alerjik madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kolay alevlenir madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Radyoaktif madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kanserojen madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Çevresel atık</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2023 Yılı Çıkmış Sorusu. Vücudun savunma mekanizmasını tetikleyerek aşırı reaksiyona (hassasiyet) sebep olan maddelere mevzuatta "Alerjik Madde" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. İyonlaştırıcı radyasyon, çarptığı maddede yüklü parçacıklar (iyonlar) oluşturarak insan dahil tüm canlı hücrelerde DNA hasarına yol açabilen zararlı ışınlardır. <br>Buna göre, hastanelerin radyoloji ünitelerinde bulunan aşağıdaki görüntüleme cihazlarından hangisi <strong>"iyonlaştırıcı radyasyon (X-Işını)" yayan</strong> tehlikeli cihazlardan biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tomografi Cihazı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Mamografi Cihazı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) C-Kollu Grafi / Anjiyo Cihazı</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Manyetik Rezonans (MR) Cihazı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Konvansiyonel Röntgen Cihazı</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Önemli bir teknik farktır. Tomografi, röntgen, mamografi ve anjiyoların tümü iyonlaştırıcı (kanser riski barındıran) X-ışını (radyasyon) ile çalışır. Ancak <strong>Manyetik Rezonans (MR)</strong> cihazları ve Ultrason cihazları ses dalgası ve devasa mıknatıslar (manyetizma) ile çalıştığı için iyonlaştırıcı radyasyon <u>içermezler.</u></p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        // Puanlama ve Değerlendirme Algoritması (4 Yanlış 1 Doğruyu Götürür)
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+
+        function updateScore() {
+            // Net hesabı
+            let netScore = correctCount - (wrongCount / 4);
+            
+            // 100 Üzerinden Puan
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            // Değerleri Ekrana Yazdır
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            const parentUl = clickedLi.parentElement;
+            
+            if (parentUl.classList.contains('answered')) return;
+            
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                // Cevap yanlışsa, doğru olanı göster
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            updateScore();
+        }
+    </script>
 </body>
 </html>

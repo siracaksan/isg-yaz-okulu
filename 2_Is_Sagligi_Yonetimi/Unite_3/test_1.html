@@ -1,25 +1,642 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 3 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
+    <title>Ünite 3 - Test 1 - 2026 Anadolu Üniversitesi İSG Yaz Okulu</title>
+    <!-- Harici stil dosyası istenirse eklenebilir -->
     <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        /* Genel Renk ve Font Stilleri - Ünite 3 İçin Turkuaz/Teal Bilimsel Tema */
+        :root {
+            --primary: #00838f; /* Epidemiyoloji ve araştırma temasına uygun bilimsel turkuaz */
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4fbfb;
+            --card-bg: #ffffff;
+            --analysis-bg: #e0f7fa;
+            --analysis-border: #b2ebf2;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 { margin: 0; font-size: 1.5em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; }
+
+        /* Yönlendirme (Nav) Menüsü */
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #005662; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+
+        /* Çıkmış Soru Analiz Paneli */
+        .analiz-paneli {
+            background: var(--analysis-bg);
+            border: 2px solid var(--analysis-border);
+            border-left: 6px solid var(--primary);
+            color: #006064;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 8px;}
+        .analiz-paneli ul { margin-bottom: 0; padding-left: 20px; }
+        .analiz-paneli li { margin-bottom: 5px; }
+
+        /* Puanlama Paneli ve PDF Butonu */
+        .dashboard {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .pdf-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pdf-btn:hover { background: #005662; }
+
+        /* Çift Sütun Soru Düzeni (Masaüstü için Çift, Mobil için Tek Sütun) */
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 15px;
+        }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #2c3e50;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #e0f2f1; }
+
+        /* Doğru/Yanlış Stilleri */
+        .options.answered li { pointer-events: none; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(39, 174, 96, 0.3);
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+            box-shadow: 0 2px 4px rgba(192, 57, 43, 0.3);
+        }
+
+        /* Çözüm Paneli (Tıklandığında Açılır) */
+        details.solution {
+            margin-top: 15px;
+            background: var(--analysis-bg);
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed var(--analysis-border);
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary);
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        /* Mobil Uyumluluk (Cep Telefonu) */
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+
+        /* PDF / Yazdırma (Sıkışık Format) Ayarları */
+        @media print {
+            body { background: white; font-size: 10pt; }
+            header, .test-menusu, .dashboard, .analiz-paneli, footer { display: none; } 
+            .questions-grid { display: block; column-count: 2; column-gap: 20px; }
+            .question-card { break-inside: avoid; border-left: 2px solid #aaa; box-shadow: none; border: 1px solid #ddd; margin-bottom: 12px; padding: 10px;}
+            .options li { padding: 4px 8px; margin-bottom: 2px; border: none; background: none; }
+            details.solution { display: block; border: none; padding: 5px 0 0 0; background: none; margin-top: 5px; }
+            details.solution summary { display: none; } 
+            details.solution p::before { content: "Çözüm: "; font-weight: bold; text-decoration: underline; }
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
 </head>
 <body>
+
     <header>
         <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 3 - Test 1</h2>
+        <h2>Ünite 3: İş Sağlığı Konusunda Epidemiyolojik Araştırma Yöntemleri - Ünite Testi</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="../index.html">📚 Dersin Ana Sayfası</a> | 
+            <a href="konu_anlatimi.html">📖 Konu Anlatımına Dön</a>
+        </div>
+        <hr>
+        <div class="ileri-geri-linkler">
+            <a href="../Unite_2/test_1.html">⬅️ Önceki Ünite Testi (Ünite 2)</a> | 
+            <a href="../Unite_4/test_1.html">Sonraki Ünite Testi (Ünite 4) ➡️</a>
+        </div> 
+    </nav>
+
+    <!-- Çıkmış Soru Analiz Paneli -->
+    <div class="analiz-paneli">
+        <h3>📈 Ünite 3 - Çıkmış Soru Analizi ve Odak Noktaları</h3>
+        <p>Geçmiş yılların (2021-2025) sınav havuzu incelendiğinde bu üniteden her yıl ortalama <strong>3 ila 4 soru</strong> gelmektedir. Soruların yoğunlaştığı temel kavramlar şunlardır:</p>
+        <ul>
+            <li><strong>Araştırma Türlerinin Özellikleri (%40):</strong> Gözlemsel ve deneysel araştırmaların farkları sıkça sorulur. <em>"İncelenen faktörlerin araştırmacının kontrolünde olmadığı"</em> araştırma türünün <strong>Gözlemsel Araştırmalar</strong> olduğu banko sorulardandır.</li>
+            <li><strong>Analiz Birimleri (%25):</strong> Hipotez oluşturmada kullanılan ve analiz ünitesi "birey değil toplum/insan grupları" olan araştırmanın <strong>Ekolojik (Korelasyonel) Araştırmalar</strong> olduğu defalarca sorulmuştur.</li>
+            <li><strong>Epidemiyolojinin Aşamaları (%20):</strong> Sorun çözme aşamalarının sıralaması; özellikle 3. aşamanın <em>"Sorunun nedenlerini incelediği"</em> unutulmamalıdır.</li>
+            <li><strong>Temel Kavramlar (%15):</strong> Farklı çalışmalarda benzer sonuçların çıkması nedensellik kriterlerinden <em>"Eldeki Verilere Uygunluk (Tutarlılık)"</em> ile ifade edilir. Ayrıca <em>Prevelans'ın</em> Kesitsel çalışmalardan elde edildiği bilinmelidir.</li>
+        </ul>
+    </div>
+
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+            <div style="font-size: 0.85em; margin-top: 8px; color: #006064;">(Otomatik Hesaplama: 4 Yanlış 1 Doğruyu Götürür)</div>
+        </div>
+        <button class="pdf-btn" onclick="window.print()">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 8H8v-5h8v5zm3-4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            Sıkışık Formatla PDF İndir / Yazdır
+        </button>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid">
+
+            <!-- ========================================== -->
+            <!-- DERS KİTABI SAYFA 95-97 (1-10) -->
+            <!-- ========================================== -->
+            
+            <div class="question-card">
+                <div class="question-text">1. Bilimsel düşüncenin temel amacı aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Olguları toplama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Deney yapma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Alet yapma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yaşama anlam katma</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) Doğada yaşanılan olayları açıklama</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Bilim özünde olgusal dünyaya ait gerçeği açıklamaya yönelik bilişsel bir arayış sürecidir. İnsanın doğada yaşadığı veya evrendeki olayları açıklama isteği bilimin temel ve nihai amacıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. Bilim ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Her ifade gerçeklikle karşılaştırılır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Bilim olgu-kuram ekseninde yürütülen bir faaliyettir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Bilimsel düşünce yöntemi teolojik yöntemle benzerlikler taşımaktadır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Deneysel olarak yanlışlanan ifadeler yenilenmelidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Bilimin teolojik ya da ideolojik dogmalara tahammülü yoktur.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Bilimsel düşüncenin üstünlüğü; sınanabilirliğe, yanlışlanabilirliğe dayanması ve teolojik (dogmatik/dini) veya ideolojik kavramlardan tamamen ayrılmasıdır. Teolojik yöntemle benzerlikler taşımaz.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. Aşağıdakilerden hangisi epidemiyolojinin tanımı içinde yer almaz?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Hastalıkların toplumdaki yaygınlığını inceler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Hastalıkları tanımlar.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Hastalıkların nedenlerini inceler.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Sosyolojik sorunları inceler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Hastalıkların tedavi yöntemlerinin etkinliğini inceler.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Epidemiyoloji toplumun sağlık sorunlarını, hastalıkların nedenlerini ve yaygınlığını inceler, koruyucu ve tedavi edici yöntemlerin sonuçlarına bakar. "Sosyolojik sorunlar" doğrudan sosyoloji biliminin alanıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. Epidemiyolojinin temel stratejisi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Karşılaştırma yapmak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Olguları saymak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kayıt tutmak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Boyutları saptamak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Tedavileri izlemek</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Epidemiyoloji tüm işlemlerini yaparken olguları tanımlar, sınıflandırır ancak asıl temel stratejisi gruplar arası ya da gruplar içinde "karşılaştırmalar yapmaktır" (örneğin hasta olanlarla olmayanlar).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. Aşağıdaki epidemiyolojinin kullanım alanlarından hangisi sağlık politikaları ile doğrudan ilişkilidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Hastalıkların klinik tablolarının belirlenmesi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Sağlık müdahalelerinin çıktılarının izlenmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Sendromların belirlenmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Nedensellik araştırması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Bireysel risklerin belirlenmesi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Müdahalelerin sonuçları (çıktıları), ülke veya kurum genelinde bir sağlık hizmetinin ne kadar etkin olduğunu gösterir. Bu da operasyonel araştırmalar çerçevesinde "Sağlık Politikalarının Yönlendirilmesi ve İzlenmesi" alanına girer.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Referans popülasyondan uygun bir örneklemin seçilip, kişilerin "Randomizasyon" ile Müdahale Grubu ve Kontrol Grubu olarak ayrıldığı, periyodik izlemlerin yapıldığı araştırma tasarımına ne ad verilir? (Ders kitabı şema sorusu)</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Müdahale Araştırması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Vaka kontrol</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Metodolojik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kohort</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kesitsel</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Örneklemden seçilen kişilerin tamamen rastgele (randomizasyon) bir şekilde ilacın veya yöntemin uygulandığı "deney (müdahale)" ve uygulanmadığı "kontrol" gruplarına ayrıldığı çalışmalar "Müdahale (Deneysel) Araştırmaları"dır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. Gözlemsel araştırmalar ile deneysel araştırmalar arasındaki en önemli fark aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yaşanılan olayın tekrarı mümkündür.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Gerçek hayatı daha fazla temsil etme özelliği bulunmamaktadır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) İncelenen faktörler araştırmacının kontrolü altındadır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Nedensellik bağı güçlü bir şekilde kurulabilir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Araştırmacı incelenen faktörleri sabit tutamaz.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Gözlemsel çalışmalarda araştırmacı olaya sadece dışarıdan bakar, müdahale edemez. Deneysel (müdahale) araştırmalarında ise "incelenen faktörler araştırmacının tam kontrolü altındadır" ve şartlar değiştirilebilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. 1854 Londra Kolera salgını sırasında Dr. John Snow'un ölümleri bir harita üzerinde işaretleyerek hastalığın dağılımını (hangi sokakta, hangi su tulumbası civarında vb.) incelemesi hangi araştırma yöntemini ifade eder?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Vaka-Kontrol</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Deneysel</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Metodolojik</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Tanımlayıcı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Prospektif kohort</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Bir hastalığın kişi, yer ve zaman özelliklerine göre fotoğrafını çeken, "nerede, ne zaman, kimlerde" sorularına yanıt bularak durumu haritalandıran yönteme "Tanımlayıcı (Deskriptif) Araştırmalar" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Bir hastalığın veya sağlık olayının toplumdaki belirli bir zaman diliminde bulunma sıklığını ifade eden "Prevalans" hızı hangi epidemiyolojik araştırma türüyle elde edilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kohort</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Tanımlayıcı</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Kesitsel</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Müdahale</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Vaka-kontrol</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Toplumun sadece belli bir anındaki (zaman kesitindeki) sağlık durumunun fotoğrafını çeken ve o anki mevcut toplam hastaların oranını (Prevalans) saptayan yöntem "Kesitsel Araştırmalar"dır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. Aşağıdakilerden hangisi iş yerlerinde epidemiyolojinin kullanım amaçlarından biri değildir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İş yeri sağlık birimi çalışmalarının değerlendirilmesi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) İş yerlerindeki acil tedavi uygulamalarının planlanması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Sağlığı geliştirici uygulamaların izlenmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Koruyucu uygulamaların izlenmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Çalışanların genel sağlık sorunlarının değerlendirilmesi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Epidemiyoloji hastalıkların yayılımını, koruyucu önlemlerin başarısını ve sağlık biriminin veri/sonuç etkinliğini ölçer. "Acil tedavi uygulamalarının (ilk yardım) anlık klinik planlaması" epidemiyolojinin doğrudan metodolojik sahası değildir.</p>
+                </details>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- ÇIKMIŞ SORU ANALİZİNE DAYALI ÖZGÜN SORULAR -->
+            <!-- ========================================== -->
+
+            <div class="question-card">
+                <div class="question-text">11. Aşağıdaki epidemiyolojik araştırma türlerinden hangisinin analiz ünitesi tek tek bireyler değil, "toplum (veya insan grupları)"dur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kesitsel araştırmalar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kohort araştırmaları</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Ekolojik araştırmalar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Vaka-Kontrol araştırmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Randomize kontrollü çalışmalar</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Çıkmış sorularda banko yer alır. Ekolojik (Korelasyonel) araştırmalar doğrudan grupların (örneğin bir şehirdeki tuz tüketim ortalaması ile o şehirdeki mide kanseri hızı) karşılaştırılmasına dayanır, veriler bireylerden değil toplumdan bütüncül olarak alınır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Epidemiyolojik yöntemde bir sağlık sorununun çözülmesi için izlenen aşamaların <strong>üçüncü basamağı</strong> aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Sorunun nedenlerini inceler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sorunun boyutunu saptar.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Sorunların çözüm yollarını inceler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Sağlığı ve hastalıkları tanımlar.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Müdahalelerin etkinliğini izler.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2021 Yılı Sınav Sorusu. Epidemiyolojik yaklaşım sırasıyla; 1-Hastalığı tanımlar, 2-Boyutunu/Sıklığını saptar, <strong>3-Sorunun nedenlerini (etkenlerini) inceler</strong>, 4-Çözüm geliştirir, 5-Müdahalenin etkisini değerlendirir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. Bir hastalığın nedenine karar vermek için dikkate alınan nedensellik kriterlerinden biri olarak; "Farklı bölge veya zamanlarda yapılan bağımsız çalışmaların benzer/ortak sonuçlar vermesi" şeklinde açıklanabilen ilke aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Zamansallık</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Eldeki verilere uygunluk (Tutarlılık)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İlişkinin gücü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Özgünlük</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Doz etkisi ilişkisi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2022 ve 2025 Yılı Sorularındandır. Farklı araştırmacıların yürüttüğü epidemiyolojik yöntemlerin aynı nedensel bağı desteklemesi "Tutarlılık" veya "Eldeki verilere uygunluk" kriteridir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Bir risk faktörüne maruz kalma ile ilişkilendirilen ya da atfedilen durumun (örneğin asbest solumanın) o toplumda sebep olduğu hastalık oranına veya insidansına ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Rölatif Risk</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Risk faktörüne maruziyet</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Toplumsal risk boyutu</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Toplumda atfedilebilir risk</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İnsidans Hızı</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2024 Yılı sınav sorusu. Etkenin ortadan kalkması durumunda toplumda hastalığın ne kadar azalacağını gösteren ölçüte "Toplumda Atfedilebilir Risk" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. Teşhis amacıyla kullanılan tıbbi testlerin ve araçların geçerliliğini ve güvenilirliğini (sensitivite, spesifisite) incelemek amacıyla yapılan epidemiyolojik araştırmalara ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Metodolojik araştırmalar (Yöntemin Validitesi)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kohort araştırmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Ekolojik araştırmalar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Vaka-Kontrol çalışmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Deneysel Saha araştırmaları</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Kitap bilgisidir (Tablo 3.1). Yeni geliştirilen bir tanı testinin veya anketin ne kadar hassas veya özgül (Sensitivite/Spesifisite) olduğunu hesaplamak için kurgulanan çalışmalar "Metodolojik Araştırmalar"dır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Müdahale (deneysel) araştırmalarında uygulanan yeni yöntemin, aşının veya ilacın hastalıklar üzerindeki başarılı etkisini ve koruyuculuğunu gösteren matematiksel kavram aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Deney popülasyonu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Randomizasyon</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Rölatif etkinlik (Korunabilirlik hızı)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Referans popülasyonu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Deney ve kontrol grupları</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2021 Sınav sorusudur. Kontrol grubuna kıyasla müdahale grubundaki hastalanma hızının ne kadar düştüğünü gösteren bu orana "Rölatif Etkinlik (veya Korunabilirlik Hızı)" denmektedir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Analitik araştırmaların en kolayı, en ucuzu ve kısa zamanda sonuç alınanıdır. Hastalığı olan (Vaka) grup ile hastalığı olmayan (Kontrol) grup oluşturularak "retrospektif (geriye dönük)" olarak etken sorgulaması yapılır. <br>Bahsedilen epidemiyolojik yöntem hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kesitsel Araştırmalar</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Vaka-Kontrol Araştırmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Prospektif Kohort Araştırmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Ekolojik Araştırmalar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Deneysel Klinik Çalışmalar</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Mevcut hasta vakalarından yola çıkıp geçmişe (retrospektif) doğru kimyasal veya mesleki risk etmenlerine ne kadar maruz kalındığını araştıran, hızlı veri sağlayan analitik çalışmalara "Vaka-Kontrol" adı verilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Aşağıdakilerden hangisi "Gözlemsel Araştırmalar" grubunun en belirgin özelliklerinden biridir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Araştırmada incelenen faktörler tamamen araştırıcının kontrolü altındadır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Neden-sonuç ilişkisini deneysel çalışmalardan çok daha kesin saptar.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Yaşanılan olayın laboratuvarda tekrarı mümkündür.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) İncelenen faktörler araştırmacının kontrolü altında değildir; müdahale edilemez.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Katılımcılar rastgele (randomizasyon) deney ve kontrol gruplarına atanır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>2023 Çıkmış sorusu. Gözlemsel çalışmalarda araştırmacı sadece verileri izler ve kayıt eder. Ortama, kimyasal maruziyete veya etken faktörüne müdahalede bulunamaz, "faktörler araştırmacının kontrolü dışında doğal akışındadır."</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. Başlangıçta hastalığı taşımayan (sağlam) bir grup insanın, etkenle karşılaşan ve karşılaşmayanlar olarak alt gruplara ayrıldığı ve hastalığın oluşumunu görmek için "ileri doğru (prospektif)" yıllarca izlendiği (insidans hızının saptandığı) araştırma tipi hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kesitsel Prevalans Araştırmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Vaka-Kontrol Araştırmaları</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Kohort Araştırmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tanımlayıcı Araştırmalar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Ekolojik Araştırmalar</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Toplumdan alınan risksiz/sağlam grubun zamandan geleceğe doğru (prospektif veya longitudinal) izlenip yeni hastalık vakalarının (İnsidans) kayıt altına alınması işlemine "Kohort Çalışması" denmektedir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Kanıta dayalı tıp ve epidemiyolojide; neden-sonuç ilişkisini belirlemede kanıt hiyerarşisinin en üst sırasında yer alan araştırma yöntemi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kesitsel Araştırmalar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Vaka-Kontrol Araştırmaları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Ekolojik Araştırmalar</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Randomize Kontrollü (Deneysel) Çalışmalar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Olgu Sunumları</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Araştırmacının tüm koşulları kontrol altında tuttuğu ve dışsal hata payının en aza indirildiği "Randomize Kontrollü Çalışmalar (Müdahale/Deneysel)", bilimsellik ve nedensellik kanıt düzeyi açısından en üst seviyededir.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        // Puanlama ve Mantık Değişkenleri
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+
+        function updateScore() {
+            // Net hesabı: 4 Yanlış 1 Doğruyu Götürür
+            let netScore = correctCount - (wrongCount / 4);
+            
+            // 100 Üzerinden Puan hesabı (Her soru 5 puan ağırlığında)
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; // Puanın eksiye inmesini engeller
+
+            // Ekrana değerleri bastır
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            const parentUl = clickedLi.parentElement;
+            
+            // Kullanıcı bu soruyu zaten cevapladıysa fonksiyonu kır
+            if (parentUl.classList.contains('answered')) return;
+            
+            // Soruya "cevaplandı" mührü vur
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            // Cevabın kontrol edilmesi
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong'); // Yanlış cevabı kırmızı ve üstü çizili yap
+                wrongCount++;
+                
+                // Cevap yanlış olsa da doğrusunu yeşil ile göster
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            // Puanı güncellemeye yolla
+            updateScore();
+        }
+    </script>
 </body>
 </html>

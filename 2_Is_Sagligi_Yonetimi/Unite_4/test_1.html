@@ -1,25 +1,669 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 4 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 4 - Test 1 - 2026 Anadolu Üniversitesi İSG Yaz Okulu</title>
+    <style>
+        /* Genel Renk ve Font Stilleri - Ünite 4 İçin Turuncu/Güvenlik Teması */
+        :root {
+            --primary: #d35400; /* İş Güvenliği Turuncusu */
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #fdf8f5;
+            --card-bg: #ffffff;
+            --analysis-bg: #fdf2e9;
+            --analysis-border: #f5cba7;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 { margin: 0; font-size: 1.5em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; }
+
+        /* Yönlendirme (Nav) Menüsü - GÜNCELLENMİŞ 5 TESTLİ SİSTEM */
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #873600; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #fbf0e9;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .test-numaralari span { font-weight: normal; color: #555; margin-right: 10px; }
+        .test-numaralari a.active {
+            background: var(--primary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        /* Çıkmış Soru Analiz Paneli */
+        .analiz-paneli {
+            background: var(--analysis-bg);
+            border: 2px solid var(--analysis-border);
+            border-left: 6px solid var(--primary);
+            color: #873600;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 8px;}
+        .analiz-paneli ul { margin-bottom: 0; padding-left: 20px; }
+        .analiz-paneli li { margin-bottom: 5px; }
+
+        /* Puanlama Paneli ve PDF Butonu */
+        .dashboard {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .pdf-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pdf-btn:hover { background: #873600; }
+
+        /* Çift Sütun Soru Düzeni (Masaüstü için Çift, Mobil için Tek Sütun) */
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 15px;
+        }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #2c3e50;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #fdf2e9; }
+
+        /* Doğru/Yanlış Stilleri */
+        .options.answered li { pointer-events: none; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(39, 174, 96, 0.3);
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+            box-shadow: 0 2px 4px rgba(192, 57, 43, 0.3);
+        }
+
+        /* Çözüm Paneli (Tıklandığında Açılır) */
+        details.solution {
+            margin-top: 15px;
+            background: var(--analysis-bg);
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed var(--analysis-border);
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary);
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        /* Mobil Uyumluluk (Cep Telefonu) */
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+
+        /* PDF / Yazdırma (Sıkışık Format) Ayarları */
+        @media print {
+            body { background: white; font-size: 10pt; }
+            header, .test-menusu, .dashboard, .analiz-paneli, footer { display: none; } 
+            .questions-grid { display: block; column-count: 2; column-gap: 20px; }
+            .question-card { break-inside: avoid; border-left: 2px solid #aaa; box-shadow: none; border: 1px solid #ddd; margin-bottom: 12px; padding: 10px;}
+            .options li { padding: 4px 8px; margin-bottom: 2px; border: none; background: none; }
+            details.solution { display: block; border: none; padding: 5px 0 0 0; background: none; margin-top: 5px; }
+            details.solution summary { display: none; } 
+            details.solution p::before { content: "Çözüm: "; font-weight: bold; text-decoration: underline; }
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
 </head>
 <body>
+
     <header>
         <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 4 - Test 1</h2>
+        <h2>Ünite 4: Sağlık Kuruluşlarında İş Sağlığı ve Güvenliği - Test 1</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="../index.html">📚 Dersin Ana Sayfası</a> | 
+            <a href="konu_anlatimi.html">📖 Konu Anlatımına Dön</a>
+        </div>
+        <hr>
+        
+        <!-- YENİ NAVİGASYON SİSTEMİ (Önceki Test - Sonraki Test - Sonraki Ünite) -->
+        <div class="ileri-geri-linkler">
+            <a href="../Unite_3/test_5.html">⬅️ Önceki Test (Ünite 3 - Test 5)</a> | 
+            <a href="test_2.html">Sonraki Test (Ünite 4 - Test 2) ➡️</a> |
+            <a href="../Unite_5/test_1.html">Sonraki Üniteye Geç (Ünite 5 - Test 1) ⏭️</a>
+        </div> 
+
+        <!-- ÜNİTE İÇİ 5 TEST SEKMESİ -->
+        <div class="test-numaralari">
+            <span>Bu Ünitenin Testleri:</span>
+            <a href="test_1.html" class="active">Test 1</a>
+            <a href="test_2.html">Test 2</a>
+            <a href="test_3.html">Test 3</a>
+            <a href="test_4.html">Test 4</a>
+            <a href="test_5.html">Test 5</a>
+        </div>
+    </nav>
+
+    <!-- Çıkmış Soru Analiz Paneli -->
+    <div class="analiz-paneli">
+        <h3>📈 Ünite 4 - Çıkmış Soru Analizi ve Odak Noktaları</h3>
+        <p>Geçmiş yılların (2021-2025) sınav havuzu incelendiğinde bu üniteden her yıl <strong>3 ila 4 soru</strong> gelmektedir. Soruların yoğunlaştığı temel alanlar:</p>
+        <ul>
+            <li><strong>DuPont Bradley Eğrisi (%35):</strong> Kaza ve yaralanma sıklığını belirleyen bu eğrinin 4 aşaması (Reaktif, Bağımlı, Bağımsız, Birbirine Bağımlı) sürekli sorulmaktadır. <em>"En düşük kaza oranının olduğu aşama hangisidir?" (Cevap: Birbirine bağımlı)</em> en sık çıkan sorudur.</li>
+            <li><strong>Şiddet Olayları ve Kodlar (%25):</strong> Hastanelerde çalışanlara yönelik fiziksel veya sözel şiddet durumlarında uygulanan prosedürün <strong>"Beyaz Kod"</strong> olduğu defalarca test edilmiştir.</li>
+            <li><strong>Koruma Düzeyleri (%20):</strong> İşe giriş muayenelerinin ve aşılamanın Birincil (Primer), periyodik muayenelerin İkincil (Sekonder) ve rehabilitasyonun Üçüncül (Tersiyer) koruma olduğu tablo soruları arasındadır.</li>
+            <li><strong>Sağlık Sektörü Riskleri (%20):</strong> Hastane personelinin özellikle enfeksiyonlara (virüsler) ve hasta taşımaktan kaynaklanan ergonomik (kas-iskelet) sorunlara maruz kaldığı bilinmelidir.</li>
+        </ul>
+    </div>
+
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+            <div style="font-size: 0.85em; margin-top: 8px; color: #873600;">(Otomatik Hesaplama: 4 Yanlış 1 Doğruyu Götürür)</div>
+        </div>
+        <button class="pdf-btn" onclick="window.print()">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 8H8v-5h8v5zm3-4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            Sıkışık Formatla PDF İndir / Yazdır
+        </button>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid">
+
+            <!-- ========================================== -->
+            <!-- DERS KİTABI SAYFA 122-123 (1-10) -->
+            <!-- ========================================== -->
+            
+            <div class="question-card">
+                <div class="question-text">1. Aşağıdakilerden hangisi iş sağlığı ve güvenliğinin kanunda belirtilen üç temel amacından biridir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Çalışanların çalışma ortamından kaynaklanan sağlık ve güvenlik risklerine karşı korunması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Çalışanların hastalıklarının tedavi edilebilmesi için klinik hizmeti verilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Çalışanların iş yerinde yapılan işin verimliliğinin artırılmasının sağlanması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İş sağlığı ve güvenliği uygulamaları kapsamının İş Kanunu'na göre çalışan iş yerleri ile ilgili olması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İş sağlığı ve güvenliği hizmetlerinde sorumluluğun sadece iş yeri hekimi ve çalışanlarına ait olması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>İSG'nin en temel ve birinci amacı; çalışanların fiziksel ve ruhsal sağlıklarını, çalışma ortamından kaynaklanabilecek her türlü olumsuz riske ve kaza tehlikesine karşı korumaktır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. İş sağlığı ve güvenliği hizmetlerinde güvenlik kültürü ile ilgili aşağıdaki ifadelerden hangisi doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İşveren, iş yeri hekimi ve sendika temsilcilerinin katıldığı bilgilendirmeler tarzında olmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İş yerinde yaşanan kazaların tespiti ve yaşanan kazalara yönelik bilgilendirmeler olmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İş yerlerinde işçi temsilcilerinin yürüteceği izlem çalışmaları olmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İş yeri hekimi, iş güvenliği uzmanı ve iş hijyenisti çalışmaları düzeyinde olmalıdır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) Tüm çalışanları kapsayan, programlı, nitelikli ve belgelendirilmiş uzman desteğini içeren bir yaklaşım olmalıdır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Güvenlik kültürü sadece uzmanların işi değildir; en alt kademedeki personelden en üst yöneticiye kadar "Tüm çalışanları kapsayan", sürekli ve programlı ortak bir bilinç yaklaşımıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. Aşağıdakilerden hangisi Bradley Eğrisine göre kaza ve yaralanma sıklığının en düşük, güvenlik kültürünün en yüksek olduğu aşamadır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Reaktif aşama</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Birbirine bağımlı (Takım) aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Bağımlı aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Bağımsız aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Düzeltici aşama</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>DuPont Bradley Eğrisinde 4 aşama vardır. Güvenlik kültürünün zirvesinde yer alan, herkesin hem kendisinden hem de takım arkadaşının güvenliğinden sorumlu olduğu en gelişmiş aşama "Birbirine Bağımlı (Interdependent)" aşamadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. İş sağlığı ve güvenliği ile ilgili aşağıdaki ifadelerden hangisi doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sadece kazaların erken evrelerinde yakalanmasının sağlanması için yürütülen çalışmalardır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Meslek hastalıklarını erken evrede yakalayan tedavi amaçlı çalışmalardır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Sağlıklı fiziksel, ruhsal ve sosyal ortamın oluşturulabilmesi için yürütülen koruyucu çalışmalardır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İş yerlerinde sadece iş yeri hekimi ile iş sağlığı ve güvenliği uzmanlarını ilgilendiren çalışmalardır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İşçilerin fiziksel ve ruhsal kapasitelerini yükselterek iş yeri verimliliğini azaltmaya yönelik çalışmalardır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>İSG, tedavi edici değil "koruyucu" niteliktedir. Çalışanların bedensel, ruhsal ve sosyal tam iyilik hâlini sürdürmek için çalışma ortamını güvenli ve sağlıklı hâle getiren faaliyetler bütünüdür.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. Dünya Sağlık Örgütünün sağlık tanımı içinde yer alan aşağıdaki ifadelerden hangisi iş sağlığı ve güvenliği çalışmaları yaklaşımını diğerlerine göre daha iyi karşılar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Fiziksel sağlık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Ruhsal sağlık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Hastalığın olmaması</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Sosyal sağlık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sakatlığın olmayışı</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>DSÖ sağlığı "fiziksel, ruhsal ve sosyal yönden tam bir iyilik hâli" olarak tanımlar. İSG çalışmaları sadece fiziksel değil, stres, şiddet, iş huzuru gibi kavramları kapsadığından "sosyal sağlık" bütünlüğünü diğer koruyucu hizmetlerden daha iyi vurgular.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. İş yerlerinde uygulanan iş sağlığı ve güvenliği çalışmalarından hangisi <u>çevreye</u> yönelik koruyucu uygulamalardandır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İş yerinde bulunan işçilere yönelik verilecek eğitimler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) İş yeri ortamındaki yapılacak ölçümler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İşe alınacak işçilere muayene yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İşçilerin bağışıklama hizmetlerinin yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Hasta olan işçilerin tedavi edilmesi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Aşı, muayene ve eğitim doğrudan "Kişiye/İşçiye" yönelik koruyucu hizmetlerdir. Toz, gaz, gürültü gibi değerlerin test edildiği "ortam ölçümleri" ise doğrudan "Çalışma Çevresine" yönelik koruyucu uygulamalardır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. Aşağıdaki iş yeri sağlık hizmetlerinden hangisi "primer (birincil) koruma" önlemleri arasında yer alır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) İşe giriş muayenesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Aralıklı muayene yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Hastalıkların tedavisi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Rehabilitasyon hizmetleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kazalarda ilk yardım hizmetleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>İşe giriş muayenesi, kişiyi uygun olmadığı (sağlığını bozacak) bir işe yerleştirmemek ve hastalığın en baştan doğmasını engellemek için yapıldığından Primer (Birincil) koruma kabul edilir. Aralıklı (Periyodik) muayeneler ise erken teşhis amaçlı olduğundan Sekonder (İkincil) korumadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. Aşağıdaki iş yeri kontrol önlemlerinden hangisi riskleri önlemede diğerlerine göre daha etkilidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Mesai düzenlemeleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kişisel koruyucu donanım kullanımı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Periyodik muayeneler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Kaynakta kontrol önlemleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sağlık eğitimi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Risk yönetim hiyerarşisinde en etkili ve en kalıcı önlem, tehlikeyi "kaynağında" yok etmek (eliminasyon/ikame) veya kaynakta hapsetmektir. Kişisel koruyucu donanım (KKD) ise en son çaredir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Virüs ve salgınlardan (Örn: Koronavirüs) korunmanın en etkili yöntemlerinden birisi kişisel hijyendir. Buna göre aşağıdaki hijyen kurallarından hangisi <u>yanlıştır</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) El tırnakları kısa olmalı, dikkatle fırçalanmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Eller sık sık temizlenmelidir ve su veya alkol bazlı dezenfektan kullanılmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Mutfak koşullarında baş açık olmamalı, erkekler başlık, kadınlar file takmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Personel tuvaletlerinde tuvalet kâğıdı, kâğıt havlu bulundurulmalıdır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) Kalabalık iş yerlerinde el yıkama için kalıp sabun kullanılmalıdır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Kalabalık iş yerlerinde veya hastanelerde herkesin temas ettiği "kalıp sabunlar" üzerinde bakteri/virüs birikebileceği için çapraz bulaşma riski yaratır. Bu yüzden sensörlü veya pompalı "sıvı sabun" kullanılması şarttır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. Aşağıdakilerden hangisi daha çok hastanelerde ortaya çıkan ve bu çalışma ortamını diğer sanayi sektörlerinden ayıran temel güvenlik riskidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kimyasallar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Gürültü</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Virüsler (Biyolojik Riskler)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yüksekten düşme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sıcak ya da soğuk ortam</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Gürültü, kimyasal ve yüksekten düşme gibi riskler fabrika ve inşaat gibi sektörlerin temel problemleridir. Ancak hastanelerin (sağlık sektörünün) doğası gereği en büyük ve ayrıştırıcı riski hasta insanlardan bulaşabilecek virüs, bakteri gibi "biyolojik risk etmenleridir".</p>
+                </details>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- ÇIKMIŞ SORU ANALİZİNE DAYALI ÖZGÜN SORULAR -->
+            <!-- ========================================== -->
+
+            <div class="question-card">
+                <div class="question-text">11. DuPont Bradley Eğrisine göre, güvenlik kültürünün en zayıf olduğu; çalışanların iş güvenliğini sadece doğal içgüdüleriyle sağladığı ve iş kazalarının sorumluluğunun şansa bırakıldığı başlangıç aşaması aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Reaktif Aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Bağımlı Aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Bağımsız Aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Birbirine Bağımlı Aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Düzeltici Aşama</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Bradley Eğrisinin ilk basamağı "Reaktif" aşamadır. Burada kaza oranı en yüksektir. İnsanlar sadece kendi doğal içgüdülerine göre hareket eder, kaza olunca şanssızlık olarak görülür ve güvenlik için önceden planlanan hiçbir kural yoktur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Sağlık kuruluşlarında (hastanelerde) görevli personele yönelik hasta veya hasta yakınları tarafından gerçekleştirilen fiziksel veya sözlü şiddet olaylarında, güvenlik güçlerinin olay yerine hızlıca intikal etmesini sağlayan acil uyarı sistemi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Mavi Kod</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Beyaz Kod</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Pembe Kod</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kırmızı Kod</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sarı Kod</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Çıkmış sorularda bankodur. Hastanelerde; kalp/solunum durmasında Mavi Kod (2222), bebek hırsızlığında Pembe Kod (3333), yangında Kırmızı Kod (4444) verilirken, sağlık personeline şiddet/saldırı durumunda güvenlik görevlilerini çağıran sistem "Beyaz Kod (1111)"dur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. İş yerlerinde kaza ve hastalıkların önlenmesi için davranış normları oluşturmak amacıyla yürütülen, tüm kademelerdeki çalışanların ve yöneticilerin takım olarak sorumluluk aldığı yapıya ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Güvenlik Kültürü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Risk Değerlendirmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Toplam Kalite Yönetimi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Ergonomik Tasarım</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Acil Durum Eylem Planı</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>İş güvenliğinin sadece bir kağıt üzerinde kural olmaktan çıkıp, tüm organizasyonun "yaşam biçimi ve ortak değeri" hâline gelmesi durumu literatürde "Güvenlik Kültürü" olarak adlandırılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Hastanelerde hasta bakıcılar ve hemşireler arasında yaygın görülen; ağır hastayı yatakta döndürme, kucaklayarak tekerlekli sandalyeye alma veya uzun süre ayakta durmaya bağlı olarak gelişen "kas ve iskelet sistemi rahatsızlıkları (bel/boyun fıtığı vb.)" hangi risk etmeninin sonucudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Biyolojik Riskler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kimyasal Riskler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Psikososyal Riskler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Ergonomik Riskler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Fiziksel Riskler</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Fiziksel güç kullanımı, uygunsuz duruş pozisyonları, ağır kaldırma ve tekrarlayan hareketler sebebiyle ortaya çıkan omurga, eklem ve kas rahatsızlıkları doğrudan "Ergonomik Risk Etmenleri" kapsamında değerlendirilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. Hastalıkların henüz hiçbir klinik belirti vermeden veya çok erken evredeyken saptanmasını sağlayarak tedavi imkânı sunan; bu kapsamda hastanelerin radyoloji bölümü çalışanlarına düzenli kan testleri (hemogram) yapılması işlemi iş sağlığında hangi koruma düzeyine girer?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Birincil (Primer) Koruma</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) İkincil (Sekonder) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Üçüncül (Tersiyer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Sosyal Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kaynakta Koruma</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Çalışanları periyodik muayeneler ve aralıklı tarama testleri ile kontrol ederek hastalıkları oluşum aşamasında "erken teşhis etmek", İkincil (Sekonder) Korumanın ta kendisidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Sağlık sektöründe (Örn: Enfeksiyon Servisi) çalışan personelin sağlığını Hepatit B, Tetanoz veya Influenza gibi bulaşıcı biyolojik risk etmenlerine karşı korumak amacıyla yapılan "Bağışıklama (Aşılama)" çalışmaları hangi koruma sınıfındadır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Birincil (Primer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İkincil (Sekonder) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Üçüncül (Tersiyer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Erken Tanı ve Tedavi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Tıbbi Rehabilitasyon</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Birincil (Primer) Korumanın amacı, risk sağlam kişiye ulaşmadan önce duvar örmektir. Eğitim vermek, ortamı iyileştirmek ve çalışana aşı yapmak (bağışıklamak) hastalığın vücuda girmesini tamamen engellediği için "Birincil Korumadır".</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Güvenlik kültürünün Bradley Eğrisi'ndeki "Bağımsız (Independent)" aşamasında olan bir çalışanın düşünce ve davranış modeli aşağıdakilerden hangisine en uygundur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İş güvenliği kurallarına sadece amiri/şefi izlerken uyar. (Bağımlı Aşama)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İş kazalarının şanssızlık olduğuna ve kaçınılmaz olduğuna inanır. (Reaktif Aşama)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) İş güvenliğini tamamen "kişisel bir sorumluluk" olarak görür ve yalnız kendi güvenliğini sağlar.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Sadece kendi güvenliğini değil, mesai arkadaşlarının güvenliğini de gözetir, takım çalışması yapar. (Birbirine Bağımlı Aşama)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İş güvenliği konularını zaman kaybı olarak görür ve kuralları reddeder.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Bağımsız (Birey) aşamasında olan bir çalışan, güvenliğin önemini kavramıştır; kurallara yöneticisi olmadan da uyar ancak "sadece kendisinden sorumludur". Ekip arkadaşlarını uyarma ve ortak bilinç (Takım/Birbirine bağımlı) seviyesine henüz geçmemiştir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Sağlık kuruluşlarında kullanılan iğne ucu, bistüri, lam, lamel, kırılmış ampul vb. kesici-delici alet yaralanmaları son derece tehlikelidir. Bu tıbbi malzemeler görev sonrasında mevzuata göre <u>hangi renk</u> ve özellikteki kutulara/torbalara atılmalıdır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Siyah renkli evsel atık poşetlerine</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Mavi renkli geri dönüşüm kutularına</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Delinmeye dirençli plastik Sarı renkli Tıbbi Atık kovalarına</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kırmızı renkli tehlikeli atık varillerine</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yeşil renkli cam kumbaralarına</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Hastanelerdeki kesici-delici tıbbi atıkların iğne batması/çizilmesi gibi iş kazalarına yol açmaması için, bu maddeler poşete değil; delinmeye ve yırtılmaya dirençli, üzerinde "Uluslararası Biyo Tehlike" amblemi bulunan sert plastik "Sarı renkli" tıbbi atık kutularına atılmalıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. Ağır bir iş kazası sonucu belinden yaralanarak fonksiyon kaybı yaşayan veya ameliyat olan bir sağlık teknikerinin, kalıcı sakatlığını en aza indirmek ve hayat kalitesini artırarak (rehabilitasyon) masa başı uygun bir işe geri dönmesini sağlamak hangi koruma basamağıdır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Temel (Primordiyal) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Birincil (Primer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İkincil (Sekonder) Koruma</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Üçüncül (Tersiyer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Erken Teşhis</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Olay gerçekleşip hastalık veya kaza neticesinde hasar ortaya çıktıktan sonraki tüm fiziksel, ruhsal tedavi ve işe/hayata uyum sağlama (Rehabilitasyon) süreçleri Üçüncül (Tersiyer) Koruma hizmetleridir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Aşağıdakilerden hangisi sağlık çalışanlarının kurumsal yapıda karşı karşıya kaldığı ve tükenmişlik, depresyon, anksiyete, uyku bozukluğu gibi sonuçlar doğuran "Psikososyal Risk Etmenleri" arasında yer almaz?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Aşırı iş yükü ve uzun çalışma nöbetleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Hasta ve hasta yakınları tarafından uygulanan sözlü/fiziksel şiddet</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Mobbing (İş yerinde psikolojik taciz) ve hiyerarşik baskılar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Rol belirsizliği ve yönetimle iletişim eksikliği</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) Formaldehit, etilen oksit ve anestezi gazları maruziyeti</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p>Aşırı nöbetler, şiddet, mobbing ve yönetim sorunları personelde stres ve tükenmişlik yaratan Psikososyal risklerdir. Hastanelerde kullanılan formaldehit, etilen oksit ve anestezi gazları ise solunum yoluyla bedene zarar veren "Kimyasal Risk Etmenleri"dir.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        // Puanlama ve Mantık Değişkenleri
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+
+        function updateScore() {
+            // Net hesabı: 4 Yanlış 1 Doğruyu Götürür
+            let netScore = correctCount - (wrongCount / 4);
+            
+            // 100 Üzerinden Puan hesabı (Her soru 5 puan)
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; // Puanın eksiye inmesini engeller
+
+            // Ekrana değerleri bastır
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            const parentUl = clickedLi.parentElement;
+            
+            // Kullanıcı bu soruyu zaten cevapladıysa fonksiyonu kır
+            if (parentUl.classList.contains('answered')) return;
+            
+            // Soruya "cevaplandı" mührü vur
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            // Cevabın kontrol edilmesi
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong'); // Yanlış cevabı kırmızı ve üstü çizili yap
+                wrongCount++;
+                
+                // Cevap yanlış olsa da doğrusunu bulup yeşil ile göster
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            // Puanı güncellemeye yolla
+            updateScore();
+        }
+    </script>
 </body>
 </html>

@@ -1,25 +1,659 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zor Seviye Deneme 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Zorlu Deneme 1 - İş Sağlığı Yönetimi</title>
+    <style>
+        /* Kurumsal Sınav Laciverti ve Altın Sarısı Tema */
+        :root {
+            --primary: #1A5276; 
+            --secondary: #F1C40F; 
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #a9cce3;
+            --timer-bg: #e74c3c;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--secondary);
+        }
+        header h1 { margin: 0; font-size: 1.6em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; color: #d4e6f1; }
+
+        /* Yönlendirme Menüsü */
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #d35400; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        
+        /* Deneme Sekmeleri */
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eaf2f8;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid #d4e6f1;
+        }
+        .test-numaralari span { font-weight: bold; color: #1A5276; margin-right: 10px; }
+        .test-numaralari a.active {
+            background: var(--secondary);
+            color: #1A5276;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 1px solid #b7950b;
+        }
+
+        /* Bilgilendirme Paneli */
+        .analiz-paneli {
+            background: var(--analysis-bg);
+            border: 2px solid var(--analysis-border);
+            border-left: 6px solid var(--primary);
+            color: #154360;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: var(--wrong); display: flex; align-items: center; gap: 8px;}
+        .analiz-paneli p { margin-bottom: 0; font-weight: 500;}
+
+        /* Puanlama ve Zamanlayıcı Paneli */
+        .dashboard {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .timer-box {
+            background: var(--timer-bg);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            from { opacity: 1; }
+            to { opacity: 0.8; }
+        }
+
+        /* Soru Kartları */
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 15px;
+        }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--wrong); /* Zorluk hissi için kırmızı vurgu */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #2c3e50;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+
+        /* Doğru/Yanlış Stilleri */
+        .options.answered li { pointer-events: none; }
+        .options.timeout li { pointer-events: none; opacity: 0.7; } /* Süre bitince kilit */
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+        }
+
+        /* Çözüm Paneli */
+        details.solution {
+            margin-top: 15px;
+            background: #fcf3cf;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed #f1c40f;
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #b7950b;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "🔍"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #555; font-size: 0.9em; }
+
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Zor Seviye Deneme 1</h2>
+        <h1>Anadolu Üniversitesi İş Sağlığı ve Güvenliği</h1>
+        <h2>İş Sağlığı Yönetimi - Üst Düzey Eleyici Deneme 1</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="../index.html">📚 Dersin Ana Sayfasına Dön</a> | 
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📝 Çıkmış Sorulara Git</a>
+        </div>
+        <hr>
+        
+        <!-- DENEME SERİSİ SEKMESİ -->
+        <div class="test-numaralari">
+            <span>Üst Düzey Denemeler:</span>
+            <a href="deneme_1.html" class="active">Deneme 1</a>
+            <a href="deneme_2.html">Deneme 2</a>
+            <a href="deneme_3.html">Deneme 3</a>
+            <a href="deneme_4.html">Deneme 4</a>
+            <a href="deneme_5.html">Deneme 5</a>
+        </div>
+    </nav>
+
+    <!-- Bilgilendirme Paneli -->
+    <div class="analiz-paneli">
+        <h3>⚠️ DİKKAT: Çok Zorlu Sınav Simülasyonu</h3>
+        <p>Bu deneme, AÖF sınavlarındaki en sert çeldiriciler, "Hangisi/Hangileri" formatındaki çoklu öncüller ve birden fazla konuyu birleştiren karmaşık senaryolar üzerine kurulmuştur. Gerçek sınav süresi formatında 30 dakikalık zamanlayıcı devrededir. Süre bittiğinde şıklar kilitlenir.</p>
+    </div>
+
+    <!-- Puanlama ve Zamanlayıcı -->
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+        </div>
+        <div class="timer-box" id="timer-display">
+            ⏱️ Kalan Süre: <span id="time">30:00</span>
+        </div>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid" id="quiz-container">
+
+            <div class="question-card">
+                <div class="question-text">1. I. İşçilerin sağlık ve sosyal refahına bireysel ve toplu olarak hizmet etmek.<br>II. Çevre ve toplum sağlığına katkıda bulunmak.<br>III. Sadece işveren haklarını ve işletmenin ekonomik verimliliğini korumak.<br><br>Yukarıdakilerden hangisi/hangileri 1987 yılında Uluslararası İş Sağlığı Komisyonu (ICOH) tarafından kabul edilen "İş Sağlığı Profesyonelleri için Etik Kurallar"ın amaçları arasında yer alır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Yalnız III</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) I, II ve III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> ICOH Etik Kuralları'na göre iş sağlığı profesyonelleri, işçilerin sağlık ve refahına (I) ve çevre/toplum sağlığına (II) hizmet etmelidir. Üçüncü öncüldeki "sadece işverenin haklarını korumak" ifadesi hem etiğe aykırıdır hem de iş güvenliği uzmanı/iş yeri hekiminin bağımsızlık ve tarafsızlık ilkesiyle bağdaşmaz. Cevap C'dir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. Sağlık hizmetlerinde uygulanan "Risk Yönetimi" sürecinin basamakları incelendiğinde; "sistem veya organizasyon içerisindeki potansiyel zarar veya hasar yaratabilecek etkilerin objektif olarak analiz edilerek haritalandırılması" işlemi aşağıdaki basamaklardan hangisini ifade eder?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Bilgi toplama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Risklerin değerlendirilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kontrol önlemlerinin belirlenmesi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Tehlikelerin belirlenmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İzleme ve gözden geçirme</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> "Potansiyel zarar yaratabilecek etkilerin objektif analizi ve risk haritalarının çıkarılması" tehlikelerin belirlenmesi aşamasıdır. Tehlike ile riski karıştırmamak gerekir; tehlike potansiyel zarardır, risk ise bu zararın ortaya çıkma olasılığı ve şiddetidir. Tanım bizzat "Tehlikelerin Belirlenmesi" (Adım 2) basamağıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. İş sağlığı eğitimlerinde konular "Genel Konular", "Sağlık Konuları" ve "Teknik Konular" olarak üçe ayrılır.<br><br>I. Meslek hastalıklarının sebepleri<br>II. Parlama, patlama, yangın ve yangından korunma<br>III. İş ekipmanlarının güvenli kullanımı<br>IV. İş kazası ve meslek hastalığından doğan hukuki sonuçlar<br><br>Buna göre yukarıdaki eğitim konularından hangileri <u>"Teknik Konular"</u> sınıfında yer alır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) II ve IV</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) I, II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) II, III ve IV</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Mevzuata göre; Meslek hastalıkları "Sağlık Konuları"na girer. Hukuki sonuçlar "Genel Konular"a girer. Parlama/patlama (II) ve İş ekipmanlarının kullanımı (III) ise "Teknik Konular"dandır. Güçlü bir çeldirici sorusudur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. L Tipi (5x5) Risk Değerlendirme Matrisinde, "Yılda bir gün oluşması beklenen" ve sonucunda "İlk yardım gerektirebilecek durumlar" oluşturan bir olayın Risk Değeri (Puanı) ve Seviyesi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Puan: 1 (Çok Hafif)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Puan: 3 (Orta)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Puan: 4 (Düşük - Hafif Risk)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Puan: 6 (Ciddi)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Puan: 9 (Orta)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> L tipi matriste Risk = Olasılık x Şiddet'tir. "Yılda bir gün" olması Olasılık=2 (Düşük) demektir. "İlk yardım gerektirmesi" Şiddet=2 (Hafif) demektir. 2 x 2 = 4 puan çıkar.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. Epidemiyolojik araştırmalar "Gözlemsel" ve "Deneysel (Müdahaleli)" olarak ikiye ayrılır. Buna göre, "Ekolojik Araştırmalar" ile ilgili aşağıda verilen ifadelerden hangisi doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Deney ortamı gerçek hayata en çok uyan araştırma tipidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Hastalıkların toplumdaki prevalansını belirlemede altın standarttır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Analiz ünitesi birey olan analitik bir araştırmadır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Analiz üniteleri bireyler değil; okullar, iller gibi insan grupları (toplum) olan tanımlayıcı araştırmalardır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Araştırmacı etkenleri tamamen kendi kontrolü altında tutar.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Ekolojik (Korelasyonel) araştırmalar, bireyler üzerinden değil doğrudan okullar, iller, ülkeler gibi "toplum/insan grupları" üzerinden veri toplayan ve hızlı hipotez üreten çalışmalardır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. I. Atıkların miktarını kaynağında azaltmak.<br>II. Geri dönüşüm<br>III. Enerji geri kazanımı<br>IV. Tekrar kullanım<br><br>Atık Yönetimi Hiyerarşisi piramidine göre, yukarıdaki basamakların (Önizleme hariç) <u>en çok tercih edilenden, en az tercih edilene</u> doğru sıralanışı aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) I - II - IV - III</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) I - IV - II - III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) IV - I - II - III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) II - IV - I - III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) I - II - III - IV</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Çevre Bakanlığı "Atık Hiyerarşisi" piramidine göre doğru sıralama (yukarıdan aşağıya): Önizleme -> Azaltma (I) -> Tekrar Kullanım (IV) -> Geri Dönüşüm (II) -> Enerji Geri Kazanımı (III) -> Bertaraf şeklindedir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. "Çalışma ortamında yapılan işin tekniğine ve organizasyon yapısına uygun olarak, bireyin sürekli performans sınırları içerisinde çalışabilmesi ve katlanabilmesi durumudur." <br><br>Ergonominin temel şartlarını ifade eden yukarıdaki tanım, aşağıdakilerden hangisini açıklar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yapılabilirlik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kabul edilebilirlik</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Katlanabilirlik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Hoşnutluk</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kendini gerçekleştirebilirlik</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Ergonomik şartlar beş tanedir. "İşin insanın biyolojik sınırlarını bozmaması" Yapılabilirlik iken; "Sürekli performans (8 saat) sınırları içerisinde kalması" Katlanabilirlik olarak tanımlanır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. I. Yasal mevzuat uyum yeteneklerinin artması<br>II. Genel olay (kaza vs.) maliyetlerinin ve tazminatların azalması<br>III. Sigorta ve kasko primlerinin maliyetini artırması<br>IV. İşyerinde risklerin tamamen (sıfır risk) ortadan kaldırılmasını kesin garanti etmesi<br><br>ISO 45001 İş Sağlığı ve Güvenliği Yönetim Sistemi'nin faydaları göz önüne alındığında yukarıdakilerden hangisi/hangileri <u>yanlıştır</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız III</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) III ve IV</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) I, III ve IV</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yalnız IV</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> ISO 45001 sigorta primlerini "artırmaz", aksine işyeri güvenli olduğu için risk düşer ve prim maliyetlerini "azaltır". Ayrıca hiçbir yönetim sistemi risklerin tamamen (sıfır) yok edilmesini "kesin garanti" edemez, riskleri kabul edilebilir seviyeye indirmeyi (minimize etmeyi) sağlar. III ve IV yanlıştır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Sağlıkta Kalite Standartları (SKS) gereğince "Çalışan Güvenliği" kapsamında yer alan uygulamalardan hangisi yanlıştır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Çalışanların sağlık taramalarının planlanması ve izlenmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Renkli kod (Beyaz Kod vb.) sistemlerinin aktif olarak yürütülmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Personele yönelik şiddeti önlemek için hasta ile çalışanın yüz yüze gelmesini minimize edecek tasarımlar yapılması</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Olası bir risk değerlendirmesinde hasta memnuniyetinin, çalışan güvenliğinden daima önde tutulması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Engelli ve kronik hastalıklı personele çalışma saatleri ve menü düzenlemesi yapılması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Sağlıkta kalitenin temel felsefesine göre, "hasta memnuniyetini çalışan memnuniyeti/güvenliğinden önde tutmak" gibi bir ilke olamaz. Hem hasta hem de çalışan güvenliği eşdeğer biçimde korunmak zorundadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. "Mavi zemin üzerine beyaz piktogram ile resmedilen ve daire şeklinde olan işaret levhalarına --------, sarı zemin üzerine siyah piktogram ile resmedilip üçgen şeklinde olan işaretlere ise -------- denir."<br><br>Yukarıdaki boşluklara sırasıyla ne gelmelidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Uyarı İşaretleri - Emredici İşaretler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Emredici İşaretler - Yasaklayıcı İşaretler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Emredici İşaretler - Uyarı İşaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yasaklayıcı İşaretler - Yangın İşaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Bilgilendirme İşaretleri - Uyarı İşaretleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Mavi renkli ve yuvarlak işaretler kesinlikle uyulması gereken "Emredici İşaretler"dir (Örn: Baret tak). Sarı renkli ve üçgen işaretler ise tehlikeyi bildiren "Uyarı İşaretleri"dir (Örn: Elektrik tehlikesi).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">11. Meslek Hastalıklarının sınıflandırılmasında ILO (Uluslararası Çalışma Örgütü) listesi dikkate alındığında, aşağıdakilerden hangisi "Hedef organ sistemlerine bağlı meslek hastalıkları (Grup 2)" arasında yer almaz?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Solunum sistemi hastalıkları</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Mesleki kanserler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Cilt hastalıkları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kas iskelet sistemi bozuklukları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Zihinsel ve davranışsal bozukluklar</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> ILO sınıflandırmasında; 1. Grup (Ajanlara bağlı - Kimyasal, Biyolojik, Fiziksel), 2. Grup (Hedef Organ - Cilt, Solunum, Kas iskelet), 3. Grup ise spesifik olarak "Mesleki Kanserler" şeklinde ana başlıklara ayrılmıştır. Kanserler "Hedef organ" başlığı altında değil kendi bağımsız başlığında (Grup 3) incelenir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Epidemiyolojinin iş sağlığı alanında kullanım alanlarıyla ilgili olarak; iş yerlerinde karşılaşılan bir etkenin (örneğin kurşunun) az miktarda ne kadar etki yarattığı ile yüksek miktarda veya sürede ne kadar hastalığa yol açtığını inceleyen kavram aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Doz - cevap ilişkisinin değerlendirilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sağlığı geliştirici faktörlerin tanımlanması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Normal değerlerin saptanması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İş yeri koruyucu yöntemlerinin değerlendirilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Ekolojik atfedilebilir risk analizi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Etkene maruz kalınan süre ve miktar (doz) ile ortaya çıkan hastalık şiddeti (cevap/semptom) arasındaki ilişkiyi araştırmak "Doz-cevap ilişkisinin değerlendirilmesi" ilkesidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. İş yerlerinde makinelerin bakımı veya onarımı sırasında çalışanları kontrolsüz enerji çıkışlarından korumak için tasarlanan ve OSHA 190.147 standardı ile dünyada zorunlu tutulan, makinenin enerji şalterine asma kilit vurulması prensibine dayanan sistem aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) PUKO Döngüsü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kişisel Koruyucu Donanım</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Kilitleme ve Etiketleme (EKED)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Ortam Ölçüm Sistemi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) SKS Beyaz Kod Sistemi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Makinenin ansızın çalışmasını önlemek için fişin/şalterin çekilip kilitlenmesi ve üzerine uyarı levhası asılması uygulaması EKED (Etiketle, Kilitle, Emniyete Al, Dene) veya İngilizce LOTO (Lockout-Tagout) olarak bilinir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Aşağıdakilerden hangisi iş yeri ortamında karşılaşılacak hastalıklardan korumak amacıyla yapılan "Primordiyal (Temel)" düzey koruma önlemlerinden biridir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İşçilere hepatit B aşısı yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sağlık taramaları ve periyodik muayeneler yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Hastalanan işçinin rehabilitasyonunun sağlanması</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Çalışma koşullarını ve çalışma sürelerini düzenleyen yasal mevzuatların yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İşçilere kişisel koruyucu donanım dağıtılması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Primordiyal koruma, hastalığın veya riskin ortaya çıkmasına neden olan kök sistemin (ekonomik, sosyal, yasal çevre) iyileştirilmesidir. Aşı ve donanım Primer (Birincil) koruma iken; Yasal düzenlemeler (Mevzuat yapımı) en temel kök çözüm olan Primordiyal korumadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. Yönetim sistemlerinde sürekli iyileştirmeyi ifade eden PUKO döngüsü ile ilgili; <br>I. Planla: İhtiyaç ve kaynakların belirlenmesi<br>II. Uygula: Belirlenen plana göre işlerin yürütülmesi<br>III. Önlem Al: Yapılan işlerin çıktılarının değerlendirilip hataların izlenmesi<br>Yukarıdaki eşleştirmelerden hangisi/hangileri <u>yanlıştır</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Yalnız II</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Yalnız III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) II ve III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> PUKO döngüsünde; "Yapılan işlerin çıktılarının değerlendirilip hataların izlenmesi/denetlenmesi" aşaması KONTROL ET basamağıdır. ÖNLEM AL basamağı, bu kontrolden çıkan sonuca göre eksikleri giderecek "yeni eylemlere" geçmektir. III. eşleştirme yanlıştır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Sağlık sektöründe psikososyal risk faktörlerinden dolayı çalışanlarda sıklıkla tükenmişlik, depresyon veya uykusuzluk görülebilir. Aşağıdakilerden hangisi sağlık çalışanlarının kendi streslerini yönetebilmeleri için uygulayabileceği bireysel yöntemlerden biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İş yükünü azaltmak için zor ve yorucu işleri sabah (zinde) saatlere bırakmak</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Hataları sıfıra indirmek adına mükemmeliyetçi bir yaklaşım benimsemek</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Gülümsemeyi unutmamak ve dinlenmeye zaman ayırmak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Düzenli fiziksel egzersiz yapmak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Günlük işleri organize ederken planlamaya önem vermek</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Ders kitabında Stres Yönetimi başlığında "Mükemmeliyetçilikten kaçınınız" uyarısı yapılmaktadır. Her işin kusursuz olmasını beklemek (mükemmeliyetçilik), bireydeki stresi ve kaygıyı azaltmaz, aksine katlanarak artırır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Hastalıkların "doğaüstü güçlerden, tanrıların cezasından veya kötü ruhlardan" geldiği yönündeki antik inanışları reddedip; hastalıkların tamamen fiziki ve çevresel kökenleri olduğunu savunan bilim insanı aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Bernardino Ramazzini</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Hipokrat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Paracelsus</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İbn Sina</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Galenos</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Antik Yunan döneminde yaşayan Hipokrat (Hippocrates), hastalıkların mitolojik cezalar olmadığını ve çevresel etmenlerle oluştuğunu öne sürerek Tıbbın Babası unvanını almıştır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Sağlık kuruluşlarında "Biyolojik Etkenlere Maruziyet" risklerinin önlenmesi için uygulanması gereken politikalarda aşağıdakilerden hangisi <u>yanlıştır</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Biyolojik etkenlerin bulunduğu laboratuvar ortamında yeme-içme yasaklanmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kesici delici atıklar kesinlikle delinmez, sert sarı plastik kutulara atılmalıdır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Kirlenmiş veya kontamine olmuş iş kıyafetleri çalışanlar tarafından evde, çamaşır makinesinde yüksek ısıda yıkanmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Hastanelerde el hijyeni koşullarının tam sağlanması için sürekli lavabo/dezenfektan erişimi sağlanmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Hepatit B gibi kan yoluyla bulaşan hastalık riskleri için sağlık personeli aşılanmalıdır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Kontamine olmuş (mikrop bulaşmış) hastane kıyafetleri "kesinlikle eve götürülmemeli", enfeksiyonun çevreye/aileyi yayılmaması için kurumun kendi özel sterilizasyon/çamaşır birimlerinde yıkanmalıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. Epidemiyolojik çalışmalarda, belirli bir hastalık/sonuç oluştuğunda "bunun nedenini geçmişe yönelik (geriye dönük) maruziyet öyküleriyle" saptayan analitik araştırma yöntemi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tanımlayıcı Araştırmalar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kesitsel Araştırmalar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Müdahaleli (Deneysel) Araştırmalar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İleriye Yönelik Kohort Araştırmaları</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) Vaka-Kontrol Araştırmaları</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Araştırmada sonuçtan (hastalıktan) yola çıkıp nedene (maruziyete) doğru geriye yönelik giden çalışmalar Vaka-Kontrol çalışmalarıdır. Nedenden sonuca (geleceğe) gidenler ise Kohort araştırmalarıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Bradley Eğrisi'ne göre kurumsal güvenlik kültürünün en tepe (en yüksek) noktası aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Bağımsız (Independent) Aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Reaktif (İçgüdüsel) Aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Bağımlı (Supervisory) Aşama</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Birbirine Bağımlı (Interdependent) Aşama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sürekli İyileştirme Aşaması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Detaylı Çözümü Göster</summary>
+                    <p><strong>Çözüm:</strong> Bradley Eğrisinde 4 aşama vardır: 1) Reaktif (kaza olunca tepki), 2) Bağımlı (korku ve kural baskısıyla uyum), 3) Bağımsız (bireyin kendi bilinciyle uyumu), 4) Birbirine Bağımlı (Çalışanların sadece kendini değil "ekip arkadaşını" da koruduğu, kültürün doruk noktası). Cevap D'dir.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        // Puanlama Algoritması
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+        let isTimeUp = false;
+
+        function updateScore() {
+            let netScore = correctCount - (wrongCount / 4);
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            if (isTimeUp) return; // Süre bittiyse tıklamayı engelle
+
+            const parentUl = clickedLi.parentElement;
+            
+            if (parentUl.classList.contains('answered')) return;
+            
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            updateScore();
+        }
+
+        // Zamanlayıcı (Timer) - 30 Dakika = 1800 Saniye
+        let timeLeft = 1800; 
+        const timerElement = document.getElementById("time");
+
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = "00:00";
+                document.getElementById('timer-display').style.background = "#333";
+                document.getElementById('timer-display').innerHTML = "⏳ Süre Bitti!";
+                isTimeUp = true;
+                
+                // Şıkları kilitle
+                const allUls = document.querySelectorAll('.options');
+                allUls.forEach(ul => {
+                    ul.classList.add('timeout');
+                });
+                alert("Süreniz doldu! İşaretleme yapamazsınız, ancak doğru cevaplar için çözümleri inceleyebilirsiniz.");
+            } else {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                
+                // 10'dan küçük saniyeleri 09, 08 formatına getir
+                if(seconds < 10) { seconds = "0" + seconds; }
+                if(minutes < 10) { minutes = "0" + minutes; }
+
+                timerElement.innerText = minutes + ":" + seconds;
+                timeLeft--;
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
