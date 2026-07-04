@@ -1,25 +1,991 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zor Seviye Deneme 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Uzmanlık Seviyesi Testleri | İş Hijyeni ve Ergonomi - DENEME 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #b91c1c; /* Koyu Kırmızı / Bordo */
+            --primary-dark: #991b1b;
+            --accent: #f59e0b; /* Turuncu */
+            --accent-hover: #d97706;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 4px 15px rgba(185, 28, 28, 0.3);
+            margin-bottom: 20px;
+        }
+
+        header h2 {
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fef3c7;
+        }
+
+        /* Navigation */
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        .nav-btn.deneme-btn {
+            background: #fffbeb;
+            color: #b45309;
+            border-color: #fcd34d;
+        }
+        
+        .nav-btn.deneme-btn:hover, .nav-btn.deneme-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent-hover);
+        }
+
+        /* Start Screen */
+        #start-screen {
+            max-width: 850px;
+            margin: 30px auto;
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .exam-info {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .analysis-box {
+            background: #fff7ed;
+            border-left: 6px solid var(--accent);
+            padding: 25px;
+            border-radius: 0 16px 16px 0;
+            text-align: left;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+        }
+
+        .analysis-box h3 {
+            color: #92400e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            border-bottom: 2px dashed #fcd34d;
+            padding-bottom: 10px;
+        }
+
+        .analysis-box ul {
+            padding-left: 20px;
+            color: #78350f;
+        }
+
+        .analysis-box li {
+            margin-bottom: 12px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .start-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            font-size: 1.3rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+        }
+
+        /* Exam Panel (Sticky) */
+        #exam-panel {
+            display: none;
+            position: sticky;
+            top: 15px;
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(185, 28, 28, 0.15);
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #fee2e2;
+        }
+
+        .timer {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fef2f2;
+            padding: 8px 20px;
+            border-radius: 12px;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .finish-btn {
+            background: var(--error);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .finish-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .pdf-btn {
+            background: var(--text-main);
+            color: white;
+            box-shadow: 0 4px 12px rgba(51, 65, 85, 0.3);
+        }
+
+        .pdf-btn:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+        }
+
+        /* Questions Grid */
+        #questions-wrapper {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 50px 20px;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+            #exam-panel {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .panel-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .action-btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid var(--primary);
+        }
+
+        .q-header {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .q-badge {
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            color: #1e293b;
+        }
+
+        .options-list {
+            list-style: none;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            padding: 14px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .opt-letter {
+            background: #e2e8f0;
+            color: #475569;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .option-item:hover:not(.locked) {
+            border-color: var(--accent);
+            background: #fffbeb;
+            transform: translateX(5px);
+        }
+        
+        .option-item:hover:not(.locked) .opt-letter {
+            background: var(--accent);
+            color: white;
+        }
+
+        .option-item.locked {
+            cursor: default;
+        }
+
+        .option-item.correct-ans {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: #064e3b;
+        }
+        
+        .option-item.correct-ans .opt-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        .option-item.wrong-ans {
+            background: var(--error-light);
+            border-color: var(--error);
+            color: #7f1d1d;
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+        
+        .option-item.wrong-ans .opt-letter {
+            background: var(--error);
+            color: white;
+            text-decoration: none;
+        }
+
+        .solution-wrapper {
+            margin-top: 25px;
+        }
+
+        .solution-btn {
+            background: none;
+            border: 2px dashed var(--primary);
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .solution-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .solution-text {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-left: 6px solid var(--success);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: #14532d;
+            animation: slideDown 0.4s ease forwards;
+            line-height: 1.7;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Results Panel */
+        #results-panel {
+            display: none;
+            max-width: 850px;
+            margin: 0 auto 40px auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.2);
+            text-align: center;
+            border: 3px solid var(--success);
+        }
+
+        #results-panel h2 {
+            color: var(--success);
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            padding: 25px 15px;
+            border-radius: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .stat-box.correct { background: var(--success-light); color: #064e3b; border: 2px solid var(--success); }
+        .stat-box.wrong { background: var(--error-light); color: #7f1d1d; border: 2px solid var(--error); }
+        .stat-box.blank { background: #f1f5f9; color: #334155; border: 2px solid #94a3b8; }
+        .stat-box.net { background: #fffbeb; color: #b45309; border: 2px solid var(--accent); box-shadow: 0 4px 10px rgba(245,158,11,0.2); }
+
+        .stat-val { font-size: 2.8rem; font-weight: 800; display: block; margin-top: 10px; line-height: 1; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 35px 20px;
+            background: #0f172a;
+            color: #94a3b8;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-top: 4px solid var(--primary);
+        }
+
+        /* Print Mode */
+        @media print {
+            body { background: white; color: black; }
+            header, .nav-container, #start-screen, #exam-panel, .solution-btn, footer { display: none !important; }
+            #questions-wrapper { display: block !important; padding: 0; }
+            .questions-grid { grid-template-columns: 1fr; gap: 40px; }
+            .question-card { box-shadow: none; border: 1px solid #ccc; padding: 20px; break-inside: avoid; }
+            .option-item { border: 1px solid #e2e8f0; background: white !important; color: black !important; }
+            .solution-text { display: block !important; background: none; border: 1px solid #ccc; color: black; margin-top: 15px; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Zor Seviye Deneme 1</h2>
+        <h2>Uzmanlık Seviyesi Testleri | İş Hijyeni ve Ergonomi</h2>
+        <p>DENEME 1 (Zorlaştırılmış Temel Seviye)</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <div class="nav-container">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Tüm Dersler</a>
+            <a href="../index.html" class="nav-btn">📚 İş Hijyeni ve Ergonomi</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html" class="nav-btn">⬅️ Çıkmış Sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="deneme_1.html" class="nav-btn deneme-btn active">Deneme 1 (Temel)</a>
+            <a href="deneme_2.html" class="nav-btn deneme-btn">Deneme 2 (Orta)</a>
+            <a href="deneme_3.html" class="nav-btn deneme-btn">Deneme 3 (İleri)</a>
+            <a href="deneme_4.html" class="nav-btn deneme-btn">Deneme 4 (Zor)</a>
+            <a href="deneme_5.html" class="nav-btn deneme-btn">Deneme 5 (Uzman)</a>
+        </div>
+    </div>
+
+    <!-- Başlangıç Ekranı -->
+    <div id="start-screen">
+        <h2 style="color: var(--primary); margin-bottom: 10px; font-size: 2rem;">Deneme 1'e Hoş Geldiniz</h2>
+        <p class="exam-info">⏱️ Sınav Süresi: 30 Dakika | 🎯 Kural: 4 Yanlış 1 Doğruyu Götürür</p>
+        
+        <div class="analysis-box">
+            <h3>📈 Deneme 1 Stratejisi ve Analizi</h3>
+            <p style="margin-bottom: 15px; font-size: 1.05rem;">Bu deneme "Temel Seviye" olarak adlandırılsa da, yüzeysel bilgi yerine kavramların derinlemesine anlaşıldığını ölçmek için <strong>zorlaştırılmış formatta</strong> hazırlanmıştır. Lütfen şu hususlara dikkat ediniz:</p>
+            <ul>
+                <li><strong>Öncüllü Sorulara Dikkat:</strong> (I, II, III) formatındaki sorularda kavramların birbirine karıştırılması (örneğin İş Hijyeni ile Tıbbi Tedavi farkı) hedeflenmiştir.</li>
+                <li><strong>Sınır Değerler:</strong> Maruziyet sınır değerleri ile eylem değerleri (Gürültü, Kurşun, Asbest) arasındaki ince farklar doğrudan test edilecektir.</li>
+                <li><strong>Ergonomik Tasarım Alt Dalları:</strong> Bilişsel, Enformatik ve Fizyolojik çalışma ortamı düzenlemelerinin ayrımını iyi yapmalısınız.</li>
+                <li><strong>Çeldirici Şıklar:</strong> Seçenekler birbirine oldukça yakın ve bilimsel terimlerle desteklenmiş yanıltıcı ifadeler içerecektir.</li>
+            </ul>
+        </div>
+        <button class="start-btn" onclick="startExam()">🚀 Denemeyi Başlat</button>
+    </div>
+
+    <!-- Sınav Paneli (Sticky) -->
+    <div id="exam-panel">
+        <div class="timer">
+            ⏱️ <span id="time-display">30:00</span>
+        </div>
+        <div class="panel-actions">
+            <button class="action-btn pdf-btn" onclick="window.print()">🖨️ PDF Kaydet</button>
+            <button class="action-btn finish-btn" onclick="endExam()">📝 Denemeyi Bitir</button>
+        </div>
+    </div>
+
+    <!-- Sonuç Paneli -->
+    <div id="results-panel">
+        <h2>🏆 Deneme Sonucu</h2>
+        <div class="stats-grid">
+            <div class="stat-box correct">
+                Doğru
+                <span class="stat-val" id="res-correct">0</span>
+            </div>
+            <div class="stat-box wrong">
+                Yanlış
+                <span class="stat-val" id="res-wrong">0</span>
+            </div>
+            <div class="stat-box blank">
+                Boş
+                <span class="stat-val" id="res-blank">0</span>
+            </div>
+            <div class="stat-box net">
+                Net
+                <span class="stat-val" id="res-net">0.00</span>
+            </div>
+        </div>
+        <p style="color: #64748b; font-weight: 700; font-size: 1.1rem; border-top: 2px dashed #cbd5e1; padding-top: 15px; margin-top: 10px;">
+            * 4 Yanlış 1 Doğruyu Götürmektedir.
+        </p>
+    </div>
+
+    <!-- Sorular Alanı -->
+    <div id="questions-wrapper">
+        <div class="questions-grid" id="q-grid">
+            <!-- Sorular JS ile buraya yüklenecek -->
+        </div>
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        const questionsData = [
+            {
+                id: 1,
+                text: "İş Hijyeni disiplininin çalışma felsefesi ve faaliyet alanları incelendiğinde aşağıdaki ifadelerden hangileri tam olarak doğrudur?<br><br>I. İş yeri ortamından kaynaklanan fiziksel, kimyasal ve biyolojik riskleri öngörür ve ölçer.<br>II. Maruziyet sonucu hastalanan çalışanların tıbbi tedavisini gerçekleştirerek sağlık rehabilitasyonunu sağlar.<br>III. Çalışma ortamının neden olduğu sağlıksızlığı önlemek amacıyla bilim ve mühendislik prensiplerini kullanarak kontrol stratejileri geliştirir.",
+                options: [
+                    "Yalnız I", 
+                    "I ve II", 
+                    "I ve III", 
+                    "II ve III", 
+                    "I, II ve III"
+                ],
+                correct: 2, // C
+                solution: "<strong>💡 Uzman Çözümü:</strong> İş Hijyenistinin temel görevleri tehlikeleri öngörmek, laboratuvar/saha ölçümleriyle değerlendirmek ve riskleri mühendislik önlemleriyle kontrol altına almaktır (I ve III doğru). Ancak, hastalanan çalışanlara tıbbi müdahalede bulunmak veya rehabilitasyon sağlamak İş Hijyeninin değil, klinik tıbbın ve İşyeri Hekiminin görevidir. (II. madde bu nedenle yüksek ve klasik bir çeldiricidir)."
+            },
+            {
+                id: 2,
+                text: "Endüstri devrimi sonrası işçi sağlığının korunması adına 1847 yılında İngiltere'de çıkarılan ve tarihe <strong>'On Saat Yasası'</strong> olarak geçen Fabrikalar Kanunu (Factory Act) kapsamında, aşağıdaki yasal yaptırımlardan hangisi <b>yer almaz</b>?",
+                options: [
+                    "9 yaşın altındaki çocukların işe alınmasının kesinlikle yasaklanması.",
+                    "18 yaşından küçüklerin günlük 12 saatten fazla çalıştırılmasının engellenmesi.",
+                    "İş kazası geçiren işçilere veya yetimlerine yüklü tazminat ödenmesinin yasalaşması.",
+                    "Fabrikaların işleyişinin denetimi için devlet tarafından müfettiş atanmasının zorunlu kılınması.",
+                    "Kadın işçilerin günlük çalışma sürelerine standart bir yasal üst sınır getirilmesi."
+                ],
+                correct: 2, // C
+                solution: "<strong>💡 Uzman Çözümü:</strong> 1847 tarihli İngiliz On Saat Yasası (Factory Act); 9 yaş altı çocuk işçi çalıştırılmasını yasaklamış, gençlerin ve kadınların çalışma saatlerini düzenlemiş ve ilk müfettişlik kavramını getirmiştir. Ancak 'iş kazası geçirenlere veya yetimlerine tazminat ödenmesi' kuralı, Türkiye tarihinde 1921 tarihli 151 Sayılı Havza-i Fahmiye (Ereğli Maden) Kanunu'nun getirdiği bir yeniliktir. İngiliz Factory Act'ta böyle bir tazminat maddesi vurgulanmaz."
+            },
+            {
+                id: 3,
+                text: "Solunabilir tozlar arasında yer alan ve akciğerlerde 'Mezotelyoma' gibi ağır kanser türlerine yol açabilen 'Lifsi Tozlar' (Asbest vb.) endüstriyel ortamlarda özel cihazlarla ölçülür. Bir parçacığın yasal mevzuata ve İş Hijyeni standartlarına göre <b>'Lifsi Toz'</b> kabul edilebilmesi için sahip olması gereken aerodinamik ve geometrik eşik değerleri hangi seçenekte eksiksiz verilmiştir?",
+                options: [
+                    "Uzunluk < 5 mikron, En > 3 mikron, Boy/En Oranı < 3",
+                    "Uzunluk > 5 mikron, En < 3 mikron, Boy/En Oranı > 3",
+                    "Uzunluk > 10 mikron, En < 5 mikron, Boy/En Oranı = 2",
+                    "Uzunluk = 5 mikron, En = 3 mikron, Boy/En Oranı > 5",
+                    "Uzunluk > 3 mikron, En < 1 mikron, Boy/En Oranı > 5"
+                ],
+                correct: 1, // B
+                solution: "<strong>💡 Uzman Çözümü:</strong> Lifsi tozun geometrik kuralı oldukça kesindir: Parçacığın iğne gibi ince uzun olması gerekir. Bunun bilimsel karşılığı; Uzunluğunun 5 mikrondan büyük (> 5 μm), eninin (kalınlığının) 3 mikrondan küçük (< 3 μm) olması ve boyunun enine oranının 3'ten büyük (Boy/En > 3) olmasıdır. Sınavlarda bu >, < işaretleri ve 5-3-3 rakamları sıkça birbirine karıştırılarak sorulur."
+            },
+            {
+                id: 4,
+                text: "İyonlaştırıcı radyasyonla (Röntgen, X-Ray, Tomografi odaları) çalışmalarda doz sınırları personel güvenliği için hayati önem taşır. Görevleri gereği radyasyona maruz kalan personelin <strong>'Çalışma Koşulu A'</strong> sınıfında değerlendirilebilmesi için maruz kalma olasılığı bulunan yıllık etkin doz eşiği aşağıdakilerden hangisidir?",
+                options: [
+                    "Yılda 1 mSv'den (milisievert) az olması.",
+                    "Yılda 2 mSv'den fazla olması.",
+                    "Yılda 6 mSv'den daha fazla olması.",
+                    "Yılda 20 mSv'den daha fazla olması.",
+                    "Yılda en az 50 mSv düzeyinde olması."
+                ],
+                correct: 2, // C
+                solution: "<strong>💡 Uzman Çözümü:</strong> Radyasyon güvenliği mevzuatında 'Çalışma Koşulu A', radyasyon görevlisinin yüksek doz riski taşıdığı durumdur ve sınır 'Yılda 6 mSv'den daha fazla etkin doza maruz kalma olasılığı' olarak tanımlanır. Bu koşulda çalışanların kişisel dozimetre takması yasal zorunluluktur. (Yılda 20 mSv ise 5 yıllık ortalamada izin verilen maksimum yasal sınırın kendisidir, karıştırmayınız)."
+            },
+            {
+                id: 5,
+                text: "İş Hijyeni test, ölçüm ve analizi yapan akredite bir laboratuvarın fiziki şartları ve yükümlülükleri incelendiğinde;<br><br>I. Numunelerin teslim alındığı numune kabul bölümünün en az 5 m² olması gerekir.<br>II. Kullanılan kimyasal maddelerin depolanması için en az 6 m²'lik ayrı bir oda bulunmalıdır.<br>III. Alan tasarrufu sağlamak için zehirli gaz içeren tüpler, analiz cihazlarıyla aynı odada, duvarlara sıkıca sabitlenerek tutulmalıdır.<br><br>yukarıdaki tasarımı ve uygulamalardan hangileri akreditasyon standartlarına <b>kesinlikle aykırıdır</b>?",
+                options: [
+                    "Yalnız I",
+                    "Yalnız II",
+                    "Yalnız III",
+                    "I ve II",
+                    "II ve III"
+                ],
+                correct: 2, // C
+                solution: "<strong>💡 Uzman Çözümü:</strong> İş hijyeni laboratuvarlarında numune kabul odası en az 5 m² (I. doğru) ve kimyasal depo en az 6 m² (II. doğru) olmak zorundadır. Ancak zehirli veya parlayıcı gaz tüplerinin, çalışanların aktif olarak bulunduğu analiz cihazı odasında tutulması güvenlik açısından büyük bir ihlaldir. Tüpler laboratuvar dışında, uygun havalandırmalı özel alanlarda sabitlenmelidir. Dolayısıyla III. madde kesinlikle yanlıştır ve akreditasyon iptal sebebidir."
+            },
+            {
+                id: 6,
+                text: "Akü fabrikası gibi kurşun ve iyonik kurşun bileşikleri ile çalışan bir tesiste tıbbi gözetim şartları son derece sıkıdır. Mevzuata göre tıbbi gözetimin (hekim kontrolünün) yapılmasını zorunlu kılan <b>'havadaki kurşun konsantrasyonu (TWA)'</b> ile personelin kanındaki kurşunu ifade eden <b>'bağlayıcı biyolojik sınır değer'</b> hangi seçenekte doğru eşleştirilmiştir?",
+                options: [
+                    "TWA > 0.050 mg/m³ ise tıbbi gözlem yapılır | Bağlayıcı sınır: 40 μg Pb/100 ml kan.",
+                    "TWA > 0.075 mg/m³ ise tıbbi gözlem yapılır | Bağlayıcı sınır: 70 μg Pb/100 ml kan.",
+                    "TWA > 0.100 mg/m³ ise tıbbi gözlem yapılır | Bağlayıcı sınır: 50 μg Pb/100 ml kan.",
+                    "TWA > 0.075 mg/m³ ise tıbbi gözlem yapılır | Bağlayıcı sınır: 40 μg Pb/100 ml kan.",
+                    "TWA > 0.050 mg/m³ ise tıbbi gözlem yapılır | Bağlayıcı sınır: 70 μg Pb/100 ml kan."
+                ],
+                correct: 1, // B
+                solution: "<strong>💡 Uzman Çözümü:</strong> Kurşunla çalışmalarda kritik iki rakam vardır: Havadaki haftalık (40 saatlik) Zaman Ağırlıklı Ortalama (TWA) 0.075 mg/m³'ü aşarsa VEYA çalışanın kanındaki kurşun seviyesi 40 μg Pb/100 ml'yi aşarsa derhal tıbbi gözetim (sıkı takip) başlar. Ancak kesinlikle aşılmaması gereken en son 'Bağlayıcı Biyolojik Sınır Değer' ise 70 μg Pb/100 ml kandır. Şıklar dikkatli okunmalıdır."
+            },
+            {
+                id: 7,
+                text: "COVID-19 pandemisinde de sıkça tartışılan biyolojik etmenler, enfeksiyon risk düzeyine göre 4 farklı grupta sınıflandırılır. Buna göre; <b>'İnsanda ağır hastalıklara neden olan, çalışanlar için ciddi tehlike oluşturan ve topluma yayılma riski yüksek olan'</b> (etkili bir korunma veya tedavi yöntemi genellikle bulunmayan) biyolojik etmenler hangi risk grubunu temsil eder?",
+                options: [
+                    "Grup 1",
+                    "Grup 2",
+                    "Grup 3",
+                    "Grup 4",
+                    "Grup 5"
+                ],
+                correct: 3, // D
+                solution: "<strong>💡 Uzman Çözümü:</strong> Biyolojik risk etmenlerinde 4'lü bir skala mevcuttur. Hastalık yapmayanlar Grup 1; hastalık yapan ama topluma yayılma riski olmayanlar Grup 2; Ağır hastalık yapan ama topluma yayılma ihtimali düşük/orta olup tedavisi olanlar Grup 3; Hem ağır hastalık yapan, hem topluma hızla yayılan (pandemi potansiyelli) hem de genellikle tedavisi olmayan etmenler (Ebola virüsü gibi) Grup 4 olarak sınıflandırılır."
+            },
+            {
+                id: 8,
+                text: "Ergonomi biliminde, bir çalışma sisteminin 'insancıllığı' (ergonomikliği) hiyerarşik 5 ana ölçüt ile değerlendirilir. Bu ölçütlerin <u>en temel (taban) gereksinimden, en üst düzey (zirve) psikolojik gereksinime</u> doğru bilimsel sıralanışı hangi seçenekte doğru verilmiştir?",
+                options: [
+                    "Yapılabilirlik -> Dayanabilirlik -> Kabul edilebilirlik -> Hoşlanılabilirlik -> Kendini gerçekleştirebilirlik",
+                    "Dayanabilirlik -> Yapılabilirlik -> Hoşlanılabilirlik -> Kabul edilebilirlik -> Kendini gerçekleştirebilirlik",
+                    "Kabul edilebilirlik -> Hoşlanılabilirlik -> Dayanabilirlik -> Yapılabilirlik -> Kendini gerçekleştirebilirlik",
+                    "Yapılabilirlik -> Kabul edilebilirlik -> Dayanabilirlik -> Hoşlanılabilirlik -> Kendini gerçekleştirebilirlik",
+                    "Kendini gerçekleştirebilirlik -> Hoşlanılabilirlik -> Kabul edilebilirlik -> Dayanabilirlik -> Yapılabilirlik"
+                ],
+                correct: 0, // A
+                solution: "<strong>💡 Uzman Çözümü:</strong> İşin ergonomik tasarımı Maslow'un ihtiyaçlar hiyerarşisine benzer. Öncelikle iş fiziksel olarak 'Yapılabilir' olmalıdır. Ardından uzun mesailer boyunca buna 'Dayanılabilir' olmalıdır. Sonra iş sosyal ahlaka 'Kabul edilebilir' olmalıdır. Daha sonra işten zevk alınmalı 'Hoşlanılabilir' olmalı ve en nihayetinde kişi bu işte tüm potansiyelini kullanarak 'Kendini gerçekleştirebilir' seviyeye ulaşmalıdır."
+            },
+            {
+                id: 9,
+                text: "Biyomekanik ve iş fizyolojisi bağlamında kasların enerji kullanım süreçleri incelendiğinde;<br><br>I. Hücre içindeki kısa süreli ve acil enerji ihtiyacı ATP moleküllerinin fosfor açığa çıkararak ADP'ye dönüşmesiyle sağlanır.<br>II. Oksijensiz (anaerobik) solunum sonucunda kaslarda laktik asit birikir ve bu durum şiddetli yorgunluğa sebep olur.<br>III. Dinamik çalışmalarda kas kasılmasının başlangıcında maksimum olan mekanik kuvvet, kasın boyu kısaldıkça katlanarak artar.<br><br>ifadelerinden hangileri <b>doğrudur</b>?",
+                options: [
+                    "Yalnız I",
+                    "Yalnız II",
+                    "I ve II",
+                    "II ve III",
+                    "I, II ve III"
+                ],
+                correct: 2, // C
+                solution: "<strong>💡 Uzman Çözümü:</strong> Vücudun acil enerjisi ATP'nin parçalanmasıyla sağlanır (I doğru). Ağır yüklenmelerde (oksijenin yetmediği durumlarda) hücreler anaerobik solunum yapar ve atık olarak 'Laktik Asit' biriktirir (II doğru). Ancak III. madde fizyolojik olarak yanlıştır; kaslar istirahat halindeyken (uzun boydayken) maksimum kuvvet üretir, kas kasılıp kendi boyu kısaldıkça ürettiği mekanik çekme kuvveti artmaz, giderek azalır."
+            },
+            {
+                id: 10,
+                text: "İş fizyolojisinde fiziksel efor kapasitesi (oksijen tüketimi) baz alınarak işler sınıflandırılır. Buna göre; çalışanın aerobik kapasitesinin <strong>%75 ile %100'ü</strong> düzeyinde güç harcadığı, bedenin tüm potansiyelini tüketerek kısa sürede bitkinliğe yol açan en ağır endüstriyel veya sportif işler (ör: ağır döküm işçiliği, ultra maraton) literatürde nasıl adlandırılır?",
+                options: [
+                    "Maksimum altındaki işler",
+                    "Zorca İşler",
+                    "Dinamik İşler",
+                    "Maksimal İşler",
+                    "Statik İşler"
+                ],
+                correct: 3, // D
+                solution: "<strong>💡 Uzman Çözümü:</strong> Oksijen kullanım kapasitesine göre işler 4'e ayrılır: Hafif İşler (<%25), Zorca İşler (%25-50), Maksimum Altındaki İşler (%50-75) ve Maksimal İşler (%75-100). Bu sınırı da aşıp kapasitenin üzerine çıkıldığında ise 'Bitkinliğe Neden Olan İşler' (halter kaldırmak gibi) başlar. Döküm işçiliği %75-100 bandında 'Maksimal İşler' kategorisindedir."
+            },
+            {
+                id: 11,
+                text: "İş yerindeki gürültü maruziyet düzeyleri (8 saatlik TWA bazında) mevzuat kapsamında üç farklı limit değer ile kontrol altında tutulur. Bu değerler <u>'En düşük maruziyet eylem değeri', 'En yüksek maruziyet eylem değeri' ve 'Maruziyet sınır değeri'</u> olarak adlandırılır.<br>Bu üç limitin dB(A) cinsinden doğru sıralanışı hangi seçenekte verilmiştir?",
+                options: [
+                    "80 dB(A) – 85 dB(A) – 87 dB(A)",
+                    "85 dB(A) – 87 dB(A) – 90 dB(A)",
+                    "80 dB(A) – 87 dB(A) – 90 dB(A)",
+                    "75 dB(A) – 80 dB(A) – 85 dB(A)",
+                    "85 dB(A) – 90 dB(A) – 95 dB(A)"
+                ],
+                correct: 0, // A
+                solution: "<strong>💡 Uzman Çözümü:</strong> Gürültü Yönetmeliği'nin en temel ve en çok karıştırılan sayısal verisidir. Önlemlerin planlanmaya başladığı en düşük eylem değeri 80 dB(A); KKD (kulaklık) kullanımının zorunlu hale geldiği en yüksek eylem değeri 85 dB(A); Kulaklığın koruyucu etkisi hesaba katıldıktan sonra bile kulağa ulaşan sesin kesinlikle aşmaması gereken sınır değer ise 87 dB(A)'dır."
+            },
+            {
+                id: 12,
+                text: "Ergonomik çalışma ortamı tasarımı ilkelerine göre 'Doğal Aydınlatma' ve 'Yapay Aydınlatma' standartları göz önüne alındığında;<br>Pencerelerin toplam alanı çalışma tabanı alanının en az yüzde kaçı <b>(% X)</b> olmalıdır ve saat tamiri / elektronik montaj gibi <b>'çok ince işlerde'</b> asgari aydınlatma şiddeti kaç Lüks <b>(Y)</b> olmalıdır?",
+                options: [
+                    "X: %10 | Y: 900 Lüks",
+                    "X: %15 | Y: 1300 Lüks",
+                    "X: %20 | Y: 1500 Lüks",
+                    "X: %25 | Y: 2000 Lüks",
+                    "X: %30 | Y: 3000 Lüks"
+                ],
+                correct: 3, // D
+                solution: "<strong>💡 Uzman Çözümü:</strong> Mimari ve ergonomik aydınlatma kurallarına göre bir odanın yeterli gün ışığı alabilmesi için pencere alanının, taban alanının en az 1/4'ü (%25) kadar olması istenir. Öte yandan tablo standartlarına göre 'İnce işler' için 900 lüks yeterli iken, elektronik devre montajı veya saat tamiri gibi 'Çok ince işler' için minimum 2000 lüks aydınlatma şiddeti gereklidir."
+            },
+            {
+                id: 13,
+                text: "Termal konfor değerlendirmelerinde tek başına ortam sıcaklığı yeterli bir veri değildir. Psikometreyle ölçülen 'ortam nemi' ile anemometreyle ölçülen 'hava akım hızının (rüzgarın)' özel bir nomogram (grafik) üzerinde sıcaklık ile birleştirilmesiyle, çalışanın vücudunun hissettiği asıl zorlanma noktası bulunur.<br>Bu bileşik tolerans kavramına ergonomide ne ad verilir?",
+                options: [
+                    "Bağıl nem toleransı",
+                    "Efektif (Etkin) Isı",
+                    "Termal Konfor Eşiği",
+                    "Radyant sıcaklık",
+                    "Isı konveksiyonu"
+                ],
+                correct: 1, // B
+                solution: "<strong>💡 Uzman Çözümü:</strong> İnsanın hissettiği sıcaklık, sadece termometrenin gösterdiği kuru hava sıcaklığı değildir. Havadaki nem oranı ve rüzgar hızı bu hissi değiştirir. Bu üç faktörün (Sıcaklık + Nem + Hava Akım Hızı) nomogramda (efektif ısı tespit grafiği) bir araya getirilmesiyle elde edilen neticeye 'Efektif (Etkin) Isı' denir."
+            },
+            {
+                id: 14,
+                text: "Bir endüstriyel makine panosunda; sistemin açık/kapalı, motorun devrede/devre dışı veya arızalı/normal olduğunu sadece renkli sinyal lambaları (örneğin yeşil yanıyorsa normal, kırmızı yanıyorsa arıza) ile kullanıcıya bildiren gösterge tiplerine ne ad verilir ve bu tasarım <u>ergonominin hangi alt disiplini</u> kapsamında incelenir?",
+                options: [
+                    "Kantitatif Gösterge - Fizyolojik Çalışma Ortamı Düzenleme",
+                    "Kalitatif Gösterge - Enformatik Çalışma Ortamı Düzenleme",
+                    "Kalitatif Gösterge - Psikolojik Çalışma Ortamı Düzenleme",
+                    "Kantitatif Gösterge - Bilişsel Ergonomi",
+                    "Sayısal Gösterge - Güvenli Çalışma Ortamı Düzenleme"
+                ],
+                correct: 1, // B
+                solution: "<strong>💡 Uzman Çözümü:</strong> Ekranda sayısal (rakamsal) bir değer okuyorsak bu Kantitatif (Nicel); sadece durum bildiren (açık/kapalı, sıcak/soğuk, ibre kırmızı bölgede vs.) uyarılar okuyorsak bu Kalitatif (Nitel) göstergedir. Makine panellerinin, göstergelerin, tuşların insanın algı ve kavrama yeteneğine uygun tasarlanması ise 'Enformatik (Bilişsel) Çalışma Ortamı Düzenleme' konusudur."
+            },
+            {
+                id: 15,
+                text: "Antropometrik tasarımlarda temel prensip, ortalama insanı değil popülasyonun büyük bir kısmını kapsayacak şekilde tasarım yapmaktır. Bu amaçla istatistiksel Normal Dağılım (Çan Eğrisi) kullanılır.<br>Toplumun <b>%90'ına</b> hitap edecek (optimum ekonomik maliyet/fayda sağlayan) evrensel bir ürün tasarımında, çan eğrisinin hangi yüzdelik dilimleri <u>istatistiksel olarak dışarıda (hesaplama dışı) bırakılır</u>?",
+                options: [
+                    "En alttan %10 ve en üstten %10",
+                    "Sadece en üstten %10",
+                    "En alttan %5 ve en üstten %5",
+                    "En alttan %2.5 ve en üstten %2.5",
+                    "En alttan %1 ve en üstten %9"
+                ],
+                correct: 2, // C
+                solution: "<strong>💡 Uzman Çözümü:</strong> İstatistiksel çan eğrisinde toplam alan %100'dür. Tasarımı toplumun %90'ına uyumlu yapmak istersek, eğrinin her iki ucundaki (ekstremum) aşırı uç değerleri tıraşlamamız gerekir. Simetri kuralı gereği, en kısa boylu %5'lik kesim ile en uzun boylu %5'lik kesim tasarım dışı bırakılır. Böylece ortadaki %90'lık dev kitleye (%5. persentil ile %95. persentil arasına) odaklanılır."
+            },
+            {
+                id: 16,
+                text: "Endüstriyel işyeri tasarımlarında Anthropometrik veriler yaygın olarak kullanılır:<br><br>I. Çalışma masası yüksekliğinin ayarlanmasında personelin <i>'Dirsek Yüksekliği'</i> verisinin temel alınması.<br>II. Kontrol panosundaki acil stop butonuna eğilmeden yetişebilmek için <i>'El Ulaşım Mesafesi'</i> verisinin kullanılması.<br>III. Fabrika giriş kapılarının minimum yüksekliğinin <i>'Boy Uzunluğu'</i> verisine göre belirlenmesi.<br><br>Yukarıdaki uygulamalardan hangileri <b>'Statik (Yapısal) Antropometri'</b> kapsamında değerlendirilir?",
+                options: [
+                    "Yalnız I",
+                    "Yalnız II",
+                    "I ve III",
+                    "II ve III",
+                    "I, II ve III"
+                ],
+                correct: 2, // C
+                solution: "<strong>💡 Uzman Çözümü:</strong> İnsan bedeninin hareket halinde değilken (sabit) ölçülen boy, dirsek yüksekliği, omuz genişliği gibi değerleri Statik (Yapısal) antropometridir (I ve III statiktir). Ancak uzanma, bir şeye erişme, yakalama, kolların taradığı hacim gibi hareket eylemi barındıran ölçümler 'Dinamik (Fonksiyonel) Antropometri' kapsamına girer. II. madde dinamik bir veridir."
+            },
+            {
+                id: 17,
+                text: "Ayakta yapılan işlerde doğru tezgah yüksekliği seçimi bel ve boyun sağlığı için kritiktir. Yazı yazmak veya küçük elektronik parçaları paketlemek gibi <b>'ayakta yapılan hafif montaj işlerinde'</b>, çalışanın eli ile tezgah yüzeyi arasındaki optimal ergonomik yükseklik ilişkisi nasıl olmalıdır?",
+                options: [
+                    "Çalışma yüzeyi (tezgah), dirsek seviyesinden 10-15 cm daha yukarıda tasarlanmalıdır.",
+                    "Çalışma yüzeyi, dirsek seviyesinin yaklaşık 2,5 ila 5 cm altında ayarlanmalıdır.",
+                    "Çalışma yüzeyi, göz hizası ile kalp hizasının tam ortasında olmalıdır.",
+                    "Çalışma yüzeyi, diz kapağı ile kalça mafsalı arasındaki mesafede tutulmalıdır.",
+                    "Çalışma yüzeyi, omuz çıkıntısı hizasında sabitlenmelidir."
+                ],
+                correct: 1, // B
+                solution: "<strong>💡 Uzman Çözümü:</strong> Ergonomide ayakta çalışma için temel kural: Çoğu operasyonda ideal çalışma yüksekliği dirsek hizasıdır. Ancak hafif montaj, paketleme veya mekanik işlemlerde, omuz ve boyun kaslarını zorlamamak ve kaldıraç etkisini doğru kullanmak için optimal çalışma yüksekliği dirsekten (dirsek noktasından) yaklaşık 2,5 cm ila 5 cm aşağıda olacak şekilde ayarlanmalıdır."
+            },
+            {
+                id: 18,
+                text: "İnsan vücudundaki yaşamsal sistemlerin ergonomik ve fizyolojik işleyişleri hakkında verilen aşağıdaki eşleştirmelerden hangisi <b>yanlıştır</b>?",
+                options: [
+                    "Merkezî Sinir Sistemi -> Kararların verildiği ve dışarıdan gelen verilerin yorumlandığı ana merkezdir (Beyin ve Omurilik).",
+                    "Küçük Kan Dolaşımı -> Oksijence fakir (kirli) kanın temizlenmek üzere kalbin sağ karıncığından akciğerlere gönderilip temizlenerek geri dönmesidir.",
+                    "Çevresel Sinir Sistemi -> Vücudu ağaç kökü gibi saran sinir lifleri ile merkez organlar arasındaki iletişimi sağlar.",
+                    "Bazal Metabolizma -> Aşırı ağır fiziksel efor esnasında (maksimal işlerde) bedenin tükettiği maksimum oksijen ve enerji miktarıdır.",
+                    "Laktik Asit -> Oksijenin yetersiz kaldığı anaerobik çalışma temposunda, kaslarda atık olarak birikerek yorgunluk hissine yol açan maddedir."
+                ],
+                correct: 3, // D
+                solution: "<strong>💡 Uzman Çözümü:</strong> Bazal Metabolizma; bedenin tam dinlenme (istirahat) halinde iken (hareketsizken), sadece temel yaşamsal fonksiyonları (kalp atışı, solunum, hücre yenilenmesi) sürdürebilmek için harcadığı en düşük (minimum) enerji miktarıdır. Maksimum efor anındaki enerji değildir. Diğer tüm fizyolojik tanımlamalar doğrudur."
+            },
+            {
+                id: 19,
+                text: "Psikolojik çalışma ortamı sorunları incelendiğinde; bir çalışanın kendi ahlaki veya kişisel inançlarıyla ters düşen bir görevi yapmaya zorlanması ya da amirlerinden birbiriyle uyuşmayan (örn: hem işi çok hızlı yap hem de hiç hata yapma) zıt beklentiler içeren talimatlar alması sonucu yaşadığı derin psikososyal stres durumuna literatürde ne ad verilir?",
+                options: [
+                    "Karoshi (Aşırı çalışmaya bağlı ölüm) Sendromu",
+                    "Antropometrik Uyumsuzluk Bunalımı",
+                    "Enformatik Bilgi Yüklemesi",
+                    "Rol Çatışması (Role Conflict)",
+                    "Monotoni (Tekdüzelik) Krizi"
+                ],
+                correct: 3, // D
+                solution: "<strong>💡 Uzman Çözümü:</strong> Çalışanın üstlendiği rolden beklentiler ile kendi kapasitesi, vicdanı veya yöneticilerin verdiği çelişkili talimatlar arasında sıkışıp kalması durumunda ortaya çıkan, ağır bir psikososyal risk faktörü olan bu kavrama Endüstriyel Psikolojide 'Rol Çatışması' denir."
+            },
+            {
+                id: 20,
+                text: "Çalışma ve Sosyal Güvenlik Bakanlığı tarafından iş hijyeni laboratuvarlarının denetiminde tespit edilen ihlallere göre belli 'ihtar puanları' uygulanmaktadır. <br>Aşağıdaki ihlallerden hangisi en ağır yaptırımlardan biri olan ve doğrudan <b>100 İhtar Puanı</b> ile cezalandırılan kritik bir hata veya usulsüzlüktür?",
+                options: [
+                    "Numunelerin, analiz için kullanılan bilimsel metoda uygun sıcaklıklarda saklanmaması.",
+                    "Yetki belgesinde (akreditasyonda) bulunmayan metotlar veya parametreler kullanılarak resmi rapor düzenlenmesi.",
+                    "Deney personeline kullandığı cihazlarla ilgili temel iş başı eğitimlerinin verilmemiş olması.",
+                    "İşin sürekli yapılmadığı, geçici çalışma ortamlarında en yüksek maruziyet noktasının sabit ölçüm noktası olarak alınmaması.",
+                    "Laboratuvar dış kapısına asılan unvan tabelasının mevzuatta istenen 2/3 (boy/en) oranında olmaması."
+                ],
+                correct: 1, // B
+                solution: "<strong>💡 Uzman Çözümü:</strong> Laboratuvar denetim mevzuatında usuli hatalar (saklama koşulları, tabela, numune taşıma) genellikle 10 veya 20 puanla, personelin eğitimi ve metodun yanlış uygulanması 50 puanla cezalandırılır. Ancak sahtecilik boyutuna giren; yetkisi (akreditasyonu) olmayan bir parametrede sanki yetkiliymiş gibi rapor düzenlemek, denetçiyi engellemek gibi ağır ihlaller doğrudan 100 ihtar puanı ile cezalandırılır ve belgenin iptaline kadar gider."
+            }
+        ];
+
+        let state = {
+            totalQuestions: 20,
+            answers: {},
+            timeLeft: 30 * 60, // 30 minutes in seconds
+            timerInterval: null,
+            examActive: false,
+            examFinished: false
+        };
+
+        const gridContainer = document.getElementById('q-grid');
+
+        // Render Questions
+        questionsData.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            let optionsHTML = q.options.map((opt, oIdx) => {
+                const letter = String.fromCharCode(65 + oIdx); // A, B, C, D, E
+                return `
+                <li class="option-item" id="opt-${q.id}-${oIdx}" onclick="selectOption(${q.id}, ${oIdx}, ${q.correct})">
+                    <span class="opt-letter">${letter}</span>
+                    <span>${opt}</span>
+                </li>
+            `}).join('');
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <span>Soru ${index + 1}</span>
+                    <span class="q-badge">Deneme 1</span>
+                </div>
+                <div class="q-text">${q.text}</div>
+                <ul class="options-list">
+                    ${optionsHTML}
+                </ul>
+                <div class="solution-wrapper">
+                    <button class="solution-btn" onclick="toggleSolution(${q.id})">🔍 Çözümü Gör</button>
+                    <div class="solution-text" id="sol-${q.id}">${q.solution}</div>
+                </div>
+            `;
+            gridContainer.appendChild(card);
+        });
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-panel').style.display = 'flex';
+            document.getElementById('questions-wrapper').style.display = 'block';
+            state.examActive = true;
+            
+            state.timerInterval = setInterval(() => {
+                if (state.timeLeft <= 0) {
+                    endExam();
+                    return;
+                }
+                state.timeLeft--;
+                let m = Math.floor(state.timeLeft / 60).toString().padStart(2, '0');
+                let s = (state.timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('time-display').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function selectOption(qId, selectedIdx, correctIdx) {
+            if (!state.examActive || state.examFinished) return;
+            if (state.answers[qId] !== undefined) return; 
+
+            state.answers[qId] = selectedIdx;
+            
+            // Lock UI for this question
+            const qData = questionsData.find(q => q.id === qId);
+            qData.options.forEach((_, idx) => {
+                document.getElementById(`opt-${qId}-${idx}`).classList.add('locked');
+            });
+
+            const selectedEl = document.getElementById(`opt-${qId}-${selectedIdx}`);
+            const correctEl = document.getElementById(`opt-${qId}-${correctIdx}`);
+
+            if (selectedIdx === correctIdx) {
+                selectedEl.classList.add('correct-ans');
+            } else {
+                selectedEl.classList.add('wrong-ans');
+                correctEl.classList.add('correct-ans');
+            }
+        }
+
+        function toggleSolution(qId) {
+            const solText = document.getElementById(`sol-${qId}`);
+            if (solText.style.display === 'block') {
+                solText.style.display = 'none';
+            } else {
+                solText.style.display = 'block';
+            }
+        }
+
+        function endExam() {
+            if (state.examFinished) return;
+            state.examFinished = true;
+            clearInterval(state.timerInterval);
+            document.getElementById('time-display').innerText = "BİTTİ";
+            document.getElementById('time-display').style.color = "var(--error)";
+
+            let correctCount = 0;
+            let wrongCount = 0;
+
+            questionsData.forEach(q => {
+                const answered = state.answers[q.id];
+                if (answered !== undefined) {
+                    if (answered === q.correct) correctCount++;
+                    else wrongCount++;
+                }
+            });
+
+            let blankCount = state.totalQuestions - (correctCount + wrongCount);
+            let netScore = correctCount - (wrongCount / 4);
+
+            document.getElementById('res-correct').innerText = correctCount;
+            document.getElementById('res-wrong').innerText = wrongCount;
+            document.getElementById('res-blank').innerText = blankCount;
+            document.getElementById('res-net').innerText = netScore.toFixed(2);
+
+            document.getElementById('results-panel').style.display = 'block';
+            
+            // Scroll to results slowly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

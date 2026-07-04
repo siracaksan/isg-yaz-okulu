@@ -1,25 +1,788 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2023 Yaz Okulu Soruları - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>2026 Anadolu Üniversitesi İSG Yaz Okulu - İş Hijyeni ve Ergonomi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.2);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #e0f2fe;
+        }
+
+        /* Navigation */
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Start Screen */
+        #start-screen {
+            max-width: 900px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .exam-info {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .analysis-box {
+            background: #fef3c7;
+            border-left: 5px solid var(--accent);
+            padding: 25px;
+            border-radius: 0 16px 16px 0;
+            text-align: left;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .analysis-box h3 {
+            color: #b45309;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.3rem;
+            border-bottom: 2px dashed #fcd34d;
+            padding-bottom: 10px;
+        }
+
+        .analysis-box p {
+            color: #92400e;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .analysis-box ul {
+            padding-left: 20px;
+            color: #92400e;
+        }
+
+        .analysis-box li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .analysis-box strong {
+            color: #78350f;
+        }
+
+        .start-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+
+        .start-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Exam Panel (Sticky) */
+        #exam-panel {
+            display: none;
+            position: sticky;
+            top: 10px;
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .timer {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .finish-btn {
+            background: var(--error);
+            color: white;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .finish-btn:hover {
+            background: #dc2626;
+        }
+
+        .pdf-btn {
+            background: var(--text-main);
+            color: white;
+            box-shadow: 0 4px 10px rgba(51, 65, 85, 0.3);
+        }
+
+        .pdf-btn:hover {
+            background: #1e293b;
+        }
+
+        /* Questions Grid */
+        #questions-wrapper {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px 20px;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+            #exam-panel {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .q-header {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        .q-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .options-list {
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .option-item {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            padding: 12px 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-item:hover:not(.locked) {
+            border-color: var(--primary);
+            background: #e0f2fe;
+        }
+
+        .option-item.locked {
+            cursor: default;
+        }
+
+        .option-item.correct-ans {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: #065f46;
+        }
+
+        .option-item.wrong-ans {
+            background: var(--error-light);
+            border-color: var(--error);
+            color: #991b1b;
+            text-decoration: line-through;
+        }
+
+        .solution-wrapper {
+            margin-top: 15px;
+        }
+
+        .solution-btn {
+            background: none;
+            border: 2px dashed var(--accent);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .solution-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .solution-text {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fefce8;
+            border-left: 4px solid var(--success);
+            border-radius: 0 12px 12px 0;
+            font-size: 0.95rem;
+            color: #3f6212;
+            animation: fadeIn 0.4s ease forwards;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Results Panel */
+        #results-panel {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
+            text-align: center;
+        }
+
+        #results-panel h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            padding: 20px;
+            border-radius: 16px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .stat-box.correct { background: var(--success-light); color: #065f46; border: 2px solid var(--success); }
+        .stat-box.wrong { background: var(--error-light); color: #991b1b; border: 2px solid var(--error); }
+        .stat-box.blank { background: #f1f5f9; color: #475569; border: 2px solid #94a3b8; }
+        .stat-box.net { background: #e0f2fe; color: #0369a1; border: 2px solid var(--primary); }
+
+        .stat-val { font-size: 2rem; font-weight: 700; display: block; margin-top: 5px; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #1e293b;
+            color: #cbd5e1;
+            margin-top: 40px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* Print Mode */
+        @media print {
+            body { background: white; color: black; }
+            header, .nav-container, #start-screen, #exam-panel, .solution-btn, footer { display: none !important; }
+            #questions-wrapper { display: block !important; padding: 0; }
+            .questions-grid { grid-template-columns: 1fr; gap: 40px; }
+            .question-card { box-shadow: none; border: none; padding: 0; break-inside: avoid; }
+            .option-item { border: 1px solid #ccc; background: white !important; color: black !important; }
+            .solution-text { display: block !important; background: none; border: 1px solid #ccc; color: black; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>2023 Yaz Okulu Soruları</h2>
+        <h1>2026 Anadolu Üniversitesi İSG Yaz Okulu</h1>
+        <h2>İş Hijyeni ve Ergonomi - 2023 Çıkmış Sorular ve Detaylı Çözümleri</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <div class="nav-container">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Tüm Dersler</a>
+            <a href="../index.html" class="nav-btn">📚 İş Hijyeni ve Ergonomi</a>
+            <a href="yaz_okulu_2024.html" class="nav-btn" style="background: var(--accent); color: white; border-color: var(--accent);">Sonraki Yıl (2024) ➡️</a>
+        </div>
+        <div class="nav-group">
+            <a href="../Unite_1/konu_anlatimi.html" class="nav-btn">Ünite 1</a>
+            <a href="../Unite_2/konu_anlatimi.html" class="nav-btn">Ünite 2</a>
+            <a href="../Unite_3/konu_anlatimi.html" class="nav-btn">Ünite 3</a>
+            <a href="../Unite_4/konu_anlatimi.html" class="nav-btn">Ünite 4</a>
+            <a href="../Unite_5/konu_anlatimi.html" class="nav-btn">Ünite 5</a>
+            <a href="../Unite_6/konu_anlatimi.html" class="nav-btn">Ünite 6</a>
+            <a href="../Unite_7/konu_anlatimi.html" class="nav-btn">Ünite 7</a>
+            <a href="../Unite_8/konu_anlatimi.html" class="nav-btn">Ünite 8</a>
+        </div>
+    </div>
+
+    <!-- Başlangıç Ekranı -->
+    <div id="start-screen">
+        <div class="analysis-box">
+            <h3>📊 2023 Sınav Analizi ve Önemli Çıkarımlar</h3>
+            <p>2023 İş Hijyeni ve Ergonomi Yaz Okulu sınavında, teorik bilgi ve mevzuat standartlarına (TS EN 689, akreditasyon) odaklanılmıştır:</p>
+            <ul>
+                <li><strong>Temel Tanımlar:</strong> "İş Hijyeni" disiplininin amacı ve dayandığı bilimsel mühendislik prensipleri doğrudan test edilmiştir.</li>
+                <li><strong>Fiziksel Riskler (Ünite 2):</strong> El-kol titreşimi günlük eylem sınırı (2,5 m/s²) ve iyonlaştırıcı radyasyon birimi (Sievert) sorulmuştur.</li>
+                <li><strong>Ölçüm Standartları (Ünite 3):</strong> Havada solunum yoluyla maruziyet ölçümlerini kurala bağlayan <strong>TS EN 689 Kılavuzu</strong> çıkmıştır.</li>
+                <li><strong>Tıbbi ve İdari Önlemler (Ünite 4):</strong> Kurşun ile çalışmalarda tıbbi gözetim şartları ile kişiye özel donanım kullanımının (kulaklık vb.) önemi vurgulanmıştır.</li>
+                <li><strong>Ergonomi (Ünite 5-8):</strong> Ergonomistlerin çalışma sahaları, enformatik çalışma ortamı tasarımı, maksimal işlerin tanımı ve antropometrik duruşlar (15 dakikada bir pozisyon değiştirme) geniş yer bulmuştur.</li>
+            </ul>
+        </div>
+        <p class="exam-info">Bu test, 2023 yılı çıkmış sorularından ve müfredata uygun detaylı çözümlerden oluşmaktadır. <br><br>⏱️ Sınav süresi <strong>30 Dakika</strong> olup, 4 yanlış 1 doğruyu götürmektedir.</p>
+        <button class="start-btn" onclick="startExam()">🚀 Sınavı Başlat</button>
+    </div>
+
+    <!-- Sınav Paneli (Sticky) -->
+    <div id="exam-panel">
+        <div class="timer">
+            ⏱️ <span id="time-display">30:00</span>
+        </div>
+        <div class="panel-actions">
+            <button class="action-btn pdf-btn" onclick="window.print()">🖨️ PDF Kaydet</button>
+            <button class="action-btn finish-btn" onclick="endExam()">📝 Testi Bitir</button>
+        </div>
+    </div>
+
+    <!-- Sonuç Paneli -->
+    <div id="results-panel">
+        <h2>🏆 Sınav Sonucu</h2>
+        <div class="stats-grid">
+            <div class="stat-box correct">
+                Doğru
+                <span class="stat-val" id="res-correct">0</span>
+            </div>
+            <div class="stat-box wrong">
+                Yanlış
+                <span class="stat-val" id="res-wrong">0</span>
+            </div>
+            <div class="stat-box blank">
+                Boş
+                <span class="stat-val" id="res-blank">0</span>
+            </div>
+            <div class="stat-box net">
+                Net
+                <span class="stat-val" id="res-net">0.00</span>
+            </div>
+        </div>
+        <p style="color: var(--text-light); font-weight: 600;">* 4 Yanlış 1 Doğruyu Götürmektedir.</p>
+    </div>
+
+    <!-- Sorular Alanı -->
+    <div id="questions-wrapper">
+        <div class="questions-grid" id="q-grid">
+            <!-- Sorular JS ile buraya yüklenecek -->
+        </div>
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        const questionsData = [
+            {
+                id: 1,
+                text: "Çalışma ortamında oluşan hastalıklara veya geri kazanılması olanaksız sağlık koşullarına veya çalışanın iyilik hâlini kaybetmesine neden olan zararlıları belirleyen, değerlendirmesini yapan ve kontrol yollarını gösteren bir bilim dalıdır.\n\nYukarıdaki cümle ile aşağıdakilerden hangisi tanımlanmıştır?",
+                options: ["A) Kontrol Bilimi", "B) İş Sağlığı", "C) İş Hijyeni", "D) Ergonomi", "E) Çevre Yönetimi"],
+                correct: 2, 
+                solution: "<strong>Detaylı Çözüm (Ünite 1):</strong> Ders kitabında yer alan net tanıma göre; çalışanların sağlığını bozan veya meslek hastalıklarına yol açan çevresel faktörleri tespit eden, ölçümler ile değerlendiren ve bu tehlikeleri kontrol altına alacak yolları gösteren bilim dalı <strong>İş Hijyeni</strong>'dir."
+            },
+            {
+                id: 2,
+                text: "İş Hijyeni; çalışanların tehlikelere maruziyetinin kapsamını ölçmek ve çalışma ortamının neden olduğu sağlıksızlığı önlemek amacıyla uygun kontrol stratejileri tasarlamak ve uygulamak için aşağıdakilerden hangisini kullanır?",
+                options: ["A) Risk analizi ve tasarımı", "B) Stratejik planlama ve pazarlama", "C) Tehlike teknik ve yöntemleri", "D) Tasarım ve planlama", "E) Bilim ve mühendisliği"],
+                correct: 4, 
+                solution: "<strong>Detaylı Çözüm (Ünite 1):</strong> İş Hijyeni bir taraftan sanattır, diğer taraftan ise tamamen rasyonel temellere dayanır. Bu bağlamda, iş yerindeki tehlikeleri ve maruziyet sınırlarını belirlemek ve bunlara karşı koruyucu sistemler tasarlamak için tamamen <strong>bilim ve mühendislik</strong> prensiplerini kullanır."
+            },
+            {
+                id: 3,
+                text: "El-kol titreşiminde, sekiz saatlik çalışma süresi için günlük maruziyet eylem değeri aşağıdakilerden hangisidir?",
+                options: ["A) 3,5 m/s²", "B) 4 m/s²", "C) 4,5 m/s²", "D) 3 m/s²", "E) 2,5 m/s²"],
+                correct: 4, 
+                solution: "<strong>Detaylı Çözüm (Ünite 2):</strong> Çalışanların Titreşimle İlgili Risklerden Korunmalarına Dair Yönetmelik'e göre, el-kol titreşimi için sekiz saatlik sürede 'maruziyet sınır değeri' 5 m/s² iken, önlemlerin alınmasını gerektiren <strong>'maruziyet eylem değeri' 2,5 m/s²</strong>'dir."
+            },
+            {
+                id: 4,
+                text: "Radyasyonun insan vücudunda zararlı etkilerinin ölçümünde kullanılan uluslararası birimi aşağıdakilerden hangisidir?",
+                options: ["A) Sievert (Sv)", "B) Radyonüklid", "C) Radyofarmasöti", "D) Krosidolit", "E) Floroskopik"],
+                correct: 0, 
+                solution: "<strong>Detaylı Çözüm (Ünite 2):</strong> İyonlaştırıcı radyasyonun dokulardaki biyolojik tahribatını (zararlı etkisini) göstermek üzere Uluslararası Birimler Sisteminde (SI) kullanılan doz eşdeğeri birimi <strong>Sievert (Sv)</strong>'dir."
+            },
+            {
+                id: 5,
+                text: "İş hijyeni test, ölçüm ve analizi yapmak üzere kurulmuş laboratuvar aşağıdakilerden hangisinde belirtilen niteliklere uygun şekilde oluşturulur?",
+                options: ["A) Çalışma Gücü ve Meslekte Kazanma Gücü Kaybı Oranı Tespit İşlemleri Yönetmeliği", "B) İşyeri Bina ve Eklentilerinde Alınacak Sağlık ve Güvenlik Önlemlerine İlişkin Yönetmelik", "C) Maden ve Taşocakları İşletmelerinde ve Tünel Yapımında Tozla Mücadele Yönetmeliği", "D) Haftalık İş Günlerine Bölünemeyen Çalışma Süreleri Yönetmeliği", "E) Çocuk ve Genç İşçilerin Çalıştırılma Usul ve Esasları Hakkında Yönetmelik"],
+                correct: 1, 
+                solution: "<strong>Detaylı Çözüm (Ünite 3):</strong> İlgili mevzuat gereği, test, ölçüm ve analiz laboratuvarlarının fiziki yapısı, güvenlik tedbirleri ve ortam koşulları <strong>'İşyeri Bina ve Eklentilerinde Alınacak Sağlık ve Güvenlik Önlemlerine İlişkin Yönetmelik'</strong> standartlarına uygun olarak inşa edilmek zorundadır."
+            },
+            {
+                id: 6,
+                text: "İşyerinde solunum yoluyla maruz kalınan etkenler ile ilgili olarak numune alma ve değerlendirme stratejileri belirlenirken aşağıdakilerden hangisi dikkate alınır?",
+                options: ["A) TS EN ISO/IEC 17025 “Deney ve Kalibrasyon Laboratuvarlarının Yeterliği İçin Genel Şartlar”", "B) TS EN ISO 24501”Ergonomi- Erişilebilir Tasarım- Renklendirilmiş Işık...\"", "C) TS EN ISO 14851 “Plastik Malzemelerin Sulu Ortamda...\"", "D) TS EN 689 “İşyeri Havası-Solunumla Maruz Kalınan Kimyasal Maddelerin Sınır Değerler ile Karşılaştırılması ve Ölçme Stratejisinin Değerlendirilmesi İçin Kılavuz”", "E) TS EN ISO 11399 “Isıl Ortamın Ergonomisi-Prensipler...\""],
+                correct: 3, 
+                solution: "<strong>Detaylı Çözüm (Ünite 3):</strong> İş yeri havasında solunum yoluyla maruz kalınabilecek tehlikeli kimyasalların tespiti, sınır değerlerle karşılaştırılması ve uygun numune alma stratejilerinin oluşturulması Türkiye'de <strong>TS EN 689</strong> standardına göre yapılmaktadır."
+            },
+            {
+                id: 7,
+                text: "İşveren tarafından sağlanan kulak koruyucu donanımlar ile ilgili aşağıda verilen ifadelerden hangisi yanlıştır?",
+                options: ["A) İlgili mevzuat hükümlerine uygun olur.", "B) Gerektirdiği durumlarda çalışanlar aynı kulaklığı birlikte kullanır.", "C) İşitme ile ilgili riski ortadan kaldıracak veya en aza indirecek şekilde seçilir.", "D) Çalışanlar tarafından doğru kullanılır ve korunur.", "E) Çalışana tam olarak uyar."],
+                correct: 1, 
+                solution: "<strong>Detaylı Çözüm (Ünite 4):</strong> Kişisel Koruyucu Donanımlar (KKD) kişiye özeldir. Hem hijyen kirliliğinin (kulak enfeksiyonları vb.) önlenmesi hem de ürünün kişiye tam ergonomik uyum sağlaması açısından <strong>çalışanların aynı kulaklığı birlikte (ortaklaşa) kullanması kesinlikle yasaktır ve yanlıştır.</strong>"
+            },
+            {
+                id: 8,
+                text: "Kurşun ve iyonik kurşun bileşikler için aşağıdaki bilgilerden hangisi yanlıştır?",
+                options: ["A) Bağlayıcı biyolojik sınır değer: 70 μg Pb/100 ml kan'dır.", "B) Havadaki kurşunun, 8 saat çalışma süresine göre hesaplanmış, zaman ağırlıklı ortalama konsantrasyonu 0.075 mg/m³’ten fazla ise tıbbi gözlem yapılır.", "C) Sağlık gözetimine tabi tutulan her çalışan için kişisel sağlık ve maruziyet kayıtları tutulur ve güncellenir.", "D) Absorbsiyon spektrometri ile ölçülür.", "E) Çalışanlardan herhangi birinin kanındaki kurşun seviyesi 40 μg Pb/100 ml kandan fazla ise tıbbi gözlem yapılır."],
+                correct: 1, 
+                solution: "<strong>Detaylı Çözüm (Ünite 4):</strong> Kurşun ile çalışmalarda zorunlu tıbbi gözlemi gerektiren mevzuat sınırı; havadaki kurşun konsantrasyonunun günlük 8 saate göre değil, <strong>haftada 40 saatlik çalışma süresine göre</strong> hesaplanmış TWA değerinin 0.075 mg/m³'ü aşması durumudur. Dolayısıyla B şıkkı hatalıdır."
+            },
+            {
+                id: 9,
+                text: "İnsanların yetenekleri ve sınırlamaları hakkında bilgi edinmek için antropometri, biyomekanik, iş fizyolojisi ve psikolojiden gelen bilimsel verileri kullanan profesyonellere ne ad verilir?",
+                options: ["A) Psikolog", "B) Sosyolog", "C) Fizyolog", "D) Biyolog", "E) Ergonomist"],
+                correct: 4, 
+                solution: "<strong>Detaylı Çözüm (Ünite 5):</strong> İnsanın antropometrik (boyutsal), biyomekanik (kassal) ve fizyolojik-psikolojik (bilişsel) sınırlarını inceleyerek çalışma çevrelerini, makine ve sistemleri insana uyumlu hale getiren disiplinler arası uzman profesyonellere <strong>Ergonomist</strong> denir."
+            },
+            {
+                id: 10,
+                text: "I. İşinde sağlık ve güvenlik içinde çalışması\nII. Her türlü alet, makina ve donanımı uyumsuzda olsa insanın kullanımına açması\nIII. Psikososyal açıdan olumlu bir iş ortamın oluşturulması\nIV. İşin, insanın antropometrik ölçülerine uygun olarak tasarlanması\n\nErgonominin, insanın daha verimli olabilmesi için yukarıdakilerden hangilerini yerine getirmesi gerekir?",
+                options: ["A) I ve II", "B) III ve IV", "C) I, III ve IV", "D) II, III ve IV", "E) I, II, III ve IV"],
+                correct: 2, 
+                solution: "<strong>Detaylı Çözüm (Ünite 5):</strong> Ergonominin asli amacı insan sağlığını gözeterek iş-makine uyumunu sağlamaktır (I, III, IV doğrudur). II. maddedeki <em>'uyumsuz da olsa donanımın insan kullanımına açılması'</em> prensibi ergonominin temel felsefesine (insanı merkeze alma anlayışına) tamamen aykırıdır."
+            },
+            {
+                id: 11,
+                text: "I. İş yeri koşulları\nII. Çalışma metotları\nIII. Çalışmanın ekonomik hâle getirilmesi\nIV. İlaç takip sisteminin takibi\n\nYukarıdakilerden hangisi/hangileri Ergonomistlerin diğer uğraş alanlarındandır?",
+                options: ["A) Yalnız II", "B) Yalnız IV", "C) I ve III", "D) I, II ve III", "E) I, II ve IV"],
+                correct: 3, 
+                solution: "<strong>Detaylı Çözüm (Ünite 5):</strong> Ergonomist, çalışma hayatında iş yeri koşullarını düzeltir, hareket etüdü ve metot analizleri (çalışma metotları) yapar ve sonuçta verimliliği artırarak sistemi ekonomik/karlı hale getirir. Dördüncü maddedeki 'ilaç takip sistemi' tamamen medikal ve eczacılıkla ilgili bağımsız bir süreçtir."
+            },
+            {
+                id: 12,
+                text: "Aerobik kapasitenin %75-%100 düzeyinde fiziksel çaba gerektiren (ultra maraton, döküm işçiliği vb.) işler aşağıdakilerden hangisine örnek olarak verilebilir?",
+                options: ["A) Maksimal İşler", "B) Zorca İşler", "C) Maksimum altındaki işler", "D) Minimum İşler", "E) Hafif işler"],
+                correct: 0, 
+                solution: "<strong>Detaylı Çözüm (Ünite 6):</strong> İnsan eforunun sınıflandırmasında; aerobik kapasitenin %75 ile %100 aralığını zorlayan, bedenin tüm potansiyelini tüketen ve çalışanı bitkinlik sınırına getiren ağır işler <strong>Maksimal İşler</strong> olarak adlandırılır."
+            },
+            {
+                id: 13,
+                text: "Ergonominin tarihi incelendiğinde, iş yaşamı ile ilgili üç aşama görülmektedir. Buna göre aşağıdakilerden hangisi ikinci aşamayı ifade eder?",
+                options: ["A) Ergonomi kurallarına uyulduğu dönemdir.", "B) Sömürünün kötü sonuçlarının elimine edilmesi için aşama aşama kural ve kanunlar konulduğu dönemdir.", "C) İşçi sağlığı ya da işçi hakkı gibi kavramların düşünülmediği bir çalışma düzenidir.", "D) İnsan performans ve becerilerini dikkate alarak işlerin sistematik olarak düzenlendiği sistemdir.", "E) Sömürü Periyodu dönemidir."],
+                correct: 1, 
+                solution: "<strong>Detaylı Çözüm (Ünite 5):</strong> 1. Aşama 'sömürü dönemi', 3. Aşama ise 'günümüzün modern ve insancıl ergonomi dönemi'dir. 2. Aşama ise; sanayi devrimiyle oluşan meslek hastalıkları ve kazaların anlaşılmaya başlandığı, durumu düzeltmek (elimine etmek) için <strong>aşama aşama yasaların, kanunların ve kuralların oluşturulduğu</strong> geçiş dönemidir."
+            },
+            {
+                id: 14,
+                text: "Kasları kemiklere bağlayan, sık lifli bağ dokusundan yapılmış kısmına ne ad verilir?",
+                options: ["A) Miyofibril", "B) Lif", "C) Tendom (Tendon)", "D) Sarkomer", "E) Kas lifi"],
+                correct: 2, 
+                solution: "<strong>Detaylı Çözüm (Ünite 6):</strong> Kasların iskelet sistemine tutunduğu ve kasılma esnasında oluşan mekanik gücü kemiklere ileten, lifli, oldukça sağlam bağ dokularına literatürde <strong>Tendon (veya Tendom)</strong> adı verilir."
+            },
+            {
+                id: 15,
+                text: "I. Kaza ve yaralanmalar azalır.\nII. Üretim verimi artar.\nIII. İnsanın yetenekleri üst düzeye çıkabilir.\nIV. Mesai saatleri kısalır.\n\nErgonomik perspektifle tasarlanan insan makine etkileşimindeki optimizasyon sayensinde yukarıdakilerden hangisi/ hangileri gerçekleşir?",
+                options: ["A) Yalnız III", "B) II ve III", "C) III ve IV", "D) I, II ve III", "E) I ,II ve IV"],
+                correct: 3, 
+                solution: "<strong>Detaylı Çözüm (Ünite 7):</strong> İnsan-makine etkileşimi başarılı sağlandığında riskler minimize olacağı için kazalar azalır (I), sistemin çıktısı artacağı için verim artar (II) ve çalışanın yeteneklerinden tam kapasite faydalanılır (III). Ancak <strong>mesai saatlerinin kısalması</strong> ergonominin doğrudan fiziksel bir sonucu değil, iş hukukuna ve yönetim kararlarına bağlı bir süreçtir."
+            },
+            {
+                id: 16,
+                text: "Kumanda elemanları ve göstergelerin uyumlu hareket yönleri ve kumanda elemanlarının biçim tasarımı yoluyla kolaylaştırılması hangi ergonomik çalışma ortamı düzeni ile ilgilidir?",
+                options: ["A) Fizyolojik açıdan çalışma ortamı düzenleme", "B) İş Sağlığı ve Güvenliği (İSG) açısından çalışma ortamı düzenleme", "C) Stres açıdan çalışma ortamı düzenleme", "D) Enformatik çalışma ortamı düzenleme", "E) Psikolojik açıdan çalışma ortamı düzenleme"],
+                correct: 3, 
+                solution: "<strong>Detaylı Çözüm (Ünite 7):</strong> Bir makinenin panelindeki göstergelerin okunabilirliği, renk uyumları, buton ve kolların kullanım mantığına ve hareket yönlerine uygun tasarlanması insanın bilişsel algı süreçlerine hitap eder ve <strong>Enformatik (Bilişsel) Çalışma Ortamı Düzenleme</strong> başlığı altında incelenir."
+            },
+            {
+                id: 17,
+                text: "Çalışanların iş ortamında kişilik yapısıyla çatışan bir görevi varsa veya birbiriyle uyuşmayan farklı vazifeler yüklendiğinde aşağıdaki problemlerden hangisi oluşur?",
+                options: ["A) Rol çatışması", "B) Aşırı gururluluk", "C) Karoshi", "D) Anatomik düzensizlik", "E) Antroponetrik uyumsuzluk"],
+                correct: 0, 
+                solution: "<strong>Detaylı Çözüm (Ünite 7):</strong> Çalışanın birbiriyle çelişen yönergeler alması, kendisinden beklenen iki ayrı görevin birbiriyle uyuşmaması veya görevin çalışanın vicdani/kişilik yapısıyla ters düşmesi psikososyal bir risk faktörü olan <strong>'Rol Çatışması'</strong> (Role Conflict) durumunu doğurur."
+            },
+            {
+                id: 18,
+                text: "Oturma postürleri olarak hiçbirisi için en doğru postür denemez. En sağlıklısı duruş şekli, postürün sık sık değiştirilmesidir. Buna göre, Ergonomistler ne kadar zaman da bir oturuş değişikliği yapmanın faydalı olduğunu düşünmektedir?",
+                options: ["A) Her 15 dakikada bir.", "B) Her saat başı.", "C) Her 2 saatte bir.", "D) Her 30 dakikada bir.", "E) Her 4 saatte bir."],
+                correct: 0, 
+                solution: "<strong>Detaylı Çözüm (Ünite 8):</strong> Statik kas kasılması (sabit duruş) kan akışını bozduğu ve iskelet sistemini yorduğu için ergonomik açıdan en sağlıklı oturma şekli sık postür değişimidir. Bilimsel tavsiyeler, sabit oturarak çalışan kişilerin ortalama <strong>her 15 dakikada bir</strong> ufak da olsa postür değişikliği (bedeni hareket ettirmesi) yapması yönündedir."
+            },
+            {
+                id: 19,
+                text: "Ürünlerden bahsedilirken kullanılan “kullanışlı-kullanışsız” veya “güzel-çirkin” gibi ifadeler, o ürünlerin tasarımı hakkında aşağıdakilerden hangisini yansıtmaktadır?",
+                options: ["A) Estetiğini", "B) Beğeni alma oranını", "C) Maliyetini", "D) Beğenilirlik katsayısını", "E) Ergonomikliğini"],
+                correct: 4, 
+                solution: "<strong>Detaylı Çözüm (Ünite 8):</strong> Günlük yaşamda tasarımlar için kullandığımız 'kullanışlı', 'kavraması kolay', 'sırtı ağrıtmıyor', 'rahatsız ediyor' gibi söylemlerin tamamı ürünün insanla olan boyut, konfor ve fonksiyonel uyumunu, yani o ürünün <strong>Ergonomikliğini</strong> yansıtan sıfatlardır."
+            },
+            {
+                id: 20,
+                text: "Mobilya (masa, sandalye vb.) ebatlarının belirlenmesi ve giysi bedenlerinin (droplarının vb.) alt ve üst sınırlarının ayarlanması aşağıdakilerden hangisine örnektir?",
+                options: ["A) Biyolojik Zorlanmanın Minimizasyonu", "B) Enformatik Çalışma Yeri Düzenleme", "C) Statik Antropometri", "D) Psikolojik İş Tasarımı", "E) İş ve Çalışma İklimimin Optimizasyonu"],
+                correct: 2, 
+                solution: "<strong>Detaylı Çözüm (Ünite 8):</strong> İnsan bedeninin hareket hâlinde değilken, sabit/durağan vaziyetlerde alınan boy, omuz genişliği, oturma yüksekliği gibi yapısal ölçüleri <strong>Statik Antropometri</strong> verilerini oluşturur. Masa, sandalye, giysi bedenleri, kapı yükseklikleri gibi tasarımlar doğrudan bu durağan verilere dayanır."
+            }
+        ];
+
+        let state = {
+            totalQuestions: 20,
+            answers: {},
+            timeLeft: 30 * 60, 
+            timerInterval: null,
+            examActive: false,
+            examFinished: false
+        };
+
+        const gridContainer = document.getElementById('q-grid');
+
+        // Render Questions
+        questionsData.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            let optionsHTML = q.options.map((opt, oIdx) => `
+                <li class="option-item" id="opt-${q.id}-${oIdx}" onclick="selectOption(${q.id}, ${oIdx}, ${q.correct})">
+                    ${opt}
+                </li>
+            `).join('');
+
+            card.innerHTML = `
+                <div class="q-header">Soru ${index + 1}</div>
+                <div class="q-text">${q.text}</div>
+                <ul class="options-list">
+                    ${optionsHTML}
+                </ul>
+                <div class="solution-wrapper">
+                    <button class="solution-btn" onclick="toggleSolution(${q.id})">💡 Çözümü Göster</button>
+                    <div class="solution-text" id="sol-${q.id}">${q.solution}</div>
+                </div>
+            `;
+            gridContainer.appendChild(card);
+        });
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-panel').style.display = 'flex';
+            document.getElementById('questions-wrapper').style.display = 'block';
+            state.examActive = true;
+            
+            state.timerInterval = setInterval(() => {
+                if (state.timeLeft <= 0) {
+                    endExam();
+                    return;
+                }
+                state.timeLeft--;
+                let m = Math.floor(state.timeLeft / 60).toString().padStart(2, '0');
+                let s = (state.timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('time-display').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function selectOption(qId, selectedIdx, correctIdx) {
+            if (!state.examActive || state.examFinished) return;
+            if (state.answers[qId] !== undefined) return; // already answered
+
+            state.answers[qId] = selectedIdx;
+            
+            // Lock all options for this question
+            const qData = questionsData.find(q => q.id === qId);
+            qData.options.forEach((_, idx) => {
+                document.getElementById(`opt-${qId}-${idx}`).classList.add('locked');
+            });
+
+            const selectedEl = document.getElementById(`opt-${qId}-${selectedIdx}`);
+            const correctEl = document.getElementById(`opt-${qId}-${correctIdx}`);
+
+            if (selectedIdx === correctIdx) {
+                selectedEl.classList.add('correct-ans');
+            } else {
+                selectedEl.classList.add('wrong-ans');
+                correctEl.classList.add('correct-ans');
+            }
+        }
+
+        function toggleSolution(qId) {
+            const solText = document.getElementById(`sol-${qId}`);
+            if (solText.style.display === 'block') {
+                solText.style.display = 'none';
+            } else {
+                solText.style.display = 'block';
+            }
+        }
+
+        function endExam() {
+            if (state.examFinished) return;
+            state.examFinished = true;
+            clearInterval(state.timerInterval);
+
+            let correctCount = 0;
+            let wrongCount = 0;
+
+            questionsData.forEach(q => {
+                const answered = state.answers[q.id];
+                if (answered !== undefined) {
+                    if (answered === q.correct) correctCount++;
+                    else wrongCount++;
+                }
+            });
+
+            let blankCount = state.totalQuestions - (correctCount + wrongCount);
+            let netScore = correctCount - (wrongCount / 4);
+
+            document.getElementById('res-correct').innerText = correctCount;
+            document.getElementById('res-wrong').innerText = wrongCount;
+            document.getElementById('res-blank').innerText = blankCount;
+            document.getElementById('res-net').innerText = netScore.toFixed(2);
+
+            document.getElementById('results-panel').style.display = 'block';
+            
+            // Auto-scroll to results
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
