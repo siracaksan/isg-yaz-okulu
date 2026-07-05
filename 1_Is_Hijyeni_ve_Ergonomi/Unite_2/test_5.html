@@ -1,25 +1,996 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ünite 2 - Test 5 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; 
+            --primary-dark: #1e40af;
+            --accent: #f59e0b; 
+            --accent-hover: #d97706;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: #dbeafe;
+        }
+
+        header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Navigation */
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        .nav-btn.deneme-btn {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-color: #93c5fd;
+        }
+        
+        .nav-btn.deneme-btn:hover, .nav-btn.deneme-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        /* Start Screen */
+        #start-screen {
+            max-width: 850px;
+            margin: 30px auto;
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .exam-info {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .analysis-box {
+            background: #eff6ff;
+            border-left: 6px solid var(--primary);
+            padding: 25px;
+            border-radius: 0 16px 16px 0;
+            text-align: left;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+        }
+
+        .analysis-box h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            border-bottom: 2px dashed #93c5fd;
+            padding-bottom: 10px;
+        }
+
+        .analysis-box ul {
+            padding-left: 20px;
+            color: #1e3a8a;
+        }
+
+        .analysis-box li {
+            margin-bottom: 12px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .start-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            font-size: 1.3rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+        }
+
+        /* Exam Panel (Sticky) */
+        #exam-panel {
+            display: none;
+            position: sticky;
+            top: 15px;
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #bfdbfe;
+        }
+
+        .timer {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #eff6ff;
+            padding: 8px 20px;
+            border-radius: 12px;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .finish-btn {
+            background: var(--error);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .finish-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .pdf-btn {
+            background: var(--text-main);
+            color: white;
+            box-shadow: 0 4px 12px rgba(51, 65, 85, 0.3);
+        }
+
+        .pdf-btn:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+        }
+
+        /* Questions Grid */
+        #questions-wrapper {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 50px 20px;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+            #exam-panel {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .panel-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .action-btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid var(--primary);
+        }
+
+        .q-header {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .q-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            color: #1e293b;
+        }
+
+        .options-list {
+            list-style: none;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            padding: 14px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .opt-letter {
+            background: #e2e8f0;
+            color: #475569;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .option-item:hover:not(.locked) {
+            border-color: var(--primary);
+            background: #eff6ff;
+            transform: translateX(5px);
+        }
+        
+        .option-item:hover:not(.locked) .opt-letter {
+            background: var(--primary);
+            color: white;
+        }
+
+        .option-item.locked {
+            cursor: default;
+        }
+
+        .option-item.correct-ans {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: #064e3b;
+        }
+        
+        .option-item.correct-ans .opt-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        .option-item.wrong-ans {
+            background: var(--error-light);
+            border-color: var(--error);
+            color: #7f1d1d;
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+        
+        .option-item.wrong-ans .opt-letter {
+            background: var(--error);
+            color: white;
+            text-decoration: none;
+        }
+
+        .solution-wrapper {
+            margin-top: 25px;
+        }
+
+        .solution-btn {
+            background: none;
+            border: 2px dashed var(--primary);
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .solution-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .solution-text {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-left: 6px solid var(--success);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: #14532d;
+            animation: slideDown 0.4s ease forwards;
+            line-height: 1.7;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Results Panel */
+        #results-panel {
+            display: none;
+            max-width: 850px;
+            margin: 0 auto 40px auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.2);
+            text-align: center;
+            border: 3px solid var(--success);
+        }
+
+        #results-panel h2 {
+            color: var(--success);
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            padding: 25px 15px;
+            border-radius: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .stat-box.correct { background: var(--success-light); color: #064e3b; border: 2px solid var(--success); }
+        .stat-box.wrong { background: var(--error-light); color: #7f1d1d; border: 2px solid var(--error); }
+        .stat-box.blank { background: #f1f5f9; color: #334155; border: 2px solid #94a3b8; }
+        .stat-box.net { background: #eff6ff; color: #1e40af; border: 2px solid var(--primary); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2); }
+
+        .stat-val { font-size: 2.8rem; font-weight: 800; display: block; margin-top: 10px; line-height: 1; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 35px 20px;
+            background: #0f172a;
+            color: #94a3b8;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-top: 4px solid var(--primary);
+            margin-top: 50px;
+        }
+        
+        footer hr {
+            border-color: #334155;
+            margin-bottom: 15px;
+        }
+
+        /* Print Mode */
+        @media print {
+            body { background: white; color: black; }
+            header, .nav-container, #start-screen, #exam-panel, .solution-btn, footer { display: none !important; }
+            #questions-wrapper { display: block !important; padding: 0; }
+            .questions-grid { grid-template-columns: 1fr; gap: 40px; }
+            .question-card { box-shadow: none; border: 1px solid #ccc; padding: 20px; break-inside: avoid; }
+            .option-item { border: 1px solid #e2e8f0; background: white !important; color: black !important; }
+            .solution-text { display: block !important; background: none; border: 1px solid #ccc; color: black; margin-top: 15px; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
         <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 2 - Test 5</h2>
+        <h2>Ünite 2 - Test 5 (Uzman Seviyesi)</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <div class="nav-container">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Tüm Dersler</a>
+            <a href="../index.html" class="nav-btn">📚 İş Hijyeni ve Ergonomi</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn deneme-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn deneme-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn deneme-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn deneme-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn deneme-btn active">Test 5</a>
+        </div>
+    </div>
+
+    <!-- Başlangıç Ekranı -->
+    <div id="start-screen">
+        <h2 style="color: var(--primary); margin-bottom: 10px; font-size: 2rem;">Ünite 2 - Test 5'e Hoş Geldiniz</h2>
+        <p class="exam-info">⏱️ Sınav Süresi: 30 Dakika | 🎯 Kural: 4 Yanlış 1 Doğruyu Götürür</p>
+        
+        <div class="analysis-box">
+            <h3>📈 Test Stratejisi ve Analizi (Uzman / Sentez Seviyesi)</h3>
+            <p style="margin-bottom: 15px; font-size: 1.05rem;">Bu final testi, <strong>Ünite 2: İş Hijyeni ve Risk Etmenleri</strong> konusunun en uç ve istisnai mevzuat kurallarını (ince detayları) sentezleyerek ölçer:</p>
+            <ul>
+                <li><strong>Kurşun ve Kan Değerleri:</strong> 8 saatlik havadaki referans değerler (0.075 mg/m³) ile tıbbi gözlem gerektiren sınır değerler (40 µg) ve bağlayıcı biyolojik limitler (70 µg) birleştirilerek sorgulanacaktır.</li>
+                <li><strong>Ölçüm Ayrıntıları:</strong> Titreşim maruziyetinde 'çift el' kullanımı, asbest sayımında kullanılacak lifin tam ebat senaryoları (boy>5, en<3, boy/en>3 matrisi).</li>
+                <li><strong>Radyasyon İstisnaları:</strong> 16-18 yaş arası stajyerler için etkin doz sınırı (yılda 6 mSv, ayda 0.6 mSv) ve 'İnceleme Düzeyi'nin ince tanımları.</li>
+                <li><strong>Asbest Bildirim Şartları:</strong> Söküme başlamadan önce İŞKUR'a yapılan bildirim detaylarında 'nelerin zorunlu olmadığı' çeldirici olarak karşınıza çıkacaktır.</li>
+            </ul>
+        </div>
+        <button class="start-btn" onclick="startExam()">🚀 Testi Başlat</button>
+    </div>
+
+    <!-- Sınav Paneli (Sticky) -->
+    <div id="exam-panel">
+        <div class="timer">
+            ⏱️ <span id="time-display">30:00</span>
+        </div>
+        <div class="panel-actions">
+            <button class="action-btn pdf-btn" onclick="window.print()">🖨️ PDF Kaydet</button>
+            <button class="action-btn finish-btn" onclick="endExam()">📝 Testi Bitir</button>
+        </div>
+    </div>
+
+    <!-- Sonuç Paneli -->
+    <div id="results-panel">
+        <h2>🏆 Test Sonucu</h2>
+        <div class="stats-grid">
+            <div class="stat-box correct">
+                Doğru
+                <span class="stat-val" id="res-correct">0</span>
+            </div>
+            <div class="stat-box wrong">
+                Yanlış
+                <span class="stat-val" id="res-wrong">0</span>
+            </div>
+            <div class="stat-box blank">
+                Boş
+                <span class="stat-val" id="res-blank">0</span>
+            </div>
+            <div class="stat-box net">
+                Net
+                <span class="stat-val" id="res-net">0.00</span>
+            </div>
+        </div>
+        <p style="color: #64748b; font-weight: 700; font-size: 1.1rem; border-top: 2px dashed #cbd5e1; padding-top: 15px; margin-top: 10px;">
+            * 4 Yanlış 1 Doğruyu Götürmektedir.
+        </p>
+    </div>
+
+    <main id="questions-wrapper">
+        <div class="questions-grid" id="q-grid">
+            <!-- Sorular JS ile buraya yüklenecek -->
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        const questionsData = [
+            {
+                id: 1,
+                text: "İş sağlığı ve güvenliği kuralları gereği, eğitimleri radyasyon kaynaklarının kullanılmasını gerektiren ve mesleki eğitimleri sebebiyle radyasyon ortamında çalışması zorunlu olan <b>16-18 yaş arası stajyerler ve öğrenciler</b> için 'göz merceği' eşdeğer dozu, <u>aylık</u> hangi sınırı aşması durumunda 'inceleme düzeyi' olarak değerlendirilir?",
+                options: [
+                    "0.2 mSv",
+                    "0.6 mSv",
+                    "1.0 mSv",
+                    "2.0 mSv",
+                    "6.0 mSv"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> 16-18 yaş arası stajyerler için etkin doz yılda 6 mSv'yi geçemez. Mevzuata göre bu kişilerde <b>göz merceği için eşdeğer dozun AYLIK 0.6 mSv'yi aşması</b> hâlinde doğrudan inceleme düzeyi başlatılır."
+            },
+            {
+                id: 2,
+                text: "İş hijyenistleri, havadaki asbest (amyant) miktarını belirlerken sadece <b>belirli fiziksel formlara (boyutlara)</b> uyan 'lifsi tozları' mikroskop altında sayıma dâhil ederler. <br>Buna göre, aşağıda fiziksel ebatları (mikron cinsinden) verilen partiküllerden hangisi <b>asbest (lifsi toz) sayımına dâhil EDİLİR</b>?",
+                options: [
+                    "Boyu: 4 mikron, Eni: 1 mikron",
+                    "Boyu: 6 mikron, Eni: 4 mikron",
+                    "Boyu: 5 mikron, Eni: 2 mikron",
+                    "Boyu: 10 mikron, Eni: 2 mikron",
+                    "Boyu: 8 mikron, Eni: 3 mikron"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Kural: <b>Boy > 5 mikron, En < 3 mikron ve (Boy/En oranı) > 3</b> olmalıdır. <br>A şıkkı boydan kaybeder (4). B şıkkı enden kaybeder (4). C şıkkı boyu 5'ten 'büyük' değil tam 5'tir (kural: 5'ten BÜYÜK olmalı) ve oran < 3'tür. E şıkkı eni 3'ten 'küçük' değildir. Ancak <b>D şıkkı (Boy 10 > 5, En 2 < 3, Oran 10/2 = 5 > 3)</b> kurala tam uyar."
+            },
+            {
+                id: 3,
+                text: "Çalışma ortamındaki <b>Kurşun ve İyonik Kurşun Bileşikleri</b> risklerinde, çalışanların periyodik 'tıbbi gözlem' altına alınmasını zorunlu kılan havadaki 8 saatlik zaman ağırlıklı ortalama konsantrasyon (TWA) ile çalışanın kanındaki kurşun (Pb) seviyesi alt limitleri hangi seçenekte doğru eşleştirilmiştir?",
+                options: [
+                    "Hava: 0.100 mg/m³ -- Kan: 30 µg Pb/100 ml",
+                    "Hava: 0.075 mg/m³ -- Kan: 40 µg Pb/100 ml",
+                    "Hava: 0.150 mg/m³ -- Kan: 70 µg Pb/100 ml",
+                    "Hava: 0.050 mg/m³ -- Kan: 50 µg Pb/100 ml",
+                    "Hava: 0.075 mg/m³ -- Kan: 70 µg Pb/100 ml"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Mevzuata göre tıbbi gözlemin (tetkikin) acilen başlatılması için limitler; havadaki kurşunun <b>0.075 mg/m³'ü</b> aşması VEYA kan seviyesinin <b>40 µg Pb/100 ml'yi</b> geçmesidir. (70 µg ise hukuki bağlayıcı nihai sınır değerdir)."
+            },
+            {
+                id: 4,
+                text: "Fiziksel risk etmenlerinden olan <b>El-Kol Titreşimi</b> ölçümlerinde, personelin kullandığı teçhizat 'çift elle' (iki elle birden) kullanılan bir aygıtsa, İş Hijyenisti bu ölçüm ve değerlendirmeyi mevzuata göre nasıl yapmalıdır?",
+                options: [
+                    "Sadece aleti daha sıkı tutan dominant (baskın) elden ölçüm alır.",
+                    "İki elden de ayrı ayrı ölçüm alır ve ikisinin matematiksel ortalamasını (A(8)) bularak maruziyeti belirler.",
+                    "Ölçümler her el için ayrı ayrı yapılır, maruziyet her iki eldeki en YÜKSEK değer esas alınarak belirlenir.",
+                    "Ölçümler her el için ayrı yapılır, maruziyet her iki eldeki en DÜŞÜK (güvenli) değer esas alınarak belirlenir.",
+                    "Çift elle kullanılan aletlerde sadece makinenin gövdesinden (kabzasından) tek bir genel titreşim ölçümü alınır."
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> TS EN ISO 5349 standartlarına göre çift elle kullanılan aygıtlarda ölçümler <b>her el için ayrı ayrı yapılır</b> ve değerlendirme/maruziyet tespiti <b>en yüksek olan değer</b> (riskli olan) esas alınarak yapılır."
+            },
+            {
+                id: 5,
+                text: "Kimyasal risk etmenlerinin insan sağlığı üzerindeki etkilerine göre tanımları yapıldığında; <br><b>I.</b> Deri veya solunum yoluyla alındığında kısırlığa veya genetik hasarlara neden olanlar.<br><b>II.</b> Az miktarlarda solunduğunda bile ani ölümlere neden olabilenler.<br><b>III.</b> Dokularla temas ettiğinde tahribata ve yanıklara (kimyasal reaksiyonla) yol açanlar.<br>Yukarıdaki tanımların mevzuattaki sırasıyla karşılıkları hangi seçenekte doğru verilmiştir?",
+                options: [
+                    "I. Kanserojen -- II. Zararlı -- III. Alerjik",
+                    "I. Mutajen -- II. Toksik (Zehirli) -- III. Aşındırıcı",
+                    "I. Alerjik -- II. Çok Toksik -- III. Tahriş Edici",
+                    "I. Toksik -- II. Mutajen -- III. Aşındırıcı",
+                    "I. Mutajen -- II. Kanserojen -- III. Toksik"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Kalıtımsal/genetik hasar = <b>Mutajen</b>. Az miktarda acil ölüm = <b>Toksik</b>. Temas ettiği dokuyu kimyasal olarak tahrip eden/yakan = <b>Aşındırıcı (Korozif)</b> maddedir."
+            },
+            {
+                id: 6,
+                text: "İş yerinde maruz kalınan gürültü değerinin yasal sınırlarında, <b>'Maruziyet Sınır Değeri'</b> olan (LEX, 8 saat) 87 dB(A)'nın anlık darbeli patlamaları da içeren <b>Tepe Basıncı (P<sub>tepe</sub>) cinsinden eşdeğer büyüklüğü</b> kaç Pascal'dır?",
+                options: [
+                    "87 Pa",
+                    "112 Pa",
+                    "140 Pa",
+                    "200 Pa",
+                    "250 Pa"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Gürültü sınır tablosunda eşleşmeler şöyledir: <br>80 dB(A) = 112 Pa (En Düşük Eylem), <br>85 dB(A) = 140 Pa (En Yüksek Eylem), <br><b>87 dB(A) = 200 Pa (Sınır Değer)</b>."
+            },
+            {
+                id: 7,
+                text: "İş yerinde <b>asbest söküm, yıkım, tamir veya uzaklaştırma</b> işlerine başlanmadan önce, işverenin Çalışma ve İş Kurumu İl Müdürlüğüne yapacağı bildirim dosyasında aşağıdakilerden hangisinin bulunması yasal olarak <b>zorunlu DEĞİLDİR</b>?",
+                options: [
+                    "İşyerinin ticari unvanı ve adresi",
+                    "Sökümü yapılacak asbestin türü ve tahmini miktarı",
+                    "İşe başlama tarihi ve işin tahmini süresi",
+                    "Çalışanlara dağıtılacak FFP3 maskelerin marka, model ve sertifikaları",
+                    "Söküm işini yönetecek olan Asbest Söküm Uzmanı belgesi"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Kuruma yapılacak ön bildirim dosyasında; işletme adresi, asbest türü, tahmini miktar, işin süresi ve uzman/çalışan belgelerinin fotokopisi zorunludur. Ancak <b>maskelerin (KKD'lerin) marka ve modellerinin</b> bildirim dosyasında yer alması gibi bir detay yasal zorunluluklar arasında yoktur."
+            },
+            {
+                id: 8,
+                text: "Radyasyon alanlarının sınıflandırılmasında, <b>'Radyasyon görevlilerinin giriş ve çıkışlarının özel denetime tabi olduğu, çalışanların ardışık beş yılın ortalama yıllık doz sınırlarının 3/10'undan FAZLA radyasyon dozuna maruz kalma ihtimali bulunan'</b> alanlara mevzuatta ne ad verilir?",
+                options: [
+                    "Gözetimli Alanlar",
+                    "Denetimli Alanlar",
+                    "Kontrollü Alanlar",
+                    "Serbest Alanlar",
+                    "İnceleme Alanları"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Yıllık doz sınırının 1/20'sini aşma ihtimali olup 3/10'unu aşması beklenmeyen yerler 'Gözetimli Alan' iken; sınırın <b>3/10'undan FAZLA maruziyet riski olan tehlikeli yerler 'Denetimli Alan'</b> olarak adlandırılır."
+            },
+            {
+                id: 9,
+                text: "Kimyasallara maruziyet hesaplamalarında ve cihaz ölçümlerinde kullanılan uluslararası parametrelerden <b>TWA (Zaman Ağırlıklı Ortalama)</b> ve <b>STEL (Kısa Süreli Maruziyet Sınırı)</b> için mevzuatta belirtilen referans referans süreleri sırasıyla aşağıdakilerin hangisinde doğru verilmiştir?",
+                options: [
+                    "TWA: 8 Saat -- STEL: 15 Dakika",
+                    "TWA: 12 Saat -- STEL: 30 Dakika",
+                    "TWA: 24 Saat -- STEL: 1 Saat",
+                    "TWA: 40 Saat -- STEL: 15 Dakika",
+                    "TWA: 8 Saat -- STEL: 5 Dakika"
+                ],
+                correct: 0,
+                solution: "<strong>💡 Çözüm:</strong> İş hijyeni ölçümlerinde kimyasalların uzun süreli zaman ağırlıklı ortalaması (TWA) <b>8 saatlik</b> vardiyayı temsil ederken, kısa süreli akut aşılmaması gereken üst sınır (STEL) referans süresi <b>15 dakika</b>dır."
+            },
+            {
+                id: 10,
+                text: "Biyolojik risk etmenlerinin sınıflandırılması ve kayıt saklama süreleri incelendiğinde; normal şartlarda maruziyet kayıtları 15 yıl saklanmasına rağmen, kalıcı veya gizli kuluçka yapan bazı spesifik enfeksiyon hastalıklarında bu kayıtlar bilinen son maruziyetten sonra <b>en az kaç yıl</b> süreyle saklanmak zorundadır?",
+                options: [
+                    "20 Yıl",
+                    "25 Yıl",
+                    "30 Yıl",
+                    "40 Yıl",
+                    "50 Yıl"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Biyolojik etmen maruziyet kayıtları kural olarak 15 yıl saklanır. Ancak, kalıcı enfeksiyon, gizli kuluçka veya yıllar sonra nükseden antikor durumlarında (kanser riski vb.) bu kayıtlar <b>en az 40 yıl</b> saklanmak zorundadır."
+            },
+            {
+                id: 11,
+                text: "Bütün vücut titreşimine (mekanik titreşim) maruziyetin ölçülmesinde, değerlendirme metotlarında ve cihaz özelliklerinde uyulması gereken zorunlu <b>Türk ve Uluslararası Standart (TS ISO) numarası</b> aşağıdakilerden hangisidir?",
+                options: [
+                    "TS EN ISO 5349-1",
+                    "TS ISO 2631-1",
+                    "TS EN 689",
+                    "TS EN ISO 17025",
+                    "TS EN ISO 14851"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> 'Bütün vücut' titreşimi ölçüm standardı <b>TS ISO 2631-1</b>'dir. (TS EN ISO 5349-1 ise sadece 'El-Kol' titreşimi için kullanılan spesifik standarttır)."
+            },
+            {
+                id: 12,
+                text: "Çalışma ortamlarındaki Radyasyon güvenliği ile ilgili kavramlar değerlendirildiğinde; <b>'Radyasyondan korunmayı sağlamak amacıyla, yıllık alınan etkin veya eşdeğer dozun, yıllık doz sınırının 1/10'unu (onda birini) aştığı andan itibaren, çalışanın üzerinde daha detaylı araştırma/takip yapılmasını gerektiren düzeye'</b> ne ad verilir?",
+                options: [
+                    "Müdahale Düzeyi",
+                    "Kayıt Düzeyi",
+                    "Eylem Düzeyi",
+                    "İnceleme Düzeyi",
+                    "Rehber Düzey"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Mevzuata göre radyasyon sınırının onda birinin (1/10) aşıldığı durumlarda üzerinde daha fazla inceleme yapılmasını gerektiren seviyeye <b>İnceleme Düzeyi</b> adı verilir."
+            },
+            {
+                id: 13,
+                text: "İş hijyeni ölçümlerinde gürültü riskleri ele alındığında, işveren <b>'En Yüksek Maruziyet Eylem Değerlerini' (85 dBA) aşan</b> gürültü tespit ettiğinde öncelikle ve derhal uygulaması gereken mevzuat kuralı aşağıdakilerden hangisidir?",
+                options: [
+                    "Çalışanlara derhal kulaklık dağıtarak işe aynı hızda devam edilmesini sağlamak.",
+                    "Maruziyeti sınır değerin altına indirmek için teknik/idari önlemleri derhal almak ve aşım nedenlerini belirlemek.",
+                    "Sadece haftalık gürültü ortalamasına geçiş yapmak için Çalışma Bakanlığına dilekçe yazmak.",
+                    "Risk haritasını güncelleyerek çalışanları odyometri testine 2 yıl sonra sokmak.",
+                    "Gürültülü makinelerin etrafını sadece uyarı şeritleriyle çevirmek."
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Eylem veya Sınır değerleri aşıldığında sadece KKD (kulaklık) dağıtmak yetmez. İşveren <b>maruziyeti kaynağında önlemek veya düşürmek için teknik/idari organizasyon önlemlerini (izolasyon vb.) derhal almak</b> ve aşımın kök nedenini bulmak zorundadır."
+            },
+            {
+                id: 14,
+                text: "Aşağıdakilerden hangisi, işverenlerin <b>kanserojen veya mutajen</b> maddelere maruziyet riskini en aza indirmek için çalışma alanlarında uygulaması gereken teknik veya organizasyonel önlemlerden biri <b>değildir</b>?",
+                options: [
+                    "Kanserojen maddeyi, üretim sürecinde mümkünse tamamen zararsız veya daha az zararlı bir maddeyle ikame etmek (değiştirmek).",
+                    "İkame yapılamıyorsa, üretimin/prosesin tamamen kapalı bir sistemde (dışarı sızıntı yapmayacak şekilde) gerçekleştirilmesini sağlamak.",
+                    "Çalışanlara verilecek KKD'lerin günlük kıyafetlerle aynı dolapta saklanmasına izin vererek pratiklik sağlamak.",
+                    "Ortam havasındaki tehlikeli gaz/buhar çıkışını engellemek için lokal (bölgesel) cebri çekişli havalandırma kurmak.",
+                    "Tehlikeli bölgeye sadece bakım, onarım veya işin gereği girmek zorunda olan yetkili personelin erişimine izin vermek."
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> Kanserojen ve mutajenlerle çalışmada, tehlikeli madde bulaşmış iş kıyafetleri veya KKD'ler ile personelin sokak (günlük) kıyafetlerinin <b>asla aynı dolapta saklanmaması, tamamen ayrı yerlerde tutulması</b> zorunludur."
+            },
+            {
+                id: 15,
+                text: "Jeolojik yapı itibarıyla lifsi (kristal) yapıya sahip olan ve geçmiş yıllarda ısıya dayanıklılığı yüzünden yalıtımda sıkça kullanılan <b>Asbest (Amyant)</b> mineralleri incelendiğinde; aşağıda verilen 'Asbest Türü - CAS Numarası' (veya yaygın bilinen diğer adı) eşleştirmelerinden hangisi <b>yanlıştır</b>?",
+                options: [
+                    "Krizotil (Beyaz Asbest)",
+                    "Amosit (Grünerit)",
+                    "Krosidolit (Mavi Asbest)",
+                    "Kuvars (Kristal Silika)",
+                    "Antofilit Asbest"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Krizotil, Amosit, Krosidolit, Aktinolit, Tremolit ve Antofilit asbest (amyant) grubuna dâhildir. <b>Kuvars (Kristal Silika)</b> ise asbest (lifsi silikat) türü değil, serbest silis içeren farklı ve inorganik bir toz türüdür."
+            },
+            {
+                id: 16,
+                text: "Biyolojik risk etmenlerinden <b>Grup 3 ve Grup 4</b> organizmalar, her ikisi de insanda ağır hastalık yapar ve topluma yayılma riski barındırırlar. Bu iki risk grubunu birbirinden ayıran ve mevzuatta <b>Grup 4'ü en tehlikeli kılan</b> ince çizgi aşağıdakilerden hangisidir?",
+                options: [
+                    "Grup 4 sadece hayvanlardan bulaşır, Grup 3 insandan insana bulaşır.",
+                    "Grup 3'ün bilinen etkili bir tedavisi veya aşı koruması varken, Grup 4 için genellikle bilinen etkili hiçbir tıbbi korunma/tedavi yöntemi YOKTUR.",
+                    "Grup 4'te hücre kültürü kullanılmaz, Grup 3'te kullanılır.",
+                    "Grup 3 sadece laboratuvar ortamında bulunur, Grup 4 doğal ortamda bulunur.",
+                    "Grup 3'ün saklama kaydı 15 yıldır, Grup 4'ün 10 yıldır."
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Biyolojik risk yönetmeliğindeki en keskin ayrım: Grup 3 (Örn: Şarbon, Tüberküloz) ağır hastalıktır ama <b>etkili tedavisi veya aşısı vardır</b>. Grup 4 (Örn: Ebola, Kırım Kongo Kanamalı Ateşi) ise ağır hastalıktır ve <b>bilinen hiçbir tedavisi/korunması YOKTUR.</b>"
+            },
+            {
+                id: 17,
+                text: "Türkiye Atom Enerjisi Kurumu (TAEK) lisanslarına ve radyasyon yönetmeliğine göre, günlük kullanımda olan veya ithal edilen ürünlerde bulunan radyoaktivite oranları belirlenen <b>'muafiyet sınırlarının' ALTINDA (çok düşük/zararsız seviyede) olsa dahi</b>; aşağıdaki ürünlerden hangisine radyoaktif madde katılması kesinlikle ve tamamen <b>yasaktır</b>?",
+                options: [
+                    "Tıbbi ışınlama sağlayan diş röntgen cihazları",
+                    "Yer altı maden ölçüm sensörleri",
+                    "Endüstriyel kaynak dikiş tomografi aletleri",
+                    "Nükleer tıp laboratuvar referans kitleri",
+                    "Çocuk oyuncakları, kozmetikler, giysiler ve ev eşyaları"
+                ],
+                correct: 4,
+                solution: "<strong>💡 Çözüm:</strong> İnsanların sürekli ve doğrudan temas ettiği <b>oyuncaklar, kozmetikler, giysiler ve gündelik ev eşyalarında</b> radyoaktif malzeme kullanımı, dozu muafiyet sınırında (tehlikesiz) olsa dahi mevzuat ve halk sağlığı kuralları gereği tamamen yasaktır."
+            },
+            {
+                id: 18,
+                text: "Titrek (vibrasyonlu) çalışma koşullarında <b>Bütün Vücut Titreşimi</b> için işverenin, sınır değer (1.15 m/s²) aşımını engellemeye yönelik önleyici eylem planlarını devreye sokmasını (işe müdahale etmesini) zorunlu kılan <b>'Günlük Maruziyet Eylem Değeri'</b> aşağıdakilerden hangisidir?",
+                options: [
+                    "0.5 m/s²",
+                    "1.15 m/s²",
+                    "2.5 m/s²",
+                    "5.0 m/s²",
+                    "8.0 m/s²"
+                ],
+                correct: 0,
+                solution: "<strong>💡 Çözüm:</strong> Bütün vücut titreşiminde uyarı (eylem) seviyesi <b>0.5 m/s²</b>'dir. (Sınır değer 1.15 m/s²'dir. Eğer el-kol eylem değeri sorulsaydı 2.5 m/s² olacaktı)."
+            },
+            {
+                id: 19,
+                text: "Çalışma ortamı koşulları analiz edilirken; <b>'Gözün, nesnelerin en ince ayrıntılarını, en küçük ışık ve renk kontrastlarını ve görüş alanı içerisindekileri net olarak ayırt edebilme kapasitesi ve yeteneğine'</b> ergonomi ve aydınlatma biliminde ne ad verilir?",
+                options: [
+                    "Akomodasyon (Uyum)",
+                    "Adaptasyon",
+                    "Görme Keskinliği",
+                    "Görsel Aydınlık",
+                    "Rölatif Işıma"
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> Gözün ince ayrıntıları, renk ve ışık farklarını ayırt etme gücüne teknik olarak <b>Görme Keskinliği</b> denir. (Uzaklığa odaklanmaya Akomodasyon, karanlık/aydınlık geçişine ise Adaptasyon denir)."
+            },
+            {
+                id: 20,
+                text: "İş hijyeni test ve laboratuvar analizlerinde, havadaki partiküller ölçülürken akciğer alveollerine kadar nüfuz eden ve tıp literatüründe 'Pnömokonyoz' riskini tetikleyen <b>'Solunabilir Tozların'</b> Aerodinamik Eşdeğer Çap aralığı (mikron cinsinden) tam olarak nedir?",
+                options: [
+                    "0.01 mikron ile 0.1 mikron arası",
+                    "0.1 mikron ile 5.0 mikron arası",
+                    "5.0 mikron ile 10.0 mikron arası",
+                    "10.0 mikron ile 50.0 mikron arası",
+                    "50.0 mikron ile 100.0 mikron arası"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Akciğerlerin en uç hava keseciklerine (alveollere) ulaşabilen tehlikeli solunabilir kristal veya amorf tozların aerodinamik çap aralığı <b>0.1 ile 5.0 mikron</b> arasındadır."
+            }
+        ];
+
+        let state = {
+            totalQuestions: 20,
+            answers: {},
+            timeLeft: 30 * 60, // 30 minutes in seconds
+            timerInterval: null,
+            examActive: false,
+            examFinished: false
+        };
+
+        const gridContainer = document.getElementById('q-grid');
+
+        // Render Questions
+        questionsData.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            let optionsHTML = q.options.map((opt, oIdx) => {
+                const letter = String.fromCharCode(65 + oIdx); // A, B, C, D, E
+                return `
+                <li class="option-item" id="opt-${q.id}-${oIdx}" onclick="selectOption(${q.id}, ${oIdx}, ${q.correct})">
+                    <span class="opt-letter">${letter}</span>
+                    <span>${opt}</span>
+                </li>
+            `}).join('');
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <span>Soru ${index + 1}</span>
+                    <span class="q-badge">Ünite 2 | Test 5 (Uzman)</span>
+                </div>
+                <div class="q-text">${q.text}</div>
+                <ul class="options-list">
+                    ${optionsHTML}
+                </ul>
+                <div class="solution-wrapper">
+                    <button class="solution-btn" onclick="toggleSolution(${q.id})">🔍 Çözümü Gör</button>
+                    <div class="solution-text" id="sol-${q.id}">${q.solution}</div>
+                </div>
+            `;
+            gridContainer.appendChild(card);
+        });
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-panel').style.display = 'flex';
+            document.getElementById('questions-wrapper').style.display = 'block';
+            state.examActive = true;
+            
+            state.timerInterval = setInterval(() => {
+                if (state.timeLeft <= 0) {
+                    endExam();
+                    return;
+                }
+                state.timeLeft--;
+                let m = Math.floor(state.timeLeft / 60).toString().padStart(2, '0');
+                let s = (state.timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('time-display').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function selectOption(qId, selectedIdx, correctIdx) {
+            if (!state.examActive || state.examFinished) return;
+            if (state.answers[qId] !== undefined) return; 
+
+            state.answers[qId] = selectedIdx;
+            
+            // Lock UI for this question
+            const qData = questionsData.find(q => q.id === qId);
+            qData.options.forEach((_, idx) => {
+                document.getElementById(`opt-${qId}-${idx}`).classList.add('locked');
+            });
+
+            const selectedEl = document.getElementById(`opt-${qId}-${selectedIdx}`);
+            const correctEl = document.getElementById(`opt-${qId}-${correctIdx}`);
+
+            if (selectedIdx === correctIdx) {
+                selectedEl.classList.add('correct-ans');
+            } else {
+                selectedEl.classList.add('wrong-ans');
+                correctEl.classList.add('correct-ans');
+            }
+        }
+
+        function toggleSolution(qId) {
+            const solText = document.getElementById(`sol-${qId}`);
+            if (solText.style.display === 'block') {
+                solText.style.display = 'none';
+            } else {
+                solText.style.display = 'block';
+            }
+        }
+
+        function endExam() {
+            if (state.examFinished) return;
+            state.examFinished = true;
+            clearInterval(state.timerInterval);
+            document.getElementById('time-display').innerText = "BİTTİ";
+            document.getElementById('time-display').style.color = "var(--error)";
+
+            let correctCount = 0;
+            let wrongCount = 0;
+
+            questionsData.forEach(q => {
+                const answered = state.answers[q.id];
+                if (answered !== undefined) {
+                    if (answered === q.correct) correctCount++;
+                    else wrongCount++;
+                }
+            });
+
+            let blankCount = state.totalQuestions - (correctCount + wrongCount);
+            let netScore = correctCount - (wrongCount / 4);
+
+            document.getElementById('res-correct').innerText = correctCount;
+            document.getElementById('res-wrong').innerText = wrongCount;
+            document.getElementById('res-blank').innerText = blankCount;
+            document.getElementById('res-net').innerText = netScore.toFixed(2);
+
+            document.getElementById('results-panel').style.display = 'block';
+            
+            // Scroll to results slowly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

@@ -1,25 +1,995 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ünite 1 - Test 4 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; 
+            --primary-dark: #1e40af;
+            --accent: #f59e0b; 
+            --accent-hover: #d97706;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: #dbeafe;
+        }
+
+        header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Navigation */
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        .nav-btn.deneme-btn {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-color: #93c5fd;
+        }
+        
+        .nav-btn.deneme-btn:hover, .nav-btn.deneme-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        /* Start Screen */
+        #start-screen {
+            max-width: 850px;
+            margin: 30px auto;
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .exam-info {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .analysis-box {
+            background: #eff6ff;
+            border-left: 6px solid var(--primary);
+            padding: 25px;
+            border-radius: 0 16px 16px 0;
+            text-align: left;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+        }
+
+        .analysis-box h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            border-bottom: 2px dashed #93c5fd;
+            padding-bottom: 10px;
+        }
+
+        .analysis-box ul {
+            padding-left: 20px;
+            color: #1e3a8a;
+        }
+
+        .analysis-box li {
+            margin-bottom: 12px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .start-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            font-size: 1.3rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+        }
+
+        /* Exam Panel (Sticky) */
+        #exam-panel {
+            display: none;
+            position: sticky;
+            top: 15px;
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #bfdbfe;
+        }
+
+        .timer {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #eff6ff;
+            padding: 8px 20px;
+            border-radius: 12px;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .finish-btn {
+            background: var(--error);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .finish-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .pdf-btn {
+            background: var(--text-main);
+            color: white;
+            box-shadow: 0 4px 12px rgba(51, 65, 85, 0.3);
+        }
+
+        .pdf-btn:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+        }
+
+        /* Questions Grid */
+        #questions-wrapper {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 50px 20px;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+            #exam-panel {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .panel-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .action-btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid var(--primary);
+        }
+
+        .q-header {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .q-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            color: #1e293b;
+        }
+
+        .options-list {
+            list-style: none;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            padding: 14px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .opt-letter {
+            background: #e2e8f0;
+            color: #475569;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .option-item:hover:not(.locked) {
+            border-color: var(--primary);
+            background: #eff6ff;
+            transform: translateX(5px);
+        }
+        
+        .option-item:hover:not(.locked) .opt-letter {
+            background: var(--primary);
+            color: white;
+        }
+
+        .option-item.locked {
+            cursor: default;
+        }
+
+        .option-item.correct-ans {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: #064e3b;
+        }
+        
+        .option-item.correct-ans .opt-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        .option-item.wrong-ans {
+            background: var(--error-light);
+            border-color: var(--error);
+            color: #7f1d1d;
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+        
+        .option-item.wrong-ans .opt-letter {
+            background: var(--error);
+            color: white;
+            text-decoration: none;
+        }
+
+        .solution-wrapper {
+            margin-top: 25px;
+        }
+
+        .solution-btn {
+            background: none;
+            border: 2px dashed var(--primary);
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .solution-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .solution-text {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-left: 6px solid var(--success);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: #14532d;
+            animation: slideDown 0.4s ease forwards;
+            line-height: 1.7;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Results Panel */
+        #results-panel {
+            display: none;
+            max-width: 850px;
+            margin: 0 auto 40px auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.2);
+            text-align: center;
+            border: 3px solid var(--success);
+        }
+
+        #results-panel h2 {
+            color: var(--success);
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            padding: 25px 15px;
+            border-radius: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .stat-box.correct { background: var(--success-light); color: #064e3b; border: 2px solid var(--success); }
+        .stat-box.wrong { background: var(--error-light); color: #7f1d1d; border: 2px solid var(--error); }
+        .stat-box.blank { background: #f1f5f9; color: #334155; border: 2px solid #94a3b8; }
+        .stat-box.net { background: #eff6ff; color: #1e40af; border: 2px solid var(--primary); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2); }
+
+        .stat-val { font-size: 2.8rem; font-weight: 800; display: block; margin-top: 10px; line-height: 1; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 35px 20px;
+            background: #0f172a;
+            color: #94a3b8;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-top: 4px solid var(--primary);
+        }
+        
+        footer hr {
+            border-color: #334155;
+            margin-bottom: 15px;
+        }
+
+        /* Print Mode */
+        @media print {
+            body { background: white; color: black; }
+            header, .nav-container, #start-screen, #exam-panel, .solution-btn, footer { display: none !important; }
+            #questions-wrapper { display: block !important; padding: 0; }
+            .questions-grid { grid-template-columns: 1fr; gap: 40px; }
+            .question-card { box-shadow: none; border: 1px solid #ccc; padding: 20px; break-inside: avoid; }
+            .option-item { border: 1px solid #e2e8f0; background: white !important; color: black !important; }
+            .solution-text { display: block !important; background: none; border: 1px solid #ccc; color: black; margin-top: 15px; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
         <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 1 - Test 4</h2>
+        <h2>Ünite 1 - Test 4 (Zor Seviye)</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <div class="nav-container">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Tüm Dersler</a>
+            <a href="../index.html" class="nav-btn">📚 İş Hijyeni ve Ergonomi</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn deneme-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn deneme-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn deneme-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn deneme-btn active">Test 4</a>
+            <a href="test_5.html" class="nav-btn deneme-btn">Test 5</a>
+        </div>
+    </div>
+
+    <!-- Başlangıç Ekranı -->
+    <div id="start-screen">
+        <h2 style="color: var(--primary); margin-bottom: 10px; font-size: 2rem;">Ünite 1 - Test 4'e Hoş Geldiniz</h2>
+        <p class="exam-info">⏱️ Sınav Süresi: 30 Dakika | 🎯 Kural: 4 Yanlış 1 Doğruyu Götürür</p>
+        
+        <div class="analysis-box">
+            <h3>📈 Test Stratejisi ve Analizi</h3>
+            <p style="margin-bottom: 15px; font-size: 1.05rem;">Bu test <strong>Ünite 1: İş Hijyeninin Tanımı ve Gelişimi</strong> konusunun en zorlu detaylarını içermektedir. Çeldirici şıklar ve ezbere dayalı kronolojik yasa bilgileri barındırır:</p>
+            <ul>
+                <li><strong>Kurumlar ve Tarihleri:</strong> İSGGM (2000) ve İSGÜM (1969) kuruluş tarihlerini ve işlevsel farklarını karıştırmamalısınız.</li>
+                <li><strong>Öncü İsimler:</strong> Alice Hamilton'ın "sosyal sorumluluk misyonu", Hippokrat'ın "kurşun koliği" ve Pasteur'ün "mikrop teorisi" gibi kilit spesifik kavramlar sorgulanacaktır.</li>
+                <li><strong>Akademik Terimler:</strong> CIH, Hıfzıssıhha kelime kökenleri ve "Endüstriyel Hijyen"in batı literatüründeki eşdeğer kullanımı gibi detaylar yer alır.</li>
+                <li><strong>İş Hijyenistinin Süreçleri:</strong> "Değerlendirme", "Öngörme" ve "Kontrol" adımlarının pratik laboratuvar ve analiz yansımalarına dikkat ediniz.</li>
+            </ul>
+        </div>
+        <button class="start-btn" onclick="startExam()">🚀 Testi Başlat</button>
+    </div>
+
+    <!-- Sınav Paneli (Sticky) -->
+    <div id="exam-panel">
+        <div class="timer">
+            ⏱️ <span id="time-display">30:00</span>
+        </div>
+        <div class="panel-actions">
+            <button class="action-btn pdf-btn" onclick="window.print()">🖨️ PDF Kaydet</button>
+            <button class="action-btn finish-btn" onclick="endExam()">📝 Testi Bitir</button>
+        </div>
+    </div>
+
+    <!-- Sonuç Paneli -->
+    <div id="results-panel">
+        <h2>🏆 Test Sonucu</h2>
+        <div class="stats-grid">
+            <div class="stat-box correct">
+                Doğru
+                <span class="stat-val" id="res-correct">0</span>
+            </div>
+            <div class="stat-box wrong">
+                Yanlış
+                <span class="stat-val" id="res-wrong">0</span>
+            </div>
+            <div class="stat-box blank">
+                Boş
+                <span class="stat-val" id="res-blank">0</span>
+            </div>
+            <div class="stat-box net">
+                Net
+                <span class="stat-val" id="res-net">0.00</span>
+            </div>
+        </div>
+        <p style="color: #64748b; font-weight: 700; font-size: 1.1rem; border-top: 2px dashed #cbd5e1; padding-top: 15px; margin-top: 10px;">
+            * 4 Yanlış 1 Doğruyu Götürmektedir.
+        </p>
+    </div>
+
+    <main id="questions-wrapper">
+        <div class="questions-grid" id="q-grid">
+            <!-- Sorular JS ile buraya yüklenecek -->
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        const questionsData = [
+            {
+                id: 1,
+                text: "İSG alanında Türkiye'nin teknik destek, test ve ölçüm kapasitesinin bel kemiği sayılan <b>İSGÜM (İş Sağlığı ve Güvenliği Araştırma ve Geliştirme Enstitüsü Başkanlığı)</b> hangi yıl kurulmuştur?",
+                options: [
+                    "1921",
+                    "1930",
+                    "1969",
+                    "2000",
+                    "2012"
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> Çalışma ortamlarında iş hijyeni ölçüm, laboratuvar ve test faaliyetlerinde devletin teknik ve referans birimi olan İSGÜM, <b>1969</b> yılında kurulmuştur. (İSGGM ise 2000 yılında kurulmuştur, karıştırılmamalıdır)."
+            },
+            {
+                id: 2,
+                text: "İtalyan hekim Bernardino Ramazzini'nin 1713 yılında yayımladığı ve elliden fazla farklı mesleğin sağlık risklerini inceleyerek onu <b>'Endüstriyel Tıbbın Babası'</b> yapan tarihi eserinin adı nedir?",
+                options: [
+                    "De Re Metallica",
+                    "De Morbis Artificum Diatriba",
+                    "Manusmriti",
+                    "Vishnu Purana",
+                    "Corpus Hippocraticum"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Bernardino Ramazzini'nin meslek hastalıkları ve iş hijyeni alanında çığır açan kitabının adı <b>'De Morbis Artificum Diatriba'</b>dır. (De Re Metallica ise Georgius Agricola'nın madencilik üzerindeki eseridir)."
+            },
+            {
+                id: 3,
+                text: "Türkiye'de Cumhuriyet kurulmadan hemen önce, <b>1921 yılında</b> Zonguldak ve Ereğli maden havzasında çalışan işçiler için zorunlu hekim çalıştırılmasını ve 'İhtiyat ve Teavün sandığı' kurulmasını sağlayan tarihi kanun aşağıdakilerden hangisidir?",
+                options: [
+                    "Dilaver Paşa Nizamnamesi",
+                    "151 sayılı Havza-i Fahmiye Kanunu",
+                    "1593 sayılı Umumi Hıfzıssıhha Kanunu",
+                    "4857 sayılı İş Kanunu",
+                    "6331 sayılı İSG Kanunu"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> 1921 yılında Cumhuriyet öncesi dönemde meclisten geçen ve maden amelesinin hukukunu koruyan dönüm noktası kanun <b>151 sayılı Havza-i Fahmiye Kanunu</b>'dur."
+            },
+            {
+                id: 4,
+                text: "İngiltere'de sanayi devriminin olumsuz şartlarına karşı çıkan, yaşları 4-6 civarında olan çocuk işçilerin çalışma sürelerini <b>günde 14 saat ile sınırlandıran 1802 tarihli</b> ilk kanun aşağıdakilerden hangisidir?",
+                options: [
+                    "Fabrikalar Kanunu (Factory Act)",
+                    "On Saat Yasası",
+                    "Maden İşçileri Sendika Yasası",
+                    "Büyük Endüstriyel Kazalar Yasası",
+                    "Çırakların Sağlığı ve Morali Kanunu"
+                ],
+                correct: 4,
+                solution: "<strong>💡 Çözüm:</strong> 1802 yılında çocuk işçilerin günde 14 saatten fazla çalıştırılamayacağını hükme bağlayan ilk yasal metin <b>Çırakların Sağlığı ve Morali Kanunu</b>'dur. (1847'deki yasa ise 10 Saat Yasası / Fabrikalar Kanunu'dur)."
+            },
+            {
+                id: 5,
+                text: "Antik çağlarda suyun arıtılmasına ve halk hijyenine büyük önem veren Romalıların, tasarladıkları <b>ilk 'therme' (kaplıca, halk hamamı) kompleksini</b> inşa ettikleri tarih aşağıdakilerden hangisidir?",
+                options: [
+                    "MÖ 25",
+                    "MÖ 125",
+                    "MS 25",
+                    "MS 125",
+                    "MS 225"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> AÖF İş Hijyeni ders kitabı kaynaklarına göre Romalılar suyu temizlemek ve hijyen kültürünü yaşatmak için ilk 'therme' (kaplıca) kompleksini <b>MS 125</b> yılında inşa etmişlerdir."
+            },
+            {
+                id: 6,
+                text: "Ülkemizde <b>1930 yılında</b> yürürlüğe giren ve 180. maddesiyle belirli işletmelere 'işyeri hekimi' istihdam etme zorunluluğunu getiren temel halk sağlığı yasası aşağıdakilerden hangisidir?",
+                options: [
+                    "151 sayılı Havza-i Fahmiye Kanunu",
+                    "854 sayılı Deniz İş Kanunu",
+                    "1593 sayılı Umumi Hıfzıssıhha Kanunu",
+                    "4792 sayılı İşçi Sigortaları Kanunu",
+                    "3008 sayılı ilk İş Kanunu"
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> İşletmelere işyeri hekimi atama zorunluluğu gibi radikal işçi sağlığı maddelerini barındıran 1930 tarihli büyük yasa <b>1593 sayılı Umumi Hıfzıssıhha Kanunu</b>'dur."
+            },
+            {
+                id: 7,
+                text: "Uluslararası iş hijyeni arenasında mesleki yetkinliği belgelemek üzere OHTA (İş Hijyeni Eğitim Derneği) gibi kurumların eğitimlerinden geçilerek elde edilen <b>'Sertifikalı İş Hijyenisti'</b> unvanının kısaltması nedir?",
+                options: [
+                    "OHTA",
+                    "IEA",
+                    "HFES",
+                    "CIH",
+                    "ROH"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> 'Sertifikalı İş Hijyenisti' unvanının uluslararası kabul görmüş kısaltması <b>CIH (Certified Industrial Hygienist)</b>'dir. (ROH, Kayıtlı İş Hijyenisti anlamına gelir)."
+            },
+            {
+                id: 8,
+                text: "Amerika Birleşik Devletleri'nde (ABD) iş sağlığı ve endüstriyel toksikoloji alanındaki çalışmalara öncülük eden ve mesleki mücadelesini bir <b>'sosyal sorumluluk misyonu'</b> olarak tanımlayan bilim insanı kimdir?",
+                options: [
+                    "Louis Pasteur",
+                    "Bernardino Ramazzini",
+                    "Alice Hamilton",
+                    "Georgius Agricola",
+                    "Frank Bunker Gilbreth"
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> ABD'de endüstriyel toksikolojinin öncüsü olan ve İSG faaliyetlerini bir 'sosyal sorumluluk misyonu' olarak sürdüren hekim <b>Alice Hamilton</b>'dır (1869-1970)."
+            },
+            {
+                id: 9,
+                text: "Dünyada ve özellikle ABD ile Batı Avrupa literatüründe <b>'İş Hijyeni' (Occupational Hygiene)</b> kavramı genellikle hangi mesleki terimle eş anlamlı (aynı manada) kullanılmaktadır?",
+                options: [
+                    "Sanayi Hekimliği",
+                    "Endüstriyel Hijyen",
+                    "Klinik Çevre Bilimi",
+                    "İnsan Faktörleri Mühendisliği",
+                    "Ergonomik Tasarım"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> İş Hijyeni kavramı ABD ve birçok batı ülkesinin resmi kurumlarında (örneğin AIHA) <b>'Endüstriyel Hijyen' (Industrial Hygiene)</b> veya 'Mesleki Hijyen' terimiyle doğrudan eş anlamlı olarak kullanılmaktadır."
+            },
+            {
+                id: 10,
+                text: "Dünyada madencilik sektörünün tehlikelerini anlatan, toz hastalıklarına (pnömokonyoza) ve alınması gereken önlemlere ilk defa detaylıca yer veren <b>'De Re Metallica' (Metallerin Doğası)</b> adlı eserin yazarı ve yayın yılı hangi seçenekte doğru verilmiştir?",
+                options: [
+                    "Bernardino Ramazzini - 1713",
+                    "Hipokrat - MÖ 400",
+                    "Alice Hamilton - 1910",
+                    "Georgius Agricola - 1556",
+                    "Galenos - MS 120"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Maden işletmeciliği ve madenci hastalıklarını (pnömokonyoz vb.) inceleyen ilk klasik eser <b>Georgius Agricola</b> tarafından <b>1556</b> yılında yazılan 'De Re Metallica'dır."
+            },
+            {
+                id: 11,
+                text: "Osmanlı İmparatorluğu'nda 1865 yılında Ereğli kömür havzasında uygulamaya konan 'Dilaver Paşa Nizamnamesi'nden kısa bir süre sonra, <b>1869 yılında</b> madenlerdeki İSG kurallarını daha da genişleten mevzuat hangisidir?",
+                options: [
+                    "Havza-i Fahmiye Kanunu",
+                    "Ereğli Maden Tüzüğü",
+                    "Umumi Hıfzıssıhha Yasası",
+                    "Mecelle-i Ahkam-ı Adliye",
+                    "Maadin Nizamnamesi"
+                ],
+                correct: 4,
+                solution: "<strong>💡 Çözüm:</strong> Dilaver Paşa'dan hemen 4 yıl sonra (1869) madenler ve işçi sağlığı hakkında çıkarılan genişletilmiş tüzük <b>Maadin (Maden) Nizamnamesi</b>'dir."
+            },
+            {
+                id: 12,
+                text: "Tıp bilimine deneysel yöntemi ve araştırmayı getiren, aynı zamanda <b>kurşunun zehirli etkilerinden ve kurşun koliğinden</b> ilk kez bahseden Antik Yunanlı bilim insanı aşağıdakilerden hangisidir?",
+                options: [
+                    "Asklepios",
+                    "Galenos",
+                    "Hipokrat",
+                    "Sustrata",
+                    "Platon"
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> Kurşun koliği dahil olmak üzere mesleki zehirlenmeleri ilk kez literatüre alan, MÖ 466-379 yılları arasında yaşamış hekim <b>Hipokrat</b>'tır."
+            },
+            {
+                id: 13,
+                text: "İş hijyeninin temel risk alanlarından biri olan biyolojik etmenlerin anlaşılmasında çığır açan, yaptığı deneylerle <b>'hastalığın mikrop teorisini' ispatlayan</b> ünlü mikrobiyolog kimdir?",
+                options: [
+                    "Alice Hamilton",
+                    "Louis Pasteur",
+                    "Bernardino Ramazzini",
+                    "Georgius Agricola",
+                    "Alexander Fleming"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Hastalıkların sadece çevre havasından değil, gözle görülmeyen mikroplardan kaynaklandığını (Mikrop Teorisi) laboratuvar ortamında ispatlayan kişi <b>Louis Pasteur</b>'dür (1822-1895)."
+            },
+            {
+                id: 14,
+                text: "İş sağlığı terminolojisinde Osmanlı'dan bu yana kullanılan Arapça kökenli <b>'Hıfzıssıhha'</b> kelimesinin sözlük anlamı tam olarak nedir?",
+                options: [
+                    "Hastalıkların Tıbbi Tedavisi",
+                    "Sıhhatin hıfz edilmesi, sağlığın korunması",
+                    "İş Kazalarının Araştırılması",
+                    "Sanayi Atıklarının Temizlenmesi",
+                    "Halk Psikolojisi ve Refahı"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Hıfz (Koruma) ve Sıhhat (Sağlık) kelimelerinin birleşimi olan Hıfzıssıhha; doğrudan <b>Sıhhatin hıfz edilmesi, sağlığın korunması</b> (Sağlık Bilgisi) demektir."
+            },
+            {
+                id: 15,
+                text: "Bir iş hijyenistinin temel çalışma süreci dört ardışık adımdan oluşur: Öngörme, Tanıma, Değerlendirme ve Kontrol. <br>Buna göre, çalışma ortamındaki risklerin ve tehlikelerin laboratuvar analiz cihazlarıyla (HPLC, GC vb.) ölçülmesi eylemi bu adımlardan hangisinin kapsamına girer?",
+                options: [
+                    "Öngörme",
+                    "Tanıma",
+                    "Değerlendirme",
+                    "Kontrol",
+                    "Rehabilitasyon"
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> Gözlemle tanınan riskin (örneğin havadaki toz miktarının) HPLC veya GC gibi cihazlarla bilimsel ve nicel (rakamsal) olarak ölçülerek analiz edilmesi işlemine <b>Değerlendirme</b> (Evaluation) denir."
+            },
+            {
+                id: 16,
+                text: "Türkiye'de çalışma hayatında Avrupa Birliği normlarına tam uyum sağlamak, sadece sanayi değil kamu ve özel sektördeki tüm çalışanları koruyucu yaklaşım şemsiyesi altına almak için çıkarılan müstakil <b>'6331 sayılı İş Sağlığı ve Güvenliği Kanunu'</b> hangi yıl yürürlüğe girmiştir?",
+                options: [
+                    "2003",
+                    "2008",
+                    "2010",
+                    "2012",
+                    "2015"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Mevcut dağınık yasa maddelerini tek ve bağımsız bir çatı altında birleştiren, önleyici-koruyucu odaklı güncel İSG yasamız olan 6331 sayılı Kanun <b>2012</b> yılında yasalaşmıştır."
+            },
+            {
+                id: 17,
+                text: "İngiltere'de 1847 yılında kadın ve çocukların çalışma sürelerini aşamalı olarak kısaltan, fabrikalara denetim mekanizmasını kuran 'Fabrikalar Kanunu (Factory Act)' çalışma süreleri bağlamında hangi isimle meşhur olmuştur?",
+                options: [
+                    "Sekiz Saat Yasası",
+                    "On Saat Yasası",
+                    "Maden İşçileri Yasası",
+                    "Çıraklık Eğitimi Yasası",
+                    "Asgari Ücret Yasası"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> 1847 Fabrikalar Kanunu, yoğun itirazlara rağmen çalışma sürelerini günde 10 saatte sabitlemeyi hedeflediği için literatürde <b>'On Saat Yasası'</b> olarak tarihe geçmiştir."
+            },
+            {
+                id: 18,
+                text: "Aşağıdakilerden hangisi bir 'İş Hijyenisti'nin (Endüstriyel Hijyen Uzmanının) doğrudan temel görevlerinden birisi <b>değildir</b>?",
+                options: [
+                    "İş ortamında tehlike arz eden kimyasal gaz ve buharların ölçüm stratejisini geliştirmek.",
+                    "Sürekli gürültüye maruz kalan çalışanların meslek hastalığına yakalanmaması için mühendislik kontrol önlemleri tasarlamak.",
+                    "Havadaki asbest lifsi tozlarının numunelendirme cihazlarıyla örneklerini almak.",
+                    "Meslek hastalığı semptomları gösteren işçilerin tıbbi tanısını (teşhisini) koyarak farmakolojik ilaç yazmak.",
+                    "İşletmenin üretim süreçlerinde tehlikesiz veya daha az tehlikeli maddelerin ikame edilmesini (değiştirilmesini) önermek."
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> İş hijyenisti mühendis veya laborant temellidir, çalışma ortamını ölçer ve fiziksel kontrol/önlem (havalandırma vb.) tasarlar. Ancak hastalara tanı (teşhis) koymak ve reçete/ilaç yazmak <b>İşyeri Hekiminin</b> (Tıp Doktorunun) yasal görevidir."
+            },
+            {
+                id: 19,
+                text: "Çalışma ve Sosyal Güvenlik Bakanlığı teşkilat yapısında, İSG politikalarını belirlemek, mevzuatları ve yasa tasarılarını hazırlamak gibi idari/yönetimsel yetkilerle donatılan <b>İSGGM (İş Sağlığı ve Güvenliği Genel Müdürlüğü)</b> hangi yıl yapılandırılmıştır?",
+                options: [
+                    "1969",
+                    "1985",
+                    "1990",
+                    "2000",
+                    "2012"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Ölçüm laboratuvarı olan İSGÜM 1969'da kurulmuştur. Ancak Bakanlığın doğrudan politika ve yasa belirleyici genel idari kurumu olan <b>İSGGM (İş Sağlığı ve Güvenliği Genel Müdürlüğü) 2000 yılında</b> kurulmuştur."
+            },
+            {
+                id: 20,
+                text: "Antik Yunan ve Roma dönemleri tıp tarihi incelendiğinde; tıbbın, sağlığın ve iyileştirmenin simgesi (tanrısı) olarak kabul edilen, Apollon'un oğlu mitolojik figür kimdir?",
+                options: [
+                    "Galenos",
+                    "Asklepios",
+                    "Hygieia",
+                    "Zeus",
+                    "Poseidon"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Tıp sanatının mitolojik kurucusu ve Apollon'un oğlu olan figür <b>Asklepios</b>'tur. (Hygieia ise onun kızıdır ve hijyen kelimesine ismini vermiştir)."
+            }
+        ];
+
+        let state = {
+            totalQuestions: 20,
+            answers: {},
+            timeLeft: 30 * 60, // 30 minutes in seconds
+            timerInterval: null,
+            examActive: false,
+            examFinished: false
+        };
+
+        const gridContainer = document.getElementById('q-grid');
+
+        // Render Questions
+        questionsData.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            let optionsHTML = q.options.map((opt, oIdx) => {
+                const letter = String.fromCharCode(65 + oIdx); // A, B, C, D, E
+                return `
+                <li class="option-item" id="opt-${q.id}-${oIdx}" onclick="selectOption(${q.id}, ${oIdx}, ${q.correct})">
+                    <span class="opt-letter">${letter}</span>
+                    <span>${opt}</span>
+                </li>
+            `}).join('');
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <span>Soru ${index + 1}</span>
+                    <span class="q-badge">Ünite 1 | Test 4</span>
+                </div>
+                <div class="q-text">${q.text}</div>
+                <ul class="options-list">
+                    ${optionsHTML}
+                </ul>
+                <div class="solution-wrapper">
+                    <button class="solution-btn" onclick="toggleSolution(${q.id})">🔍 Çözümü Gör</button>
+                    <div class="solution-text" id="sol-${q.id}">${q.solution}</div>
+                </div>
+            `;
+            gridContainer.appendChild(card);
+        });
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-panel').style.display = 'flex';
+            document.getElementById('questions-wrapper').style.display = 'block';
+            state.examActive = true;
+            
+            state.timerInterval = setInterval(() => {
+                if (state.timeLeft <= 0) {
+                    endExam();
+                    return;
+                }
+                state.timeLeft--;
+                let m = Math.floor(state.timeLeft / 60).toString().padStart(2, '0');
+                let s = (state.timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('time-display').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function selectOption(qId, selectedIdx, correctIdx) {
+            if (!state.examActive || state.examFinished) return;
+            if (state.answers[qId] !== undefined) return; 
+
+            state.answers[qId] = selectedIdx;
+            
+            // Lock UI for this question
+            const qData = questionsData.find(q => q.id === qId);
+            qData.options.forEach((_, idx) => {
+                document.getElementById(`opt-${qId}-${idx}`).classList.add('locked');
+            });
+
+            const selectedEl = document.getElementById(`opt-${qId}-${selectedIdx}`);
+            const correctEl = document.getElementById(`opt-${qId}-${correctIdx}`);
+
+            if (selectedIdx === correctIdx) {
+                selectedEl.classList.add('correct-ans');
+            } else {
+                selectedEl.classList.add('wrong-ans');
+                correctEl.classList.add('correct-ans');
+            }
+        }
+
+        function toggleSolution(qId) {
+            const solText = document.getElementById(`sol-${qId}`);
+            if (solText.style.display === 'block') {
+                solText.style.display = 'none';
+            } else {
+                solText.style.display = 'block';
+            }
+        }
+
+        function endExam() {
+            if (state.examFinished) return;
+            state.examFinished = true;
+            clearInterval(state.timerInterval);
+            document.getElementById('time-display').innerText = "BİTTİ";
+            document.getElementById('time-display').style.color = "var(--error)";
+
+            let correctCount = 0;
+            let wrongCount = 0;
+
+            questionsData.forEach(q => {
+                const answered = state.answers[q.id];
+                if (answered !== undefined) {
+                    if (answered === q.correct) correctCount++;
+                    else wrongCount++;
+                }
+            });
+
+            let blankCount = state.totalQuestions - (correctCount + wrongCount);
+            let netScore = correctCount - (wrongCount / 4);
+
+            document.getElementById('res-correct').innerText = correctCount;
+            document.getElementById('res-wrong').innerText = wrongCount;
+            document.getElementById('res-blank').innerText = blankCount;
+            document.getElementById('res-net').innerText = netScore.toFixed(2);
+
+            document.getElementById('results-panel').style.display = 'block';
+            
+            // Scroll to results slowly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

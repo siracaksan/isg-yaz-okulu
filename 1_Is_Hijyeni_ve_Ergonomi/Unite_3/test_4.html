@@ -1,25 +1,1011 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ünite 3 - Test 4 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; 
+            --primary-dark: #1e40af;
+            --accent: #f59e0b; 
+            --accent-hover: #d97706;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: #dbeafe;
+            line-height: 1.3;
+        }
+
+        header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        /* Navigation */
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+            padding: 0 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nav-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        .nav-btn.deneme-btn {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-color: #93c5fd;
+        }
+        
+        .nav-btn.deneme-btn:hover, .nav-btn.deneme-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        /* Start Screen */
+        #start-screen {
+            max-width: 850px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            padding: 30px 20px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+
+        .exam-info {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .analysis-box {
+            background: #eff6ff;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            text-align: left;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.03);
+        }
+
+        .analysis-box h3 {
+            color: #1e40af;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.15rem;
+            border-bottom: 2px dashed #93c5fd;
+            padding-bottom: 8px;
+        }
+
+        .analysis-box ul {
+            padding-left: 20px;
+            color: #1e3a8a;
+        }
+
+        .analysis-box li {
+            margin-bottom: 10px;
+            font-weight: 600;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .start-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .start-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Exam Panel (Sticky) */
+        #exam-panel {
+            display: none;
+            position: sticky;
+            top: 10px;
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+            background: var(--card-bg);
+            padding: 12px 15px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.12);
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #bfdbfe;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .timer {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #eff6ff;
+            padding: 6px 14px;
+            border-radius: 8px;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .finish-btn {
+            background: var(--error);
+            color: white;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+        }
+
+        .finish-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .pdf-btn {
+            background: var(--text-main);
+            color: white;
+            box-shadow: 0 4px 10px rgba(51, 65, 85, 0.2);
+        }
+
+        .pdf-btn:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+        }
+
+        /* Questions Grid */
+        #questions-wrapper {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px 40px 10px;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 850px) {
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+            #exam-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .panel-actions {
+                width: 100%;
+            }
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            border-top: 4px solid var(--primary);
+        }
+
+        .q-header {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .q-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .q-text {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+
+        .options-list {
+            list-style: none;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-item {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            padding: 12px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .opt-letter {
+            background: #e2e8f0;
+            color: #475569;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 0.85rem;
+        }
+
+        .option-item:hover:not(.locked) {
+            border-color: var(--primary);
+            background: #eff6ff;
+            transform: translateX(3px);
+        }
+        
+        .option-item:hover:not(.locked) .opt-letter {
+            background: var(--primary);
+            color: white;
+        }
+
+        .option-item.locked {
+            cursor: default;
+        }
+
+        .option-item.correct-ans {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: #064e3b;
+        }
+        
+        .option-item.correct-ans .opt-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        .option-item.wrong-ans {
+            background: var(--error-light);
+            border-color: var(--error);
+            color: #7f1d1d;
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+        
+        .option-item.wrong-ans .opt-letter {
+            background: var(--error);
+            color: white;
+            text-decoration: none;
+        }
+
+        .solution-wrapper {
+            margin-top: 18px;
+        }
+
+        .solution-btn {
+            background: none;
+            border: 2px dashed var(--primary);
+            color: var(--primary);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 0.9rem;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .solution-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .solution-text {
+            display: none;
+            margin-top: 12px;
+            padding: 15px;
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-left: 5px solid var(--success);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #14532d;
+            animation: slideDown 0.3s ease forwards;
+            line-height: 1.5;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Results Panel */
+        #results-panel {
+            display: none;
+            max-width: 850px;
+            margin: 0 auto 30px auto;
+            background: var(--card-bg);
+            padding: 30px 15px;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
+            text-align: center;
+            border: 3px solid var(--success);
+        }
+
+        #results-panel h2 {
+            color: var(--success);
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 500px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .stat-box {
+            padding: 15px 10px;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .stat-box.correct { background: var(--success-light); color: #064e3b; border: 2px solid var(--success); }
+        .stat-box.wrong { background: var(--error-light); color: #7f1d1d; border: 2px solid var(--error); }
+        .stat-box.blank { background: #f1f5f9; color: #334155; border: 2px solid #94a3b8; }
+        .stat-box.net { background: #eff6ff; color: #1e40af; border: 2px solid var(--primary); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2); }
+
+        .stat-val { font-size: 2rem; font-weight: 800; display: block; margin-top: 5px; line-height: 1; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            background: #0f172a;
+            color: #94a3b8;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-top: 4px solid var(--primary);
+            margin-top: 30px;
+        }
+        
+        footer hr {
+            border-color: #334155;
+            margin-bottom: 10px;
+        }
+
+        /* Print Mode */
+        @media print {
+            body { background: white; color: black; }
+            header, .nav-container, #start-screen, #exam-panel, .solution-btn, footer { display: none !important; }
+            #questions-wrapper { display: block !important; padding: 0; }
+            .questions-grid { grid-template-columns: 1fr; gap: 20px; }
+            .question-card { box-shadow: none; border: 1px solid #ccc; padding: 15px; break-inside: avoid; }
+            .option-item { border: 1px solid #e2e8f0; background: white !important; color: black !important; }
+            .solution-text { display: block !important; background: none; border: 1px solid #ccc; color: black; margin-top: 10px; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 3 - Test 4</h2>
+        <h1>2026 AÖF İş Sağlığı ve Güvenliği Yaz Okulu</h1>
+        <h2>Ünite 3 - Test 4 (Uzman Seviyesi)</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <div class="nav-container">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Tüm Dersler</a>
+            <a href="../index.html" class="nav-btn">📚 İş Hijyeni ve Ergonomi</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn deneme-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn deneme-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn deneme-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn deneme-btn active">Test 4</a>
+            <a href="test_5.html" class="nav-btn deneme-btn">Test 5</a>
+        </div>
+    </div>
+
+    <!-- Başlangıç Ekranı -->
+    <div id="start-screen">
+        <h2 style="color: var(--primary); margin-bottom: 10px; font-size: 1.6rem;">Ünite 3 - Test 4'e Hoş Geldiniz</h2>
+        <p class="exam-info">⏱️ Sınav Süresi: 30 Dakika | 🎯 Kural: 4 Yanlış 1 Doğruyu Götürür</p>
+        
+        <div class="analysis-box">
+            <h3>📈 Test Stratejisi ve Analizi (Uzman Seviyesi)</h3>
+            <p>Bu testte <strong>Ünite 3: İş Hijyeni Test ve Ölçümü</strong> konusunun idari ve teknik kurallarının sınırlarını zorluyoruz. Karşınıza çıkacak çeldiriciler şu detaylara dayanmaktadır:</p>
+            <ul>
+                <li><strong>Ölçüm Tekrarları:</strong> Limit değerin %50'sini aşıp aşmama durumlarına göre belirlenmiş kesin hafta sınırları (16 hafta vs. 32 hafta).</li>
+                <li><strong>Kurumsal Bildirimler:</strong> Laboratuvar adres veya unvanı değiştiğinde bildirimlerin "önce mi" yoksa "sonra mı" yapılacağı.</li>
+                <li><strong>Hizmet Alım (Taşeron) Limitleri:</strong> Ön Yeterlik belgesine sahip laboratuvarların taşeronla çalışma süre kısıtlamaları (6 ay).</li>
+                <li><strong>Laboratuvar Değerlendirme Tablosu:</strong> "Deneye yetkisi olmayan personelin girmesi", "Cihaz kalibrasyon ihlalleri" veya "İSG-KATİP bildirim ihlalleri" için belirlenen spesifik (5, 20, 30, 50) ihtar puanları.</li>
+            </ul>
+        </div>
+        <button class="start-btn" onclick="startExam()">🚀 Testi Başlat</button>
+    </div>
+
+    <!-- Sınav Paneli (Sticky) -->
+    <div id="exam-panel">
+        <div class="timer">
+            ⏱️ <span id="time-display">30:00</span>
+        </div>
+        <div class="panel-actions">
+            <button class="action-btn pdf-btn" onclick="window.print()">🖨️ PDF Kaydet</button>
+            <button class="action-btn finish-btn" onclick="endExam()">📝 Testi Bitir</button>
+        </div>
+    </div>
+
+    <!-- Sonuç Paneli -->
+    <div id="results-panel">
+        <h2>🏆 Test Sonucu</h2>
+        <div class="stats-grid">
+            <div class="stat-box correct">
+                Doğru
+                <span class="stat-val" id="res-correct">0</span>
+            </div>
+            <div class="stat-box wrong">
+                Yanlış
+                <span class="stat-val" id="res-wrong">0</span>
+            </div>
+            <div class="stat-box blank">
+                Boş
+                <span class="stat-val" id="res-blank">0</span>
+            </div>
+            <div class="stat-box net">
+                Net
+                <span class="stat-val" id="res-net">0.00</span>
+            </div>
+        </div>
+        <p style="color: #64748b; font-weight: 700; font-size: 0.95rem; border-top: 2px dashed #cbd5e1; padding-top: 15px; margin-top: 10px;">
+            * 4 Yanlış 1 Doğruyu Götürmektedir.
+        </p>
+    </div>
+
+    <main id="questions-wrapper">
+        <div class="questions-grid" id="q-grid">
+            <!-- Sorular JS ile buraya yüklenecek -->
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        const questionsData = [
+            {
+                id: 1,
+                text: "İş hijyeni test, ölçüm ve analizi yapmak üzere yetkilendirilmiş bir laboratuvar, belge kapsamını genişletmek amacıyla <b>Yeterlik Belgesinin geçerlilik süresinin (4 Yıllık süre) HANGİ dilimi içerisinde Kapsam Genişletme başvurusu YAPAMAZ?</b>",
+                options: [
+                    "Belgenin geçerli olduğu sürenin ilk 6 ayı içerisinde",
+                    "Belgenin geçerli olduğu sürenin ilk yılında",
+                    "Belgenin geçerli olduğu sürenin üçüncü yılında",
+                    "Belgenin geçerli olduğu sürenin son yılında",
+                    "Hiçbir zaman kısıtlama yoktur, her zaman yapabilir"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Mevzuata göre, laboratuvarlar Yeterlik Belgesinin geçerli olduğu sürenin <b>son yılı (4. yılı) haricinde</b> kapsam genişletme başvurusu yapabilirler. Son yıl başvuru yapılamaz."
+            },
+            {
+                id: 2,
+                text: "Yeterlik belgesine sahip bir laboratuvar, <b>bir takvim yılı içerisinde</b> İSGÜM'e en fazla kaç defa 'kapsam genişletme' (mevcut belgeye yeni parametre ilavesi) başvurusunda bulunabilir?",
+                options: [
+                    "Sadece 1 defa",
+                    "En çok 2 defa",
+                    "En çok 3 defa",
+                    "En çok 4 defa",
+                    "Sınırsız sayıda"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> AÖF Ders Kitabına göre, bir iş hijyeni laboratuvarı bir takvim yılı içerisinde <b>en çok iki (2) defa</b> kapsam genişletme başvurusu yapma hakkına sahiptir."
+            },
+            {
+                id: 3,
+                text: "İşyeri ortamındaki maruziyet ölçüm sonuçları, çalışanın maruz kalabileceği <b>yasal sınır değerin %50'sini AŞIYOR, ancak sınır değerin henüz ALTINDA kalıyorsa</b> (Yani %50 ile %100 bandı arasındaysa), bu ölçümler mevzuata göre <b>en az hangi periyotlarla</b> tekrarlanmak zorundadır?",
+                options: [
+                    "8 haftada bir",
+                    "16 haftada bir",
+                    "24 haftada bir",
+                    "32 haftada bir",
+                    "64 haftada bir"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Mevzuata göre ölçüm sonuçları; Sınır değerin %25'ini aşmıyorsa 64 hafta, %25-%50 arasındaysa 32 hafta, <b>%50'sini aşıp sınır değerin altında kalıyorsa 16 haftada bir</b> tekrarlanmalıdır."
+            },
+            {
+                id: 4,
+                text: "Laboratuvar değerlendirme tablosunda yer alan ihlallere göre; <b>'Deneye ait prosedüre göre laboratuvar bünyesinde bu deney için yetki almamış personelin deneyi yapması'</b> durumunun cezai karşılığı kaç ihtar puanıdır?",
+                options: [
+                    "10 İhtar Puanı",
+                    "20 İhtar Puanı",
+                    "30 İhtar Puanı",
+                    "50 İhtar Puanı",
+                    "100 İhtar Puanı"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Deneyi yapma yetkisi/yetkinliği olmayan (sertifikasız) personelin o teste girmesi ve işlemi yapması çok ciddi bir bilimsel ihlaldir ve cezası doğrudan <b>50 İhtar Puanıdır.</b>"
+            },
+            {
+                id: 5,
+                text: "Ön yeterlik veya yeterlik belgesi almış laboratuvarların idari değişiklik durumlarında uygulanan İSGÜM bildirim süreçleri için aşağıdakilerden hangisi <b>doğrudur</b>?",
+                options: [
+                    "Adres değişikliğinde en az 15 gün SONRA, Unvan değişikliğinde en az 15 gün ÖNCE bildirim yapılır.",
+                    "Adres değişikliğinde en az 15 gün ÖNCE, Unvan değişikliğinde ise en geç 15 gün İÇERİSİNDE bildirim yapılır.",
+                    "Her ikisinde de 5 iş günü içerisinde bildirim yapılır.",
+                    "Adres değişikliğinde 30 gün, Unvan değişikliğinde 10 gün süre verilir.",
+                    "Sadece Unvan değişikliği için yerinde inceleme şartı aranır."
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Mevzuata göre Laboratuvar, <b>adres değişikliğinden en az 15 gün ÖNCE</b>; ancak <b>unvan değişikliğinden sonra 15 gün İÇERİSİNDE</b> İSGÜM'e başvurmak zorundadır. (Ayrıca unvan değişikliğinde yerinde inceleme yapılmaz, belge direkt yenilenir)."
+            },
+            {
+                id: 6,
+                text: "İş hijyeni ölçüm laboratuvarları arasındaki 'Hizmet Alım Sözleşmeleri' (taşeron kullanımı) kurallarına göre, <b>'Ön Yeterlik Belgesine' (Tam yeterlik değil) sahip bir laboratuvar</b> yapacağı hizmet alım sözleşmesini toplamda en fazla ne kadarlık bir süre için yapabilir?",
+                options: [
+                    "En fazla 3 ay",
+                    "En fazla 6 ay",
+                    "En fazla 1 yıl",
+                    "En fazla 2 yıl",
+                    "Ön yeterlik belgeli laboratuvarlar taşeron hizmet alamazlar."
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Hizmet alım sözleşmeleri; laboratuvar 'Ön Yeterlik' belgesine sahip ise ön yeterlik süresince toplam <b>6 aydan</b> fazla olamaz. (Eğer 'Tam Yeterlik' belgeli olsaydı 1 yıl olurdu)."
+            },
+            {
+                id: 7,
+                text: "Laboratuvar Değerlendirme Tablosuna göre; <b>'Ölçüm cihazlarının kalibrasyonlarının uluslararası izlenebilirliği olan (akredite) kalibrasyon laboratuvarlarında YAPTIRILMAMASI'</b> ihlaline her bir cihaz için kaç ihtar puanı kesilir?",
+                options: [
+                    "5 İhtar Puanı",
+                    "10 İhtar Puanı",
+                    "20 İhtar Puanı",
+                    "30 İhtar Puanı",
+                    "50 İhtar Puanı"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Kalibrasyonların, uluslararası izlenebilirliği (TÜRKAK vb. tarafından onaylı) yetkili kalibrasyon merkezlerinde yaptırılmaması cihaz başına <b>30 ihtar puanı</b> ile cezalandırılır."
+            },
+            {
+                id: 8,
+                text: "İş hijyeni laboratuvarının ihlalleri sebebiyle biriken <b>ihtar puanı 300'e ulaştığında</b>, laboratuvarın belgesi İSGÜM tarafından 6 ay süreyle askıya alınır. Peki bu 300 ceza puanı <b>hangi aşamada veya ne kadar süre sonra</b> laboratuvarın sicilinden SİLİNİR?",
+                options: [
+                    "Askı süresinin başlamasından 1 yıl sonra.",
+                    "Askı süresi (6 ay) bittiği anda (bitiminde).",
+                    "Laboratuvar 50.000 TL idari para cezası ödediği anda.",
+                    "Bir dahaki genel belge yenileme dönemine kadar silinmez.",
+                    "Bir daha asla silinmez, sicile kalıcı işlenir."
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Normal ihtar puanları 1 yıl bekler ancak, 300 puan bareminin aşılmasıyla belgesi askıya alınan kurumun bu 300 puanlık cezası <b>askı süresinin (6 ay) bitiminde direkt silinerek</b> laboratuvar sıfırlanmış olarak tekrar faaliyete başlar."
+            },
+            {
+                id: 9,
+                text: "İş hijyeni test, ölçüm ve analiz laboratuvarlarında teknik personelin idari yönden denetlenmesi neticesinde; <b>'Laboratuvar yöneticisi veya kalite yöneticisinin TAM ZAMANLI çalışmadığının tespit edilmesi'</b> durumunda kesilecek ceza kaç ihtar puanıdır?",
+                options: [
+                    "10 İhtar Puanı",
+                    "20 İhtar Puanı",
+                    "30 İhtar Puanı",
+                    "50 İhtar Puanı",
+                    "100 İhtar Puanı"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> AÖF Laboratuvar Değerlendirme Tablosu (Tablo 3.1) uyarınca, Laboratuvar yöneticisi ve Kalite yöneticisinin laboratuvarda tam zamanlı (sigortalı) çalışmaması ihlali <b>50 ihtar puanıdır</b>."
+            },
+            {
+                id: 10,
+                text: "Uluslararası standartlar göz önüne alındığında, <b>'İşyeri Havası - Solunumla Maruz Kalınan Kimyasal Maddelerin Sınır Değerler ile Karşılaştırılması ve Ölçme Stratejisi İçin Kılavuz'</b> olarak bilinen normun adı aşağıdakilerden hangisidir?",
+                options: [
+                    "TS EN ISO 17025",
+                    "TS EN ISO 14851",
+                    "TS EN ISO 24501",
+                    "TS EN ISO 11399",
+                    "TS EN 689"
+                ],
+                correct: 4,
+                solution: "<strong>💡 Çözüm:</strong> İş hijyeninde solunum yollarına giren kimyasal toz/gaz ve buharların ölçüm stratejisi ve değerlendirilmesi kılavuzu dünyada <b>TS EN 689</b> norm koduyla uygulanır."
+            },
+            {
+                id: 11,
+                text: "Laboratuvar, kendi analiz yeteneğinin kalibrasyonunu ölçmek için, ölçüm, test ve analizini yaptığı <b>her bir parametre için 'en geç ne kadar sürede bir'</b> yeterlilik deneyi veya laboratuvarlar arası karşılaştırma testlerine katılmak ve olumlu sonuç almak zorundadır?",
+                options: [
+                    "Her 6 ayda bir",
+                    "Yılda 1 kez",
+                    "En geç 2 yılda bir",
+                    "En geç 4 yılda bir",
+                    "Sadece belge yenileme aşamasında (5 yılda bir)"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> Mevzuat gereği laboratuvarların, yetkili oldukları her bir test parametresinin geçerliliğini ve kalitesini ispatlamak adına <b>en geç dört (4) yılda bir</b> yeterlilik deneyine katılarak başarılı olmaları şarttır."
+            },
+            {
+                id: 12,
+                text: "Kişisel maruziyet ölçümlerinde, çalışan kişinin üzerinde ve solunum bölgesinde (ağız ve burun çevresi merkezli 30 cm küre) numune alınması esastır. Ancak <b>'işin sürekli olarak yapılmadığı çalışma ortamlarında'</b> maruziyet nasıl tespit edilir?",
+                options: [
+                    "Her zaman çalışanın boynuna takılacak sensörlerle.",
+                    "İş yeri hekiminin beyanına ve gözlemine dayalı olarak tahmini bir ölçümle.",
+                    "Maruziyetin o ortamda 'en yüksek olabileceği' nokta sabit ölçüm noktası olarak alınarak.",
+                    "Maruziyet ölçülmez, sadece teknik olarak havalandırma kapasitesi ölçülür.",
+                    "Çalışanlar o ortamda bulunmadığı için ölçüm işleminden muaf tutulurlar."
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> İşin sürekli yapılmadığı, personelin gezici veya anlık girdiği çalışma ortamlarında kişisel numune almak yerine, ilgili mekânda maruziyetin (toz/gaz) <b>en yüksek olabileceği nokta bulunup, orası sabit ölçüm noktası olarak</b> değerlendirilir."
+            },
+            {
+                id: 13,
+                text: "İş hijyeni ölçüm sonuçlarının risk teşkil etme oranlarına göre periyodik yenileme süreleri mevcuttur. Eğer yapılan bir ölçüm sonucu, o kimyasala ait <b>yasal sınır değerin %25'ini AŞIYOR fakat %50'sinin ALTINDA kalıyorsa</b> (Yani %25 - %50 aralığındaysa), bu ölçüm mevzuata göre <b>hangi sıklıkla</b> tekrar edilmelidir?",
+                options: [
+                    "16 haftada bir",
+                    "32 haftada bir",
+                    "64 haftada bir",
+                    "80 haftada bir",
+                    "Yılda bir kez"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Tekrar süreleri kuralı: <br>- Sonuç %25'i aşmıyorsa = 64 hafta. <br>- <b>Sonuç %25'i aşıp, %50'nin altında kalıyorsa = 32 hafta.</b> <br>- Sonuç %50'yi aşıp sınırın altında kalıyorsa = 16 hafta."
+            },
+            {
+                id: 14,
+                text: "Laboratuvar Değerlendirme Tablosu'na göre, <b>'Laboratuvarın yapacağı ortam ölçümleri ve testleri için İSG-KATİP sistemi üzerinden kuruma ÖNCEDEN BİLDİRİM YAPMAMASI'</b> durumunda kesilecek olan ceza puanı (bildirilmeyen her bir iş yeri için) ne kadardır?",
+                options: [
+                    "5 İhtar Puanı",
+                    "10 İhtar Puanı",
+                    "20 İhtar Puanı",
+                    "50 İhtar Puanı",
+                    "100 İhtar Puanı"
+                ],
+                correct: 0,
+                solution: "<strong>💡 Çözüm:</strong> Ölçümleri sisteme (İSG-KATİP) önceden işlememe veya kaçak ölçüm yapma ihlalinin cezası <b>bildirilmeyen her bir iş yeri için 5 ihtar puanıdır</b>. (10 iş yeri bildirilmezse 50 puan ceza alınır)."
+            },
+            {
+                id: 15,
+                text: "Zorunlu tutulan 'yeterlik veya karşılaştırma testine' katılan ve <b>1. kez başarısız (olumsuz) sonuç alan</b> bir laboratuvara, belgesinin iptal edilmemesi veya askıya alınmaması için aynı teste <b>bir kez daha katılması amacıyla</b> ne kadarlık bir ek süre tanınır?",
+                options: [
+                    "15 gün",
+                    "1 ay",
+                    "3 ay",
+                    "6 ay",
+                    "1 yıl"
+                ],
+                correct: 3,
+                solution: "<strong>💡 Çözüm:</strong> İlk yeterlilik testinden kalan (olumsuz sonuç alan) laboratuvarlara, eksiklerini düzeltip ikinci kez bu teste girebilmeleri için <b>6 aylık</b> bir telafi süresi tanınır."
+            },
+            {
+                id: 16,
+                text: "İş hijyeni test, ölçüm ve analizi laboratuvarlarının hazırladıkları resmî raporların kapak ve sunum kuralları incelendiğinde aşağıdakilerden hangisi <b>yanlıştır</b>?",
+                options: [
+                    "Hazırlanan raporların kapağında veya iç sayfalarında ÇSGB'nin resmî logosu KESİNLİKLE kullanılamaz.",
+                    "Yeterlik veya Ön Yeterlik belgesinin bir örneği raporlara mutlaka ek olarak konulur.",
+                    "Kişisel maruziyet düzeyi ölçülen kişinin adı, unvanı ve yaptığı iş raporlarda mutlaka yer alır.",
+                    "Kapak sayfasında, laboratuvarın yeterlik veya ön yeterlik belge numarasının bulunması zorunludur.",
+                    "İşletmenin talebi üzerine mevzuat kapsamında olmayan, gayriresmî diğer analizler de bu rapora dâhil edilebilir."
+                ],
+                correct: 4,
+                solution: "<strong>💡 Çözüm:</strong> Mevzuata göre 'İş hijyeni ölçüm, test ve analiziyle ilgili raporlarda <b>mevzuat kapsamında olmayan diğer ölçüm, test ve analizlerle ilgili bilgiler (gayriresmî analizler) kesinlikle bulundurulamaz</b>.'"
+            },
+            {
+                id: 17,
+                text: "İSGÜM'den 'Yeterlik' veya 'Ön Yeterlik' belgesi almış laboratuvarların dış görünüm ve tabela standartları incelendiğinde; bina dışına asılacak tabelanın <b>Boy/En oranı</b> aşağıdakilerden hangisi olmak zorundadır?",
+                options: [
+                    "1/2",
+                    "1/3",
+                    "2/3",
+                    "3/4",
+                    "1/1 (Kare)"
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> Yönetmeliğe göre, laboratuvarın bulunduğu binanın uygun bir kısmına veya girişine asılacak tabelanın <b>boy/en oranının tam olarak 2/3 olması</b> yasal bir şarttır."
+            },
+            {
+                id: 18,
+                text: "İSGÜM tarafından bir laboratuvarda denetim veya inceleme yapılması kararlaştırıldığında; eğer ilgili analiz metodu hakkında İSGÜM bünyesinde <b>yeterliliğe sahip bir denetim personeli (uzman) bulunmuyorsa</b>, kurum dışından bir uzmandan (hizmet alımı yoluyla) destek alınabilir. <br>Bu dış uzmanın seçimindeki <b>en katı yasal şart</b> aşağıdakilerden hangisidir?",
+                options: [
+                    "Yabancı uyruklu (Avrupa Birliği vatandaşı) olması.",
+                    "TÜRKAK kurumunda aktif memur kadrosunda yer alması.",
+                    "Yurt içindeki özel laboratuvarlardan herhangi birinde HİÇ çalışmamış tarafsız bir kişi olması.",
+                    "Mesleğinde en az 20 yıl tecrübeli olması.",
+                    "Sadece Kimya ve Metalurji Fakültesi mezunu olması."
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> Denetim şeffaflığı (çıkar çatışmasını engelleme) kuralı gereği, dışarıdan atanacak bu uzmanın, <b>yurt içindeki hiçbir özel iş hijyeni laboratuvarında önceden çalışmamış, bağımsız ve tarafsız bir kişi</b> olması zorunludur."
+            },
+            {
+                id: 19,
+                text: "Laboratuvar Değerlendirme Tablosu kurallarına göre, laboratuvar bünyesinde kullanılan <b>ölçüm cihazlarının kullanım sıklığına göre 'bakım ve kalibrasyon periyotlarının belirlenmemesi' veya tolerans sınırları dışına çıkan arızalı cihazların sistemden çıkartılmaması</b> durumunda kuruma her bir cihaz için kaç ceza (ihtar) puanı uygulanır?",
+                options: [
+                    "10 İhtar Puanı",
+                    "20 İhtar Puanı",
+                    "30 İhtar Puanı",
+                    "50 İhtar Puanı",
+                    "100 İhtar Puanı"
+                ],
+                correct: 1,
+                solution: "<strong>💡 Çözüm:</strong> Tablo 3.1 verilerine göre cihazların bakım/kalibrasyon periyotlarının çıkarılmaması veya arızalı/sınır dışı cihazın üretim bandından ayrılmamasının cezası <b>20 ihtar puanıdır</b>."
+            },
+            {
+                id: 20,
+                text: "İş hijyeni ölçüm ve testlerinde uluslararası kabul gören standart zaman aralıkları (referans süreler) vardır. <br><b>Bir kimyasala olan 'Kısa Süreli Maruziyet Sınırı' olan (STEL) ile 'Uzun Süreçli (Zaman Ağırlıklı Ortalama)' olan (TWA) süreleri sırasıyla aşağıdakilerden hangisidir?</b>",
+                options: [
+                    "STEL: 5 Dakika -- TWA: 4 Saat",
+                    "STEL: 10 Dakika -- TWA: 12 Saat",
+                    "STEL: 15 Dakika -- TWA: 8 Saat",
+                    "STEL: 30 Dakika -- TWA: 24 Saat",
+                    "STEL: 60 Dakika -- TWA: 40 Saat"
+                ],
+                correct: 2,
+                solution: "<strong>💡 Çözüm:</strong> Laboratuvar ölçümlerinin değerlendirilmesinde, kimyasalların akut toksik etkileri için <b>kısa süreçli referans (STEL) 15 dakika</b> iken, kronik birikimi temsil eden <b>uzun süreçli (TWA) vardiya süresi 8 saattir</b>."
+            }
+        ];
+
+        let state = {
+            totalQuestions: 20,
+            answers: {},
+            timeLeft: 30 * 60, // 30 minutes
+            timerInterval: null,
+            examActive: false,
+            examFinished: false
+        };
+
+        const gridContainer = document.getElementById('q-grid');
+
+        // Render Questions
+        questionsData.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            let optionsHTML = q.options.map((opt, oIdx) => {
+                const letter = String.fromCharCode(65 + oIdx); // A, B, C, D, E
+                return `
+                <li class="option-item" id="opt-${q.id}-${oIdx}" onclick="selectOption(${q.id}, ${oIdx}, ${q.correct})">
+                    <span class="opt-letter">${letter}</span>
+                    <span>${opt}</span>
+                </li>
+            `}).join('');
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <span>Soru ${index + 1}</span>
+                    <span class="q-badge">Ünite 3 | Test 4 (Uzman)</span>
+                </div>
+                <div class="q-text">${q.text}</div>
+                <ul class="options-list">
+                    ${optionsHTML}
+                </ul>
+                <div class="solution-wrapper">
+                    <button class="solution-btn" onclick="toggleSolution(${q.id})">🔍 Çözümü Gör</button>
+                    <div class="solution-text" id="sol-${q.id}">${q.solution}</div>
+                </div>
+            `;
+            gridContainer.appendChild(card);
+        });
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-panel').style.display = 'flex';
+            document.getElementById('questions-wrapper').style.display = 'block';
+            state.examActive = true;
+            
+            state.timerInterval = setInterval(() => {
+                if (state.timeLeft <= 0) {
+                    endExam();
+                    return;
+                }
+                state.timeLeft--;
+                let m = Math.floor(state.timeLeft / 60).toString().padStart(2, '0');
+                let s = (state.timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('time-display').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function selectOption(qId, selectedIdx, correctIdx) {
+            if (!state.examActive || state.examFinished) return;
+            if (state.answers[qId] !== undefined) return; 
+
+            state.answers[qId] = selectedIdx;
+            
+            // Lock UI
+            const qData = questionsData.find(q => q.id === qId);
+            qData.options.forEach((_, idx) => {
+                document.getElementById(`opt-${qId}-${idx}`).classList.add('locked');
+            });
+
+            const selectedEl = document.getElementById(`opt-${qId}-${selectedIdx}`);
+            const correctEl = document.getElementById(`opt-${qId}-${correctIdx}`);
+
+            if (selectedIdx === correctIdx) {
+                selectedEl.classList.add('correct-ans');
+            } else {
+                selectedEl.classList.add('wrong-ans');
+                correctEl.classList.add('correct-ans');
+            }
+        }
+
+        function toggleSolution(qId) {
+            const solText = document.getElementById(`sol-${qId}`);
+            if (solText.style.display === 'block') {
+                solText.style.display = 'none';
+            } else {
+                solText.style.display = 'block';
+            }
+        }
+
+        function endExam() {
+            if (state.examFinished) return;
+            state.examFinished = true;
+            clearInterval(state.timerInterval);
+            document.getElementById('time-display').innerText = "BİTTİ";
+            document.getElementById('time-display').style.color = "var(--error)";
+
+            let correctCount = 0;
+            let wrongCount = 0;
+
+            questionsData.forEach(q => {
+                const answered = state.answers[q.id];
+                if (answered !== undefined) {
+                    if (answered === q.correct) correctCount++;
+                    else wrongCount++;
+                }
+            });
+
+            let blankCount = state.totalQuestions - (correctCount + wrongCount);
+            let netScore = correctCount - (wrongCount / 4);
+
+            document.getElementById('res-correct').innerText = correctCount;
+            document.getElementById('res-wrong').innerText = wrongCount;
+            document.getElementById('res-blank').innerText = blankCount;
+            document.getElementById('res-net').innerText = netScore.toFixed(2);
+
+            document.getElementById('results-panel').style.display = 'block';
+            
+            // Scroll to results slowly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
