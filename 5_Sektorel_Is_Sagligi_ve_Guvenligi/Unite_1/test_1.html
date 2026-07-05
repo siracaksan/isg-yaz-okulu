@@ -1,25 +1,608 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 1 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Uzmanlık Seviyesi Testleri | Sektörel İş Sağlığı ve Güvenliği Ünite 1 - TEST 1</title>
+    <style>
+        :root {
+            /* Tema Renkleri Güncellendi */
+            --primary: #0f766e;    /* Koyu Turkuaz / Teal */
+            --accent: #2563eb;     /* Parlak Mavi */
+            --bg: #f0fdfa;         /* Çok Açık Turkuaz Arka Plan */
+            --text: #1e293b;
+            --light-gray: #cbd5e1;
+            --green: #15803d;
+            --red: #b91c1c;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        
+        header { background: var(--primary); color: white; padding: 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); }
+        header h1 { margin: 0; font-size: 1.8rem; font-weight: 700; }
+        header p { margin: 0.5rem 0 0 0; color: #ccfbf1; font-weight: 600; }
+        
+        nav { background: #0f172a; padding: 1rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+        .nav-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav-btn { background: rgba(255,255,255,0.1); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; text-decoration: none; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: white; box-shadow: 0 0 8px rgba(37,99,235,0.5); }
+        
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        
+        .box { background: white; border-radius: 8px; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; border-top: 4px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--accent); background: #eff6ff; padding: 1.5rem; border-radius: 4px; margin: 1.5rem 0; }
+        .strategy-box h3 { margin-top: 0; color: #1e3a8a; display: flex; align-items: center; gap: 0.5rem; }
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: #1e40af; line-height: 1.6; }
+        
+        .start-btn { display: block; width: 100%; max-width: 300px; margin: 2rem auto; background: var(--primary); color: white; text-align: center; padding: 1rem; border-radius: 8px; font-size: 1.2rem; cursor: pointer; border: none; font-weight: bold; transition: all 0.2s; }
+        .start-btn:hover { background: #0f172a; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        .timer-bar { position: sticky; top: 0; background: white; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--primary); }
+        .timer { font-size: 1.5rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: opacity 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+        .btn:hover { opacity: 0.9; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: #475569; color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+        @media(max-width: 900px) { .questions-grid { grid-template-columns: 1fr; } }
+        
+        .question-card { background: white; border: 1px solid var(--light-gray); padding: 1.5rem; border-radius: 8px; display: flex; flex-direction: column; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .question-header { font-weight: bold; color: var(--primary); margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .question-text { font-weight: 600; margin-bottom: 1.5rem; font-size: 1.05rem; line-height: 1.5; color: #1e293b; }
+        
+        .options { display: flex; flex-direction: column; gap: 0.5rem; }
+        .option { padding: 0.8rem; border: 1px solid var(--light-gray); border-radius: 4px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.95rem; }
+        .option span { font-weight: bold; min-width: 20px; color: var(--primary); }
+        .option:hover:not(.locked) { background: #f8fafc; border-color: var(--accent); }
+        .option.locked { cursor: default; }
+        .option.correct { background: #dcfce7; border-color: var(--green); color: #14532d; box-shadow: 0 0 0 1px var(--green); }
+        .option.wrong { background: #fee2e2; border-color: var(--red); color: #7f1d1d; text-decoration: line-through; }
+        
+        .solution-btn { margin-top: 1.5rem; background: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; padding: 0.6rem; border-radius: 4px; cursor: pointer; align-self: flex-start; font-size: 0.9rem; font-weight: 600; display: none; transition: background 0.2s; }
+        .solution-btn:hover { background: #e2e8f0; }
+        
+        .solution-box { margin-top: 1rem; padding: 1.2rem; background: #f0fdfa; border-left: 4px solid var(--primary); border-radius: 4px; display: none; font-size: 0.95rem; line-height: 1.6; color: #0f766e; }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: #134e4a; }
+        
+        .results-section { text-align: center; margin-top: 2rem; padding: 2rem; background: white; border-radius: 8px; border-top: 5px solid var(--green); display: none; }
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+        .stat { padding: 1rem 2rem; border-radius: 8px; font-weight: bold; display: flex; flex-direction: column; gap: 0.5rem; font-size: 1.2rem; min-width: 120px; }
+        .stat span { font-size: 0.9rem; font-weight: normal; text-transform: uppercase; letter-spacing: 1px; }
+        .stat.correct { background: #dcfce7; color: var(--green); }
+        .stat.wrong { background: #fee2e2; color: var(--red); }
+        .stat.empty { background: #f1f5f9; color: #475569; }
+        .stat.net { background: #eff6ff; color: var(--accent); border: 2px solid var(--accent); }
+        
+        footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 2rem; margin-top: 4rem; font-size: 0.9rem; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: none; padding: 0; }
+            .questions-grid { display: block; }
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 1px solid #ccc; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-radius: 0; }
+            .solution-box { display: block !important; border-left: none; background: transparent; font-style: italic; color: #475569; padding: 0.5rem 0; margin-top: 0.5rem; }
+            .option { border: none; padding: 0.3rem 0; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 1 - Test 1</h2>
+        <h1>Uzmanlık Seviyesi Testleri | Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 1: Tarım, Orman ve Hayvancılık Sektöründe İSG - TEST 1</p>
     </header>
-    
-    <main>
-        </main>
-    
-    <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Tüm Dersler</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html" class="nav-btn">⬅️ Çıkmış sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn active">Test 1</a>
+            <a href="test_2.html" class="nav-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn">Test 5</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <!-- Başlangıç Ekranı -->
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary);">Test 1'e Hoş Geldiniz</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #475569;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>📈 Test 1 Stratejisi ve Analizi</h3>
+                <ul>
+                    <li><strong>Soru Kaynakları:</strong> İlk 10 soru doğrudan Ders Kitabının "Neler Öğrendik?" (Ünite 1) bölümünden alınmıştır. Kalan 10 soru ise 2021-2025 Yılları Yaz Okulu Sınavlarının Ünite 1 konuları analiz edilerek özenle derlenmiştir.</li>
+                    <li><strong>Kavramsal Temeller:</strong> Bu test, Tarım, Ormancılık ve Hayvancılık sektörlerindeki İSG tehlikelerinin en temel yapı taşlarını ve tanımlarını ölçer. Doğrudan bilgi tespitine yöneliktir.</li>
+                    <li><strong>Odaklanma:</strong> Her sektörün kendine özgü hastalıklara (ör: Çiftçi akciğeri) ve sektörel tehlike sınıflandırmalarına (Biyolojik, Toksikolojik vs.) özellikle dikkat edin.</li>
+                    <li><strong>Puanlama:</strong> Yanlışlar doğruları götürür (4 yanlış = 1 doğru). Emin olmadığınız sorularda boş bırakma stratejisini geliştirmeye başlayın.</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">🚀 Testi Başlat</button>
+        </div>
+
+        <!-- Sınav Ekranı -->
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏳ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF Kaydet</button>
+                    <button class="btn btn-primary" onclick="finishExam()">📝 Testi Bitir</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2 style="color: var(--primary); margin-top: 0;">Sınav Sonucunuz</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 (Neler Öğrendik Q1) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 1</div>
+                    <div class="question-text">Dünya tarım iş gücünün, yüzde kaçı Asya’da bulunur?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> 5</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> 20</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>C)</span> 30</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> 40</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>E)</span> 75</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 Uzman Çözümü:</strong> Dünya Bankası ve FAO verilerine göre dünya tarım iş gücünün yaklaşık %75'i Asya kıtasında bulunmaktadır. Bu istatistik, tarımın Asya toplumları için yaşamsal önemini ve işgücü yoğunluğunu vurgular.
+                    </div>
+                </div>
+
+                <!-- Soru 2 (Neler Öğrendik Q2) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 2</div>
+                    <div class="question-text">Osmanlı Dönemi’nde Adana’da pamuk tarlalarında çalışan işçilere yönelik hakları kapsayan ilk düzenlemenin olduğu yıl aralığı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> 1250-1300</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> 1400-1500</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>C)</span> 1500-1600</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> 1600-1700</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>E)</span> 1833-1840</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Uzman Çözümü:</strong> Ülkemizde tarım işçilerinin haklarını kapsayan ilk tarihi düzenlemeler, 1833-1840 yılları arasında Çukurova bölgesinde pamuk işçilerine yönelik yapılmıştır.
+                    </div>
+                </div>
+
+                <!-- Soru 3 (Neler Öğrendik Q3) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 3</div>
+                    <div class="question-text">Türkiye tarafından henüz imzalanmayan tarımda iş güvenliği ve sağlığı ile ilgili ILO sözleşmesi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> 11 No’lu Örgütlenme Özgürlüğü (Tarım) Sözleşmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> 99 sayılı Asgari Ücret Tespit Mekanizması (Tarım) Sözleşmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>C)</span> 155 sayılı İSG ve Çalışma Ortamına İlişkin Sözleşme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> 161 sayılı Sağlık Hizmetlerine İlişkin Sözleşme</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>E)</span> 184 sayılı ILO sözleşmesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Uzman Çözümü:</strong> Türkiye ILO'nun temel sözleşmelerini imzalamış olmakla birlikte, doğrudan tarımdaki risklere odaklanan "184 sayılı Tarımda İş Sağlığı ve Güvenliği Sözleşmesini" henüz onaylamamıştır.
+                    </div>
+                </div>
+
+                <!-- Soru 4 (Neler Öğrendik Q4) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 4</div>
+                    <div class="question-text">Tarım devrimi olarak nitelendirilen çağ aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Bakır</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Tunç Çağı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>C)</span> Neolitik Çağ</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> Yakın Çağ</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> Orta Çağ</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Uzman Çözümü:</strong> İnsanlığın avcı-toplayıcı göçebelikten yerleşik hayata geçip toprağı işlemeye ve ürün elde etmeye başladığı Neolitik Çağ (Cilalı Taş Devri), "Tarım Devrimi" olarak adlandırılır.
+                    </div>
+                </div>
+
+                <!-- Soru 5 (Neler Öğrendik Q5) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 5</div>
+                    <div class="question-text">Ormancılıkta kesim işleri aşağıdaki standartlardan hangisine göre yapılır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> TS 18001</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>B)</span> TS 1214</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> TS 45001</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>D)</span> ISO 31001</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> ASTM</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Uzman Çözümü:</strong> Türkiye'de ormancılık sektöründe ağaç kesme, devirme ve boylama işlemleri sırasındaki İSG kural ve yönergeleri "TS 1214" kodlu standarda göre yürütülmektedir.
+                    </div>
+                </div>
+
+                <!-- Soru 6 (Neler Öğrendik Q6) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 6</div>
+                    <div class="question-text">Aşağıdakilerden hangisi ormancılık sektörüne özgü tehlikelerden biri değildir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> Toz</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> Gürültü</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> Ağır yük kaldırma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> Böcek ve çeşitli zararlılar ile mücadele ilaçları</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>E)</span> Çiftçi akciğeri</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 Uzman Çözümü:</strong> "Çiftçi akciğeri", özellikle saman ve tahıl tozlarının uzun süre solunması sonucu ortaya çıkan ve doğrudan 'tarım' sektörüne has olan alerjik bir hastalıktır. Ormancılığa özgü değildir.
+                    </div>
+                </div>
+
+                <!-- Soru 7 (Neler Öğrendik Q7) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 7</div>
+                    <div class="question-text">Aşağıdakilerden hangisi dekompozisyon (çürüme) gazlarından biri değildir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Amonyak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>B)</span> Hidrojen</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> Metan</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>D)</span> Arsenik</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> Karbon monoksit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Uzman Çözümü:</strong> Çürüme ve bozunma (dekompozisyon) sonucu amonyak, metan, hidrojen ve karbonmonoksit gibi uçucu gazlar açığa çıkar. Arsenik ise zehirli bir ağır metal/element olup çürüme gazı sınıfında yer almaz.
+                    </div>
+                </div>
+
+                <!-- Soru 8 (Neler Öğrendik Q8) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 8</div>
+                    <div class="question-text">Türkiye hayvan varlığı istatistiklerine göre en fazla hayvan sayısı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>A)</span> Koyun</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>B)</span> Keçi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>C)</span> Sığır</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Manda</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Domuz</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Uzman Çözümü:</strong> Coğrafi ve mera koşullarımızın doğal yapısı küçükbaş hayvancılığa son derece elverişlidir. Güncel hayvan varlığı istatistiklerine göre en fazla paya "koyun" sahiptir.
+                    </div>
+                </div>
+
+                <!-- Soru 9 (Neler Öğrendik Q9) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 9</div>
+                    <div class="question-text">Gübre olarak kullanılan hem akut hem de uzun dönemli solunum yolu hastalıklarına neden olan gaz aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Metan</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> Siyanür</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>C)</span> Hidrojen</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> Karbondioksit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>E)</span> Anhidrit amonyak</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 Uzman Çözümü:</strong> Suni gübreleme uygulamalarında yaygın olarak kullanılan 'Anhidrit amonyak' gazı, son derece tahriş edicidir. Solunması akut zehirlenmelerden, kalıcı solunum yolları hastalıklarına kadar riskler barındırır.
+                    </div>
+                </div>
+
+                <!-- Soru 10 (Neler Öğrendik Q10) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 10</div>
+                    <div class="question-text">Bir 'toz'un duman formunda veya solunabilir toz olarak adlandırılması için sahip olması gereken partikül büyüklüğü boyutu aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>A)</span> 5 mikrondan küçük</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> 5 mikrondan büyük</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>C)</span> 6 mikrondan büyük</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>D)</span> 7 mikrondan büyük</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> 10 mikrondan büyük</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Uzman Çözümü:</strong> İnsan solunum sisteminde partikül boyutu 5 mikrondan küçük olan tozlar, solunum yollarını (bronşları) aşarak akciğerlerin en uç hava kesecikleri olan alveollere ulaşır. Bu nedenle bunlara "solunabilir toz" denir.
+                    </div>
+                </div>
+
+                <!-- Soru 11 (2021 Çıkmış Soru Özgünleştirme) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 11</div>
+                    <div class="question-text">Tarımsal üretimde insan ve hayvan emeğinin yerini alarak çok büyük toprakların seri bir şekilde işlenebilmesine olanak sağlayan, böylece tarımda verimi ve üretimi dramatik biçimde artıran endüstriyel sistem aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> Organik tarım</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> Biyoteknolojik ıslah</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>C)</span> Pestisit uygulamaları</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>D)</span> Mekanizasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> Yeşil inovasyon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Uzman Çözümü:</strong> Traktör, biçerdöver gibi büyük tarım makinelerinin kullanımıyla insan ve hayvan gücünün yerini makinelerin alması "Mekanizasyon" kavramıyla ifade edilir. 2021 yılı yaz okulu sınavında da test edilen temel bir kavramdır.
+                    </div>
+                </div>
+
+                <!-- Soru 12 (2021 Çıkmış Soru Özgünleştirme) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 12</div>
+                    <div class="question-text">I. Motorlu testerenin hızla dönen keskin zinciri<br>II. Takılı kalmış (asılı) ağaçlar<br>III. Titreşim<br>IV. Düşen dallar<br><br>Yukarıdakilerden hangisi veya hangileri ormancılık faaliyeti yürüten bir odun üretim sahasındaki potansiyel tehlikelerdendir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>A)</span> I ve III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>B)</span> II ve IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> I, II ve III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> II, III ve IV</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>E)</span> I, II, III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Uzman Çözümü:</strong> Odun üretim sahaları çok tehlikeli sınıfındadır. Mekanik araçların (motorlu testere) riskleri, ağaç veya dal düşmesi gibi fiziksel tehlikeler ve uzun süreli motor kullanımına bağlı titreşim risklerinin tamamı bu alanda mevcuttur.
+                    </div>
+                </div>
+
+                <!-- Soru 13 (2022 Çıkmış Soru Özgünleştirme) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 13</div>
+                    <div class="question-text">Büyükbaş ve küçükbaş hayvan yetiştiriciliğinde ambarlar ve ahırlar gibi hava sirkülasyonunun az, mikrobiyolojik yoğunluğun yüksek olduğu kapalı alanlarda çalışan personelin sağlığını korumak adına öncelikli olarak verilmesi gereken kişisel koruyucu donanım (KKD) aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> İş ayakkabısı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>B)</span> Hava süzen maske</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>C)</span> Baş koruyucu (Baret)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Siperlikli kask</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> Mekanik korumalı iş eldiveni</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Uzman Çözümü:</strong> Ahır ve ambar içlerinde solunabilir ortam havası; çürüme gazları, hayvan atıkları kaynaklı patojenler ve organik tozlar nedeniyle tehlikelidir. En öncelikli korunma "Hava süzen maske" ile solunum yolunun kapatılmasıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 14 (2022/2023 Çıkmış Soru Özgünleştirme) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 14</div>
+                    <div class="question-text">I. Çalışanların örgütsüz olmaları veya sendikal faaliyetlerin zayıflığı<br>II. Mevsimlik çalışan sayısının veya yer değiştirme oranının çok düşük olması<br>III. Çalışanların eğitim seviyelerinin yetersiz olması<br>IV. Kadın işçilerin sektörde çoğunlukta olması<br><br>Yukarıdakilerden hangileri tarım sektöründe İSG uygulamalarının arzulanan seviyeye ulaşmasına engel olan temel sosyo-kültürel nedenlerdendir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>A)</span> Yalnız I</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> II ve III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>C)</span> I ve III</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>D)</span> I, III ve IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> I, II, III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Uzman Çözümü:</strong> Mevsimlik çalışma oranın 'düşük' olması değil aksine çok 'yüksek' ve değişken olması bir problemdir (II yanlıştır). Ancak eğitimsizlik, örgütsüzlük ve daha kırılgan bir grup olan kadın emeğinin yoğunluğu İSG'nin gelişmesine temel engellerdir.
+                    </div>
+                </div>
+
+                <!-- Soru 15 (2022 Çıkmış Soru Özgünleştirme) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 15</div>
+                    <div class="question-text">Ağaç kesme ve boylama operatörü olarak çalışan bir personelin mesleki gereklilikleri arasında aşağıdakilerden hangisi teknik ve doğrudan bir zorunluluk olarak <u>yer almaz</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> İş sağlığı ve güvenliği bilgisi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> Acil durum ve ilk yardım bilgisi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>C)</span> Sürücü belgesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> Çevre koruma standartları bilgisi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Ağacın yapısal özellikleri bilgisi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Uzman Çözümü:</strong> Ağaç boylama ve kesim operatörünün iş makinelerini sahada doğru yönetmesi, ilk yardım ve ağaç analizini bilmesi şarttır. Ancak genel bir araç kullanımı anlamına gelen "Sürücü belgesi" doğrudan bir mesleki şart değildir.
+                    </div>
+                </div>
+
+                <!-- Soru 16 (2023 Çıkmış Soru Özgünleştirme) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 16</div>
+                    <div class="question-text">Tarım ve ormancılık faaliyetlerinde sıkça karşılaşılan; arı, yaban arısı, sinek, akar (mayt), örümcek, akrep veya yılan sokması gibi olayların vücutta meydana getirdiği reaksiyonlar ve doku zedelenmeleri İSG terminolojisinde hangi tehlike sınıfı kapsamında değerlendirilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>A)</span> Dermatolojik tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>B)</span> Solunum yolları tehlikeleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>C)</span> Toksik ve neoplastik tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> Mekanik ve termal stres tehlikeleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Psikososyal tehlikeler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Uzman Çözümü:</strong> Böcek ısırmaları ve haşere sokmaları doğrudan cildi ve cilt altı dokuyu etkileyen, yerel enflamasyonlar ve alerjiler yaratan tehlikeler olup, İSG literatüründe dermatolojik (ciltle ilgili) tehlikeler olarak tasnif edilir.
+                    </div>
+                </div>
+
+                <!-- Soru 17 (2024/2025 Çıkmış Soru Özgünleştirme) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 17</div>
+                    <div class="question-text">Tarım sektöründe çalışanların yaygın olarak temas ettiği kimyasal kaynaklı unsurlar vardır. Özellikle yoğun pestisit (tarım ilacı), kimyasal gübre ve mekanizasyonda kullanılan yakıtlardan (egzoz emisyonları dahil) kaynaklanan tehlikeler hangi ana sınıf içerisinde değerlendirilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> Psikolojik tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> Fiziksel tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>C)</span> Ergonomik tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> Mekanik tehlikeler</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>E)</span> Toksikolojik tehlikeler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Uzman Çözümü:</strong> Kimyasalların (özellikle zehir özelliği taşıyan tarım ilaçları ve yakıt atıklarının) insan fizyolojisinde yarattığı zehirlenme ve akut/kronik hücre tahribatları doğrudan "Toksikolojik (zehir bilimi ile ilgili) tehlikeler" sınıfına girer.
+                    </div>
+                </div>
+
+                <!-- Soru 18 (2024/2025 Çıkmış Soru Özgünleştirme) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 18</div>
+                    <div class="question-text">Orman ürünleri ve odun üretimi sahalarında ölüm ve ciddi yaralanma olayları yüksek oranda görülmektedir. Aşağıdakilerden hangisi sahadaki bu yüksek risk tablosunun <u>nedenlerinden biri değildir</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> Çalışan işgücünün sık sık değişmesi ve mevsimlik olması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> Temel ve ileri ağaç kesim teknikleriyle ilgili bilgi eksiklikleri</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>C)</span> Çalışma alanlarının ve arazilerin genel olarak düz bir yapıya sahip olması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>D)</span> İşi organize eden kurumların saha planlamalarındaki eksiklikler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> Sektör bazında yeterli İSG kültürü ve farkındalığının gelişmemiş olması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Uzman Çözümü:</strong> Ormancılık faaliyetlerinin sarp, eğimli, yoğun orman örtülü ve her türlü sert hava koşuluna açık dağlık arazilerde yapılması tehlikeyi artırır. Çalışma alanının 'düz olması' gibi bir durum ormancılığın tabiatına aykırıdır ve bir kaza nedeni değildir.
+                    </div>
+                </div>
+
+                <!-- Soru 19 (2025 Çıkmış Soru Özgünleştirme) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 19</div>
+                    <div class="question-text">Hayvancılık ve ormancılık faaliyetlerinde kullanılan traktörler ve motorlu zincirli testerelerin, açık alanlarda dahi çalışsalar ortama yaydığı <u>en az gürültü düzeyi aralığı</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> 50-60 dB(A)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> 60-70 dB(A)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>C)</span> 75-85 dB(A)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>D)</span> 90-100 dB(A)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> 130-150 dB(A)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Uzman Çözümü:</strong> Mekanizasyon araçlarından olan traktörler ve içten yanmalı motorlara sahip zincirli testereler çok ciddi gürültü kaynaklarıdır. Araştırmalara göre bu araçların çalışırken yarattığı minimum gürültü aralığı 90-100 dB(A) seviyesindedir ve kulaklık gerektirir.
+                    </div>
+                </div>
+
+                <!-- Soru 20 (Özgün Soru) -->
+                <div class="question-card">
+                    <div class="question-header">Soru 20</div>
+                    <div class="question-text">Türkiye'deki "mevsimlik tarım işçileri" gerçeği göz önüne alındığında, Birleşmiş Milletler Nüfus Fonu (UNFPA) ve Harran Üniversitesi'nin ortak saha çalışmalarına göre bu göç hareketlerinin en yoğun olduğu ve dolayısıyla İSG risklerinin tavan yaptığı aylar hangi seçenekte doğru verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> Ocak, Şubat, Mart</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>B)</span> Mart, Mayıs, Ekim</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>C)</span> Nisan, Temmuz, Eylül</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> Haziran, Ağustos, Kasım</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> Ağustos, Ekim, Aralık</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Uzman Çözümü:</strong> Türkiye coğrafyasında tarım takvimi incelendiğinde ekim, çapalama ve çeşitli bölgesel ürünlerin (fındık, pamuk, pancar vs.) hasat dönemlerinin çakıştığı Nisan, Temmuz ve Eylül ayları mevsimlik işçi göçünün en yoğunlaştığı aylardır.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="no-print">
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                // Show correct answer automatically
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            // Show solution button
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Çözümü Göster';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "Sınav Bitti";
+            
+            // Lock all unanswered questions and show solutions
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

@@ -1,25 +1,646 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 4 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Sektörel İSG | Ünite 4 - TEST 3 (Vaka Analizleri)</title>
+    <style>
+        :root {
+            /* Ünite 4 Test 3: Vaka Analizi - Koyu Mor ve Altın Sarısı Teması */
+            --primary: #4c1d95;    /* Koyu Mor */
+            --accent: #fbbf24;     /* Altın Sarısı */
+            --bg: #f5f3ff;         /* Çok Açık Mor Arka Plan */
+            --panel-bg: #ffffff;   /* Beyaz Panel */
+            --text: #1e1b4b;       /* Çok Koyu Mor Metin */
+            --light-gray: #e5e7eb;
+            --green: #10b981;
+            --red: #ef4444;
+            --gold: #f59e0b;
+            --dark-purple: #2e1065;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #2e1065 0%, #4c1d95 100%); color: white; padding: 3rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 8px 20px rgba(76, 29, 149, 0.2); }
+        header h1 { margin: 0; font-size: 2.3rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: #ffffff; }
+        header p { margin: 0.8rem 0 0 0; color: #fde68a; font-weight: 700; font-size: 1.25rem; letter-spacing: 1px;}
+        
+        nav { background: #2e1065; padding: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #4c1d95; }
+        .nav-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .nav-btn { background: #4c1d95; color: #ede9fe; border: 1px solid #6d28d9; padding: 0.7rem 1.4rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; letter-spacing: 0.5px; text-transform: uppercase;}
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: #2e1065; border-color: var(--accent); box-shadow: 0 0 15px rgba(251, 191, 36, 0.5); font-weight: 800;}
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(76, 29, 149, 0.08); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--accent); background: #fef3c7; padding: 2rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: inset 0 0 15px rgba(245, 158, 11, 0.08);}
+        .strategy-box h3 { margin-top: 0; color: #b45309; display: flex; align-items: center; gap: 0.6rem; font-size: 1.4rem; text-transform: uppercase; border-bottom: 2px solid #fcd34d; padding-bottom: 0.5rem;}
+        .strategy-box h4 { margin-top: 1.5rem; margin-bottom: 0.5rem; color: #92400e; font-size: 1.15rem; display: flex; align-items: center; gap: 0.4rem;}
+        .strategy-box p { color: #78350f; font-size: 1.05rem; margin-bottom: 0.5rem;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: #78350f; font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.6rem; }
+        .strategy-box .highlight { background: #fde68a; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: bold; color: #78350f;}
+        
+        .start-btn { display: block; width: 100%; max-width: 350px; margin: 3rem auto 1rem; background: var(--primary); color: white; text-align: center; padding: 1.2rem; border-radius: 8px; font-size: 1.3rem; cursor: pointer; border: none; font-weight: 800; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(76, 29, 149, 0.4);}
+        .start-btn:hover { background: #5b21b6; box-shadow: 0 6px 20px rgba(76, 29, 149, 0.6); transform: translateY(-3px); }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1.2rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--accent); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px);}
+        .btn-primary { background: var(--accent); color: #2e1065; }
+        .btn-secondary { background: #6b7280; color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid var(--light-gray); padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;}
+        .question-card:hover { border-color: var(--primary); box-shadow: 0 8px 30px rgba(76, 29, 149, 0.12);}
+        
+        .vaka-badge { position: absolute; top: -15px; right: 2.5rem; background: var(--accent); color: #78350f; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); border: 2px solid #fff;}
+        
+        .question-header { font-weight: 900; color: white; background: var(--primary); display: inline-block; padding: 0.6rem 1.4rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 1rem; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: var(--dark-purple); }
+        .question-text em { color: #5b21b6; background: #f5f3ff; padding: 0.2rem 0.4rem; border-radius: 4px; font-style: normal; font-weight: 700;}
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.1rem; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #f9fafb; color: #374151; font-weight: 600;}
+        .option span { font-weight: 800; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; background: #9ca3af; border-radius: 6px; font-size: 1.05rem; transition: all 0.3s;}
+        .option:hover:not(.locked) { background: #ffffff; border-color: var(--primary); box-shadow: 0 4px 10px rgba(76, 29, 149, 0.1);}
+        .option:hover:not(.locked) span { background: var(--primary); color: white;}
+        .option.locked { cursor: default; }
+        .option.correct { background: #ecfdf5; border-color: var(--green); color: #065f46; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fef2f2; border-color: var(--red); color: #991b1b; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 800; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: #f5f3ff; border-left: 5px solid var(--primary); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: var(--dark-purple); box-shadow: inset 0 0 15px rgba(76, 29, 149, 0.05); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: var(--primary); font-weight: 900; font-size: 1.15rem; display: block; margin-bottom: 0.8rem; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 4rem 2rem; background: white; border-radius: 12px; border-top: 8px solid var(--primary); display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .results-section h2 { font-size: 2.6rem; color: var(--dark-purple); margin-top: 0; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.8rem 3rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; border: 1px solid #e5e7eb; box-shadow: 0 6px 15px rgba(0,0,0,0.05); background: #f9fafb;}
+        .stat span { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #6b7280;}
+        .stat.correct { color: var(--green); border-color: #34d399; background: #ecfdf5;}
+        .stat.wrong { color: var(--red); border-color: #fca5a5; background: #fef2f2;}
+        .stat.empty { color: #6b7280; }
+        .stat.net { color: var(--primary); border-color: var(--primary); transform: scale(1.08); box-shadow: 0 10px 25px rgba(76, 29, 149, 0.2); background: white;}
+        
+        footer { background: #2e1065; color: #c4b5fd; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1.05rem; border-top: 5px solid var(--accent); font-weight: 600; letter-spacing: 1px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: none; padding: 0; margin-bottom: 0;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px solid #e5e7eb; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .vaka-badge { border: 1px solid #000; color: #000; background: #eee; }
+            .solution-box { display: block !important; border: 1px solid #9ca3af; background: #f9fafb; padding: 1rem; margin-top: 1rem; color: black; }
+            .option { border: 1px solid #e5e7eb; background: white; color: black; margin-bottom: 0.5rem;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 4 - Test 3</h2>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 4: Gıda Ürünleri Üretimi - TEST 3 (Vaka Analizi & Senaryolar)</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">⬅️ Çıkmış Sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn active">Test 3 (Vaka)</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn">Test 5</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.4rem; margin-bottom: 0.5rem; text-transform: uppercase;">Senaryo ve Vaka İnceleme Testi</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: #4b5563; margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>🔍 Test 3 Hazırlık Stratejisi (Vaka Analizi)</h3>
+                <p>Bu test, Gıda sektöründe yaşanmış / yaşanabilecek kazaları ve sağlık sorunlarını senaryolaştırarak teorik bilgilerinizi pratikle birleştirmenizi sağlar.</p>
+                
+                <h4>💡 Odaklanılan Vaka Türleri:</h4>
+                <ul>
+                    <li><span class="highlight">Makine Kazaları:</span> Kıyma makineleri, hamur yoğurucular ve konveyör bantlarda yaşanan uzuv kayıplı kazaların kök nedenleri.</li>
+                    <li><span class="highlight">Biyolojik Vakalar:</span> Çiğ süt ve etle temas eden işçilerde görülen Brusella, Salmonella tabloları ve tarım depolarındaki Aflatoksin zehirlenmeleri.</li>
+                    <li><span class="highlight">Kapalı Alan (Silo) Vakaları:</span> Buğday silolarında organik bozunma (fermantasyon) sonucu oluşan asfiksi (boğulma) durumları (CO2 ve Azot oksitler).</li>
+                    <li><span class="highlight">HACCP Süreç Senaryoları:</span> Üretim hattında kritik limitin aşılması durumunda o anda yapılan işlemin HACCP'in hangi prensibine (Örn: Düzeltici faaliyet) girdiği.</li>
+                    <li><span class="highlight">Kimyasal Sızıntılar:</span> Dondurma tesislerindeki soğutucu amonyak kaçakları ve temizlik maddelerinin yanlış karıştırılması (Klor gazı) vakaları.</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Vaka Analizlerine Başla</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir 🛑</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Test 3 Vaka Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru Çözüm</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Hatalı Çözüm</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş Bırakılan</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 1 / Makine Güvenliği</div>
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir et işleme tesisinde işçi, parça etleri küçük tip et kıyma makinesine elle beslemektedir. İşlem sırasında işçinin parmakları makinenin dönen helezon (bıçak) kısmına kapılır ve ciddi bir uzuv kaybı (ampütasyon) yaşanır.<br><br>Yapılan İSG incelemesinde makinenin tasarımında standartlara uyulmadığı tespit edilmiştir. İSG kurallarına göre, bu kazanın yaşanmaması için makinenin besleme ağzı çapı <u>en fazla kaç mm</u> olmalıydı?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> 35 mm</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>B)</span> 54 mm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>C)</span> 70 mm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> 100 mm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> 120 mm</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>🔍 Dedektif Notu:</strong> Ders kitabı (Neler Öğrendik Soru 7) ve 2022 çıkmış sorusuna göre; küçük tip et kıyma makinelerinde elin dönen helezona ulaşmasını (kapılmasını) mekanik olarak engellemek için besleme ağzı çapı maksimum <strong>54 mm</strong> olarak tasarlanmalıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 2 / Kapalı Alan Asfiksi</div>
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir un fabrikasının buğday depolama silolarından birinde tıkanıklık meydana gelmiştir. Tıkanıklığı açmak için silonun içine maskesiz giren işçi, birkaç saniye içinde bilincini kaybederek buğday yığınının üzerine yığılır.<br><br>Yukarıdaki kapalı alan (silo) kazasında, tahılların uzun süre beklemesi ve kendi kendini ısıtarak (fermantasyon) ortamdaki oksijeni tüketmesi sonucu, işçinin aniden boğulmasına (asfiksi) neden olan temel gazlar aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Karbonmonoksit ve Hekzan</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> Metan ve Hidrojen Sülfür</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>C)</span> Karbondioksit ve Azot Oksitler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> Amonyak ve Klor Gazı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> Ozon ve Radon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>🔍 Dedektif Notu:</strong> Tahıl silolarında buğday, mısır gibi ürünlerin aylarca beklemesi sırasında organik bozunma gerçekleşir. Oksijen tükenir, yerine havadan ağır olan <strong>Karbondioksit (CO2) ve Azot oksitler</strong> çöker. Bu gazlar anında bilinci kapatarak asfiksiye (boğulmaya) neden olur.
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 3 / HACCP Sistemi</div>
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Süt ürünleri imalatı yapan bir fabrikada, sütün içindeki zararlı bakterilerin yok edilmesi için uygulanan pastörizasyon işleminin kritik limiti 72°C'de 15 saniye olarak belirlenmiştir. Operatör ekranı izlerken sıcaklığın aniden 68°C'ye düştüğünü (kritik limitin dışına çıkıldığını) görür. Bunun üzerine operatör hemen bir vanayı çevirerek yeterince ısınmamış olan bu sütü paketlemeye değil, tekrar ısıtma (geri dönüş) tankına yönlendirir.<br><br>HACCP prensiplerine göre, operatörün arızayı fark edip anında yaptığı bu müdahale hangi adımın karşılığıdır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> Tehlike Analizi Yapılması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> Kritik Kontrol Noktalarının (KKN) Belirlenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>C)</span> İzleme Prosedürlerinin Kurulması</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>D)</span> Düzeltici Faaliyetlerin (Corrective Action) Uygulanması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> Doğrulama İşlemlerinin Yapılması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>🔍 Dedektif Notu:</strong> Kritik limitte bir "sapma" olduğu (hedefin dışına çıkıldığı) anda, güvenli olmayan ürünün piyasaya çıkmasını engelleyerek süreci kontrol altına alan bu spesifik acil müdahale adımına HACCP'te <strong>Düzeltici Faaliyet (Corrective Action)</strong> adı verilir.
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 4 / Kimyasal Zehirlenme</div>
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir gıda tesisinin temizlik (CIP - Clean In Place) prosedürü sırasında, vardiyaya yeni başlayan tecrübesiz bir işçi, inatçı tortuları daha hızlı çözmek umuduyla asit bazlı kireç çözücü ile sodyum hipoklorit (çamaşır suyu) bazlı dezenfektanı aynı kovanın içinde karıştırır. Karışım aniden fokurdamaya başlar ve ortama yeşilimsi sarı renkte boğucu bir gaz yayılır. İşçi akciğer ödemi geçirerek hastaneye kaldırılır.<br><br>Bu iki yaygın temizlik kimyasalının birleşmesiyle açığa çıkan ve gıda sektöründe ölümcül olabilen bu toksik gaz aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Karbonmonoksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Sülfürik asit buharı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>C)</span> Klor Gazı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> Amonyak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> Metan Gazı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>🔍 Dedektif Notu:</strong> Çamaşır suyu (sodyum hipoklorit) ile herhangi bir asit (tuz ruhu, kireç çözücü vb.) birleştiğinde anında kimyasal reaksiyona girerek çok zehirli ve boğucu olan <strong>Klor Gazı</strong> açığa çıkarır. Temizlik personeli eğitimlerinde en çok vurgulanması gereken kimyasal risktir.
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 5 / Biyolojik Hastalık</div>
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir süt ürünleri ve peynir üretim tesisinde, çiğ sütün alım ve kalite kontrol aşamasında eldivensiz çalışan iki laborantta bir süre sonra dalgalı (inip çıkan) yüksek ateş, gece terlemesi, halsizlik ve şiddetli eklem ağrıları görülür. Yapılan tetkiklerde, personelin çiğ sütten zoonoz (hayvandan insana geçen) bakteriyel bir enfeksiyon kaptığı tespit edilir.<br><br>Bu belirtilere neden olan ve halk arasında "Malta Humması" olarak da bilinen, hayvancılık/süt sektörünün en yaygın mesleki biyolojik tehlikesi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> Tüberküloz (Verem)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>B)</span> Salmonelloz</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>C)</span> Bruselloz (Brucella)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>D)</span> Şarbon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> Silikozis</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>🔍 Dedektif Notu:</strong> Çiğ süt, taze peynir ve hasta hayvanın vücut sıvılarıyla doğrudan temas sonucu bulaşan, dalgalı ateş ve eklem ağrısıyla karakterize zoonoz hastalık <strong>Bruselloz (Malta Humması)</strong>'dur. Süt imalatı çalışanları için birincil biyolojik risktir.
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 6 / Ergonomi ve cilt</div>
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Su ürünleri işleme tesisinde balık temizleyen işçiler, ellerini suya ve bakterilere karşı korumak için vardiya boyunca kalın lastik (kauçuk) eldivenler takmaktadır. Aylar sonra, işçilerin büyük çoğunluğunun ellerinde havasızlığa bağlı aşırı terleme, cildin yumuşayıp soyulması (maserasyon) ve mantar/egzama şikayetleri ortaya çıkar.<br><br>İSG mevzuatı ve hijyen standartlarına göre, lastik eldivenin neden olduğu bu cilt hastalığı vakalarını önlemek için uygulanması gereken en pratik önlem aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> İşçilerin eldivensiz (çıplak elle) çalışmasına izin vermek</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>B)</span> Lastik eldivenlerin altına ter emici (pamuklu) astar eldivenler giydirmek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> Eldivenlerin ucunu keserek hava almasını sağlamak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> Sadece kaynakçıların kullandığı kalın deri eldivenler vermek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>E)</span> İşçilerin ellerini her saat başı çamaşır suyu ile yıkamasını sağlamak</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>🔍 Dedektif Notu:</strong> Lastik/nitril eldivenlerin cildi havasız bırakarak terletmesi gıda sektöründe yaygın bir kontakt dermatit nedenidir. Bunu önlemenin endüstriyel standart çözümü; lastik eldivenin altına <strong>ter emici (cildin doğal nemini koruyan) pamuklu eldiven</strong> giyilmesidir.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 7 / Toz Patlaması</div>
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir un fabrikasının paketleme ünitesinde, arızalı bir elektrik motorundan çıkan kıvılcım, zeminde ve borularda birikmiş olan ince un tozunu tutuşturur. Önce küçük ve lokal bir patlama (Puff) meydana gelir. Ancak bu küçük patlamanın yarattığı şok dalgası, deponun kirişlerinde ve raflarında yıllardır birikmiş olan tonlarca un tozunu havaya kaldırarak devasa bir bulut oluşturur. Bir saniye sonra, havada asılı kalan bu yoğun un bulutu alev alır ve tüm fabrikayı yıkan devasa bir felaket yaşanır.<br><br>Literatürde fabrikanın tamamen yıkılmasına neden olan bu "ikinci ve çok daha şiddetli" patlama sürecine ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Jet Yangını (Jet Fire)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>B)</span> BLEVE (Kaynayan Sıvı Genleşen Buhar Patlaması)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> Asfiksi (Boğulma) Reaksiyonu</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>D)</span> Sekonder (İkincil) Toz Patlaması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> Havuz Yangını (Pool Fire)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>🔍 Dedektif Notu:</strong> Organik toz (un, şeker, nişasta) patlamalarının en ölümcül özelliği zincirleme (seri) olmasıdır. Birincil patlama küçük olsa da, yarattığı basınçla yatışmış tozları havaya kaldırır. Havaya kalkan bu yoğun bulutun patlamasına <strong>İkincil (Sekonder) Toz Patlaması</strong> denir ve yıkımın asıl nedenidir.
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 8 / Ergonomik Hastalık</div>
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Konserve fabrikasında sebze ayıklama hattında çalışan bir kadın işçi, günde 8 saat boyunca sürekli olarak bileğini bükerek ve parmaklarını kullanarak aynı kesme işlemini yapmaktadır. İki yılın sonunda sağ elinin baş, işaret ve orta parmağında şiddetli uyuşma, karıncalanma ve gece uykudan uyandıran ağrılar şikayetiyle doktora başvurur.<br><br>Yapılan EMG testinde el bileğindeki "Median Sinir"in kanalda sıkıştığı tespit edilir. Bu ergonomik meslek hastalığının tıbbi literatürdeki adı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>A)</span> Lumbago</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>B)</span> Karpal Tünel Sendromu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>C)</span> Silikozis</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Beyaz Parmak Sendromu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Kontakt Dermatit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>🔍 Dedektif Notu:</strong> Gıda sektöründe sürekli tekrarlayan el/bilek hareketlerinden (bıçak kullanma, paketleme) kaynaklanan ve median sinirin bilek kanalında (karpal tünelde) sıkışmasıyla karakterize olan hastalık <strong>Karpal Tünel Sendromu</strong>'dur (Neler Öğrendik Soru 8).
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 9 / İşleme Yöntemi</div>
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> İhraç edilmek üzere hazırlanan çuvallar dolusu kırmızı biber ve karabiberin içinde, uzun süreli taşıma sırasında güve, böcek yumurtası veya bakteri üremesini engellemek gerekmektedir. Ancak bu baharatlara ısıl işlem (fırınlama) veya kimyasal gaz uygulanırsa ürünün aroması ve kalitesi bozulmaktadır.<br><br>Bu durumda, ürünün kalitesini bozmadan DNA seviyesinde mikroorganizmaları ve böcekleri yok ederek raf ömrünü uzatan fiziksel işleme (2024 çıkmış soru) ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Evaporasyon (Buharlaştırma)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> Ekstraksiyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>C)</span> Fermantasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> Rafinasyon</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>E)</span> Işınlama (İradyasyon)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>🔍 Dedektif Notu:</strong> Özellikle baharatlar ve soğan/patates gibi tarım ürünlerinde, kaliteyi bozmadan içlerindeki patojenleri ve böcekleri yok etmek (filizlenmeyi önlemek) için kontrollü X veya Gama ışınları uygulanır. Bu yönteme <strong>Işınlama</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 10 / Kimyasal Katkı Riski</div>
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Sucuk, salam ve sosis gibi ileri işlenmiş et ürünlerinin üretildiği bir tesiste, çalışanlar et hamurunun içine koruyucu bir toz madde eklemektedir. Bu madde, etin raflarda "kırmızı/pembe" rengini korumasını ve zehirli botulinum bakterisinin üremesini engellemektedir. Ancak İSG uzmanı, çalışanların bu tozun buharını solumamaları için N95 maske takmalarını şart koşmuştur, çünkü bu kimyasalın uzun vadede "kanserojen" olduğu bilinmektedir.<br><br>Vakada bahsedilen ve 2025 yılı çıkmış sorusunda da yer alan bu tehlikeli kimyasal katkı maddesi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>A)</span> Nitrat / Nitrit Tuzları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> Sodyum Klorür (Sofra Tuzu)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>C)</span> Aminoasitler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>D)</span> Askorbik Asit (C Vitamini)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> Glikoz Şurubu</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>🔍 Dedektif Notu:</strong> İşlenmiş etlere karakteristik rengini veren ve bakteri önleyici olarak eklenen, ancak solunduğunda nitrosaminlere dönüşerek kanserojen risk oluşturan kimyasallar <strong>Nitrat ve Nitrit</strong> tuzlarıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 11 / Fiziksel Kirlenme</div>
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir zeytinyağı dolum tesisinde, şişeleme makinesindeki bir cam şişe kırılır. Hattın durdurulmasında gecikme yaşandığı için kırık cam parçalarından birkaçı yan banttaki sağlam şişelerin içine düşer ve ürünlerle birlikte ambalajlanır. Tüketici bu ürünü açtığında içinde cam kırığı bulur ve firmayı şikayet eder.<br><br>Gıda güvenliği (HACCP) yönetimine göre ürüne dışarıdan karışan cam, metal, taş, saç teli gibi maddeler hangi spesifik tehlike başlığı altında sınıflandırılır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> Kimyasal Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> Biyolojik Tehlikeler</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>C)</span> Fiziksel Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>D)</span> Çapraz Kontaminasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> Ergonomik Tehlikeler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>🔍 Dedektif Notu:</strong> Gıda ürününün doğasında bulunmayan ve ürüne kazara karışan her türlü sert/yabancı cisim (cam, metal, taş, tahta, vida, tel) <strong>Fiziksel Tehlikeler</strong> sınıfına girer. (2021 ve 2022 çıkmış soru).
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 12 / Kimyasal Gaz (Amonyak)</div>
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Dondurma ve şoklanmış sebze üreten büyük bir fabrikanın endüstriyel soğutma odasında boru çatlaması meydana gelir. Ortama anında göz yaşartıcı, nefes kesici ve keskin kokulu bir gaz yayılır. Maskesiz içeri giren iki işçi solunum yetmezliği ve körlük tehlikesiyle acile kaldırılır.<br><br>Gıda endüstrisindeki bu devasa soğutma sistemlerinde sızıntı durumunda kimyasal zehirlenmelere (akciğer ödemi) neden olan bu gaz aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>A)</span> Amonyak (NH3)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>B)</span> Oksijen (O2)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> Metan Gazı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> Helyum</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> Argon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>🔍 Dedektif Notu:</strong> Endüstriyel dev soğutma ünitelerinde (et, süt, dondurma tesisleri) soğutucu akışkan olarak yüksek veriminden dolayı genellikle <strong>Amonyak</strong> kullanılır. Kaçak durumunda gözleri ve solunum yollarını anında tahriş eden çok tehlikeli bir kimyasaldır.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 13 / İstatistik ve Şiddet</div>
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir gıda fabrikasının yıllık iş kazası raporu incelendiğinde; kazaların %60'ının kayma/düşme ve elle taşıma kaynaklı hafif sıyrıklar olduğu görülmektedir. Makinelere kapılma (konveyör, mikser, şerit testere) kazaları ise toplam kazaların sadece %7'sini oluşturmaktadır. Ancak bu %7'lik dilimdeki kazaları geçiren işçilerin tamamı kollarını kaybetmiş veya hayatını yitirmiştir.<br><br>Bu vakadan yola çıkarak, gıda sektöründeki makine kazaları hakkında İSG uzmanının yönetime sunacağı rapordaki <u>en doğru tespit</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> Makine kazaları sayıca az olduğu için risk değerlendirmesinde önemsenmemelidir.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> Kayma ve düşmeler, makine kazalarından daha fazla ölüme yol açmaktadır.</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>C)</span> Makine kazaları sayısal (olasılık) olarak düşük gibi görünse de, yol açtığı şiddet (ölüm/uzuv kaybı oranı %10'dan fazla) açısından sektörün en büyük tehlikesidir.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Makineler tamamen fabrikadan çıkarılıp her şey insan gücüyle yapılmalıdır.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> Gıda sektöründe makine kazalarının oranı %85'tir ve en sık görülen kaza türüdür.</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>🔍 Dedektif Notu:</strong> Kitapta açıkça belirtildiği üzere: Makine ve ekipman kazaları genel kaza toplamı içinde sadece <strong>%7</strong> yer tutar (olasılık düşüktür). Ancak bu kazalar gerçekleştiğinde sonuçları çok ağırdır ve sektördeki ölümle sonuçlanan kazaların %10'undan fazlasını oluşturur (şiddet yüksektir).
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 14 / Karar Mekanizması</div>
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Gıda mühendisi, yeni kurulan bir kek üretim hattında tehlike analizi yapmaktadır. Pişirme fırınının sıcaklık aşamasının bir "Kritik Kontrol Noktası (KKN)" olup olmadığını belirlemekte kararsız kalır. Bu aşamada tehlikenin tamamen yok edilip edilemediğini saptamak için birbirini izleyen 4 adet mantıksal (Evet/Hayır) soru şablonu kullanır.<br><br>HACCP metodolojisinde bir noktanın KKN olup olmadığına karar vermek için kullanılan bu evrensel soru-cevap şablonunun adı nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>A)</span> Pareto Analizi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>B)</span> Karar Ağacı (Decision Tree)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>C)</span> Balık Kılçığı Diyagramı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Matris Yöntemi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> 5 Neden Analizi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>🔍 Dedektif Notu:</strong> HACCP sisteminde, bir tehlikenin kontrol altında tutulması gereken "Kritik Kontrol Noktası (KKN)" olup olmadığını saptamak için standartlaştırılmış <strong>Karar Ağacı (Decision Tree)</strong> soruları kullanılır.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 15 / Fiziksel Etmen (Gürültü)</div>
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir peynir üretim tesisinde, sütün yağ moleküllerini parçalayan ve sütün homojen olmasını sağlayan cihazın (homojenizatör) yanında çalışan operatör, vardiya sonunda sürekli kulak çınlaması ve baş ağrısı yaşadığını bildirir. Yapılan ortam ölçümlerinde, cihazın yaydığı gürültü seviyesinin 88 dB(A) olduğu tespit edilmiştir.<br><br>Yasal mevzuata göre, gürültü seviyesinin 85 dB(A)'yı aştığı bu durumda işverenin atması gereken <u>kesin hukuki adım</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> Çalışana sadece bir ağrı kesici vermek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> Kulak koruyucuları masanın üzerine koyup kullanmayı işçinin inisiyatifine bırakmak</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>C)</span> Çalışana uygun kulak koruyucu donanım (baret/tıkaç) vermek ve kullanılmasını kesin olarak zorunlu kılmak (denetlemek)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> Gürültü 90 dB(A) olmadığı sürece hiçbir önlem almamak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> İşçinin kulakları alışana kadar cihazı daha da hızlı çalıştırmak</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>🔍 Dedektif Notu:</strong> 80 dB(A) seviyesinde kulaklık hazır bulundurulur (kullanım tavsiye edilir). Ancak En Yüksek Maruziyet Eylem Değeri olan <strong>85 dB(A) aşıldığında</strong> kulak koruyucu donanımların kullanılması yasal olarak <strong>mecburidir (zorunludur)</strong>.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 16 / Proses Yönetimi</div>
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir meyve suyu ve pekmez imalat fabrikasında, meyve suyunun içindeki suyun bir kısmının uzaklaştırılarak ürünün yoğun (kıvamlı) hale getirilmesi gerekmektedir. İSG uzmanı, bu işlem sırasında kullanılan basınçlı kazanların periyodik kontrollerinin yapılması gerektiğini raporlamıştır.<br><br>Vakada bahsedilen ve suyun buharlaştırılarak uzaklaştırılmasını sağlayan bu gıda endüstrisi işlemine (2022 çıkmış soru) ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> Rafinasyon</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>B)</span> Evaporasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>C)</span> Fermantasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> Pastörizasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Vinterizasyon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>🔍 Dedektif Notu:</strong> Salça, reçel, pekmez ve meyve suyu konsantrelerinin üretiminde; ürünün içindeki suyun ısıl işlemlerle (basınçlı buhar kazanlarında) buharlaştırılarak uzaklaştırılmasına <strong>Evaporasyon</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 17 / Standartlar (ISO)</div>
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir et entegre tesisi, ürünlerini Avrupa'daki büyük bir perakende market zincirine satmak üzere anlaşma imzalar. Karşı taraf, ürünlerin tarladan çatala kadar güvenli olduğunu kanıtlamak için tesisten uluslararası geçerliliği olan bir "Gıda Güvenliği Yönetim Sistemi" belgesi talep eder.<br><br>Fabrikanın alması gereken, gıda güvenliği alanındaki evrensel (HACCP tabanlı) ISO standardı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> ISO 9001</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> ISO 14001</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>C)</span> ISO 22000</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> OHSAS 18001 / ISO 45001</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> ISO 27001</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>🔍 Dedektif Notu:</strong> 9001 kalite, 14001 çevre, 45001 iş güvenliği standardıdır. Tarladan çatala kadar gıda güvenliğini kapsayan, HACCP sisteminin uluslararası ISO formatındaki karşılığı ise <strong>ISO 22000 Gıda Güvenliği Yönetim Sistemi</strong>'dir.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 18 / Solunum Tozları</div>
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Endüstriyel bir ekmek fırınında hamur hazırlama (miks) bölümünde çalışan işçi, günde onlarca çuval unu makinelere boşaltmaktadır. Yıllar sonra işçide kronikleşen astım, nefes alırken hırıltı ve şiddetli göğüs ağrısı tespit edilir. İşyeri hekimi rahatsızlığın mesleki maruziyetten kaynaklandığını belirtir.<br><br>Vakada bahsedilen ve fırıncı/un işçilerinde en sık görülen (hem patlama hem solunum tehlikesi yaratan) bu organik madde aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> Silika tozu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> Asbest lifleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>C)</span> Pamuk tozu (Bissinoz)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>D)</span> Un tozu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> Karbonmonoksit gazı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>🔍 Dedektif Notu:</strong> Fırıncılarda "Fırıncı Astımı"na yol açan, deri döküntüsü yapan ve kıvılcımla buluştuğunda çok şiddetli organik toz patlamalarına neden olan temel tehlike kaynağı <strong>Un Tozu</strong>'dur.
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 19 / Biyolojik Kanser</div>
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> İhracat yapan bir kuruyemiş ve mısır işleme fabrikasında, ürünlerin tarladan depoya kadar uygun olmayan (sıcak ve nemli) şartlarda bekletilmesi sonucu <em>Aspergillus flavus</em> cinsi bir küf mantarı türemiştir. Bu küfün tozlarını soluyan depo işçilerinde yıllar sonra karaciğer yetmezliği ve kanser vakaları baş gösterir.<br><br>Vakada tarif edilen ve dünyanın en tehlikeli doğal biyolojik zehirlerinden (kanser yapıcı) biri sayılan bu madde aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> Histamin</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>B)</span> Aflatoksin</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>C)</span> Botulinum</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>D)</span> Şarbon sporu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> Kükürtdioksit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>🔍 Dedektif Notu:</strong> Fındık, fıstık, mısır, pamuk gibi ürünlerin uygunsuz koşullarda depolanmasıyla oluşan Aspergillus flavus küfünün ürettiği ölümcül toksin <strong>Aflatoksin</strong>'dir. Karaciğer kanserini tetikler.
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Vaka 20 / Çözüm Hiyerarşisi</div>
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text"><em>Senaryo:</em> Bir şeker imalat fabrikasında, işçiler her biri 50 kilogram ağırlığındaki şeker çuvallarını insan gücüyle sırtlayarak kamyonlara yüklemektedir. Fabrikada bel fıtığı vakaları rekor seviyeye ulaşmıştır.<br><br>İSG uzmanı bu durumu çözmek için "Riskleri kaynağında yok etme" ve "Mekanik sistemler kurma" prensibine uygun bir rapor hazırlar. Uzmanın hazırladığı raporda çözüm olarak aşağıdakilerden hangisinin yer alması beklenir? (2024 ve 2025 Çıkmış Kavramı)</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> İşçilere belleri ağrıdığında kullanmaları için krem dağıtılması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>B)</span> İşçilerin çuvalları kaldırırken dizlerini bükmeleri konusunda sözlü uyarılması</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>C)</span> Çuvalların insan gücü yerine konveyör bant sistemleri veya vakumlu taşıyıcılarla yüklenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> 50 kg'lık çuvalların sadece genç erkek işçilere taşıtılması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> İşçilere her gün 10 dakika fazla mola verilmesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>🔍 Dedektif Notu:</strong> İSG Hiyerarşisine göre en doğru adım tehlikeyi (insan gücüyle ağır taşımayı) mekanik cihazlarla değiştirmektir. Bel fıtığını önlemek için çıkmış sınavlarda da cevabı olan en etkili teknik önlem <strong>Konveyör bant ve vakumlu taşıyıcı (makaslı kaldıraç) sistemlerinin kurulmasıdır.</strong>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                // Yanlış cevapta doğruyu otomatik göster (yeşil)
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Vaka Çözümü';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // Net Hesaplaması (4 Yanlış 1 Doğru)
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SÜRE BİTTİ";
+            
+            // İşaretlenmeyenleri kilitle ve doğru olanı göster
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

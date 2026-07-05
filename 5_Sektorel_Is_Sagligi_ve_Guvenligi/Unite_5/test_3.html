@@ -1,25 +1,643 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 5 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Sektörel İSG | Ünite 5 - TEST 3 (Vaka Analizi)</title>
+    <style>
+        :root {
+            /* Ünite 5: Havacılık İSG - Vaka Analizi Teması (Radar Yeşili & Operasyon Siyahı) */
+            --primary: #064e3b;    /* Koyu Orman/Operasyon Yeşili */
+            --accent: #10b981;     /* Radar / Fosforlu Yeşil */
+            --bg: #f0fdf4;         /* Çok Açık Yeşilimsi Arka Plan */
+            --panel-bg: #ffffff;   /* Beyaz Panel */
+            --text: #0f172a;       /* Koyu Karbon Metin */
+            --light-gray: #cbd5e1;
+            --green: #059669;
+            --red: #ef4444;
+            --steel: #475569;      /* Gri */
+            --dark-blue: #022c22;  /* Çok Koyu Yeşil/Siyah */
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #022c22 0%, #064e3b 100%); color: white; padding: 3rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 8px 20px rgba(6, 78, 59, 0.3); }
+        header h1 { margin: 0; font-size: 2.3rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: #ffffff; }
+        header p { margin: 0.8rem 0 0 0; color: #a7f3d0; font-weight: 700; font-size: 1.25rem; letter-spacing: 1px;}
+        
+        nav { background: #022c22; padding: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #064e3b; }
+        .nav-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .nav-btn { background: #064e3b; color: #f0fdf4; border: 1px solid #047857; padding: 0.7rem 1.4rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; letter-spacing: 0.5px; text-transform: uppercase;}
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: #022c22; border-color: var(--accent); box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); font-weight: 800;}
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(6, 78, 59, 0.08); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--accent); background: #ecfdf5; padding: 2rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: inset 0 0 15px rgba(6, 78, 59, 0.03);}
+        .strategy-box h3 { margin-top: 0; color: #064e3b; display: flex; align-items: center; gap: 0.6rem; font-size: 1.4rem; text-transform: uppercase; border-bottom: 2px solid #a7f3d0; padding-bottom: 0.5rem;}
+        .strategy-box h4 { margin-top: 1.5rem; margin-bottom: 0.5rem; color: #047857; font-size: 1.15rem; display: flex; align-items: center; gap: 0.4rem;}
+        .strategy-box p { color: #022c22; font-size: 1.05rem; margin-bottom: 0.5rem;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: #022c22; font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.6rem; }
+        .strategy-box .highlight { background: #d1fae5; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: bold; color: #064e3b;}
+        
+        .start-btn { display: block; width: 100%; max-width: 350px; margin: 3rem auto 1rem; background: var(--primary); color: white; text-align: center; padding: 1.2rem; border-radius: 8px; font-size: 1.3rem; cursor: pointer; border: none; font-weight: 800; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(6, 78, 59, 0.3);}
+        .start-btn:hover { background: #047857; box-shadow: 0 6px 20px rgba(6, 78, 59, 0.5); transform: translateY(-3px); }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1.2rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--accent); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px);}
+        .btn-primary { background: var(--accent); color: #022c22; }
+        .btn-secondary { background: var(--steel); color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid var(--light-gray); padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;}
+        .question-card:hover { border-color: var(--primary); box-shadow: 0 8px 30px rgba(6, 78, 59, 0.12);}
+        
+        .vaka-badge { position: absolute; top: -15px; right: 2.5rem; background: var(--primary); color: white; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(6, 78, 59, 0.3); border: 2px solid #fff; letter-spacing: 1px;}
+        
+        .question-header { font-weight: 900; color: #022c22; background: var(--accent); display: inline-block; padding: 0.6rem 1.4rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 1rem; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: var(--text); }
+        .question-text u { text-decoration-color: var(--accent); text-decoration-thickness: 3px; text-underline-offset: 3px;}
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.1rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #f8fafc; color: #334155; font-weight: 600;}
+        .option span { font-weight: 800; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; background: #94a3b8; border-radius: 6px; font-size: 1.05rem; transition: all 0.3s;}
+        .option:hover:not(.locked) { background: #ffffff; border-color: var(--accent); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);}
+        .option:hover:not(.locked) span { background: var(--accent); color: #022c22;}
+        .option.locked { cursor: default; }
+        .option.correct { background: #ecfdf5; border-color: var(--green); color: #065f46; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fef2f2; border-color: var(--red); color: #991b1b; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 800; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: #ecfdf5; border-left: 5px solid var(--accent); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: var(--text); box-shadow: inset 0 0 15px rgba(6, 78, 59, 0.03); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: var(--primary); font-weight: 900; font-size: 1.15rem; display: block; margin-bottom: 0.8rem; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 4rem 2rem; background: white; border-radius: 12px; border-top: 8px solid var(--primary); display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .results-section h2 { font-size: 2.6rem; color: var(--text); margin-top: 0; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.8rem 3rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; border: 1px solid #e2e8f0; box-shadow: 0 6px 15px rgba(0,0,0,0.05); background: #f8fafc;}
+        .stat span { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b;}
+        .stat.correct { color: var(--green); border-color: #34d399; background: #ecfdf5;}
+        .stat.wrong { color: var(--red); border-color: #fca5a5; background: #fef2f2;}
+        .stat.empty { color: #64748b; }
+        .stat.net { color: var(--primary); border-color: var(--primary); transform: scale(1.08); box-shadow: 0 10px 25px rgba(6, 78, 59, 0.2); background: white;}
+        
+        footer { background: #022c22; color: #cbd5e1; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1.05rem; border-top: 5px solid var(--accent); font-weight: 600; letter-spacing: 1px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: none; padding: 0; margin-bottom: 0;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .vaka-badge { border: 1px solid #000; color: #000; background: #eee; }
+            .solution-box { display: block !important; border: 1px solid #94a3b8; background: #f8fafc; padding: 1rem; margin-top: 1rem; color: black; }
+            .option { border: 1px solid #e2e8f0; background: white; color: black; margin-bottom: 0.5rem;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 5 - Test 3</h2>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 5: Havacılıkta İş Sağlığı ve Güvenliği - TEST 3 (Vaka Analizleri)</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">⬅️ Çıkmış Sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn active">Test 3 (Vaka)</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn">Test 5</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.4rem; margin-bottom: 0.5rem; text-transform: uppercase;">Uygulamalı Vaka Analizi Sınavı</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--steel); margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>🔍 Vaka Analizi (Case Study) Testinin Amacı</h3>
+                <p>Bu test, Havacılıkta İSG konularını kuru ezberden çıkarıp, bir <strong>İş Güvenliği Uzmanı veya Operasyon Yöneticisi</strong> gözüyle sahadaki gerçek olaylara uyarlamanızı sağlar.</p>
+                
+                <h4>✈️ Sınavda Karşılaşacağınız Senaryo Türleri:</h4>
+                <ul>
+                    <li><span class="highlight">Olay Yeri İnceleme:</span> Apronda veya bakım hangarında yaşanan bir kazanın veya meslek hastalığının (örneğin zehirlenme, radyasyon yanığı) kök nedenini bulma.</li>
+                    <li><span class="highlight">Yönetimsel Krizler:</span> Havalimanı, Havayolu ve Kule arasındaki etkileşim süreçlerini sistem teorileriyle (Maier Açık Sistemleri) açıklama.</li>
+                    <li><span class="highlight">Psikolojik Vakalar:</span> Kabin ekibi veya hava trafik kontrolörlerinin yaşadığı akut (travmatik) şoklar ile uzun süreli (kümülatif) tükenmişlik sendromlarını ayırt etme.</li>
+                    <li><span class="highlight">Mevzuat Uyarlamaları:</span> Hayali bir işletmeye gelen FAA AD (Uçuşa Elverişlilik Direktifleri) notlarını veya risk analizi prosedürlerini adım adım uygulama pratiği.</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Vaka Testini Başlat 🚀</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir 🛑</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Vaka Analizi Sonuç Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Sistem / Yönetim Vakası</div>
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> İstanbul Havalimanı'nda operasyonların aksamaması için "Havalimanı İşletmecisi", "THY (Havayolu Şirketi)" ve "Hava Trafik Kontrol (ATC)" birimleri sürekli iletişim halindedir. Bu birimlerin her biri kendi içinde bağımsız yönetilse de dışarıdan gelen uçuş verileriyle ortaklaşa hareket etmek zorundadırlar. Dış çevreyle sürekli etkileşim halinde olan bu yapı, izole edilemez.<br><br>Bu senaryo, Maier'in (1998) Havacılık için öne sürdüğü "Sistemler Sistemi" teorisinin hangi özelliğine doğrudan bir örnektir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> Kapalı Sistem Kuramı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> İzole Coğrafi Dağılım</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>C)</span> Açık Sistemler Özelliği</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> Tamamen Bağımsız Elementler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> Hiyerarşik Tekil Yönetim</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Havacılıktaki tüm bileşenler (Havalimanı, Havayolu, Destek) çevreleriyle (diğer kurumlarla ve dış faktörlerle) sürekli veri ve iş etkileşimine girdikleri için tamamen kapalı bir kutu olamazlar. Bu durum literatürde <strong>"Açık Sistemler Teorisi"</strong> olarak tanımlanır.
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Operasyon / Bakım Vakası</div>
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Bir bakım hangarında, Airbus A320 tipi bir yolcu uçağının motor aksesuarları ve bazı sistemleri sökülerek küçük atölyelerde elden geçirilmektedir. Bakım uzmanı Selim Bey, tahribatsız testleri ve boyama işlemlerini de içeren bu sürecin uçağın programına göre yaklaşık "15 ila 20 gün" süreceğini belirtmiştir.<br><br>Selim Bey'in bahsettiği bu ağırlaştırılmış ara bakım prosedürü havacılıkta hangi seviyeye girmektedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Seviye I Bakımı (Hat Bakımı)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>B)</span> Seviye II Bakımı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>C)</span> Seviye III Bakımı (Revizyon)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> Günlük Muayene</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> Uçuş Öncesi Kontrol</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Seviye I günlük işlemleri (yakıt, temizlik) kapsar. Uçağın sistemlerinin kısmen söküldüğü, boyama ve NDI (tahribatsız test) yapıldığı, <strong>3 haftaya kadar (15-20 gün)</strong> sürebilen ara ağır bakımlara literatürde <strong>Seviye II Bakım</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Risk Analizi Vakası</div>
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Bir havalimanının güvenlik yöneticisi olan Ayşe Hanım, bagaj taşıma (şut) alanları için FAA standartlarında yeni bir "5 Adımlı Risk Analizi" başlatmıştır. Ekibiyle birlikte ilk toplantıda çalışma alanını sınırlarıyla tanımlamış (1. Adım) ve ardından ortamdaki ezilme, gürültü ve karbonmonoksit gibi tüm potansiyel tehlikeleri listelemiştir (2. Adım).<br><br>FAA (Federal Havacılık İdaresi) prosedürüne göre, Ayşe Hanım ve ekibinin atması gereken <u>üçüncü (3.) adım</u> aşağıdakilerden hangisi olmalıdır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> Riskleri değerlendirmek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> Riskleri azaltmak</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>C)</span> Riskleri analiz etmek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> Çalışanlara eğitim vermek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> Acil eylem planı yazmak</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> FAA'nın 5 adımlı Risk Analizi sırası: 1- Sistemin tanımlanması, 2- Tehlikelerin belirlenmesi, <strong>3- Risklerin analiz edilmesi</strong>, 4- Risklerin değerlendirilmesi, 5- Risklerin azaltılması şeklindedir.
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Psikoloji / İSG Vakası</div>
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Uçuş sırasında şiddetli türbülansa girildiğinde birçok yolcu paniklemiş ve çığlık atmaya başlamıştır. Kabin amiri Zeynep Hanım, kendi içsel korkusunu bastırarak, yüzünde sıcak bir gülümseme ve sakinleştirici bir ses tonuyla ağlayan bir çocuğu ve annesini teselli etmiştir. Uçuş sonunda Zeynep Hanım fiziken değil ancak zihnen tamamen tükendiğini hissetmiştir.<br><br>Zeynep Hanım'ın işi gereği kendi duygularını gizleyip yolcuları rahatlatmak için harcadığı bu çaba, mesleki psikolojide hangi kavramla ifade edilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Travmatik Stres</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Biyomekanik Stres</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>C)</span> Duygusal Emek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> Akut Tükenmişlik</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> Temel Çatışma Stresi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Hizmet ve konaklama/havacılık sektöründe personelin kendi gerçek duygularını (korku, öfke, üzüntü) bastırarak, müşteriye kurumun beklediği olumlu hisleri (gülümseme, empati, güven) sergilemek için gösterdiği içsel efora <strong>Duygusal Emek</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Kimyasal Risk Vakası</div>
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Bir hava aracı bakım hangarında "kaporta boya söküm" ekibinde çalışan işçilerde, yetersiz havalandırma nedeniyle şiddetli baş dönmesi, solunum yollarında tahriş ve uzun vadeli kanserojen şüpheler bildirilmiştir. Ekibin kullandığı solventler ve korozyon önleyici astar boyalar laboratuvara gönderilmiştir.<br><br>İSG raporuna göre, bu boyama ve söküm işçilerinin aşırı dozda maruz kaldığı havacılığa özgü <u>iki spesifik kimyasal</u> madde hangisi olabilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> Karbonmonoksit ve Kurşun</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>B)</span> Amonyak ve Sülfürik Asit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> Ozon ve Hidroflorik Asit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>D)</span> Metilen Klorür ve Altı Değerlikli Krom</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> Asbest ve Freon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Uçak boyasının sökülmesi için kullanılan en ağır endüstriyel çözücü <strong>Metilen klorür</strong> iken, korozyonu (paslanmayı) önleyen uçak astar boyalarının ana zehirli/kanserojen maddesi <strong>Altı değerlikli kromdur (Hexavalent Chromium)</strong>.
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Yer Kazası İstatistiği</div>
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Kış aylarında apron alanında çalışan rampa işçisi Mehmet, uçak tekerleğinden sızan hidrolik sıvısının üzerine basmış ve buzlanmanın da etkisiyle şiddetli bir şekilde yere düşerek kalçasını kırmıştır. Havalimanı İSG uzmanı bu olayı raporlarken, bu tip kazaların sektörde çok sık yaşandığını genel kurula bildirmiştir.<br><br>Havacılık istatistiklerine göre Mehmet'in yaşadığı bu "Kaymalar, Takılmalar ve Düşmeler", <u>tüm yer hizmetleri kazalarının yaklaşık yüzde kaçını</u> oluşturmaktadır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> % 15</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> % 20</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> % 30</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>D)</span> % 40</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>E)</span> % 60</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Apron zeminine dökülen yakıt, yağ ve hidrolik sıvıları ile buzlanmanın yarattığı "Kayma ve Düşme" kazaları, havacılık yer hizmetlerindeki toplam kazaların çok ciddi bir dilimini olan <strong>%40'ını</strong> oluşturur.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Fiziksel (Radyasyon) Vakası</div>
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Tekniker Hasan, bakım için hangara çekilmiş uçağın kanat bağlantı noktasındaki "metal yorgunluğunu ve kılcal çatlakları" tespit etmekle görevlidir. Bu işlem için Tahribatsız Muayene (NDI) ünitesinden özel bir cihaz getirmiş, iş sağlığı prosedürü gereği ortamı kalın beton zırhlarla çevirmiş ve yakasına ölçüm yapan bir dozimetri rozeti takmıştır.<br><br>Tekniker Hasan'ın uyguladığı, iyonlaştırıcı radyasyon riski barındıran bu arıza tespit yöntemi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Mikrodalga Isıtma (Radar)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>B)</span> Lazer İşaretleme Tarayıcısı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>C)</span> X-Işını (Radyografi / Röntgen)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>D)</span> Kızılötesi Termal Görüntüleme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> Ultrasonik Titreşim Yöntemi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Uçak metallerindeki kılcal çatlakların tespitinde (tıpkı tıpta kemik kırığını bulmak gibi) iyonlaştırıcı kanserojen radyasyon barındıran <strong>X-Işınları (Röntgen / Radyografi)</strong> kullanılır. Beton zırh ve dozimetri zorunludur.
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Tıbbi Patoloji Vakası</div>
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Havalimanı hava trafik kulesinin dışında, navigasyon ve iletişim cihazlarının yer aldığı radar antenlerinin bakımını yapan teknisyenler, antenlerin yaydığı devasa "Mikrodalga" radyasyonuna maruz kalmaktadır. Bu dalgalar dokularda aşırı ısı birikimine yol açar.<br><br>İSG tıbbi raporlarına göre, vücudun diğer bölgelerine kıyasla <u>kan akışı/termoregülasyonu zayıf olduğu için bu biriken ısıyı dağıtamayan ve mikrodalga radyasyonundan anında hasar gören en savunmasız iki organ</u> hangileridir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>A)</span> Kalp ve Akciğerler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>B)</span> Deri ve Kaslar</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>C)</span> Gözler ve Testisler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Karaciğer ve Böbrekler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Beyin ve Omurilik</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Elektromanyetik mikrodalgaların (radar) yarattığı ısı, ısıyı kan dolaşımı ile kolay atamayan organları pişirir. Bu duruma en duyarlı, katarakt ve kısırlık riski ile karşı karşıya kalan organlar <strong>Gözler ve Testislerdir</strong>.
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Biyolojik Risk Vakası</div>
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Londra - Yeni Delhi aktarmalı uçuşundan 24 saat sonra, uçaktaki yolcuların ve kabin ekibinin yarısında şiddetli mide krampları, ateş ve bağırsak enfeksiyonu tespit edilmiş; hastaneye kaldırılmışlardır. Yapılan soruşturmada uçağa yüklenen "Catering (Yemek)" sularının kontamine (kirli) olduğu belirlenmiştir.<br><br>Aşağıdaki hastalıklardan hangisi bu vaka örneğindeki gibi <u>"Gıda Kaynaklı (Food-borne)"</u> bulaşan hastalıklardan biri olup havacılıkta özel bir biyolojik tehdit oluşturur?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Sarı Humma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> Sıtma</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>C)</span> Tifo Ateşi (ve Kolera)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> Veba</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> Dang Humması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Sarı humma, sıtma, veba ve dang humması sivrisinek, kene ve pireler aracılığıyla (vektör/parazit) taşınır. Uçak ikramlarından, bozuk su ve yiyeceklerden bulaşan bakteriyel hastalıklar <strong>Tifo ateşi, Kolera ve Salmonella</strong> zehirlenmeleridir.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Psikiyatrik Travma Vakası</div>
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Hava trafik kontrolörü (ATC) Emre Bey, kulede nöbetteyken yoğun sis nedeniyle iki yolcu uçağının pistte çarpışmasına "ramak kala (near miss)" saniyeler içinde müdahale etmiş ve büyük bir faciayı önlemiştir. Olay anında donup kalan Emre Bey, aylar geçmesine rağmen uyuyamamakta, olay anı sürekli aklına gelmekte (flashback) ve telsiz sesine dahi tahammül edememektedir.<br><br>Emre Bey'in yaşadığı, aniden ortaya çıkan ve kişinin başa çıkma (uyum sağlama) kapasitesini aşındıran bu durum psikolojide / İSG'de hangi stres türüdür?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>A)</span> Temel (Günlük) Stres</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> Kümülatif Stres (Tükenmişlik)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>C)</span> Ergonomik Gerilim</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>D)</span> Travmatik Stres</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> Sosyolojik Bunalım</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Kümülatif stres zamanla yavaş yavaş birikir. Ancak kaza, ölüm veya faciadan kıl payı dönme gibi ani olayların yarattığı, şok etkili ve aylar sonra bile kendini gösteren PTSD (Travma Sonrası Stres Bozukluğu) benzeri tabloya <strong>Travmatik Stres</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Biyomekanik Vakası</div>
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Havalimanı kargo operasyonlarında çalışan Kemal, sağlık muayenesine girmiş ve beline zarar vermeden güvenle kaldırabileceği maksimum "Kişisel Güç Sınırı (1RM)" 60 Kilogram olarak laboratuvar testleriyle ölçülmüştür. İşyeri hekimi, Kemal'e vardiya boyunca sürekli bagaj kaldıracağı için ergonomik bir kural koymuştur.<br><br>Havacılık İSG standartlarına göre, Kemal'in gün boyu kaldıracağı tekil nesnelerin ağırlığı, kendi kişisel güç sınırı olan 60 Kg'ın <u>en fazla yüzde kaçı (% X) ile (Yani kaç Kg ile)</u> sınırlandırılmalıdır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> %25 (En fazla 15 Kg)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> %40 (En fazla 24 Kg)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>C)</span> %50 (En fazla 30 Kg)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>D)</span> %70 (En fazla 42 Kg)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> %85 (En fazla 51 Kg)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Malzeme taşıyıcıların kas-iskelet ve omurga hastalıkları yaşamaması için, kaldıracakları yük kendi test edilmiş kişisel güç sınırlarının maksimum <strong>%50'si</strong> ile sınırlandırılmalıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Solunum Toksikolojisi</div>
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Uçağın kargo ambarında çalışan yer görevlileri, bagaj traktörlerinin ve dizel konveyör motorlarının sürekli çalıştığı havalandırması zayıf bir rampa alanında görev yapmaktadır. Bir süre sonra işçilerden biri şiddetli baş ağrısı çekerek bayılmıştır. Ambulans personeli, hastanın kanındaki oksijen taşıma kapasitesinin (hemoglobinin) sinsi ve kokusuz bir gaz tarafından bloke edildiğini belirtmiştir.<br><br>Yer araçlarının ve uçak egzoz emisyonlarının yaydığı, işçiyi zehirleyen bu gaz havacılıkta bilinen en yaygın kimyasal olan hangi maddedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>A)</span> Karbondioksit (CO2)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>B)</span> Hidrojen Sülfür (H2S)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> Azot Oksit (NOx)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>D)</span> Karbonmonoksit (CO)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> Metan (CH4)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Uçak çevresinde ve yer destek araçlarının motor emisyonlarında eksik yanma sonucu açığa çıkan renksiz, kokusuz ve kanı zehirleyen gaz <strong>Karbonmonoksit (CO)</strong>'dir. Havacılık yer hizmetlerinde en yaygın mesleki solunum hastalığı nedenidir.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Ergonomik Analiz Vakası</div>
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> İSG ergonomisti Orhan Bey, bakım onarım teknisyenlerinin zorlu çalışma koşullarını ikiye ayırarak bir "İş Analizi" raporu hazırlamaktadır. Raporun birinci bölümünde teknisyenin ne kadar süre ayakta durduğunu ve emeklediğini gözlemlemiştir. Raporun ikinci bölümünde ise ölçüm cihazlarıyla çalışanın iş sırasındaki <u>"metabolik enerji tüketimini (kalori) ve parçayı çekerken harcadığı maksimum kuvveti (kg)"</u> matematiksel olarak hesaplamıştır.<br><br>Orhan Bey'in raporunun ikinci bölümünde (enerji tüketimi ve çaba ölçümü) yaptığı değerlendirme türü hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> Kalitatif (Nitel) Değerlendirme</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>B)</span> Nicel (Sayısal / Quantitative) Değerlendirme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>C)</span> Nöropsikolojik Değerlendirme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Çevresel Değerlendirme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> Duyusal Koordinasyon Değerlendirmesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Çalışma duruşları (eğilme, emekleme) Kalitatif (Nitel) olarak incelenir. Ancak kas gücünün ölçümü, kilogram hesaplamaları ve enerji/kalori tüketimi rakamlara dayandığı için doğrudan <strong>Nicel (Quantitative) Değerlendirme</strong> sınıfına girer.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Patolojik Optik Vakası</div>
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Havacılık parça atölyesinde argon kaynağı ustası olan Veli Usta, mesai sonrasında gözlerinde "sanki kum veya çakıl taşı dolmuş gibi" korkunç bir yanma ve batma hissi ile acile başvurmuştur. Doktor, kaynağın yaydığı elektromanyetik bir ışının Veli Usta'nın korneasını yaktığını (Keratokonjunktivit / Ark Yanığı) belirtmiştir.<br><br>Ders kitabı İSG verilerine göre, Veli Usta'nın gözlerinde "Keratokonjunktivit"e neden olan ve korneayı tahrip eden bu yüksek enerjili ışın hangisidir? (Katarakt yapanla karıştırmayınız!)</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>A)</span> Ultraviyole (UV - Morötesi) Işınları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> Kızılötesi (IR) Işınları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>C)</span> Mikrodalga Radyasyonu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> X-Işınları (Röntgen)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> Alfa Işımaları</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Kaynak işlemlerinde UV (Ultraviyole) ışınları korneayı yakarak kum batması hissi veren <strong>Keratokonjunktivit</strong> yapar. Kızılötesi (IR) ışınları ise göz merceğini ısıtarak matlaştırır ve uzun vadede <strong>Katarakt</strong> yapar.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Mesleki Tükenmişlik Vakası</div>
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Hava yolu biletleme personeli Ceyda, son bir yıldır çok ağır iş yükü altında, vardiyalı ve yöneticilerinden hiçbir destek görmeden (düşük kontrol ile) çalışmaktadır. Artık yataktan yorgun uyanmakta, işine karşı hissizleşmiş, yolcuların şikayetleriyle alay eder hale gelmiş ve kendi başarı duygusunu tamamen kaybetmiştir.<br><br>Ceyda'nın yıllar içinde yavaş yavaş biriken; duygusal yorgunluk, dışlanma hissi ve işten kopma (duygusal duyarsızlık) ile karakterize olan bu klinik durumu nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> Akut Travmatik Stres</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> Temel (Normal) Stres</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>C)</span> Kümülatif Stres (Tükenmişlik / Burnout)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> Biyomekanik Stres</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Ergonomik Stres</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Uzun süre devam eden, kişisel başarı hissini yok eden, duygusal çöküntü ve işe/insanlara karşı duyarsızlaşma (alaycı yaklaşım) ile sonuçlanan kronik strese <strong>Kümülatif Stres (Tükenmişlik)</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Mevzuat / Standart Vakası</div>
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Özel bir uçuş akademisi (Genel Havacılık işletmesi), filosundaki uçakları ticari eğitim uçuşlarında kullanmaktadır. Akademinin baş teknisyeni Ali Usta, A&P (Gövde ve Motor) sertifikasına sahiptir. FAR 91.409 mevzuatı gereği, bu uçakların güvenle uçabilmesi için "Yıllık İnceleme (12 Aylık)" dışında zorunlu olarak yapılması gereken, uçuş saatine endeksli bir bakım daha vardır.<br><br>Ali Usta'nın söz konusu eğitim uçağına yapmak zorunda olduğu bu kritik ikinci muayene periyodu ne kadardır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> 25 Saatlik Önleyici Bakım</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>B)</span> 50 Saatlik Motor Kontrolü</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>C)</span> 100 Saatlik Muayene</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> 500 Saatlik Revizyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> 1000 Saatlik Gövde Testi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> FAR 91.409 mevzuatı Genel Havacılıkta iki minimum bakım periyodu belirler: Birincisi "Yıllık İnceleme", ikincisi ise özellikle yolcu taşıyan veya ticari eğitim için kullanılan uçaklarda zorunlu olan <strong>"100 Saatlik Muayene"</strong>dir.
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Operasyon Kriz Vakası</div>
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Havayolu işletmecisinin e-posta sistemine, Federal Havacılık İdaresi (FAA) tarafından acil kodlu bir direktif düşer. Belgede; "Filo bünyenizdeki Boeing 737'lerin kanat altı sensörlerinden birinde üretim hatası tespit edilmiş olup, uçuş güvenliği riski (güvenli olmayan koşul) mevcuttur. Bu parçanın değiştirilene kadar hava aracının hangi sınırlar içinde uçurulabileceği ektedir." ibaresi yer almaktadır.<br><br>Yaygın olarak uçak sahiplerine gönderilen ve uçağın uçuşa elverişli kalabilmesi için zorunlu olan bu yasal belgelere ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> Bakım Kılavuzu Raporu (MRO)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>B)</span> Uçuşa Elverişlilik Direktifleri (AD Notları)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>C)</span> Havaalanı Gecikme Notları (ADL)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> Kaza Kök Neden Analizi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> Seviye III Revizyon Çağrısı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Güvenli olmayan bir koşul (kronik üretim hatası vb.) tespit edildiğinde FAA tarafından zorunlu olarak yayımlanan bu bildirgelere <strong>Uçuşa Elverişlilik Direktifleri (Airworthiness Directives)</strong> veya kısaca <strong>AD Notları</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Kargo Lojistik Vakası</div>
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Kargo kabul uzmanı Büşra, X-Ray cihazından geçen bir pakette yanıcı sıvı tespit eder. Paket üzerinde uluslararası nakliye kuralları gereği kırmızı alev işaretli bir etiket vardır. Büşra, kargodaki tehlikeli maddeleri (Dangerous Goods) uçuş ekibine raporlamak için standart kodlama sistemini kullanır.<br><br>Havacılıkta (ve diğer lojistik alanlarda) tehlikeli maddeler uluslararası IATA/ICAO standartlarına göre toplam <u>kaç farklı ana sınıfta (kodlama grubunda)</u> kategorize edilmektedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> 3 Sınıf</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> 5 Sınıf</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>C)</span> 7 Sınıf</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>D)</span> 9 Sınıf</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> 12 Sınıf</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Tehlikeli maddeler; 1. Patlayıcılar, 2. Gazlar, 3. Yanıcı Sıvılar, 4. Yanıcı Katılar, 5. Oksitleyiciler, 6. Zehirler/Bulaşıcılar, 7. Radyoaktif, 8. Aşındırıcı (Korozif) ve 9. Muhtelif Tehlikeli Maddeler olmak üzere toplam <strong>9 farklı risk grubuna</strong> ayrılır.
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Risk Unsurları Vakası</div>
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Havalimanı risk değerlendirme ekibi bir bölüm raporu hazırlamıştır. Rapor başlığında; <em>"Ortamın sıcaklığı, endüstriyel sürecin yarattığı hava basıncı, tesisin iç aydınlatması ve mühendislik havalandırma sisteminin mimarisi kontrol edildi"</em> yazmaktadır.<br><br>Ekibin raporunu yazdığı bu inceleme, havacılık kapsamlı risk analizinde hangi "Unsur (Kategori)" başlığı altına girer?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> Endüstriyel süreçlerin incelenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> İş uygulamaları ve işçi-iş etkileşimleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>C)</span> Tehlikeli maddelerin belirlenmesi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>D)</span> Çalışma ortamının incelenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> İnsan faktörünün analizi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Sıcaklık, basınç, aydınlatma düzeyi ve mekanik havalandırma gibi çevresel ve mimari faktörler doğrudan <strong>"Çalışma ortamının incelenmesi"</strong> başlığı altında yer alır. (İşçi-iş etkileşimi, işçinin fiziksel duruşu ve kullandığı KKD'ler ile ilgilidir).
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="vaka-badge">Terminoloji Vakası</div>
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text"><strong>Vaka:</strong> Hangar teknisyeni Cem, motor test ünitesindeki kırmızı uyarı etiketini görmezden gelerek "bana bir şey olmaz" cehaletiyle düğmeye basmıştır. Planlanmamış ve öngörülemeyen bu hareket sonucu motor aniden çalışmış ve yanındaki çırak teknisyenin elini sıkıştırarak kalıcı hasara (mal ve can kaybı olumsuzluğuna) yol açmıştır.<br><br>Sistemin zarar verme potansiyelini (tehlikeyi) barındıran durumun, "dikkatsizlik sonucu gerçeğe dönüşerek olumsuz bir sonuç yaratmasına" İSG sözlüğünde hangi ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> Tehlike (Hazard)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>B)</span> Ramak Kala (Near Miss)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>C)</span> Risk</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>D)</span> Kaza (Accident)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> Biyomekanik Travma</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Uzman Vaka Analizi</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>🕵️ Uzman Vaka Analizi:</strong> Olayın henüz zarara dönüşmemiş potansiyeline "Tehlike", bu tehlikenin talihsiz bir şekilde (planlanmadan ve öngörülemeyerek) fiziki bir hasar, ölüm veya yaralanma ile sonuçlanmış fiili eylemine ise <strong>"Kaza"</strong> adı verilir.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Uzman Vaka Analizi';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Yanlış 1 Doğru Kuralı
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SÜRE BİTTİ";
+            
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

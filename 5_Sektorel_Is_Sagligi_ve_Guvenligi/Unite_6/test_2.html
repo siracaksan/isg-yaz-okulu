@@ -1,25 +1,680 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 6 - Test 2 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Sektörel İSG | Ünite 6 - TEST 2 (Çıkmış Sorular ve Analiz)</title>
+    <style>
+        :root {
+            /* Ünite 6: Moda Moru & Makine Grisi Teması */
+            --primary: #6b21a8;    /* Moda Moru (Deep Purple) */
+            --accent: #9333ea;     /* Canlı Mor (Bright Purple) */
+            --bg: #f3f4f6;         /* Açık Gri / Kumaş Beyazı */
+            --panel-bg: #ffffff;   /* Beyaz Panel */
+            --text: #1f2937;       /* Koyu Kömür Grisi Metin */
+            --light-gray: #e5e7eb;
+            --green: #059669;
+            --red: #dc2626;
+            --steel: #4b5563;      /* Makine Grisi */
+            --analysis-bg: #fdf4ff; /* Açık Mor Analiz Arka Planı */
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #1f2937 0%, #6b21a8 100%); color: white; padding: 3rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 8px 20px rgba(107, 33, 168, 0.2); }
+        header h1 { margin: 0; font-size: 2.3rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.4);}
+        header p { margin: 0.8rem 0 0 0; color: #e9d5ff; font-weight: 700; font-size: 1.25rem; letter-spacing: 1px;}
+        
+        nav { background: #1f2937; padding: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #4c1d95; }
+        .nav-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .nav-btn { background: #4c1d95; color: #f3f4f6; border: 1px solid #6b21a8; padding: 0.7rem 1.4rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; text-transform: uppercase;}
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: white; border-color: #d8b4fe; box-shadow: 0 0 15px rgba(147, 51, 234, 0.5); font-weight: 800;}
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(107, 33, 168, 0.08); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        /* ÖZEL ANALİZ PANOSU STİLLERİ */
+        .analysis-dashboard { background: var(--analysis-bg); border: 2px solid #e9d5ff; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; position: relative; overflow: hidden;}
+        .analysis-dashboard::before { content: '📊'; position: absolute; right: -20px; top: -20px; font-size: 120px; opacity: 0.05; }
+        .analysis-title { color: var(--primary); font-size: 1.8rem; font-weight: 900; margin-top: 0; border-bottom: 3px solid #d8b4fe; padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; text-transform: uppercase;}
+        
+        .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;}
+        .stat-card { background: white; padding: 1.5rem; border-radius: 8px; border-left: 5px solid var(--accent); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.3s;}
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(147, 51, 234, 0.15);}
+        .stat-card h4 { margin: 0 0 0.5rem 0; color: var(--text); font-size: 1.1rem; text-transform: uppercase;}
+        .stat-card .frequency { font-size: 2rem; font-weight: 900; color: var(--primary); margin: 0;}
+        .stat-card .years { font-size: 0.85rem; color: var(--steel); font-weight: bold; background: #f3f4f6; display: inline-block; padding: 0.2rem 0.5rem; border-radius: 4px; margin-top: 0.5rem;}
+        
+        .strategy-box { border-left: 5px solid var(--accent); background: #f5f3ff; padding: 2rem; border-radius: 8px; margin: 1.5rem 0;}
+        .strategy-box h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 0.6rem; font-size: 1.4rem; text-transform: uppercase; border-bottom: 2px solid #e9d5ff; padding-bottom: 0.5rem;}
+        .strategy-box p { color: var(--text); font-size: 1.05rem; margin-bottom: 0.5rem;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: var(--text); font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.6rem; }
+        .strategy-box .highlight { background: #fce7f3; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: bold; color: var(--primary);}
+        
+        .start-btn { display: block; width: 100%; max-width: 400px; margin: 3rem auto 1rem; background: var(--primary); color: white; text-align: center; padding: 1.2rem; border-radius: 8px; font-size: 1.3rem; cursor: pointer; border: none; font-weight: 800; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(107, 33, 168, 0.3);}
+        .start-btn:hover { background: #581c87; box-shadow: 0 6px 20px rgba(107, 33, 168, 0.5); transform: translateY(-3px); color: #f3f4f6; }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1.2rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--accent); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px);}
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-secondary { background: var(--steel); color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid var(--light-gray); padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;}
+        .question-card:hover { border-color: var(--primary); box-shadow: 0 8px 30px rgba(107, 33, 168, 0.12);}
+        
+        .badge-cikmis { position: absolute; top: -15px; right: 2.5rem; background: var(--red); color: white; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3); border: 2px solid #fff; letter-spacing: 1px;}
+        .badge-uzman { position: absolute; top: -15px; right: 2.5rem; background: var(--primary); color: white; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(107, 33, 168, 0.3); border: 2px solid #fff; letter-spacing: 1px;}
+        
+        .question-header { font-weight: 900; color: white; background: var(--accent); display: inline-block; padding: 0.6rem 1.4rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 1rem; align-self: flex-start; letter-spacing: 1px;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: var(--text); }
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.1rem; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #f9fafb; color: #374151; font-weight: 600;}
+        .option span { font-weight: 800; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; background: #9ca3af; border-radius: 6px; font-size: 1.05rem; transition: all 0.3s;}
+        .option:hover:not(.locked) { background: #ffffff; border-color: var(--accent); box-shadow: 0 4px 10px rgba(147, 51, 234, 0.15);}
+        .option:hover:not(.locked) span { background: var(--accent); color: white;}
+        .option.locked { cursor: default; }
+        .option.correct { background: #ecfdf5; border-color: var(--green); color: #065f46; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fef2f2; border-color: var(--red); color: #991b1b; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 800; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: var(--analysis-bg); border-left: 5px solid var(--accent); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: var(--text); box-shadow: inset 0 0 15px rgba(147, 51, 234, 0.05); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: var(--primary); font-weight: 900; font-size: 1.15rem; display: block; margin-bottom: 0.8rem; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 4rem 2rem; background: white; border-radius: 12px; border-top: 8px solid var(--primary); display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .results-section h2 { font-size: 2.6rem; color: var(--text); margin-top: 0; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.8rem 3rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; border: 1px solid #e5e7eb; box-shadow: 0 6px 15px rgba(0,0,0,0.05); background: #f9fafb;}
+        .stat span { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #4b5563;}
+        .stat.correct { color: var(--green); border-color: #34d399; background: #ecfdf5;}
+        .stat.wrong { color: var(--red); border-color: #fca5a5; background: #fef2f2;}
+        .stat.empty { color: #4b5563; }
+        .stat.net { color: var(--primary); border-color: var(--primary); transform: scale(1.08); box-shadow: 0 10px 25px rgba(107, 33, 168, 0.2); background: white;}
+        
+        footer { background: #1f2937; color: #cbd5e1; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1.05rem; border-top: 5px solid var(--accent); font-weight: 600; letter-spacing: 1px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box, .analysis-dashboard { box-shadow: none; border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px solid #e5e7eb; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .badge-cikmis, .badge-uzman { border: 1px solid #000; color: #000; background: #eee; }
+            .solution-box { display: block !important; border: 1px solid #94a3b8; background: #f3f4f6; padding: 1rem; margin-top: 1rem; color: black; }
+            .option { border: 1px solid #e5e7eb; background: white; color: black; margin-bottom: 0.5rem;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 6 - Test 2</h2>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 6: Tekstil ve Hazır Giyim Üretim Sektöründe İSG - TEST 2</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">⬅️ Çıkmış Sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn active">Test 2 (Çıkmış/Analiz)</a>
+            <a href="test_3.html" class="nav-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn">Test 5</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <!-- ÖSYM ÇIKMIŞ SORU ANALİZİ BÖLÜMÜ -->
+        <div class="analysis-dashboard">
+            <h2 class="analysis-title">📈 ÖSYM Çıkmış Soru Analizi (2021-2025)</h2>
+            <p style="font-size: 1.1rem; color: var(--text);">Geçmiş yılların yaz okulu sınavları incelendiğinde, <strong>Ünite 6 (Tekstil Sektörü)</strong> kapsamında her yıl ortalama 1 veya 2 belirleyici soru gelmektedir. Soruların yoğunlaştığı kritik konular şunlardır:</p>
+            
+            <div class="stat-cards">
+                <div class="stat-card">
+                    <h4>Bisinozis (Pamuk Tozu Hastalığı)</h4>
+                    <p class="frequency">3 Kez</p>
+                    <p>Sorulduğu Yıllar: <span class="years">2023, 2024, 2025</span></p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Sektörün en popüler meslek hastalığıdır. "Koyu mukus birikimi" ve "iplik/dokuma" anahtar kelimeleriyle sorulur.</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Gürültü & Kulaklık Sınırı</h4>
+                    <p class="frequency">2 Kez</p>
+                    <p>Sorulduğu Yıllar: <span class="years">2021, 2023</span></p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Kişisel gürültü maruziyetinde kulak koruyucu kullandırma zorunluluğu olan <strong>85 dB(A)</strong> sınırı banko bilgidir.</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Makine Emniyeti & Çift El</h4>
+                    <p class="frequency">2 Kez</p>
+                    <p>Sorulduğu Yıllar: <span class="years">2024, 2025</span></p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Hızlı devirli iş makinelerinde uzuv kopmalarını engellemek için kumandanın "en az 2 butonla" yapılması kuralı sorulmuştur.</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Titreşim & Fiziksel Önlemler</h4>
+                    <p class="frequency">1 Kez</p>
+                    <p>Sorulduğu Yıllar: <span class="years">2022</span></p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">"Bilgisayar"ın titreşim kaynağı olmaması ve gürültüye karşı "çalışana dinlenme arası verilmesi" şıklarıyla sorulmuştur.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.4rem; margin-bottom: 0.5rem; text-transform: uppercase;">İleri Seviye & Çıkmış Sorular Testi</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--steel); margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>🔍 Sınav Stratejisi</h3>
+                <p>Bu testteki ilk 6 soru <strong>doğrudan geçmiş yılların AÖF Yaz Okulu sınavlarında birebir sorulmuş</strong> sorulardır. Kalan 14 soru ise ÖSYM'nin sorduğu soru mantığına göre analiz edilerek kitabın "Azo boyar kimyasallar, toksikolojik ayak izi, ergonomik hastalıklar ve yapay zeka entegrasyonu" gibi en ince detaylarından üretilmiştir.</p>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Teste Başla 🚀</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir 🛑</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Sınav Sonuç Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 (2021/2023 Çıkmış) -->
+                <div class="question-card">
+                    <div class="badge-cikmis">Çıkmış Soru (2021/2023)</div>
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text">Tekstil ve hazır giyim sektöründe dokuma ve iplik makinelerinden kaynaklanan gürültüye karşı önlem alınırken, <u>kişisel gürültü maruziyeti kaç dB (A) veya üzeri olduğunda</u> çalışanlara kulak koruyucu donanımlar kullandırılmalıdır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> 75</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> 80</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>C)</span> 85</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> 90</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> 95</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 Çözüm Analizi:</strong> (2021 ve 2023 Yaz Okulu) Gürültü maruziyet sınırlarında kural şudur: 80 dB(A)'ya ulaşıldığında kulaklık "kullanıma hazır bulundurulur", maruziyet <strong>85 dB(A)</strong> ve üzerine çıktığında ise kulak koruyucu donanımların fiilen "kullandırılması (takılması)" zorunludur.
+                    </div>
+                </div>
+
+                <!-- Soru 2 (2024 Çıkmış) -->
+                <div class="question-card">
+                    <div class="badge-cikmis">Çıkmış Soru (2024)</div>
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text">-------, akciğerlerde küçük toz parçacıklarına karşı oluşan koyu mukus birikmesinin hava geçişini azaltması sonucunda oluşan ve <u>genellikle pamuk tozlarını soluyan işçilerde görülen</u> meslek hastalığıdır.<br><br>Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru şekilde tamamlar?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>A)</span> Bisinozis</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> Kalp hastalıkları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>C)</span> Kontakt dermatit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> Vertigo</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> Ürtiker hastalıklar</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Çözüm Analizi:</strong> (2023 ve 2024 Yaz Okulu) Tekstil sektörünün baş belası olan; pamuk, keten veya kenevir tozlarının solunmasıyla akciğerlerde tıkanmaya yol açan bu kronik meslek hastalığı <strong>Bisinozis</strong>'tir.
+                    </div>
+                </div>
+
+                <!-- Soru 3 (2025 Çıkmış) -->
+                <div class="question-card">
+                    <div class="badge-cikmis">Çıkmış Soru (2025)</div>
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text">I. İplik üretimi<br>II. Terbiye<br>III. Örme<br>IV. Dokuma<br><br>Yukarıdakilerden hangileri tekstil ve hazır giyim üretim sektöründeki çalışanların <u>bisinozis hastalığına yakalanma riski taşıyan</u> işlemlerdendir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> I ve II</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> II ve IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>C)</span> I, II ve III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> I, II ve IV</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>E)</span> I, III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Çözüm Analizi:</strong> (2025 Yaz Okulu) Bisinozis hastalığı "toz" (pamuk tozu) solumakla ilgilidir. İplik üretimi, kumaşın dokunması (dokuma) ve ipliğin örülmesi (örme) aşamalarında yoğun uçuşan toz çıkar. "Terbiye" işlemi ise daha çok sıvı/kimyasal bir yıkama ve boyama işlemidir, toz yaymaz. Doğru cevap <strong>I, III ve IV</strong>'tür.
+                    </div>
+                </div>
+
+                <!-- Soru 4 (2024/2025 Çıkmış) -->
+                <div class="question-card">
+                    <div class="badge-cikmis">Çıkmış Soru (2024/2025)</div>
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text">Tekstil ve hazır giyim sektörünün bütün bölümlerinde kullanılan iş ekipmanlarında acil durdurma butonlarının çalışılan yerlere yakın olması ve <u>hızlı devirli çalışan iş ekipmanlarında çalıştırma düğmelerinin en az ------- butonla</u> veya başka önlem alınmış şekilde kumanda edilmiş olması gerekmektedir.<br><br>Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru şekilde tamamlar?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> 1</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>B)</span> 2</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>C)</span> 3</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> 4</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> 5</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Çözüm Analizi:</strong> (2024 ve 2025 Yaz Okulu) İşçinin elini prese veya hareketli parçaya kaptırmaması için, makineyi çalıştırmak istediğinde iki elinin de tehlikeli bölgenin dışında olmasını sağlayan sisteme "Çift El Kumanda Sistemi" denir. Bu nedenle cihaz en az <strong>2 butonla</strong> kumanda edilmelidir.
+                    </div>
+                </div>
+
+                <!-- Soru 5 (2022 Çıkmış) -->
+                <div class="question-card">
+                    <div class="badge-cikmis">Çıkmış Soru (2022)</div>
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi tekstil sektöründe <u>titreşim maruziyetine sebep olan</u> iş ekipmanlarından biri <u>değildir</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> Tır</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>B)</span> Bilgisayar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> Kamyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>D)</span> Harman Hallaç Makinesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> Forklift</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Çözüm Analizi:</strong> (2022 Yaz Okulu) Tır, kamyon, forklift gibi taşıma araçları "Tüm Vücut Titreşimi"; Harman Hallaç gibi büyük makineler de sarsıntı yaratır. Ancak <strong>Bilgisayar</strong> kullanımı titreşim (vibration) kaynağı değildir, sadece ergonomik risk (duruş bozukluğu) barındırır.
+                    </div>
+                </div>
+
+                <!-- Soru 6 (2022 Çıkmış) -->
+                <div class="question-card">
+                    <div class="badge-cikmis">Çıkmış Soru (2022)</div>
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi tekstil ve hazır giyim üretim sektöründe <u>gürültüye karşı alınan önlemlerden</u> biridir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> Dikiş makine iğnelerini koruyucu altına alma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> Kimyasal işlemleri diğer bölümlerden ayırma</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>C)</span> Çalışanlara yeterli dinlenme arası verme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> İşyerinde uygun şekilde aydınlatma sağlama</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>E)</span> Elektrik panolarının yakınına malzeme istifi yapmama</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 Çözüm Analizi:</strong> (2022 Yaz Okulu) İğneleri koruyucuya alma makine güvenliğidir, aydınlatma fiziksel farklı bir sorundur. Gürültü maruziyetini düşürmenin en temel idari kontrollerinden biri de gürültülü ortamda çalışan işçinin kalış süresini kısaltmak, yani ona <strong>yeterli dinlenme arası vermektir</strong>.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text">Hazır giyim ve tekstil sanayisinde boyar madde olarak kullanılan, cilde temas ettiğinde veya solunduğunda vücutta kanser oluşumuna neden olabilen ve tehlikesinden dolayı <u>Türkiye'de üretimi, ithali ve kullanımı 1 Mart 1995 tarihinden itibaren yasaklanmış</u> olan kimyasal bileşik aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Kostik Soda</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>B)</span> Azo Boyar Maddeler (Aril Aminler)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> Formaldehit Reçineleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>D)</span> Etilen Oksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> Sodyum Hipoklorit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Uzman Analizi:</strong> Kumaşları renklendirmek için kullanılan, ancak kanserojen (özellikle mesane ve karaciğer kanseri) etkisi Almanya'da ispatlandıktan sonra Avrupa ile birlikte Türkiye'de de 1 Mart 1995'ten itibaren yasaklanan tehlikeli ajan <strong>Azo Boyar Maddelerdir</strong>.
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text">Tekstil sektöründe üretim hatalarını insan gözüne kıyasla çok daha hızlı tespit ederek %90 oranında azaltan ve iş gücünden muazzam bir tasarruf sağlayan, <u>Hong Kong Politeknik Üniversitesi (PolyU) tarafından geliştirilen "yapay zeka temelli kalite kontrol sisteminin"</u> adı nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>A)</span> SmartWeave</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>B)</span> TexBot 2.0</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>C)</span> WiseEye</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> AI-Loom</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> FabricSense</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Uzman Analizi:</strong> Sürdürülebilir tekstilde yapay zeka (AI) ve derin öğrenme (Deep Learning) kullanımı giderek artmaktadır. PolyU tarafından tasarlanan <strong>WiseEye</strong> adlı sistem, kumaş üretimindeki defoları algılayarak hata oranını %90 düşürmektedir.
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text">Sürdürülebilir tekstil ve deri endüstrisinde, üretim yöntemlerindeki ürün güvenliğini analiz eden <u>"Zehir Bilimsel (Toksikolojik) Ayak İzi"</u> kavramı sıklıkla tartışılmaktadır. Bu kapsamda, sektörün en çok eleştirilen ve tedarik zincirinde azaltılmaya çalışılan <u>iki tehlikeli madde</u> aşağıdakilerin hangisinde birlikte verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Karbonmonoksit ve Helyum</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>B)</span> Krom (Cr) ve N-Metilpirolidon (NMP)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>C)</span> Sodyum Klorür ve Glukoz</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> Karbondioksit ve Freon gazı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> Bakır (Cu) ve Ozon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 Uzman Analizi:</strong> Zehir bilimsel (toksikolojik) ayak izi tartışmalarının merkezinde tekstil/deri sanayisinin vazgeçilmezi olan ancak ağır metaller sınıfında yer alan <strong>Krom (Cr)</strong> ve çözücü kimyasal olan <strong>NMP (N-metilpirolidon)</strong> bulunur.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text">Tekstil ve hazır giyim sektöründe; dikiş operasyonlarında uzun süre aynı sandalyede sabit pozisyonda (uygunsuz duruş) kalmak, sürekli olarak el-kol emeği ile aynı hareketi tekrarlamak ve ağır kumaş toplarını çekmek gibi faktörler, <u>Avrupa'da çalışan her dört işçiden birinde görülen hangi mesleki sağlık problemine (MSD)</u> doğrudan zemin hazırlar?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>A)</span> Solunum yetmezliği (Astım)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> İyonize radyasyon zehirlenmesi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>C)</span> Kas ve İskelet Sistemi Rahatsızlıkları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>D)</span> Göz tansiyonu (Glokom)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> İşitme kaybı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Uzman Analizi:</strong> Sık tekrarlanan hareketler (RSI), uygunsuz postür (kötü duruş), taşıma ve çekme işlerinin tamamı ergonomik risk faktörleridir. Bunlar doğrudan <strong>Kas ve İskelet Sistemi Rahatsızlıklarına (Muskuloskeletal Disorders - MSD)</strong>, bilhassa da sırt ve bel ağrılarına neden olur.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text">Boyahane ve terbiye bölümlerinde su, sabun ve kimyasal deterjanlara sürekli temas eden işçilerde tehlikeli cilt hastalıkları (dermatit vb.) sık görülür.<br><br>Sektörde çalışanların ellerini bu tür dermatolojik hastalıklardan korumak için, <u>sürekli olarak giyilen klasik lastik eldivenlerin yarattığı terleme ve havasızlık etkisini kırmak amacıyla</u> hangi tedbirin alınması önerilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> Ellerin saat başı aseton ile silinmesi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>B)</span> Lastik eldiven yerine veya lastik eldivenin içine "pamuklu eldiven" giydirilmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>C)</span> Sadece çıplak elle çalışmaya izin verilmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>D)</span> Eldivenlerin üzerine talk pudrası serpilmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> Metal zırhlı çelik eldiven kullanılması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Uzman Analizi:</strong> Deriye sürekli temas eden ve havasız bırakan lastik/kauçuk eldivenler cilt bariyerini zayıflatarak egzamaya neden olur. Bunu önlemek için ellerin doğal nemine kavuşmasını sağlayan, nefes alabilen <strong>"içi pamuklu eldivenlerin"</strong> kullanılması İSG açısından şarttır.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text">Tekstil fabrikalarında tehlikeli kimyasallarla ilgili depolama alanı tasarlanırken; olası bir facianın önlenmesi adına, özellikle parlayıcı buharlar çıkaran <u>"Solvent (Çözücü) Bazlı" kimyasallar</u> için uygulanması gereken en temel depolama kuralı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>A)</span> Yangın tehlikesine karşı diğer kimyasallardan bağımsız, tamamen ayrı başka bir yerde tutulması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>B)</span> Sodyum ve potasyum gibi reaktif metallerle aynı rafta dizilmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> Sadece açık arazide ve güneş altında bekletilmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> İşçilerin yemekhanesi ile yan yana depolanması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> Atık su (kanalizasyon) giderlerinin tam üzerine yerleştirilmesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Uzman Analizi:</strong> Solventler (Tiner, Hekzan vb.) düşük parlama noktasına sahiptir. Buharları kolayca tutuşabilir. Bu sebeple <strong>"yangın tehlikesine karşı diğer kimyasallardan tamamen ayrılmış başka bir depoda"</strong> tutulmalı ve birbirleriyle reaksiyona girmeleri engellenmelidir.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text">I. Sürekli değişen vardiyalı (gece/gündüz) çalışma düzeni<br>II. İş güvencesinin olmaması ve işten çıkarılma korkusu<br>III. Psikolojik taciz (Mobbing) ve ayrımcı politikalar<br>IV. Makine dairesindeki 90 dB gürültü<br><br>Yukarıdakilerden hangileri tekstil sektöründe çalışanlar üzerinde stres ve tükenmişlik yaratan <u>Psikososyal Etmenler</u> arasında sınıflandırılır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> Yalnız I</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> I ve II</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>C)</span> I, II ve III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> II, III ve IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> I, II, III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Uzman Analizi:</strong> İş stresi, mobbing, gece vardiyası ve güvencesizlik doğrudan insanın psikolojisini ve sosyal hayatını etkileyen <strong>"Psikososyal etmenlerdir" (I, II, III)</strong>. Ancak 90 dB Gürültü fiziksel (çevresel) bir ölçüm birimidir ve doğrudan "Fiziksel Etmenler" başlığında incelenir.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text">Hava yoluyla yayılan tekstil tozu (hav) veya makine gürültüsünü sönümlemek amacıyla çalışma ortamlarında uygulanabilecek en efektif mühendislik kontrol yöntemi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>A)</span> Çalışanların kulaklarına pamuk tıkaması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> Sadece gündüz vardiyasında çalışılması</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>C)</span> Gürültü ve toz yayan makinelerin etrafının izole edici panellerle (perdeleme) kapatılması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Makinelerin yağlanmasının yasaklanması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> Fabrikadaki camların tamamen açık tutulması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Uzman Analizi:</strong> Gürültü ve tozla mücadelenin en etkili yolu tehlikeyi kaynağında yok etmek veya izole etmektir. Bunun için gürültü emici örtülerle, ses yalıtımlı odalarla veya makinenin etrafını <strong>perdeleme (kapatma/izolasyon)</strong> yöntemiyle sarmak en etkili mühendislik çözümüdür.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text">Tekstil ve hazır giyim işletmelerinde, işe yeni giren veya makinesini değiştiren bir çalışanın sağlık yönünden o işe uygun olup olmadığını belirleyen; az tehlikeli, tehlikeli veya çok tehlikeli sınıflara göre periyodik olarak yinelenen (örneğin 3 yılda bir) <u>tıbbi muayene süreçlerinin tamamına</u> İSG mevzuatında ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> Acil Durum Planlaması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> İşyeri Ortam Ölçümü</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>C)</span> Sağlık Gözetimi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> Risk Değerlendirmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Ergonomik Tasarım</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Uzman Analizi:</strong> Çalışanın işe girişinde, iş değişikliğinde veya belirli periyotlarla maruziyet limitlerinin (odyogram, solunum testi vb.) tıbbi tetkiklerle kontrol edildiği muayene ve izleme faaliyetlerinin tümüne <strong>"Sağlık Gözetimi (Health Surveillance)"</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text">Tekstil ürünlerinin laboratuvar ortamında uluslararası kalitede test edilebilmesi için bazı TSE (Türk Standartları Enstitüsü) kuralları referans alınmaktadır. Buna göre; <u>"Boyalı derilerde bazı azo boyar maddelerinin (özellikle 4-aminoazobenzen) tayini için kimyasal deneyleri"</u> içeren standart kodu aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> ISO 9001:2015</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>B)</span> TS EN ISO 17234-1 / 17234-2</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>C)</span> ISO 45001</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> ISO 14001</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> TS EN 14404</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Uzman Analizi:</strong> Tekstil ve boyalı deri ürünlerinde kanserojen aminlerin tayinini (Azo boyar maddeleri) tespit etmek amacıyla kullanılan Avrupa ve Türk ortak standardı <strong>TS EN ISO 17234 (Bölüm 1 ve 2)</strong> kodlu laboratuvar analiz yöntemleridir.
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text">Tekstil sanayisinde özellikle "Pamuk" ipliği ile yapılan üretim aşamalarında (büküm, dokuma vb.) ortamda <u>yüksek oranda "nem" ve "sıcaklık"</u> bulundurulması teknik bir zorunluluktur. Çünkü pamuk ipliği kurursa doğal lifler kırılganlaşır.<br><br>Bu üretim zorunluluğunun çalışanlarda yol açtığı İSG riski ve rahatsızlık türü aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>A)</span> Termal Konfor (Aşırı terlemeye bağlı mineral kaybı, kas krampları ve ısı çarpması)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> Radyasyon Maruziyeti (Radyoaktif zehirlenme)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>C)</span> Biyolojik Riskler (Virüs ve Parazit bulaşması)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> Göz Kamaşması (Aydınlatma stresi)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> İşitme Kaybı (Tiz frekanslı gürültü sendromu)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Uzman Analizi:</strong> Pamuğun kopmaması için ortam bilerek rutubetli (nemli) ve sıcak tutulur. Ancak bu <strong>Termal Konfor</strong> şartlarının dışına çıkılmasıdır ve işçilerde sırılsıklam terleme, sodyum/tuz kaybı, bayılma ve ağır kas krampları gibi ısı yorgunluklarına yol açar.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text">Aydınlatma, tekstil sektöründe iplik düğümlerini görmek veya kalite kontrol yapmak (göz denetimi) için çok kritiktir. <u>Yetersiz ve kötü tasarlanmış aydınlatma armatürlerinin</u> tekstil işçileri üzerinde doğrudan yaratabileceği olumsuz sonuçlar arasında hangisi <u>sayılmaz</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> Görme keskinliğinde azalma ve göz yorgunluğu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> Karanlıkta malzemeleri görememe sonucu takılma ve düşme kazaları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>C)</span> Isınan eski tip armatürler üzerinde biriken tozların alev alarak yangın çıkarması</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>D)</span> İşitme sinirlerinde akut veya kronik zedelenme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> Üretilen kumaşın renginde ve kalitesinde hata (defolu mal) oluşumu</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Uzman Analizi:</strong> Kötü aydınlatma; göz yorgunluğu, üretim hatası, düşme tehlikesi ve armatür ısınması sonucu toz yangını gibi riskler doğurur. Ancak <strong>"işitme sinirlerinin zedelenmesi"</strong> aydınlatma ile değil, gürültü (desibel) maruziyeti ile ilgilidir.
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text">Tekstil üretim atölyelerinde bulunan "Buhar kazanları, sıcak ütü presleri veya boya basınç valflerinde" oluşan tehlikeler ve patlama riskleriyle ilgili yönetmeliğe göre; bu basınçlı ekipmanların periyodik olarak sızdırmazlık testlerinden ve muayenelerinden geçirilmesinden <u>doğrudan sorumlu</u> kişi / kurum kimdir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> Sadece İşyeri Hekimi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> Yalnızca o makineyi kullanan operatör işçi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>C)</span> Yetkili muayene personeli (Makine mühendisleri/teknikerleri vb.) görevlendirerek İşveren</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>D)</span> Sosyal Güvenlik Kurumu (SGK) denetmeni</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> Çevre ve Şehircilik Bakanlığı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Uzman Analizi:</strong> 6331 sayılı İSG Kanunu ve ilgili yönetmelikler gereğince; fabrikadaki tüm makine, basınçlı kap, kazan ve kaldırma araçlarının periyodik muayenelerini (yılda 1 kez vb.) akredite olmuş "yetkili mühendislere/uzmanlara" yaptırıp onaylatmak doğrudan <strong>İşverenin yükümlülüğüdür</strong>.
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="badge-uzman">Uzman Analizi (Oyun Ötesi)</div>
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text">Tekstil imalat proseslerinde (özellikle boya ve apre gibi yaş işlemlerde) yanıcı, parlayıcı sıvı solventler (çözücüler) ve organik buharlar çıkaran kimyasallar bir arada kullanılır.<br><br>Eğer işletmenin herhangi bir noktasında (depo, kazan dairesi, boyahane vb.) bu buharlar hava ile karıştığında <u>patlayıcı (explosive) bir atmosfer oluşma ihtimali varsa</u>, işletmenin zorunlu olarak hazırlamakla mükellef olduğu yasal doküman aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>A)</span> Patlamadan Korunma Dokümanı (PKD)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>B)</span> Radyolojik Atık Senaryosu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>C)</span> İşletme Kapasite Raporu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> Gıda ve Hijyen Uygunluk Belgesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> Biyolojik İzleme Haritası</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Uzman Analizi:</strong> Havaya karışan uçucu kimyasal solventler, pamuk tozları veya diğer yanıcı gazlar bir kıvılcımla infilak edebilir. İSG mevzuatına göre patlayıcı ortam oluşma ihtimali olan fabrikalar, risk bölgelerini (Zone) çizen ve önlemleri belirten bir <strong>Patlamadan Korunma Dokümanı (PKD)</strong> hazırlamak zorundadır.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.querySelector('.analysis-dashboard').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Çözümü Göster';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Yanlış 1 Doğru Kuralı
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SÜRE BİTTİ";
+            
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

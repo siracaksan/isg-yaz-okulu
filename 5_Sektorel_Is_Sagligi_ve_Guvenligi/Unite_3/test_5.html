@@ -1,25 +1,655 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 3 - Test 5 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Sektörel İş Sağlığı ve Güvenliği | Ünite 3 - TEST 5 (FİNAL)</title>
+    <style>
+        :root {
+            /* Test 5: Final (Zor/Karma) Seviye - Koyu Bordo ve Siyah Teması */
+            --primary: #450a0a;    /* Çok Koyu Bordo */
+            --accent: #dc2626;     /* Canlı Kırmızı */
+            --bg: #171717;         /* Koyu Antrasit Siyah */
+            --panel-bg: #262626;   /* Koyu Gri Panel */
+            --text: #f5f5f5;       /* Açık Gri/Beyaz Metin */
+            --light-gray: #404040;
+            --green: #10b981;
+            --red: #ef4444;
+            --gold: #fbbf24;
+            --alert: #f87171;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #000000 0%, #450a0a 100%); color: white; padding: 3rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 10px 30px rgba(220, 38, 38, 0.2); }
+        header h1 { margin: 0; font-size: 2.5rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #ffffff; text-shadow: 2px 2px 10px rgba(0,0,0,0.8);}
+        header p { margin: 1rem 0 0 0; color: var(--alert); font-weight: 800; font-size: 1.3rem; letter-spacing: 1.5px;}
+        
+        nav { background: #000000; padding: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--light-gray); }
+        .nav-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .nav-btn { background: #171717; color: #d4d4d4; border: 1px solid #404040; padding: 0.7rem 1.4rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.95rem; font-weight: 700; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px;}
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 0 15px rgba(220, 38, 38, 0.5); }
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.6); margin-bottom: 2rem; border-top: 5px solid var(--accent); border: 1px solid #404040;}
+        
+        .strategy-box { border-left: 5px solid var(--accent); background: rgba(220, 38, 38, 0.05); padding: 2rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: inset 0 0 20px rgba(220, 38, 38, 0.08);}
+        .strategy-box h3 { margin-top: 0; color: var(--alert); display: flex; align-items: center; gap: 0.6rem; font-size: 1.4rem; text-transform: uppercase;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: #d4d4d4; font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.8rem; }
+        
+        .start-btn { display: block; width: 100%; max-width: 400px; margin: 3rem auto 1rem; background: var(--accent); color: white; text-align: center; padding: 1.4rem; border-radius: 8px; font-size: 1.4rem; cursor: pointer; border: none; font-weight: 900; transition: all 0.3s; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);}
+        .start-btn:hover { background: #b91c1c; box-shadow: 0 0 35px rgba(220, 38, 38, 0.6); transform: scale(1.03); }
+        
+        .timer-bar { position: sticky; top: 0; background: #000000; padding: 1.2rem 2rem; box-shadow: 0 6px 20px rgba(0,0,0,0.9); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--accent); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--alert); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.8rem 1.5rem; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.2); transform: translateY(-2px);}
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-secondary { background: #52525b; color: white; border: 1px solid #71717a;}
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid #404040; padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 8px 25px rgba(0,0,0,0.5); position: relative; }
+        .question-card:hover { border-color: var(--accent); }
+        .question-header { font-weight: 900; color: white; background: var(--primary); display: inline-block; padding: 0.6rem 1.5rem; border-radius: 4px; margin-bottom: 1.8rem; font-size: 1rem; align-self: flex-start; letter-spacing: 2px; text-transform: uppercase; border-left: 4px solid var(--accent);}
+        .question-text { font-weight: 600; margin-bottom: 2.5rem; font-size: 1.2rem; line-height: 1.8; color: #f5f5f5; }
+        
+        .options { display: flex; flex-direction: column; gap: 1.2rem; }
+        .option { padding: 1.2rem; border: 1px solid #404040; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #171717; color: #d4d4d4; }
+        .option span { font-weight: 900; min-width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; color: white; background: #52525b; border-radius: 6px; font-size: 1.1rem; transition: background 0.3s;}
+        .option:hover:not(.locked) { background: #262626; border-color: var(--alert); }
+        .option:hover:not(.locked) span { background: var(--accent); color: white;}
+        .option.locked { cursor: default; }
+        .option.correct { background: rgba(16, 185, 129, 0.15); border-color: var(--green); color: #34d399; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: rgba(220, 38, 38, 0.15); border-color: var(--red); color: #f87171; opacity: 0.9; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2.5rem; background: transparent; color: var(--alert); border: 2px solid var(--alert); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 1rem; font-weight: 900; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--alert); color: #171717; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: #171717; border-left: 5px solid var(--alert); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: #e5e5e5; box-shadow: inset 0 0 20px rgba(220, 38, 38, 0.05); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: var(--alert); font-weight: 900; font-size: 1.1rem; display: block; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 1px;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 4rem 2rem; background: #000000; border-radius: 12px; border: 2px solid var(--accent); border-top: 8px solid var(--accent); display: none; box-shadow: 0 20px 50px rgba(220, 38, 38, 0.2); }
+        .results-section h2 { font-size: 2.8rem; color: white; margin-top: 0; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2.5rem; }
+        .stat { padding: 2rem 3rem; border-radius: 12px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; border: 1px solid #404040; box-shadow: 0 8px 15px rgba(0,0,0,0.8); background: #262626;}
+        .stat span { font-size: 1.1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #a3a3a3;}
+        .stat.correct { color: var(--green); border-color: #059669;}
+        .stat.wrong { color: var(--red); border-color: #dc2626;}
+        .stat.empty { color: #a3a3a3; }
+        .stat.net { color: var(--alert); border-color: var(--alert); transform: scale(1.1); box-shadow: 0 0 30px rgba(220, 38, 38, 0.3);}
+        
+        footer { background: #000000; color: #737373; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1.1rem; border-top: 2px solid #404040; font-weight: 600; letter-spacing: 1px;}
+        
+        /* CSS Art for Final Test */
+        .css-graphic-container { width: 100%; display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; padding: 2rem; background: #171717; border-radius: 8px; border: 2px dashed #404040; min-height: 200px;}
+        
+        /* Graphic 1: Chemical Mix Final */
+        .chem-flask { position: relative; width: 50px; height: 70px; border: 4px solid #737373; border-top: none; border-radius: 0 0 25px 25px; margin: 0 20px;}
+        .chem-flask::before { content: ''; position: absolute; top: -20px; left: 13px; width: 16px; height: 20px; border: 4px solid #737373; border-bottom: none; }
+        .liquid-acid { position: absolute; bottom: 0; left: 0; right: 0; height: 35px; background: #facc15; border-radius: 0 0 20px 20px; }
+        .liquid-bleach { position: absolute; bottom: 0; left: 0; right: 0; height: 35px; background: #38bdf8; border-radius: 0 0 20px 20px; }
+        .reaction-cloud { width: 90px; height: 70px; background: var(--green); border-radius: 50%; position: relative; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; box-shadow: 0 0 30px rgba(16, 185, 129, 0.6); animation: pulse 1.5s infinite alternate;}
+        
+        /* Graphic 2: Fire Triangle / Risk */
+        .risk-matrix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; color: black; font-weight: bold; font-size: 0.9rem;}
+        .rm-box { padding: 15px; border-radius: 6px; }
+        .rm-low { background: var(--green); }
+        .rm-med { background: var(--gold); }
+        .rm-high { background: var(--red); color: white; transform: scale(1.1); box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);}
+
+        @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: none; padding: 0; margin-bottom: 0;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px solid #000; margin-bottom: 2rem; padding-bottom: 2rem; background: white; color: black; border-radius: 0;}
+            .question-header { background: #eee; color: black; box-shadow: none; border-left: none;}
+            .question-text { color: black; }
+            .option { border: 1px solid #aaa; background: white; color: black; margin-bottom: 0.5rem;}
+            .option span { background: #ddd; color: black; border: 1px solid #aaa;}
+            .solution-box { display: block !important; border: 1px solid black; background: #f0f0f0; padding: 1rem; margin-top: 1rem; color: black; box-shadow: none; border-left: none;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 3 - Test 5</h2>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 3: KONAKLAMA FAALİYETLERİ - TEST 5 (KARMA VE FİNAL SEVİYE)</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">⬅️ Çıkmış Sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn">Test 4 (Zor)</a>
+            <a href="test_5.html" class="nav-btn active">Test 5 (Final)</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--alert); font-size: 2.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">Final: Ünite 3 Kapsamlı Değerlendirme</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: #a3a3a3; margin-bottom: 3rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>⚠️ Boss Seviyesi: Test 5 Hakkında</h3>
+                <ul>
+                    <li>Bu test Ünite 3'ün son ve en zorlayıcı testidir. "Sarma ve Genel" mantığıyla ünitenin tüm köşelerinden (sektör özellikleri, departmanlar, ince tablo ayrıntıları, yasal süreler) sorular içerir.</li>
+                    <li>Şıklar bilerek çoklu öncüllerden (I, II, III vb.) ve güçlü çeldiricilerden oluşturulmuştur.</li>
+                    <li>Ezberlediğiniz mantıksal gerçekler ile <strong>Tablo 3.1</strong>'de yazan resmi sınıflandırmalar arasındaki farkları (Örn: Havalandırma / Biyolojik farkı) sıkça sorgular.</li>
+                    <li>Sınav değerlendirmesi <strong>4 Yanlış 1 Doğruyu Götürür</strong> kuralına göre net üzerinden yapılacaktır.</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">FİNAL TESTİNİ BAŞLAT ☠️</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏳ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir 🛑</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Test 5 (Final) Sonuç Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text">I. Üretim ile tüketimin eşzamanlı olması<br>II. Emek yoğun bir sektör olması<br>III. Talebin ekonomik ve politik koşullara bağlı olarak aşırı dalgalanma (mevsimsellik) göstermesi<br>IV. Hizmetin stoklanabilir ve geri çağrılabilir olması<br><br>Yukarıdakilerden hangisi veya hangileri turizm ve konaklama endüstrisinin genel özellikleri arasında <u>yer almaz</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> Yalnız I</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> Yalnız III</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>C)</span> Yalnız IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> I ve IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> II, III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 Ünite 3 - Kapsamlı Analiz:</strong> Turizm sektörünün en temel özelliği, hizmetin anında tüketilmesi, yani "Stoklanamaması ve Geri Çağrılamamasıdır". Dolayısıyla IV numaralı öncül yanlıştır, diğerleri turizmin temel özellikleridir.
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text">Otel işletmelerinde (Tablo 3.1) departmanlar ile o departmanlarda en sık görülen riskler eşleştirilmiştir. Buna göre aşağıdaki <strong>Departman - En Belirgin Olası Risk</strong> eşleştirmelerinden hangisi ders kitabındaki sınıflandırmaya göre <u>hatalıdır</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Yeme-İçme (Mutfak) Bölümü -> Kesikler ve Yanıklar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> Kat Hizmetleri (Housekeeping) -> Kimyasal Tahriş ve Alerjiler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>C)</span> Ön Büro (Resepsiyon) -> Dolaşım Sorunları (Ergonomik)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>D)</span> Çamaşırhane -> Yüksek Şiddette Gürültü Riski</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> Teknik Destek -> Biyolojik (Atık su) Riskler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Ünite 3 - Tablo 3.1 İnce Ayrıntısı:</strong> Tablo 3.1 incelendiğinde "Gürültü" tehlikesinin karşısında <em>Resepsiyon, disko, teknik destek ve güvenlik hizmetleri</em> yer alır. Çok makineli olmasına rağmen <strong>Çamaşırhane</strong> gürültü tehlikesinin yaşandığı birimler arasına dahil edilmemiştir (Düşük/yüksek sıcaklık, biyolojik vb. kısımlardadır).
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text">Otel işletmelerinde çalışanlarda görülebilen;<br>I. Uyku bozukluğu<br>II. Depresyon<br>III. Endokrin (hormonal) bozukluk<br>IV. Dolaşım Sorunları<br><br>Gibi sağlık sorunlarından hangileri konaklama faaliyetlerindeki <strong>Örgütsel (Psikososyal) Tehlikelerin</strong> doğrudan bir sonucu olarak değerlendirilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> I ve II</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> II ve III</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>C)</span> I, II ve III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> I, III ve IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> I, II, III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Ünite 3 - Risk Sınıflandırması:</strong> Uyku bozukluğu, anksiyete, depresyon ve endokrin bozukluk "Örgütsel (psikososyal)" tehlikeler grubundandır. <strong>Dolaşım sorunları (varis)</strong> ise sürekli ayakta kalmaktan kaynaklanan "Ergonomik" tehlikeler başlığı altındadır.
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text">Turizm pazarlarında yer alan tüketicilerin tercihleri ve alışkanlıklarının çok kısa sürelerde değişmesi sebebiyle, konaklama işletmelerinin sahip oldukları varlıkları (mobilya, dekorasyon vb.) ekonomik ve fiziksel ömürleri dolmadan yenileriyle değiştirmek zorunda bırakılması, turizmin hangi spesifik özelliğini tanımlar?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Çapraz hizmet zinciri (Tamamlayıcılık)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Üretim ile tüketimin eş zamanlılığı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>C)</span> Tüketici tercihlerinin kısa sürede değişmesi (Moda etkisi)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> Talebin elastikiyetinin yüksek olması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> Hizmetin soyutluk (dokunulamaz) özelliği</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Ünite 3 - Konaklama Esasları:</strong> Müşterilerin sıkılmaması ve işletmenin modaya ayak uydurabilmesi için sağlam eşyaların bile yenilenmesi zorunluluğu, turizmin "tüketici tercihlerinin kısa sürede değişmesi" maddesiyle açıklanmaktadır.
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 5 / 20</div>
+                    
+                    <div class="css-graphic-container">
+                        <div class="risk-matrix">
+                            <div class="rm-box rm-low">Olasılık: Düşük<br>Şiddet: Düşük</div>
+                            <div class="rm-box rm-med">Olasılık: Orta<br>Şiddet: Düşük</div>
+                            <div class="rm-box rm-high">Olasılık: Yüksek<br>Şiddet: Yüksek</div>
+                        </div>
+                    </div>
+
+                    <div class="question-text">İSG Risk Yönetim metodolojisinde yukarıdaki gibi oluşturulan matrislerde, bir tehlikeden kaynaklanacak olan zarar veya yaralanmanın <u>olasılığı ile şiddetinin bileşkesine (çarpımına)</u> ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> İş Kazası Oranı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>B)</span> Risk</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> Tehlike Sınıfı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>D)</span> Olay Şiddeti</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> Ramak Kala Olasılığı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Ünite 3 - İSG Kavramları:</strong> İş Sağlığı ve Güvenliği terminolojisinde; Olasılık (İhtimal) x Şiddet (Zararın Büyüklüğü) = <strong>Risk</strong> olarak tanımlanır.
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text">Otel işletmelerinde iş kazalarının ve meslek hastalıklarının önlenmesi amacıyla risk değerlendirmesi yapılırken çeşitli bilgi ve belgeler (asgari gereklilikler) toplanır. <br><br>Aşağıdakilerden hangisi risk değerlendirme ekibi tarafından toplanması ve analiz edilmesi gereken asgari bilgilerden biri <u>değildir</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> Çalışanların İSG tecrübe ve düşünceleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> Ortam ve kişisel maruziyet düzeyi ölçüm sonuçları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> Ramak kala olay ve iş kazası kayıtları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> Genç, yaşlı, gebe veya engelli gibi özel politika gerektiren grupların durumu</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>E)</span> Çalışanların aylık prim, bordro ve sosyal sendika üyelik belgeleri</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 Ünite 3 - Çıkmış Soru Mantığı (2024):</strong> İSG alanında toplanan veriler fiziksel, kimyasal ve biyolojik tehlikeler ile sağlık gözetimlerini kapsar. Çalışanların bordro/gelir bilgileri ve sendika durumları risk analizi evrakları arasında yer almaz.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text">NACE (Ekonomik Faaliyetlerin İstatistiki Sınıflaması) kodlama sistemine göre "Konaklama Faaliyetleri (Otel, Motel vb.)" ana faaliyet kodu numarası ile İSG mevzuatına göre bulunduğu "Tehlike Sınıfı" aşağıdakilerden hangisinde doğru olarak verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> NACE: 47 / Tehlikeli Sınıf</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>B)</span> NACE: 56 / Çok Tehlikeli Sınıf</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>C)</span> NACE: 55 / Az Tehlikeli Sınıf</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>D)</span> NACE: 32 / Az Tehlikeli Sınıf</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> NACE: 55 / Tehlikeli Sınıf</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Ünite 3 - Çıkmış Soru Mantığı:</strong> Otelcilik ve Konaklama faaliyetleri <strong>NACE: 55</strong> kodu ile tanımlanır ve İSG yasalarına göre resmi olarak <strong>Az Tehlikeli</strong> sınıfta yer alır. (Yeme-İçme sektörü ise 56'dır).
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text">Otel işletmelerindeki "Kat Hizmetleri (Housekeeping)" personelinin genel sağlık ve güvenlik riskleri göz önüne alındığında, aşağıda verilen mesleki rahatsızlıklardan hangisi bu personelde <u>kök nedeni açısından diğerlerinden farklı bir risk sınıfına</u> aittir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>A)</span> Lumbago (Bel ağrısı)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>B)</span> Kontakt Dermatit (Egzama)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>C)</span> Bel ve Omur Fıtığı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Omuz ve dirsekte tendinit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Karpal Tünel Sendromu</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Ünite 3 - Karma Risk Analizi:</strong> Lumbago, fıtık, tendinit ve karpal tünel sendromu fiziksel zorlanma, tekrarlayan hareket ve ağır kaldırma kökenli <strong>Ergonomik</strong> risklerdir. Ancak Dermatit (Egzama), asit veya deterjanlarla temastan kaynaklanan bir <strong>Kimyasal</strong> risktir.
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text">Otel birimlerindeki (Tablo 3.1) sınıflandırmaya göre "Lejyoner Hastalığı", mantıksal olarak mikrobiyolojik bir ajan olan Legionella bakterisinden kaynaklanmasına rağmen, kitapta resmi tehlike kaynağı olarak hangi başlık altında sınıflandırılmıştır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Biyolojik Tehlikeler</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>B)</span> Havalandırma Tehlikesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>C)</span> Kimyasal Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> Düşük ve Yüksek Sıcaklık</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> Aydınlatma Yetersizliği</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 Ünite 3 - Çok İnce Ayrıntı:</strong> Ders kitabı sayfa 89'daki Tablo 3.1'de "Solunum sistemi hastalıkları ve Lejyoner Hastalığı" doğrudan <strong>Havalandırma</strong> risk başlığının karşısında yer almaktadır. (Biyolojik başlığı altında Hepatit, HIV, vb. vardır).
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 10 / 20</div>
+                    
+                    <div class="css-graphic-container">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="chem-flask"><div class="liquid-acid"></div></div>
+                            <span style="font-size:2rem; color:#a3a3a3; font-weight:bold;">+</span>
+                            <div class="chem-flask"><div class="liquid-bleach"></div></div>
+                            <span style="font-size:2rem; color:#a3a3a3; font-weight:bold;">=</span>
+                            <div class="reaction-cloud">☠️</div>
+                        </div>
+                    </div>
+
+                    <div class="question-text">Otel temizlik personeli, inatçı yüzey lekelerini daha hızlı çıkarmak amacıyla çamaşır suyu ile kireç çözücüyü (asit) kapalı bir ortamda karıştırmış ve ortaya çıkan yeşilimsi toksik gazı soluyarak fenalaşmıştır.<br><br>Toksikoloji kurallarına göre açığa çıkan ve ciddi solunum tahribatı/yanığı yapan bu spesifik zehirli gaz aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>A)</span> Karbonmonoksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> Sülfürik asit buharı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>C)</span> Metan Gazı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>D)</span> Klor Gazı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> Amonyak</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Ünite 3 - Vaka Analizi:</strong> Sodyum hipoklorit (çamaşır suyu) ile hidroklorik asit (tuz ruhu / kireç çözücü) karıştırıldığında reaksiyona girerek boğucu ve ölümcül olabilen <strong>Klor Gazı</strong> açığa çıkarır. Sektördeki en kritik tehlikelerden biridir.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text">Otelcilikte, yeme-içme ve çamaşırhane ünitelerinde en sık görülen "kayma ve düşme" kazalarını önlemek amacıyla yasal mevzuatlarda zeminlerin belirli bir pürüzlülükte olması istenmektedir.<br><br>Suyla sık ıslanan alanlarda yüzey pürüzlülüğünün <u>en az kaç mikron</u> değerine sahip olması gerektiği belirtilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> 25 Mikron</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> 50 Mikron</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>C)</span> 70 Mikron</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>D)</span> 100 Mikron</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> 150 Mikron</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Ünite 3 - Çıkmış Soru (2024):</strong> Zeminin yeterince tutucu olması ve su tahliyesini engellemeden kaymayı önlemesi için endüstriyel mutfak standartlarında en az <strong>70 mikron</strong> pürüzlülük şart koşulmaktadır.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text">Konaklama işletmesinde yaşanan bir olayın SGK (Kurum) tarafından resmi olarak "Meslek Hastalığı" kabul edilebilmesi için, çalışanın işten dolayı bu hastalığa yakalandığının <u>hangi resmi kurul / belge</u> tarafından tespit ve onaylanması kesinlikle zorunludur?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>A)</span> Ortak Sağlık ve Güvenlik Birimi (OSGB) Uzman Raporu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>B)</span> İşletmenin İşyeri Hekiminin tek başına hazırladığı Kanaat Raporu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> İş Mahkemesi Bilirkişi Raporu</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>D)</span> Kurum (SGK) Sağlık Kurulu Raporu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> Sağlık Bakanlığı Acil Servis Müdahale Tutanağı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Ünite 3 - Mevzuat Kavramı:</strong> İlliyet bağının (neden-sonuç) kurulabilmesi ve bir hastalığın resmi meslek hastalığı sayılabilmesi için yetkili hastaneden alınan belgelerin <strong>Kurum (SGK) Sağlık Kurulu</strong> tarafından incelenip kesin tespit kararına bağlanması şarttır.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text">İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliğine göre, NACE koduna göre "Az Tehlikeli" sınıfta yer alan bir otelde, iş kazası, teknoloji değişikliği veya taşınma gibi olaylar olmasa dahi standart Risk Değerlendirme Raporu <u>en geç kaç yılda bir</u> yenilenmek zorundadır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> Her yıl</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> 2 Yılda bir</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>C)</span> 3 Yılda bir</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> 4 Yılda bir</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>E)</span> 6 Yılda bir</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Ünite 3 - Mevzuat:</strong> Risk değerlendirmesi Çok Tehlikeli yerlerde en geç 2, Tehlikelide 4, Otellerin bulunduğu <strong>Az Tehlikeli</strong> grupta ise en geç <strong>6 yılda bir</strong> tamamen yenilenir.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text">Otellerde kimyasal maruziyetlere (boya çıkarıcı, temizlik asitleri vb.) bağlı risk tablosunda üç farklı spesifik "Kanser" türü tanımlanmıştır.<br><br>Tablo 3.1'e göre kimyasal maddelerin neden olduğu bu kanser türleri hangi seçenekte eksiksiz ve doğru verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>A)</span> Mide, Bağırsak, Karaciğer Kanserleri</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>B)</span> Deri, Akciğer ve Sinüs Kanserleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>C)</span> Kan (Lösemi), Kemik ve Prostat Kanserleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Pankreas, Akciğer ve Tiroit Kanserleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> Beyin, Deri ve Karaciğer Kanserleri</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Ünite 3 - Tablo 3.1 Ayrıntısı:</strong> Kimyasal tehlikeler satırında yer alan zararlar; deride tahriş, yanık, alerji, solunum yolu tahrişi ve <strong>Kanserler (deri, akciğer, sinüs)</strong> olarak açıkça listelenmiştir.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text">I. Ortam ölçümü ve kişisel maruziyet düzeyi sonuçları.<br>II. Malzeme Güvenlik Bilgi Formları (MSDS).<br>III. İş yeri dışından kaynaklanan ve iş yerini etkileyebilecek yeni tehlike durumları.<br>IV. Otelde konaklayan müşterilerin şikayet anketleri.<br><br>Bir otelde meydana gelen revizyon sonrasında Risk Değerlendirmesinin yenilenmesi sırasında yukarıdakilerden hangisi veya hangileri <u>dikkate alınması gereken iş güvenliği verilerinden biri değildir</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> Yalnız II</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>B)</span> Yalnız IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>C)</span> I ve III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> II ve IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> I, III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Ünite 3 - Kapsamlı Veri Toplama:</strong> Risk değerlendirmesi çalışan sağlığı ve fiziksel çevreyle ilgilidir. İSG ölçümleri, MSDS'ler ve yeni tehlikeler analize dahil edilir. <strong>Müşteri şikayet anketleri</strong> kalite yönetiminin konusudur, İSG'nin risk değerlendirme dosyasında veri olarak aranmaz.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text">Hizmetlerin sürdürülmesini engelleyen genel arızalara (elektrik, jeneratör, HVAC havalandırma vb.) müdahale eden, binanın her zaman bakımlı ve yeni görünmesini, işletme ve enerji verimliliğinin sağlanmasını hedefleyen otel departmanı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> Kat Hizmetleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>B)</span> Satın Alma</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>C)</span> Teknik Destek ve Bakım Hizmetleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> Yönetim Birimi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Güvenlik Hizmetleri</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Ünite 3 - Departman Tanımları:</strong> Asansör, havuz dairesi, jeneratör, klima ve bina bakımlarının tamamından, aynı zamanda enerji verimliliğinden sorumlu birim <strong>Teknik Destek</strong> departmanıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text">"İşletmenin dış dünyaya karşı yüzü konumunda olan; tur operatörleri, seyahat acenteleri ve medya ile sürekli iletişim hâlinde kalarak hedef kitlenin ilgisini, güvenini ve desteğini kazanmayı amaçlayan" birim aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> Ön Büro (Resepsiyon)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>B)</span> Halkla İlişkiler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>C)</span> Kat Karşılama (Bellboy)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> Muhasebe</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> İnsan Kaynakları</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Ünite 3 - Departman Tanımları:</strong> Ön büro işletmenin birebir vitrini olsa da, medyayayla, seyahat acenteleriyle ve dış dünyayla kurumsal seviyede ilgilenerek işletmenin güvenilirliğini (marka itibarını) yöneten departman <strong>Halkla İlişkiler (PR)</strong> departmanıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text">Otel idaresi tarafından "Aydınlatma" yetersizliği sebebiyle ortaya çıkan risklere karşı önlem alınmadığı takdirde, çalışanlarda Tablo 3.1'e göre aşağıdaki sağlık sorunlarından hangisinin görülmesi <u>beklenmez</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> Yorgunluk</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> Baş Ağrısı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>C)</span> Gözlerde yanma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>D)</span> Gözlerde sulanma ve kızarma</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>E)</span> Yoğunlaşma ve dikkat azalması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Ünite 3 - İnce Tablo Ayrıntısı:</strong> Aydınlatma yetersizliği: Yorgunluk, Baş ağrısı, Gözlerde yanma/kızarma/sulanma yapar. <strong>Yoğunlaşma ve dikkat azalması</strong> ise tabloda "Gürültü" tehlikesine ait bir semptomdur.
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi bir olayın İSG mevzuatında "Ramak Kala Olay" (Near Miss) olarak kaydedilmesi için <u>kesinlikle bulunması gereken özelliktir</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> Sadece çok tehlikeli sektörlerde gerçekleşmiş olması</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>B)</span> Ölüm veya yaralanma olmamasına rağmen, zarar verme potansiyelinin olması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>C)</span> İş göremezlik süresinin sadece 1-3 gün ile sınırlı kalması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>D)</span> Zararın çalışana değil sadece konuklara gelmiş olması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> Olayın sadece mesai saatleri dışında gerçekleşmiş olması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Ünite 3 - Tanım:</strong> Ramak kala olayın tek yasal belirteci: Meydana gelmesine (tehlike oluşmasına) rağmen şans eseri ölüm veya yaralanma ile sonuçlanmaması, ancak iş yeri veya ekipmanı zarara uğratma "potansiyeli" taşımasıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text">Konaklama endüstrisinde üretilen turistik hizmetin pazarlanmasında; tüketicinin rezervasyon aşamasından otele ulaştığı uçağa, oteldeki odasından, eğlencesine ve akşam yemeğine kadar olan sürecin tüm kurumlar (havayolu, acente, otel) tarafından birbirini etkileyerek, "kopmaz bir halka" şeklinde sunulması, hizmetin hangi özelliğini yansıtır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> Talebin Elastikiyeti</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>B)</span> Tüketim ile üretimin eşzamanlılığı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>C)</span> Çapraz hizmet zinciri (Birleşik / Tamamlayıcı ürün)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> Emek yoğun nitelik (Hizmetin soyutluğu)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> Mevsimsellik özelliği</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Uzman Çözümü</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Ünite 3 - Turizm Endüstrisi:</strong> Turizmde ürünler paket veya münferit fark etmeksizin "Birleşik Ürün" özelliği gösterir. Uçağın rötar yapmasının oteldeki konaklamayı zehir etmesi gibi birbirini tamamlayan bu yapıya İSG ve sektör dilinde <strong>Çapraz hizmet zinciri (Tamamlayıcılık)</strong> denir.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                // Show right answer
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Uzman Çözümü';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // Net Hesaplaması (4 Yanlış 1 Doğru Götürür)
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SÜRE BİTTİ";
+            
+            // Unanswered questions lock and show correct
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

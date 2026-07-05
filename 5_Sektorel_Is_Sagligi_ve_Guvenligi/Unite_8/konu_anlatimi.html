@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ünite 8: Mobilya İmalat Sektöründe İSG</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+
+        .unit-subtitle {
+            display: inline-block;
+            background-color: #f8fafc;
+            color: #0f172a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-top: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding-bottom: 3rem; }
+
+        .content-header { display: flex; justify-content: flex-end; align-items: center; padding: 1.5rem 0; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; }
+        h2 { color: var(--primary-color); margin: 2rem 0 1rem 0; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-left: 4px solid var(--secondary-color); padding-left: 0.75rem; }
+        h3 { color: #334155; margin: 1.5rem 0 0.75rem 0; font-size: 1.25rem; }
+        p { margin-bottom: 1rem; color: #475569; line-height: 1.7; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #475569; line-height: 1.7; }
+        strong { color: var(--dark-color); }
+
+        .concept-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .concept-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1.25rem; text-align: center; transition: all 0.2s; }
+        .concept-card:hover { border-color: var(--secondary-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transform: translateY(-2px); }
+        .concept-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 0.75rem; }
+        .concept-title { font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .concept-desc { font-size: 0.9rem; color: #64748b; }
+
+        .alert-box { border-left: 5px solid; padding: 1.25rem; border-radius: 0.5rem; margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start; }
+        .alert-icon { font-size: 1.5rem; margin-top: 0.2rem; }
+        .alert-content h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
+        .alert-content p { margin: 0; font-size: 0.95rem; line-height: 1.6; }
+
+        .exam-focus { background-color: #fef2f2; border-color: var(--danger-color); }
+        .exam-focus .alert-icon { color: var(--danger-color); }
+        .exam-focus h4 { color: var(--danger-color); }
+
+        .memory-hack { background-color: #fffbeb; border-color: var(--warning-color); }
+        .memory-hack .alert-icon { color: var(--warning-color); }
+        .memory-hack h4 { color: #b45309; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        .comparison-table th, .comparison-table td { padding: 1rem; border: 1px solid #cbd5e1; text-align: left; }
+        .comparison-table th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        .comparison-table tr:nth-child(even) { background-color: #f8fafc; }
+        .highlight-cell { font-weight: 700; color: var(--danger-color); }
+
+        .regulation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .regulation-item { background: #f1f5f9; padding: 1.25rem; border-radius: 0.75rem; border-left: 4px solid var(--secondary-color); }
+        .regulation-item h4 { color: var(--primary-color); margin-bottom: 0.25rem; }
+        .regulation-item p { margin: 0.5rem 0 0 0; font-size: 0.95rem; }
+
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+        .info-card { background: #f8fafc; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e2e8f0; transition: all 0.2s; }
+        .info-card:hover { border-color: var(--secondary-color); }
+        .info-card h4 { color: var(--primary-color); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .info-card p { margin: 0.5rem 0 0 0; font-size: 0.95rem; }
+
+        .process-steps { counter-reset: step; list-style: none; padding-left: 0; }
+        .process-steps li { counter-increment: step; padding: 0.75rem 0 0.75rem 3rem; position: relative; border-bottom: 1px solid #e2e8f0; }
+        .process-steps li::before { content: counter(step); position: absolute; left: 0; top: 0.75rem; background: var(--secondary-color); color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+
+        .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .risk-item { background: #f8fafc; border-radius: 0.75rem; padding: 1.25rem; border-left: 4px solid var(--danger-color); }
+        .risk-item h4 { color: var(--danger-color); margin-bottom: 0.5rem; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .header-buttons { position: relative; top: 0; left: 0; justify-content: center; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .regulation-grid, .risk-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Üniteler</a>
+        </div>
+        <h1>8. Mobilya İmalat Sektöründe İş Sağlığı ve Güvenliği</h1>
+        <div class="unit-subtitle">Ünite 8: Mobilya Sektöründe Genel Bilgiler, Üretim Süreçleri, Tehlike ve Riskler ile İSG Uygulamaları</div>
+    </header>
+
+    <main>
+        <div class="content-header">
+            <span style="background: #dbeafe; color: #1e40af; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 600;"><i class="fa-regular fa-clock"></i> Tahmini Okuma: 28 Dk</span>
+        </div>
+
+        <!-- Giriş -->
+        <div style="background: white; border: 1px solid #e2e8f0; border-left: 5px solid var(--primary-color); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bullseye"></i> Bölümün Amacı</h3>
+            <p style="color: #475569; margin-bottom: 0; line-height: 1.7;">Bu ünitede, mobilya imalat sektörünün tarihsel gelişimi, Türkiye'deki mevcut durumu, üretim süreçleri, sektöre özgü fiziksel, kimyasal, ergonomik ve biyolojik riskler ile bu risklere karşı alınması gereken önlemler ve ilgili mevzuat detaylı olarak ele alınmaktadır.</p>
+        </div>
+
+        <!-- 1. Sektörün Karakteristiği ve Tarihçesi -->
+        <h2><i class="fa-solid fa-couch"></i> 1. Mobilya Sektörünün Karakteristiği ve Tarihsel Gelişimi</h2>
+        <p>İlk çağlardan itibaren ağaç kökleri ve dalları, insan ihtiyaçları için önemli eşyalara dönüştürülmüştür. Başlangıçta ateş ve barınak için kullanılan ağaç, zamanla kaşık, çatal ve mobilya gibi birçok gerecin hammaddesi haline gelmiştir. İlk dönemlerde <strong>elle şekillendirme</strong> ve <strong>sivri uçlu kesici aletlerle yontma</strong> yöntemleri kullanılırken, Sanayi Devrimi ile birlikte makineleşme hız kazanmıştır.</p>
+
+        <div class="concept-map">
+            <div class="concept-card">
+                <i class="fa-solid fa-timeline concept-icon"></i>
+                <div class="concept-title">Tarihçe</div>
+                <div class="concept-desc">İlk çağlarda el aletleriyle başlayan süreç, Sanayi Devrimi ile makineleşmiştir. Ülkemizde <span class="highlight-cell">1960</span> yılından itibaren hızlı gelişim göstermiştir.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-chart-line concept-icon"></i>
+                <div class="concept-title">Türkiye'de Sektör (SGK 2019)</div>
+                <div class="concept-desc"><span class="highlight-cell">21.758</span> iş yeri ve <span class="highlight-cell">154.829</span> çalışan. Yaygın olduğu iller: Ankara, Bursa, Antalya, İstanbul, Gaziantep, İzmir, Kayseri, Kocaeli, Sakarya.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-triangle-exclamation concept-icon"></i>
+                <div class="concept-title">Tehlike Sınıfı</div>
+                <div class="concept-desc">Boyama ve vernikleme işleri hariç <span class="highlight-cell">"Tehlikeli"</span> sınıfta yer alır.</div>
+            </div>
+        </div>
+
+        <!-- 2. Üretim Süreçleri ve İş Akışı -->
+        <h2><i class="fa-solid fa-industry"></i> 2. Üretim Süreçleri ve İş Akışı</h2>
+        <p>Mobilya imalat sektörü, çok çeşitli ürün yelpazesine ve işlemine sahiptir. Üretim işlemleri, <strong>malzeme, parça ve yarı mamullerin</strong> üretim sırasında izledikleri yol haritasıdır. İş akış sistemi; ürünler, alt parçalar, malzeme içeriği, makineler, üretim teknolojisi ve bina özellikleri gibi faktörlerden etkilenir.</p>
+
+        <h3>Temel Üretim Aşamaları</h3>
+        <ol class="process-steps">
+            <li><strong>Hammadde Girişi:</strong> Kereste, levha (MDF, sunta), metal aksam, kumaş, sünger vb. malzemelerin işletmeye alınması.</li>
+            <li><strong>Kesim ve Şekillendirme:</strong> Ahşap ve levhaların istenilen ölçülerde kesilmesi, frezelenmesi, delinmesi (daire testere, planya, freze, matkap).</li>
+            <li><strong>Zımparalama ve Yüzey İşlemleri:</strong> Pürüzlerin giderilmesi, yüzeyin boya ve vernik için hazırlanması.</li>
+            <li><strong>Montaj ve Birleştirme:</strong> Parçaların birleştirilmesi (vida, çivi, tutkal, dübel).</li>
+            <li><strong>Yüzey İşlemleri (Boyama, Vernikleme, Cila):</strong> Ürüne estetik ve koruyucu özellik kazandırma. <span class="highlight-cell">Bu aşama, "çok tehlikeli" olarak sınıflandırılır</span>.</li>
+            <li><strong>Paketleme ve Sevkiyat:</strong> Nihai ürünlerin paketlenerek depolanması veya sevk edilmesi.</li>
+        </ol>
+
+        <div class="alert-box memory-hack">
+            <i class="fa-solid fa-brain alert-icon"></i>
+            <div class="alert-content">
+                <h4>Hafıza Taktikleri: Tehlike Sınıfı</h4>
+                <p>Mobilya sektörü genel olarak <span class="highlight-cell">"Tehlikeli"</span> sınıftır. Ancak <span class="highlight-cell">Boyama ve Vernikleme</span> işlemleri, kullanılan kimyasallar (tiner, vernik, cila, boyalar) nedeniyle <span class="highlight-cell">"Çok Tehlikeli"</span> sınıf olarak değerlendirilir. Bu ayrım sınavlarda sıkça sorulur!</p>
+            </div>
+        </div>
+
+        <!-- 3. Risk Etmenleri ve Sağlık Etkileri -->
+        <h2><i class="fa-solid fa-shield-halved"></i> 3. Mobilya İmalatında Risk Etmenleri ve Sağlık Etkileri</h2>
+        <p>Mobilya sektöründe çalışanlar, geniş makine parkuru, çeşitli hammaddeler ve kimyasallar nedeniyle birçok riske maruz kalmaktadır. Başta ahşap olmak üzere metal, cam, kumaş, sünger ve plastik gibi malzemelerin işlenmesi sırasında çalışanlar <strong>kesici-delici aletler, kimyasal buharlar, toz ve gürültü</strong> gibi etmenlerle karşı karşıyadır.</p>
+
+        <div class="risk-grid">
+            <div class="risk-item">
+                <h4><i class="fa-solid fa-wind"></i> Kimyasal Riskler</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Boya, vernik, tiner, cila, yapıştırıcılar:</strong> Uçucu organik bileşikler (VOC) içerir.</li>
+                    <li>Solunum yoluyla ve deri temasıyla <span class="highlight-cell">alerjik reaksiyonlar, solunum yolu hastalıkları, kanserojen etkiler</span> (özellikle benzen, formaldehit).</li>
+                    <li>Kimyasal Maddelerle Çalışmalarda Sağlık ve Güvenlik Önlemleri Yönetmeliği'ne uyulması zorunludur.</li>
+                </ul>
+            </div>
+            <div class="risk-item">
+                <h4><i class="fa-solid fa-dust"></i> Fiziksel Riskler</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Odun Tozu:</strong> Solunabilir toz (3 mikrondan küçük). <span class="highlight-cell">Akciğer hastalıkları, astım, alerjik rinit</span>.</li>
+                    <li><strong>Gürültü:</strong> Makineler (testere, planya, freze) 85-100 dB(A) – kalıcı işitme kaybı.</li>
+                    <li><strong>Titreşim:</strong> El aletleri (zımpara, matkap) – El-kol titreşim sendromu.</li>
+                    <li><strong>Yüksekten düşme:</strong> Depolama ve montaj aşamalarında.</li>
+                </ul>
+            </div>
+            <div class="risk-item">
+                <h4><i class="fa-solid fa-user"></i> Ergonomik Riskler</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Elle taşıma:</strong> Ağır levhalar, keresteler, parçalar – <span class="highlight-cell">bel fıtığı, kas zorlanmaları</span>.</li>
+                    <li><strong>Tekrarlayan hareketler:</strong> Zımparalama, montaj, paketleme – karpal tünel sendromu, tendon iltihabı.</li>
+                    <li><strong>Zorlu duruşlar:</strong> Eğilme, uzanma, uzun süre ayakta kalma.</li>
+                </ul>
+            </div>
+            <div class="risk-item">
+                <h4><i class="fa-solid fa-saw"></i> Mekanik Riskler</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Döner kesici aletler:</strong> Daire testere, şerit testere, freze, planya – <span class="highlight-cell">uzuv kayıpları, kesikler, ezilmeler</span>.</li>
+                    <li><strong>Parça fırlaması:</strong> İş parçasının veya kırılan alet parçalarının operatöre çarpması.</li>
+                    <li><strong>Makine koruyucularının eksikliği</strong> veya devre dışı bırakılması en büyük tehlikedir.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="alert-box exam-focus">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <div class="alert-content">
+                <h4>Sınav Bilgisi: Kimyasal Yönetmelik</h4>
+                <p>Mobilya imalatında kullanılan kimyasallar için <span class="highlight-cell">Malzeme Güvenlik Bilgi Formları (MSDS)</span> bulundurulması ve çalışanlara bu formların içeriği hakkında eğitim verilmesi <strong>zorunludur</strong>. İşveren, tehlikeli kimyasalların risklerini değerlendirmek ve kontrol önlemlerini uygulamakla yükümlüdür.</p>
+            </div>
+        </div>
+
+        <!-- 4. Mevzuat ve Yasal Yükümlülükler -->
+        <h2><i class="fa-solid fa-gavel"></i> 4. Mevzuat, Yükümlülükler ve İSG Uygulamaları</h2>
+        <p>Mobilya imalat sektörü, <span class="highlight-cell">6331 Sayılı İş Sağlığı ve Güvenliği Kanunu</span>, Kimyasal Maddelerle Çalışmalarda Sağlık ve Güvenlik Önlemleri Yönetmeliği ve İşyeri Tehlike Sınıfları Tebliği'ne tabidir. Sektör "tehlikeli" sınıf kapsamında olup, işverenler aşağıdaki yükümlülükleri yerine getirmek zorundadır.</p>
+
+        <div class="regulation-grid">
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-file-lines"></i> Risk Değerlendirmesi</h4>
+                <p>Kimyasal, fiziksel, mekanik ve ergonomik riskler dikkate alınarak <span class="highlight-cell">yılda en az bir kez</span> güncellenmelidir.</p>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-chalkboard-user"></i> Çalışan Eğitimi</h4>
+                <p>Tehlikeli sınıfta <span class="highlight-cell">en az 12 saat</span> temel İSG eğitimi, <span class="highlight-cell">2 yılda bir</span> yenilenmelidir.</p>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-notes-medical"></i> Sağlık Gözetimi</h4>
+                <p>Periyodik sağlık muayeneleri <span class="highlight-cell">en geç 3 yılda bir</span> (solunum, işitme, kas-iskelet sistemi, dermatolojik muayene).</p>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-vest"></i> Kişisel Koruyucu Donanım (KKD)</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Toz maskesi (FFP2/FFP3):</strong> Odun tozlarına karşı.</li>
+                    <li><strong>Kulak koruyucu:</strong> Gürültülü ortamlarda.</li>
+                    <li><strong>Koruyucu gözlük:</strong> Kesme, zımparalama, boyama aşamalarında.</li>
+                    <li><strong>Baret:</strong> Depolama ve montaj alanlarında.</li>
+                    <li><strong>Kimyasal koruyucu eldiven (nitril/neopren):</strong> Boya, vernik, tiner ile çalışırken.</li>
+                    <li><strong>Bıçak geçirmez eldiven:</strong> Kesim ve montaj işlemlerinde (kesici aletlere karşı).</li>
+                    <li><strong>Kaymaz tabanlı iş ayakkabısı:</strong> Islak, kaygan zeminler ve ağır parçalara karşı.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 5. Korunma Stratejileri ve Mühendislik Kontrolleri -->
+        <h2><i class="fa-solid fa-tools"></i> 5. Korunma Stratejileri ve Mühendislik Kontrolleri</h2>
+        <p>Risk yönetiminde hiyerarşik yaklaşım uygulanmalıdır: <strong>Eliminasyon > İkame > Mühendislik kontrolleri > İdari kontroller > KKD</strong>. Mobilya sektöründe özellikle mühendislik kontrolleri hayati önem taşır.</p>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h4><i class="fa-solid fa-wrench"></i> Mühendislik Kontrolleri</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><span class="highlight-cell">Lokal havalandırma (toz emme sistemleri):</span> Makinelerde entegre toz toplama.</li>
+                    <li><span class="highlight-cell">Makine koruyucuları:</span> Testere bıçakları, freze başlıkları, planya silindirleri üzerinde sabit koruyucular.</li>
+                    <li><span class="highlight-cell">Çift el kumandası:</span> Yüksek devirli makinelerde (planya, freze) çalıştırma için iki elin kullanılması zorunluluğu.</li>
+                    <li><span class="highlight-cell">Acil durdurma butonları:</span> Operatörün kolayca erişebileceği noktalarda.</li>
+                    <li><span class="highlight-cell">Gürültü bariyerleri</span> ve ses yalıtımı.</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h4><i class="fa-solid fa-clipboard-list"></i> İdari Kontroller</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Çalışan eğitimleri (kimyasal güvenlik, makine güvenliği, ergonomi).</li>
+                    <li>İş rotasyonu (tekrarlayan hareketleri azaltmak için).</li>
+                    <li>Fazla mesai sınırlaması ve dinlenme molaları.</li>
+                    <li>Bakım ve onarım çalışmalarında <span class="highlight-cell">kilitleme-etiketleme (Lock-out/Tag-out)</span> prosedürleri.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 6. Sınavda Çıkabilecek Kritik Bilgiler -->
+        <h2><i class="fa-solid fa-list-check"></i> 6. Özet ve Sınav Odaklı Kritik Bilgiler</h2>
+        <p>Aşağıdaki tablo, ünite genelinde en yüksek soru potansiyeline sahip kavramları ve eşik değerleri özetlemektedir.</p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Kavram / Kategori</th>
+                    <th>Kritik Veri / Bilgi</th>
+                    <th>Açıklama / Dikkat Noktası</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tehlike Sınıfı</strong></td>
+                    <td><span class="highlight-cell">Tehlikeli</span> (Boyama/Vernikleme hariç)</td>
+                    <td>Boyama ve vernikleme <span class="highlight-cell">"Çok Tehlikeli"</span> sınıftadır.</td>
+                </tr>
+                <tr>
+                    <td><strong>Sektör Verileri (2019)</strong></td>
+                    <td>21.758 iş yeri / 154.829 çalışan</td>
+                    <td>SGK istatistikleri.</td>
+                </tr>
+                <tr>
+                    <td><strong>Kritik Risk Grubu</strong></td>
+                    <td>Kimyasal, Mekanik, Toz, Gürültü</td>
+                    <td>Odun tozu (solunabilir), VOC (boya-vernik), kesici aletler.</td>
+                </tr>
+                <tr>
+                    <td><strong>Meslek Hastalıkları</strong></td>
+                    <td>Astım, alerjik rinit, silikoz, işitme kaybı</td>
+                    <td>Odun tozu, kimyasal buharlar, gürültü maruziyeti.</td>
+                </tr>
+                <tr>
+                    <td><strong>Temel Eğitim Süresi</strong></td>
+                    <td><span class="highlight-cell">12 saat</span></td>
+                    <td>Tehlikeli sınıf için asgari süre.</td>
+                </tr>
+                <tr>
+                    <td><strong>Sağlık Muayenesi</strong></td>
+                    <td><span class="highlight-cell">3 yılda bir</span></td>
+                    <td>Solunum, işitme, kas-iskelet sistemi odaklı.</td>
+                </tr>
+                <tr>
+                    <td><strong>KKD (Toz)</strong></td>
+                    <td>FFP2/FFP3 maske</td>
+                    <td>Odun tozlarına karşı solunum koruması.</td>
+                </tr>
+                <tr>
+                    <td><strong>KKD (Kesici Aletler)</strong></td>
+                    <td>Bıçak geçirmez eldiven</td>
+                    <td>Kesim ve montaj aşamalarında zorunludur.</td>
+                </tr>
+                <tr>
+                    <td><strong>KKD (Kimyasal)</strong></td>
+                    <td>Nitril/neopren eldiven + organik buhar maskesi</td>
+                    <td>Boya, vernik, tiner ile çalışırken.</td>
+                </tr>
+                <tr>
+                    <td><strong>Mühendislik Kontrolü</strong></td>
+                    <td>Lokal havalandırma / Çift el kumandası</td>
+                    <td>Toz emme sistemleri ve makine güvenliği için.</td>
+                </tr>
+                <tr>
+                    <td><strong>Ergonomik Limit</strong></td>
+                    <td>Kişisel gücün %75'i</td>
+                    <td>Ağır kaldırmalarda bu sınır aşılmamalıdır.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Özet Kutusu -->
+        <div style="background: #e0f2fe; border-radius: 0.75rem; padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;"><i class="fa-regular fa-lightbulb"></i> Ünite Özeti</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div><strong>Tehlike Sınıfı:</strong> Tehlikeli (Boyama/vernik hariç).</div>
+                <div><strong>Sektör Verisi:</strong> 21.758 iş yeri / 154.829 çalışan.</div>
+                <div><strong>Kritik Riskler:</strong> Kimyasal, Mekanik, Toz, Gürültü.</div>
+                <div><strong>Meslek Hastalıkları:</strong> Astım, alerji, işitme kaybı.</div>
+                <div><strong>Eğitim:</strong> 12 saat (Tehlikeli sınıf).</div>
+                <div><strong>Sağlık Muayenesi:</strong> 3 yılda bir.</div>
+                <div><strong>KKD:</strong> FFP2 maske, bıçak geçirmez eldiven, organik buhar maskesi.</div>
+                <div><strong>Mühendislik:</strong> Lokal havalandırma, çift el kumandası.</div>
+                <div><strong>Ergonomi:</strong> %75 kuralı.</div>
+                <div><strong>Mevzuat:</strong> 6331 SK, Kimyasal Yönetmelik.</div>
+            </div>
+        </div>
+
+        <!-- Test Butonu -->
+        <div style="text-align: center; margin-top: 3.5rem;">
+            <a href="test_8.html" style="background-color: var(--secondary-color); color: white; text-decoration: none; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: bold; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(13, 148, 136, 0.3); transition: all 0.2s;">
+                Konuyu Anladım, Ünite 8 Test-1'e Başla <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+    </footer>
+
+</body>
+</html>

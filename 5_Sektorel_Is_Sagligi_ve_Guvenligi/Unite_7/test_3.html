@@ -1,0 +1,637 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sektörel İSG | Ünite 7 - TEST 3 (Vaka Analizi)</title>
+    <style>
+        :root {
+            /* Ünite 7 Test 3: Derin Sondaj Grisi ve Alev Sarısı Teması */
+            --primary: #0f172a;    /* Koyu Arduvaz Grisi / Petrol */
+            --accent: #f59e0b;     /* Alev Sarısı / Turuncu */
+            --accent-hover: #d97706;
+            --bg: #f8fafc;         /* Açık Gri Arka Plan */
+            --panel-bg: #ffffff;   /* Beyaz Panel */
+            --text: #334155;       /* Koyu Metin */
+            --light-gray: #e2e8f0;
+            --green: #10b981;
+            --red: #ef4444;
+            --steel: #475569;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #020617 0%, #1e293b 100%); color: white; padding: 3rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3); }
+        header h1 { margin: 0; font-size: 2.3rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
+        header p { margin: 0.8rem 0 0 0; color: #fde68a; font-weight: 700; font-size: 1.25rem; letter-spacing: 1px;}
+        
+        nav { background: #020617; padding: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #1e293b; }
+        .nav-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .nav-btn { background: #1e293b; color: #f8fafc; border: 1px solid #334155; padding: 0.7rem 1.4rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; text-transform: uppercase;}
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); font-weight: 800;}
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.06); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--accent); background: #fffbeb; padding: 2rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: inset 0 0 15px rgba(245, 158, 11, 0.05);}
+        .strategy-box h3 { margin-top: 0; color: #b45309; display: flex; align-items: center; gap: 0.6rem; font-size: 1.4rem; text-transform: uppercase; border-bottom: 2px solid #fde68a; padding-bottom: 0.5rem;}
+        .strategy-box p { color: var(--text); font-size: 1.05rem; margin-bottom: 0.5rem;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: var(--text); font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.6rem; }
+        .strategy-box .highlight { background: #fef3c7; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: bold; color: #92400e;}
+        
+        .start-btn { display: block; width: 100%; max-width: 400px; margin: 3rem auto 1rem; background: var(--primary); color: white; text-align: center; padding: 1.2rem; border-radius: 8px; font-size: 1.3rem; cursor: pointer; border: none; font-weight: 900; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);}
+        .start-btn:hover { background: var(--accent); box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4); transform: translateY(-3px); }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1.2rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--accent); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px);}
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-secondary { background: var(--steel); color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid var(--light-gray); padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;}
+        .question-card:hover { border-color: var(--primary); box-shadow: 0 8px 30px rgba(15, 23, 42, 0.12);}
+        
+        .badge-senaryo { position: absolute; top: -15px; right: 2.5rem; background: var(--accent); color: white; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); border: 2px solid #fff; letter-spacing: 1px;}
+        
+        .question-header { font-weight: 900; color: white; background: var(--steel); display: inline-block; padding: 0.6rem 1.4rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 1rem; align-self: flex-start; letter-spacing: 1px;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: var(--text); }
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.1rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #f8fafc; color: #334155; font-weight: 600;}
+        .option span { font-weight: 800; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; background: #94a3b8; border-radius: 6px; font-size: 1.05rem; transition: all 0.3s;}
+        .option:hover:not(.locked) { background: #ffffff; border-color: var(--accent); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.15);}
+        .option:hover:not(.locked) span { background: var(--accent); color: white;}
+        .option.locked { cursor: default; }
+        .option.correct { background: #ecfdf5; border-color: var(--green); color: #065f46; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fef2f2; border-color: var(--red); color: #991b1b; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 900; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: #f1f5f9; border-left: 5px solid var(--accent); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: var(--text); box-shadow: inset 0 0 15px rgba(0,0,0,0.03); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: #d97706; font-weight: 900; font-size: 1.15rem; display: block; margin-bottom: 0.8rem; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 4rem 2rem; background: white; border-radius: 12px; border-top: 8px solid var(--primary); display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .results-section h2 { font-size: 2.6rem; color: var(--primary); margin-top: 0; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.8rem 3rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; border: 1px solid #e2e8f0; box-shadow: 0 6px 15px rgba(0,0,0,0.05); background: #f8fafc;}
+        .stat span { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #475569;}
+        .stat.correct { color: var(--green); border-color: #34d399; background: #ecfdf5;}
+        .stat.wrong { color: var(--red); border-color: #fca5a5; background: #fef2f2;}
+        .stat.empty { color: #475569; }
+        .stat.net { color: var(--accent); border-color: var(--accent); transform: scale(1.08); box-shadow: 0 10px 25px rgba(245, 158, 11, 0.2); background: white;}
+        
+        footer { background: #020617; color: #94a3b8; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1.05rem; border-top: 5px solid var(--accent); font-weight: 600; letter-spacing: 1px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .badge-senaryo { border: 1px solid #000; color: #000; background: #eee; }
+            .solution-box { display: block !important; border: 1px solid #94a3b8; background: #f8fafc; padding: 1rem; margin-top: 1rem; color: black; }
+            .option { border: 1px solid #e2e8f0; background: white; color: black; margin-bottom: 0.5rem;}
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 7: Petrol ve Gaz Sektörü - TEST 3 (Vaka Analizi)</p>
+    </header>
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">⬅️ Çıkmış Sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn active">Test 3 (Vaka Analizi)</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn">Test 5</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.4rem; margin-bottom: 0.5rem; text-transform: uppercase;">Vaka ve Senaryo Analizi</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--steel); margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>🛠️ Sahaya İniyoruz!</h3>
+                <p>Bu test, teorik ezberin ötesine geçerek sizi doğrudan bir <strong>rafineri, sondaj kulesi veya boru hattı şantiyesinde</strong> görevli bir İSG Uzmanı yerine koyar.</p>
+                <ul>
+                    <li><span class="highlight">Odak Noktası:</span> Sektörel olay yeri incelemeleri, zehirli gaz maruziyet vakaları, yangın türlerinin ayrımı ve yönetim sistemlerindeki (PUKÖ) kritik hataların tespiti.</li>
+                    <li><span class="highlight">Hedef:</span> AÖF sınavlarında en seçici sorular genellikle "Aşağıdaki senaryoda ne tür bir yangın / gaz vardır?" tarzı analiz sorularıdır. Bu test doğrudan o yeteneğinizi ölçecektir.</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Senaryoları Başlat 🚨</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir 🛑</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Vaka Analizi Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru Karar</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış Karar</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Vaka Analizi: Yönetim Sistemi</div>
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Uluslararası bir petrol şirketinin merkez ofisinde yapılan İSG Kurul toplantısında; önümüzdeki yıl için iş güvenliği alanındaki "Stratejik Yol Haritası, İş Akışları ve Ulaşılmak İstenen Ana Hedefler" belirlenmektedir.<br><br>Bu toplantıda alınan kararlar, İş Sağlığı ve Güvenliği Yönetim Sisteminin (PUKÖ) hangi aşamasına denk gelmektedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>A)</span> Planla</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> Uygula</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>C)</span> Kontrol Et</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> Önlem Al</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> İzle ve Değerlendir</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 Vaka Çözümü:</strong> PUKÖ döngüsünde <strong>"Planla"</strong> aşaması; Stratejik İSG Yol Haritası, İş Akışları, Amaçlar, Hedefler ve Temel Önceliklerin kağıt üzerinde belirlendiği en tepe yönetim aşamasıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Saha Uygulaması: OSHA Kararları</div>
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Bir işçi, petrol çıkarma sahasındaki eski bir depolama çamur çukurunun tabanındaki valfi değiştirmek üzere içeri girmek zorundadır. Ancak İSG uzmanı, çukurun atmosferinin son derece tehlikeli gazlar içerebileceğini ve çukurun fiziki yapısının içine giren kişiyi hapsedebilecek şekilde (konik daralan) olduğunu belirterek işçiyi durdurur.<br><br>Uzmanın bu müdahalesi, alanın Amerikan İş Sağlığı Ajansı (OSHA) standartlarında <u>hangi sınıflandırmaya</u> girdiğini göstermektedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Serbest erişim alanı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> İzin gerektirmeyen kapalı alan</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>C)</span> İzin gerekli kapalı alan (Permit-Required Space)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> Tam izole temiz bölge</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> Karantina bölgesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Vaka Çözümü:</strong> OSHA'ya göre; tehlikeli bir atmosfer içeren (veya potansiyeli olan), içine gireni hapsedecek yapıda olan (çamur, kum, daralan duvarlar vb.) alanlar <strong>"İzin Gerekli Kapalı Alanlar"</strong> olarak adlandırılır. Giriş için çok sıkı testler ve yazılı formlar şarttır.
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Vaka Analizi: Tedarik Zinciri</div>
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Ahmet, İzmit'teki devasa bir petrokimya tesisinde (rafineride) mühendis olarak çalışmaktadır. Tesise boru hatlarıyla gelen siyah renkli yoğun ham petrol, Ahmet'in yönettiği damıtma kulelerinde kaynatılarak benzin, dizel ve jet yakıtı gibi tüketilebilir şeffaf ürünlere dönüştürülmektedir.<br><br>Ahmet'in çalıştığı bu tesis, uluslararası petrol ve gaz tedarik zincirinin <u>hangi ana aşamasını</u> temsil etmektedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> Üretim (Upstream)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> İletim (Midstream)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>C)</span> Pazarlama ve Arama</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>D)</span> İşleme (Downstream)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> Sismik Etüt</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Vaka Çözümü:</strong> Ham ürünün rafine edildiği, saflaştırılıp son tüketicinin (araçların/uçakların) kullanabileceği yakıtlara ve petrokimyasal ürünlere dönüştürüldüğü tesisler, zincirin son halkası olan <strong>İşleme (Downstream)</strong> bölümünde yer alır.
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Saha Uygulaması: İnsan Hataları</div>
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Uzak bir kara petrol şantiyesinde, 14 saatlik uzun ve yorucu bir sondaj vardiyasından çıkan ekip, servis araçlarına binerek şehir merkezindeki kampa dönmektedir. Ancak yolda şoförün dikkatsizliği sonucu servis aracı şarampole devrilmiş ve ölümlü bir "taşıma kazası" yaşanmıştır.<br><br>İSG kaza raporlarına göre, bu tarz şantiye ulaşımlarında kazaya sebep olan <u>en temel ve yaygın kişisel/zihinsel faktör</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Eğitimsizlik</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Aracın eski olması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>C)</span> Hava koşulları</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>D)</span> Acele ve aşırı yorgunluk</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> Panik atak</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Vaka Çözümü:</strong> Özellikle ulaşımlarda, ağır iş temposundan çıkıp bir an önce dinlenmek isteyen personelin yaşadığı kazaların birincil sebebi literatürde net olarak <strong>"Yorgunluk ve Acele"</strong> şeklinde tespit edilmiştir (Geçmiş yıl çıkmış soru konseptidir).
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Vaka Analizi: Olay Yeri Toksikolojisi</div>
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Mobil ekipmanların (jeneratör, traktör) egzoz gazının dolduğu kapalı bir hangarda çalışan iki teknisyen, hiçbir koku veya duman hissetmedikleri hâlde aniden yere yığılırlar. Kurtarma ekibi ortamda "eksik yanmadan" kaynaklanan ve "Sessiz Katil" olarak bilinen bir gazın yüksek oranda bulunduğunu tespit eder.<br><br>Bahsedilen, renksiz, kokusuz ve son derece zehirleyici gaz aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> Metan (CH4)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>B)</span> Hidrojen Sülfür (H2S)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> Karbondioksit (CO2)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>D)</span> Karbonmonoksit (CO)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> Amonyak (NH3)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Vaka Çözümü:</strong> Fosil yakıtların veya benzin/dizel motorların eksik (yetersiz oksijenle) yanması sonucu açığa çıkan; renksiz, kokusuz olduğu için çalışanların hissetmeden zehirlendiği gaz <strong>Karbonmonoksit'tir (CO)</strong>.
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Saha Uygulaması: Tedarik Zinciri</div>
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Hazar Denizi'ndeki açık deniz platformlarından boru hatlarıyla çekilen sıvılaştırılmış doğal gaz (LNG), özel yapım dev kargo gemilerine (tankerlere) yüklenmekte ve Avrupa'daki toptan depolama ve dağıtım terminallerine ulaştırılmaktadır.<br><br>Bu "taşıma ve toptan depolama" süreçleri, petrol ve gaz sektörünün <u>hangi alt grubunda</u> sınıflandırılır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> Arama ve Geliştirme (E&P)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> Üretim (Upstream)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> Rafineri (Downstream)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>D)</span> İletim (Midstream)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>E)</span> Sismik Modelleme</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 Vaka Çözümü:</strong> Üretici ile son işleyiciyi (rafineriyi) birbirine bağlayan; boru hatları, kamyon veya dev kargo gemileri vasıtasıyla yapılan kıtalararası taşıma, depolama ve pazarlama faaliyetleri <strong>İletim (Midstream)</strong> sektörüdür.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Vaka Analizi: Tıbbi Teşhis</div>
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Petrol sahasında, kuyulardan daha fazla petrol çekebilmek adına yeraltı kayalarını çatlatmak için basınçlı su ve kum pompalanması işlemi (hidrolik kırma / fracking) yapılmaktadır. Bu işlemi uzun yıllardır yapan bir işçi, yoğun kum tozuna maruz kalmış ve ciğerlerinde dönüşü olmayan ölümcül bir sertleşme teşhisiyle hastaneye kaldırılmıştır.<br><br>Tozdaki "kuvars" mineralinin solunmasıyla ortaya çıkan bu spesifik meslek hastalığı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Asbestozis</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>B)</span> Silikozis</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> Bisinozis</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>D)</span> Dermatit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> Karpal Tünel Sendromu</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Vaka Çözümü:</strong> Sondajda kum (kristalin silika) kullanılması nedeniyle havaya yoğun şekilde "Silika" tozu yayılır. Silika soluyanlarda <strong>Silikoz (Silikozis)</strong> hastalığı gelişir (AÖF kitabında hidrolik kırma risklerinde özellikle vurgulanmıştır).
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Saha Uygulaması: Radyasyon</div>
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Eskimiş bir petrol boru hattı sökülürken, borunun iç çeperlerinde kayaçlardan gelen su ve çamurla taşınmış sert bir tabaka (kabuk) fark edilir. Geiger sayacı (radyasyon ölçer) bu tabakaya tutulduğunda cihaz şiddetle ötmeye başlar.<br><br>Yeraltından petrolle birlikte çıkarak borularda biriken ve "Doğal Olarak Oluşan Radyoaktif Madde" olarak adlandırılan bu tehlikenin kısaltması nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>A)</span> VOC</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>B)</span> BLEVE</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>C)</span> NORM</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> OSHA</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> LEL</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Vaka Çözümü:</strong> Doğal Olarak Oluşan Radyoaktif Maddeler teriminin İngilizce baş harflerinden <strong>(Naturally Occurring Radioactive Materials) NORM</strong> kısaltması oluşturulmuştur.
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Vaka Analizi: Yangın Türleri (1)</div>
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Depolama tesisinde bir vana arızalanmış ve tonlarca sıvı yakıt (benzin) beton zemine yavaşça yayılarak geniş, göl şeklinde bir birikinti oluşturmuştur (hızı ve basıncı sıfıra yakındır). Kısa süre sonra bu sıvı yüzeyinden buharlaşan gazlar tutuşmuş ve çok geniş bir alanda alevler yükselmeye başlamıştır.<br><br>Müdahale ekibi itfaiyeye anons geçerken bu yangın tipini teknik olarak nasıl adlandırmalıdır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Jet Yangını</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> Patlama</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>C)</span> Kıvılcım</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>D)</span> Havuz Yangını</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> Flaş Yangını</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 Vaka Çözümü:</strong> Yakıtın başlangıç ivmesinin (momentumunun) olmadığı, yere yayılıp birikinti yaptığı ve bu geniş sıvı yüzeyinde (yatay düzlemde) yanan ateşlere <strong>Havuz Yangını (Pool Fire)</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Vaka Analizi: Yangın Türleri (2)</div>
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Doğalgaz boru hattında küçük bir delik açılmış ve gaz çok yüksek bir basınçla dışarı fışkırmaya başlamıştır. Çıkış anında hemen deliğin ağzında statik bir kıvılcım oluşmuş (erken tutuşma) ve alev, bir ok gibi ileriye doğru şiddetle fırlayarak çevreyi kavurmaya başlamıştır.<br><br>Sızıntının hemen tutuşması ve basınçlı akış nedeniyle oluşan bu yangın tipi nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>A)</span> Jet Yangını</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> Havuz Yangını</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>C)</span> Gecikmiş Patlama</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>D)</span> Kaynayan Sıvı Patlaması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> İçten Yanma</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Vaka Çözümü:</strong> Basınçlı bir gaz çıkışında meydana gelen "erken tutuşma", gazın çıkış momentumuyla birlikte alevin düz ve şiddetli bir hüzme şeklinde fırladığı <strong>Jet Yangınlarına</strong> neden olur.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Vaka Analizi: Yangın Türleri (3)</div>
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Rafinerideki sızıntı anında tutuşmamış, görünmez bir gaz bulutu fabrikanın avlusunda birikerek genişlemiştir (gecikmiş tutuşma senaryosu). 15 dakika sonra yakınlardaki bir araçtan çıkan kıvılcım bu devasa gaz bulutuna temas etmiştir.<br><br>Havanın oksijeniyle zaten karışmış olan bu geniş bulutun aniden ateş almasıyla ortamda ne tür bir hadise yaşanması beklenir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> Lokal Zehirlenme</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>B)</span> Patlama veya Flaş (Ani) Yangın</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>C)</span> Havuz Yangını</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>D)</span> Jet Yangını</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> Güvenli Yanma</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Vaka Çözümü:</strong> Eğer sızıntı atmosfere yayılarak (birikerek) "gecikmiş" bir tutuşma yaşarsa, devasa bir alanda alev topu oluşur ve şiddetli şok dalgaları yayan <strong>Patlamalara (veya Ani/Flaş yangınlara)</strong> dönüşür.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Saha Uygulaması: Ağır Metaller</div>
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Üretim (sondaj ve çıkarma) sahasında, çamur kimyasalları ve yeraltı bileşenleri nedeniyle çalışanların kanda ağır metal birikimi testleri (biyolojik izleme) yapılmaktadır.<br><br>Kitaptaki "Tablo 7.1" baz alındığında, bu testlerde doktorların özellikle hangi ağır metal ajanlarını taraması beklenir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>A)</span> Altın ve Gümüş</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>B)</span> Sodyum ve Klor</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>C)</span> Kurşun (Pb), Kadmiyum (Cd) ve Mangan (Mn)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> Titanyum</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> Demir (Fe)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Vaka Çözümü:</strong> İlgili tabloda "Metaller" başlığı altında üretim sahasındaki spesifik kimyasal tehlikeler olarak <strong>Kurşun (Pb), Kadmiyum (Cd) ve Mangan (Mn)</strong> yer almaktadır.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Vaka Analizi: Koku Felci</div>
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Ham petrol kuyusunun başında onarım yapan işçiler önce yoğun bir "çürük yumurta" kokusu alırlar. Ancak birkaç dakika sonra kokunun tamamen kaybolduğunu düşünüp maske takmadan çalışmaya devam ederler. Aslında koku kaybolmamış, gaz koku alma sinirlerini felç etmiştir. İşçiler saniyeler içinde şoka girerek hayatlarını kaybeder.<br><br>Petrol sahasında bu sinsi ölümlere yol açan meşhur gaz hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>A)</span> Hidrojen Sülfür (H2S)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> Saf Oksijen</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>C)</span> Azot gazı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Helyum</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> Karbondioksit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Vaka Çözümü:</strong> Doğal organik materyalin yeraltında ayrışmasıyla oluşan <strong>Hidrojen Sülfür (H2S)</strong>, düşük seviyede "çürük yumurta" kokar fakat yüksek seviyede hızla burun sinirlerini felç ederek "koku yokmuş hissi" verir ve ani ölüm getirir.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Çıkmış Soru Konsepti (2021/2023)</div>
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Kapalı bir petrol tankına bakım için giren personelin belindeki portatif gaz ölçüm cihazı aniden acil durum alarmı çalmaya başlar. Cihazın ekranında "O2 Seviyesi Düşük" uyarısı yanıp sönmektedir.<br><br>Cihazın alarm vermesini sağlayan, işçilerde baş dönmesi ve bilinç kaybını başlatan Oksijen alt sınırı % (yüzde) kaçtır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>A)</span> % 15,0</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> % 17,5</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>C)</span> % 18,5</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>D)</span> % 19,5</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> % 21,5</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Vaka Çözümü:</strong> Oksijenin normal seviyesi %21 civarındadır. Ancak <strong>%19,5'in altına</strong> düştüğünde işçinin beynine yeterli oksijen gitmez; baş dönmesi, zihinsel bulanıklık ve asfiksi (boğulma) başlar.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Saha Uygulaması: Upstream</div>
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Çölde kurulan sismik araştırma kampında, mühendisler yeraltına yapay titreşimler göndererek petrol rezervlerinin yerini tespit etmeye çalışmaktadır. Bulunan rezerve daha sonra kule dikilerek çıkarma işlemi yapılacaktır.<br><br>Sismik arama, kuyu açma ve ham ürünün yeryüzüne çıkarılması faaliyetleri, petrol tedarik zincirinin neresinde yer alır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> Dağıtım Ağı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>B)</span> Üretim (Upstream)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>C)</span> İşleme (Downstream)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> İletim (Midstream)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Pazarlama (Retail)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Vaka Çözümü:</strong> Akışın en üst kısmı olan, arama (Arama ve Üretim - E&P), sismik etüt, kuyu sondajı ve petrolün yüzeye çıkarılmasını içeren süreçlerin tümüne <strong>Üretim (Upstream)</strong> adı verilir.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Vaka Analizi: Ergonomi</div>
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Sondaj kulesinin zemininde (derrick floor) çalışan "roughneck" (vidalayıcı/sondör yardımcısı) personeli, her gün saatlerce ağır sondaj borularını aynı eğilme-kalkma hareketiyle ve dar alanda garip duruşlarla birbirine vidalamaktadır. Aylar sonra bu işçilerin omuz ve bel bölgelerinde kronikleşen patolojik hasarlar saptanır.<br><br>Bu şekilde tekrarlayan, zorlayıcı hareketlerin zaman içinde birikerek yarattığı ortopedik hasarlara tıpta ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> Gastrointestinal travmalar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>B)</span> Obstrüktif akciğer hastalıkları</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>C)</span> Kümülatif travma bozuklukları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> Akut böbrek yetmezliği</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Neoplazmalar</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Vaka Çözümü:</strong> Vücudun aynı bölgeye sürekli yük bindiren, tekrarlı ve yanlış postürle (duruşla) yapılan hareketler sonucu uzun vadede biriken ve patlayan rahatsızlıklarına <strong>Kümülatif (Birikimli) Travma Bozuklukları</strong> denir. Bu ergonomik bir tehlikedir.
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Saha Uygulaması: İklim Stresi</div>
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Basra Körfezi'ndeki veya Arap çöllerindeki petrol platformlarında yazın sıcaklık 50°C'yi bulmaktadır. Bu aşırı sıcak ortamda metal ekipmanlara dokunarak ağır efor sarf eden işçilerde vücut ısısının atılamamasına bağlı olarak hayati bir risk gelişir.<br><br>İSG uzmanının açık havada sondaj yapan bu işçilerde engellemeye çalıştığı temel "fiziksel" tehlike (akut reaksiyon) aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>A)</span> Sıcak Çarpması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> Donma (Hipotermi)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>C)</span> İşitme kaybı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> Göz kataraktı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> Silikozis</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Vaka Çözümü:</strong> Çöl veya açık deniz gibi doğrudan iklim şartlarına (aşırı sıcaklıklara) maruz kalınan yerlerde en acil fiziksel müdahale gerektiren risk, vücut ısısının tehlikeli boyutlara ulaşmasıyla oluşan <strong>Sıcak Çarpması</strong> durumudur.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Çıkmış Soru Konsepti (Petrokimya)</div>
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Petrokimya mühendisi Leyla, günlük hayatta kullandığımız pek çok ürünün aslında ham petrolden (petrokimyasal) üretildiğini anlatmaktadır. Listesinde "sentetik kauçuk, tarımsal gübreler, böcek ilaçları ve motor yağlayıcıları" bulunmaktadır.<br><br>Ancak Leyla'nın listeye eklediği maddelerden biri biyolojik (bitkisel) kökenli olup bir petrokimyasal <u>değildir.</u> Hangisi petrokimyasal ürün sayılmaz?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> Yağlayıcılar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> Sentetik kauçuk</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>C)</span> Glukoz şurubu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>D)</span> Gübreler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> Böcek ilaçları</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Vaka Çözümü:</strong> Sentetik kauçuk, naylon, plastik, gübre ve zirai ilaçlar (pestisitler) petrokimyasaldır. Ancak <strong>Glukoz Şurubu</strong>, mısır veya buğday nişastasından elde edilen bir karbonhidrat (gıda) ürünüdür, petrolden elde edilmez. (Geçmiş yıl AÖF sorusudur).
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Vaka Analizi: İSG Kontrol Aşaması</div>
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Rafinerideki PUKÖ döngüsü tıkır tıkır işlemektedir. Başmüfettiş sahaya inerek; son 6 ayda uygulanan güvenlik eğitimlerinin istatistiksel <u>trendlerini analiz etmiş, performans göstergelerini ölçmüş ve tesisin iç denetimini gerçekleştirmiştir.</u><br><br>Başmüfettişin yürüttüğü bu "ölçüm, trend ve denetim" faaliyetleri PUKÖ döngüsünün hangi adımını oluşturur?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> Planla</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> Uygula</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>C)</span> Kontrol Et</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>D)</span> Önlem Al</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> Ar-Ge</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Vaka Çözümü:</strong> Sahada uygulanan politikaların veriminin ölçüldüğü; modelleme, istatistiksel trend analizi, performans göstergelerinin (KPI) incelendiği ve denetimlerin yapıldığı aşama PUKÖ sisteminin <strong>"Kontrol Et" (Check)</strong> ayağıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="badge-senaryo">Saha Uygulaması: Fiziksel Ajanlar</div>
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text"><strong>Senaryo:</strong> Üretim sahasında devasa dizel kompresörlerin, sondaj çarklarının ve emiş pompalarının kesintisiz 24 saat çalıştığı bir ünitede görevli olan Hakan, zamanla duyma yetisinde ciddi bir düşüş yaşandığını ve aynı zamanda bel kemiğinde disk kaymaları olduğunu fark eder.<br><br>Hakan'ın maruz kaldığı bu sorunlar, büyük makine parkurlarının yaydığı <u>hangi fiziksel ajanlardan</u> kaynaklanmaktadır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> Radyasyon ve Lazer</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>B)</span> Gürültü ve Titreşim</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>C)</span> Aşırı sıcaklık ve UV ışınları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> Uçucu organik gazlar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> Bulaşıcı parazitler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Vaka Çözümü</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Vaka Çözümü:</strong> Dev makinelerin sürekli çalışması akustik travmalara (işitme kaybına) yol açan <strong>Gürültü</strong> ve vücuda aktarılarak omurga/disk hasarlarına yol açan <strong>Titreşim</strong> (vibrasyon) olarak adlandırılan iki ana fiziksel risk ajanını barındırır.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
+    </footer>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Vaka Çözümü';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Yanlış 1 Doğru Kuralı
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SÜRE BİTTİ";
+            
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

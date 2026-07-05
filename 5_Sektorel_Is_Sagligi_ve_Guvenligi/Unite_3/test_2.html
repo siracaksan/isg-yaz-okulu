@@ -1,25 +1,641 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 3 - Test 2 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Sektörel İş Sağlığı ve Güvenliği | Ünite 3 - TEST 2 (Çıkmış Soru Analizli)</title>
+    <style>
+        :root {
+            /* Test 2: Orta (Medium) Seviye - İndigo ve Turuncu (Amber) Teması */
+            --primary: #4338ca;    /* İndigo */
+            --accent: #f59e0b;     /* Turuncu / Amber */
+            --bg: #eef2ff;         /* Çok Açık İndigo Arka Plan */
+            --panel-bg: #ffffff;   /* Beyaz Panel */
+            --text: #1e1b4b;       /* Koyu İndigo Metin */
+            --light-gray: #cbd5e1;
+            --green: #10b981;
+            --red: #ef4444;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #312e81 0%, #4338ca 100%); color: white; padding: 2.5rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        header h1 { margin: 0; font-size: 2.2rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; }
+        header p { margin: 0.8rem 0 0 0; color: #e0e7ff; font-weight: 600; font-size: 1.2rem; letter-spacing: 1px;}
+        
+        nav { background: #1e1b4b; padding: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #3730a3; }
+        .nav-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .nav-btn { background: #312e81; color: #e0e7ff; border: 1px solid #4f46e5; padding: 0.7rem 1.4rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; letter-spacing: 0.5px;}
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: #1e1b4b; border-color: var(--accent); box-shadow: 0 0 12px rgba(245, 158, 11, 0.5); }
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 8px 25px rgba(67, 56, 202, 0.08); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--accent); background: #fffbeb; padding: 2rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.05);}
+        .strategy-box h3 { margin-top: 0; color: #b45309; display: flex; align-items: center; gap: 0.6rem; font-size: 1.3rem; text-transform: uppercase;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: #78350f; font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.8rem; }
+        
+        .start-btn { display: block; width: 100%; max-width: 350px; margin: 3rem auto 1rem; background: var(--primary); color: white; text-align: center; padding: 1.2rem; border-radius: 8px; font-size: 1.3rem; cursor: pointer; border: none; font-weight: 800; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(67, 56, 202, 0.3);}
+        .start-btn:hover { background: #3730a3; box-shadow: 0 6px 15px rgba(67, 56, 202, 0.4); transform: translateY(-2px); }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1.2rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--primary); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 1px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px);}
+        .btn-primary { background: var(--accent); color: #1e1b4b; }
+        .btn-secondary { background: #64748b; color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid var(--light-gray); padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.03); position: relative; transition: all 0.3s;}
+        .question-card:hover { border-color: var(--primary); box-shadow: 0 8px 25px rgba(67, 56, 202, 0.1);}
+        .question-header { font-weight: 800; color: white; background: var(--primary); display: inline-block; padding: 0.5rem 1.2rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.95rem; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: #1e1b4b; }
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.1rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #f8fafc; color: #334155; font-weight: 500;}
+        .option span { font-weight: 800; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--primary); background: #e0e7ff; border-radius: 6px; font-size: 1.05rem; transition: all 0.3s;}
+        .option:hover:not(.locked) { background: #ffffff; border-color: var(--primary); box-shadow: 0 2px 8px rgba(67, 56, 202, 0.1);}
+        .option.locked { cursor: default; }
+        .option.correct { background: #ecfdf5; border-color: var(--green); color: #065f46; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fef2f2; border-color: var(--red); color: #991b1b; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 0.7rem 1.4rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 700; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 1.8rem; background: #e0e7ff; border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: #1e1b4b; box-shadow: inset 0 0 10px rgba(67, 56, 202, 0.05); }
+        .solution-box.show { display: block; animation: fadeIn 0.3s ease; }
+        .solution-box strong { color: var(--primary); font-weight: 800; font-size: 1.1rem; display: block; margin-bottom: 0.6rem; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 3.5rem 2rem; background: white; border-radius: 12px; border-top: 6px solid var(--accent); display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .results-section h2 { font-size: 2.4rem; color: var(--text); margin-top: 0; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 1px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.5rem 2.5rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 0.8rem; font-size: 2rem; min-width: 160px; border: 1px solid #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.02); background: #f8fafc;}
+        .stat span { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b;}
+        .stat.correct { color: var(--green); border-color: #a7f3d0; background: #ecfdf5;}
+        .stat.wrong { color: var(--red); border-color: #fecdd3; background: #fef2f2;}
+        .stat.empty { color: #64748b; }
+        .stat.net { color: var(--primary); border-color: var(--primary); transform: scale(1.05); box-shadow: 0 8px 20px rgba(67, 56, 202, 0.15); background: white;}
+        
+        footer { background: #1e1b4b; color: #a5b4fc; text-align: center; padding: 2.5rem; margin-top: 5rem; font-size: 1rem; border-top: 4px solid var(--accent); font-weight: 500; letter-spacing: 0.5px;}
+        
+        /* Custom CSS Graphics (CSS Art) for Visual Questions */
+        .css-graphic-container { width: 100%; display: flex; justify-content: center; margin: 1.5rem 0; padding: 2rem; background: #f8fafc; border-radius: 8px; border: 2px dashed #cbd5e1; }
+        
+        /* Graphic 1: NACE Code Block */
+        .nace-graphic { display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .nace-box { background: var(--primary); color: white; font-size: 2.5rem; font-weight: 900; padding: 1rem 2rem; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); letter-spacing: 2px;}
+        .nace-text { font-size: 1.2rem; font-weight: bold; color: #475569; max-width: 200px;}
+        
+        /* Graphic 2: Wet Floor Sign */
+        .wet-floor-sign { width: 0; height: 0; border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 110px solid #facc15; position: relative; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2)); }
+        .wet-floor-sign::after { content: '!'; position: absolute; top: 30px; left: -10px; font-size: 3rem; font-weight: 900; color: black; }
+        .floor-line { width: 150px; height: 8px; background: #94a3b8; border-radius: 4px; margin-top: 10px; position: relative;}
+        .water-drop { position: absolute; top: -15px; left: 60px; width: 15px; height: 15px; background: #38bdf8; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: none; padding: 0; margin-bottom: 0;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .solution-box { display: block !important; border: 1px solid #cbd5e1; background: #f8fafc; padding: 1rem; margin-top: 1rem; color: black; }
+            .option { border: 1px solid #e2e8f0; background: white; color: black; margin-bottom: 0.5rem;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 3 - Test 2</h2>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 3: Konaklama Faaliyetlerinde İSG - TEST 2 (Orta Seviye)</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İş Sağlığı ve Güvenliği</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">⬅️ Sınavda Çıkmış Sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn active">Test 2</a>
+            <a href="test_3.html" class="nav-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn">Test 4 (Zor)</a>
+            <a href="test_5.html" class="nav-btn">Test 5</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem;">Çıkmış Soru Analizi ve Orta Düzey Kavrama</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #64748b; margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>📖 Test 2 Hazırlık Stratejisi</h3>
+                <ul>
+                    <li><strong>Sınavda Nasıl Sorulmuş?</strong> 2021-2025 yılları arası yaz okulu sınavları incelendiğinde; Ünite 3'ten özellikle <em>NACE kodları, Örgütsel hastalıklar (Anksiyete, Depresyon), Zemin pürüzlülüğü (70 mikron) ve Risk tanımlama sürecinde toplanan/toplanmayan bilgiler</em> üzerinde durulduğu görülmektedir.</li>
+                    <li><strong>Soru Dağılımı:</strong> Bu test, geçmiş yıllarda doğrudan sorulmuş soruların temel mantığını içeren ve "ÖSYM/AÖF Soru Tarzına" %100 uyumlu olarak hazırlanmış 20 orta/ileri düzey sorudan oluşur.</li>
+                    <li><strong>Görsel Analiz:</strong> İhtiyaç duyulan teknik sorular için CSS kodlaması ile çizilmiş diyagramlar eklenmiştir. (Örn: Kaygan zemin, NACE kodu).</li>
+                    <li>Sınav değerlendirmesi 4 yanlış 1 doğruyu götürecek şekilde net üzerinden hesaplanır.</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Sınavı Başlat</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">🛑 Sınavı Bitir</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Test 2 Sonuç Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 1 / 20</div>
+                    
+                    <div class="css-graphic-container">
+                        <div class="nace-graphic">
+                            <div class="nace-box">NACE: 55</div>
+                            <div class="nace-text">➡️ Konaklama Faaliyetleri</div>
+                        </div>
+                    </div>
+
+                    <div class="question-text"><strong>(2024 ve 2025 Yaz Okulu Çıkmış Soru Analizi)</strong><br>Konaklama ve yiyecek hizmeti faaliyetleri için belirlenen NACE (iş yerlerinin çalıştıkları alanlara göre tehlike sınıflarını belirleyen sistem) kodu numarası aşağıdakilerin hangisinde doğru olarak verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> 32</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> 46</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>C)</span> 47</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>D)</span> 55</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> 86</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 Çıkmış Soru Çözümü:</strong> NACE Kodlamasına göre "55" Konaklama faaliyetlerini (Otel, motel vb.), "56" ise Yiyecek ve İçecek hizmeti faaliyetlerini temsil etmektedir. Bu soru doğrudan 2024 ve 2025 yıllarında sorulmuştur.
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text"><strong>(2021, 2023 ve 2025 Yaz Okulu Çıkmış Soru Analizi)</strong><br>I. Depresyon<br>II. Anksiyete<br>III. Lumbago<br>IV. Göz kamaşması<br><br>Yukarıdakilerden hangisi/hangileri otel birimlerinde <u>örgütsel (psikososyal) tehlikelerin</u> neden olduğu zararlar/hastalıklar arasında yer alır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Yalnız III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> Yalnız IV</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>C)</span> I ve II</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> I ve III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> II, III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Çıkmış Soru Çözümü:</strong> Örgütsel tehlikeler (zaman baskısı, vardiya, müşteri şikayetleri vb.) psikolojik tahribat yaratır. <strong>Depresyon ve Anksiyete</strong> bu gruptadır. Lumbago ergonomik, Göz kamaşması ise fiziksel (aydınlatma) kaynaklıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text"><strong>(2022 ve 2024 Yaz Okulu Çıkmış Soru Analizi)</strong><br>Aşağıdakilerden hangisi konaklama faaliyetlerinde tehlikeler tanımlanırken "çalışma ortamı, çalışanlar ve işyerine ilişkin" <u>toplanan bilgilerden (asgari evraklardan) biri değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> Ramak kala olay kayıtları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> Malzeme güvenlik bilgi formları (MSDS)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>C)</span> Çalışanların aylık kazanç ve doğum yeri bilgileri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> İş ekipmanları ve iş yeri teftiş sonuçları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> Meslek hastalığı ve iş kazası kayıtları</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Çıkmış Soru Çözümü:</strong> Risk değerlendirmesi yapılırken İSG kayıtları (MSDS, ramak kala, kaza kayıtları, teftişler) toplanır. Çalışanların <strong>"aylık kazanç bilgileri" veya "doğum yerleri"</strong> İSG tehlike tanımlaması ile alakalı değildir.
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text"><strong>(2023 Yaz Okulu Çıkmış Soru Analizi)</strong><br>Turizm sektöründe faaliyet gösteren bir otelde "atık su tesisatına onarım yapmak veya tıkanıklık açmak için müdahale etmek" esnasında biyolojik tehlikelere en çok maruz kalan departman (birim) hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Kat hizmetleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Yeme-içme (Mutfak)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>C)</span> Ön büro</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>D)</span> Teknik destek (Teknik Servis)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> Güvenlik</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Çıkmış Soru Çözümü:</strong> Oteldeki elektrik, su, havalandırma arızaları ve atık su onarımları doğrudan "Teknik Destek" departmanının işidir. Bu işlemler sırasında logarlardaki mikroplar (biyolojik tehlike) personeli tehdit eder.
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 5 / 20</div>
+                    
+                    <div class="css-graphic-container">
+                        <div style="display:flex; flex-direction:column; align-items:center;">
+                            <div class="wet-floor-sign"></div>
+                            <div class="floor-line"><div class="water-drop"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="question-text"><strong>(2024 Yaz Okulu Çıkmış Soru Analizi)</strong><br>Otel mutfaklarında ve bulaşıkhanelerinde kayma ve düşme nedeniyle meydana gelen kazaların önüne geçilebilmesi için zeminin yeterli derecede pürüzlülüğe sahip olması sağlanmalıdır. Örnek olarak, suyla ıslanan zeminler için yüzeyin en az ------- mikron yüzey pürüzlülüğüne sahip olması gerekmektedir.<br><br>Yukarıdaki boşluğa hangi değer gelmelidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> 20</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>B)</span> 35</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> 45</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>D)</span> 70</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> 100</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Çıkmış Soru Çözümü:</strong> Ders kitabında açıkça belirtildiği üzere; ıslak zeminlerde kaymayı engellemek için yüzeyin <strong>en az 70 mikron</strong> pürüzlülükte kaplanması/yapılması İSG kuralıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text"><strong>(2025 Yaz Okulu Çıkmış Soru Analizi)</strong><br>Aşağıdakilerden hangisi konaklama faaliyetlerinde "Kat Hizmetleri (Housekeeping)" bölümünde çalışanların ağırlıklı olarak maruz kalacağı <u>Kimyasal Tehlikeler</u> arasında yer alır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> Kaygan zeminde yürüme</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>B)</span> Deterjan, kireç çözücü ve çamaşır suyu kullanımı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> Yüksekte cam silme işi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> Yalıtkanı sıyrılmış elektrikli süpürge kablosu tutma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>E)</span> Yatak kaldırırken belin zorlanması (Lumbago)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 Çıkmış Soru Çözümü:</strong> Kat hizmetleri personeli gün boyu temizlik yapar. A, C ve D şıkları Fiziksel/Mekanik kazalardır. E şıkkı Ergonomik risktir. <strong>Deterjan ve kireç çözücüler</strong> ise bu bölümün temel Kimyasal tehlikesidir.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text"><strong>(2024 Yaz Okulu Çıkmış Soru Analizi)</strong><br>Konaklama (Turizm) endüstrisinde üretilen hizmetler, geleneksel fabrika (mal) üretiminden belirgin bir şekilde ayrılır. Bu bağlamda, otelde sunulan hizmetin stoklanamaması (depolanamaması) nedeniyle ortaya çıkan sektörel özellik aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Hizmetin geri çağrılabilme özelliği</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>B)</span> Üretim ile tüketimin eş zamanlılığı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> Çapraz hizmet zinciri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>D)</span> Makineli seri üretimin fazla olması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> İşin tehlike sınıfının sürekli değişmesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Çıkmış Soru Çözümü:</strong> Turizm sektörünün en büyük özelliği hizmetin depolanamamasıdır. Resepsiyonda veya restoranda hizmet üretildiği an misafir tarafından tüketilir. Buna <strong>Üretim ve Tüketimin Eş Zamanlılığı</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text">Konaklama işletmesi ile konuk arasındaki ana ilişki noktası olan, işletmenin kapısından girenlerin ilk gördükleri, çıkanların da son gördükleri departman aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>A)</span> Güvenlik (Nizamiye)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>B)</span> Halkla İlişkiler</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>C)</span> Ön Büro (Resepsiyon)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Kat Hizmetleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Kat Karşılama</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Konu Analizi:</strong> Ders kitabında "Ön Büro", işletmenin vitrini olarak tanımlanır. Konuğun rezervasyonundan çıkışına (check-in/check-out) kadar iletişimin yürütüldüğü ilk ve son departmandır.
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text">Otel işletmelerinde personel için <u>"El, ön kol ve yüzde yanık"</u> oluşma riski (sıcak yüzeyler, buhar, kaynar su veya kızgın yağ) en yüksek olan iki departman aşağıdakilerden hangisinde birlikte verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Ön büro ve Güvenlik</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>B)</span> Mutfak (Yeme-İçme) ve Çamaşırhane</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>C)</span> Kat hizmetleri ve Santral</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> Muhasebe ve Teknik Destek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> Peyzaj ve Resepsiyon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 Konu Analizi:</strong> Termal tehlikeler (yanıklar) otellerde en çok endüstriyel fırın, ocak ve kaynar suların olduğu <strong>Mutfakta</strong> ve sıcak ütü presleri, yüksek dereceli yıkama makinelerinin bulunduğu <strong>Çamaşırhanede</strong> görülür.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text">Büyük otel binalarının havalandırma (klima) sistemleri, soğutma kuleleri veya duş başlıklarındaki durgun sularda üreyen ve hava yoluyla yayılarak ciddi solunum yolu hastalıklarına (zatürre) yol açan biyolojik faktör aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>A)</span> Viral Hepatit B</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> Şarbon (Antraks)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>C)</span> Lejyoner Hastalığı (Legionella bakterisi)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>D)</span> Silikozis</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> Tetanoz</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Konu Analizi:</strong> Havalandırma sistemlerinde (Fiziksel-Biyolojik risk tablosu) üreyen spesifik bakteri <em>Legionella pneumophila</em>'dır. Otel sektöründe klima bakımsızlığından kaynaklanan <strong>Lejyoner Hastalığı</strong> klasik bir İSG sorusudur.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text">Kat görevlisi olarak çalışan bir personelde sürekli yatak kaldırma, süpürge yapma ve eğilip kalkma gibi <u>sık tekrarlanan hareketler</u> sonucu bilek sinirlerinin sıkışmasına bağlı olarak <u>Karpal Tünel Sendromu</u> tespit edilmiştir.<br><br>Bu meslek hastalığı aşağıdaki İSG risk/tehlike sınıflarından hangisinin kapsamına girer?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> Biyolojik Riskler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> Psikososyal (Örgütsel) Riskler</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>C)</span> Ergonomik Riskler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>D)</span> Kimyasal Riskler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> Fiziksel Riskler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Konu Analizi:</strong> İskelet ve kas sistemini doğrudan etkileyen; ağır yük kaldırma, duruş bozukluğu ve "sık tekrarlanan" fiziksel eylemler <strong>Ergonomik tehlike</strong> sınıfındadır. Lumbago (bel ağrısı) ve Karpal Tünel bu gruptadır.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text">"İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği"ne göre, NACE kodunda <u>"Az Tehlikeli"</u> sınıfta yer alan bir otel işletmesi; herhangi bir iş kazası, teknoloji değişimi veya taşınma durumu yaşamadığı sürece standart (periyodik) Risk Değerlendirme Raporunu <u>en geç kaç yılda bir</u> yenilemek zorundadır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>A)</span> 2 yılda bir</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>B)</span> 3 yılda bir</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> 4 yılda bir</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> 5 yılda bir</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>E)</span> 6 yılda bir</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Konu Analizi:</strong> İSG mevzuatına göre risk değerlendirmeleri; Çok Tehlikeli yerlerde 2, Tehlikeli yerlerde 4, <strong>Az Tehlikeli (Otel vb.)</strong> yerlerde ise periyodik olarak en geç <strong>6 yılda bir</strong> yenilenir.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text">Otel mutfağında çalışan bir aşçının hemen yanına devasa bir asma tencere rafı düşmüş, aşçı son anda geri çekilerek yara almadan kurtulmuştur. Ancak maddi hasar oluşmuştur.<br><br>İSG kayıtlarına göre bu olay (yaralanma olmasa da büyük bir risk taşıdığı için) literatürde nasıl adlandırılır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> İş Kazası</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> Meslek Hastalığı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>C)</span> Ramak Kala Olay</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Sabotaj</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> Tehlike Tespiti</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Konu Analizi:</strong> İşyerinde meydana gelen, ancak çalışanda yaralanma veya ölüme neden olmadığı hâlde işyeri ya da iş ekipmanının zarara uğramasına yol açan veya "az kalsın yaralayacak olan" olaylara <strong>Ramak Kala Olay</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text">Aşağıdaki tehlike kaynaklarından hangisi otel işletmelerinde "Fiziksel Tehlikeler" başlığı altında sınıflandırılır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>A)</span> Küf ve Mayalar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> Vardiyalı ve gece çalışması</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>C)</span> Yetersiz aydınlatma ve gürültü (Disko/Bar ortamı)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Temizlik kimyasalları ve asitler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> Sürekli ayakta durmaya bağlı varis oluşumu</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Konu Analizi:</strong> Aydınlatma, gürültü, titreşim, termal konfor (aşırı sıcak/soğuk) iş güvenliğinde doğrudan <strong>Fiziksel Risk Etmenleri</strong> olarak kabul edilir. (Vardiya = Örgütsel, Küf = Biyolojik, Varis = Ergonomik).
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text">İSG (İş Sağlığı ve Güvenliği) temel kavramlarına göre; "Tehlikeden kaynaklanacak olan zarar veya yaralanmanın <u>olasılığı ile bu zararın şiddetinin</u> bileşkesi (çarpımı)" olarak tanımlanan kavram aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>A)</span> Risk</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> Kaza</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>C)</span> Tehlike</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> Olay</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Zarar</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Konu Analizi:</strong> Tehlike, zarar verme potansiyeli olan durumdur. Ancak bu tehlikenin gerçeğe dönüşme İHTİMALİ (olasılık) ile yarattığı etkinin ŞİDDETİNİN matematiksel bileşkesine (Olasılık x Şiddet) <strong>RİSK</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text">Otel lobi ve ortak alanlarının temizliğini yapan bir personelin zemin yıkama işlemini bitirmesinin hemen ardından, zeminin kuruması beklenirken o alanda kayma ve düşme kazalarının olmaması için alınması gereken <u>en acil ve basit İSG idari önlemi</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> Tüm personelin özel çivili ayakkabı giymesini şart koşmak</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>B)</span> Görünür bir yere "Kaygan Zemin" uyarı (sarı) levhası koymak ve şeritlemek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>C)</span> Zemini asit dökerek pürüzlü hale getirmek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> Sadece gece yarısı temizlik yapılmasını emretmek</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Lobinin ışıklarını kapatarak o bölgeye girişi yasaklamak</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Konu Analizi:</strong> Temizlik anında ve sonrasında zemin kuruyana kadar alınacak ilk idari önlem, insanları uyarmak amacıyla standart sarı <strong>"Dikkat Kaygan Zemin"</strong> levhasını (işaretlemesini) koymaktır.
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text">Konaklama işletmelerinde; çamaşır suyu, kireç çözücü, tuz ruhu veya havuz kloru gibi kimyasalların yanlışlıkla karıştırılması sonucu zehirli gaz (klor gazı) çıkışı ölümcül zehirlenmelere yol açabilir. <br><br>Personelin bu kimyasalların içeriği, depolama koşulları ve ilk yardım aşamaları hakkında bilgi sahibi olmasını sağlayan ve her kimyasalın yanında asılı bulunması zorunlu olan evrakın (formun) kısa adı nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> ÇED Raporu</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>B)</span> MSDS (Malzeme Güvenlik Bilgi Formu)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>C)</span> HACCP Planı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> LOTO Etiketi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> ISO 9001 Belgesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Konu Analizi:</strong> Tüm kimyasalların üzerinde veya kullanıldığı alanda <strong>MSDS (Material Safety Data Sheet - Malzeme Güvenlik Bilgi Formu)</strong> bulunmalıdır. Bu form, kimyasalın risklerini ve teması halinde yapılacakları detaylandırır.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text">Otellerin 7 gün 24 saat kesintisiz hizmet vermesi nedeniyle personelin vardiyalı veya gece çalışmaları söz konusudur. Düzensiz çalışma saatlerinin insanın biyolojik ritmini (sirkadiyen ritim) bozması sonucu ortaya çıkan "Kronik Uyku Bozuklukları" otel işletmelerinde hangi risk faktörü kategorisinde ele alınır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>A)</span> Örgütsel (Psikososyal) Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> Fiziksel Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>C)</span> Ergonomik Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>D)</span> Kimyasal Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> Biyolojik Tehlikeler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Konu Analizi:</strong> Çalışma saatlerinin düzensizliği, aşırı yorgunluk ve vardiya sisteminin getirdiği uyku problemleri ile stres, çalışma örgütlenmesinden (işin düzenleniş biçiminden) kaynaklandığı için <strong>Örgütsel / Psikososyal</strong> risklerdir.
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text">Konaklama işletmelerinde "Risk Değerlendirmesi" yapılırken izlenmesi gereken sistematik aşamaların <u>ilk adımı</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> Acil durum tahliye planının çizilmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> KKD (Kişisel Koruyucu Donanım) satın alınması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>C)</span> Risklerin derecelendirilmesi ve puanlanması</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>D)</span> Tehlikelerin tanımlanması ve çalışma ortamına ait verilerin/bilgilerin toplanması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> İşe giriş sağlık raporlarının iptal edilmesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Konu Analizi:</strong> Risk değerlendirmesinin her zaman ilk ve en önemli adımı <strong>Tehlikelerin Tanımlanması (Bilgi ve Veri Toplama)</strong> aşamasıdır. Tehlike tanımlanmadan risk analizi veya puanlaması yapılamaz.
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text">Otel organizasyon yapısı içerisinde, binanın dış nizamiyesinden başlayıp kat koridorlarındaki devriyeleri içeren, dışarıdan gelebilecek hırsızlık, sabotaj veya taşkınlıklara karşı personelin ve konukların can/mal emniyetini sağlayan bölüm aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> Teknik Destek</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>B)</span> Güvenlik</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>C)</span> Kat Hizmetleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> Ön Büro</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> Halkla İlişkiler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Çözüm Analizi</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Konu Analizi:</strong> Otel içi ve çevresindeki genel güvenlik tedbirlerini (giriş-çıkış kontrolü, nizamiye, hırsızlık önlemleri, şüpheli paket vb.) alan birim <strong>Güvenlik Departmanıdır</strong>.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                // Doğruyu göster
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Çözüm Analizi';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Yanlış 1 Doğruyu Götürür
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "Sınav Bitti";
+            
+            // Cevaplanmayanları kilitle ve doğruyu göster
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

@@ -1,25 +1,613 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 2 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Uzmanlık Seviyesi Testleri | Sektörel İSG Ünite 2 - TEST 3</title>
+    <style>
+        :root {
+            /* Test 3: İleri (Advanced) Seviye - Koyu Mor ve Kehribar (Amber) Teması */
+            --primary: #4c1d95;    /* Koyu Mor (Deep Violet) */
+            --accent: #d97706;     /* Kehribar (Amber) */
+            --bg: #f5f3ff;         /* Çok Açık Mor Arka Plan */
+            --text: #1e1b4b;       /* Çok Koyu Mor/Siyah Metin */
+            --light-gray: #d1d5db;
+            --green: #059669;
+            --red: #dc2626;
+            --panel-bg: #ffffff;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #2e1065 0%, #4c1d95 100%); color: white; padding: 2.5rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+        header h1 { margin: 0; font-size: 2.2rem; font-weight: 900; letter-spacing: 0.5px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        header p { margin: 0.8rem 0 0 0; color: #ede9fe; font-weight: 600; font-size: 1.15rem; letter-spacing: 1px;}
+        
+        nav { background: #1e1b4b; padding: 1rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .nav-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav-btn { background: rgba(255,255,255,0.05); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.1); padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.95rem; transition: all 0.3s; font-weight: 600;}
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 0 12px rgba(217, 119, 6, 0.6); }
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 10px; padding: 2.5rem; box-shadow: 0 8px 25px rgba(0,0,0,0.08); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--accent); background: #fffbeb; padding: 1.8rem; border-radius: 6px; margin: 1.5rem 0; box-shadow: inset 0 0 15px rgba(217, 119, 6, 0.05);}
+        .strategy-box h3 { margin-top: 0; color: #92400e; display: flex; align-items: center; gap: 0.5rem; font-size: 1.3rem;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: #78350f; font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.6rem; }
+        
+        .start-btn { display: block; width: 100%; max-width: 350px; margin: 2.5rem auto 1rem; background: var(--primary); color: white; text-align: center; padding: 1.3rem; border-radius: 8px; font-size: 1.3rem; cursor: pointer; border: none; font-weight: 800; transition: all 0.3s; box-shadow: 0 4px 10px rgba(76, 29, 149, 0.3); text-transform: uppercase; letter-spacing: 1px;}
+        .start-btn:hover { background: #3b0764; transform: translateY(-3px); box-shadow: 0 8px 15px rgba(76, 29, 149, 0.4); }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--primary); border-radius: 0 0 8px 8px;}
+        .timer { font-size: 1.7rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-variant-numeric: tabular-nums;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem;}
+        .btn:hover { filter: brightness(1.1); transform: scale(1.03);}
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: #475569; color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 3rem; }
+        @media(max-width: 950px) { .questions-grid { grid-template-columns: 1fr; } }
+        
+        .question-card { background: white; border: 1px solid #e5e7eb; padding: 2rem; border-radius: 10px; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: all 0.3s; position: relative; }
+        .question-card:hover { border-color: var(--light-gray); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .question-header { font-weight: 800; color: white; background: var(--primary); display: inline-block; padding: 0.5rem 1.2rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.95rem; align-self: flex-start; letter-spacing: 1px;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.7; color: #1e1b4b; }
+        
+        .options { display: flex; flex-direction: column; gap: 0.8rem; }
+        .option { padding: 1.1rem; border: 2px solid #f1f5f9; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1rem; font-size: 1rem; background: #f8fafc; }
+        .option span { font-weight: 900; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--primary); background: #ede9fe; border-radius: 6px; }
+        .option:hover:not(.locked) { background: #fffbeb; border-color: var(--accent); box-shadow: 0 4px 6px rgba(217, 119, 6, 0.05); }
+        .option.locked { cursor: default; }
+        .option.correct { background: #ecfdf5; border-color: var(--green); color: #065f46; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fff1f2; border-color: var(--red); color: #9f1239; opacity: 0.7; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: transparent; color: var(--primary); border: 2px solid var(--primary); padding: 0.7rem 1.2rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 800; display: none; transition: all 0.3s; text-transform: uppercase;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 1.8rem; background: #faf5ff; border-left: 5px solid var(--primary); border-radius: 0 8px 8px 0; display: none; font-size: 0.95rem; line-height: 1.7; color: #2e1065; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: var(--primary); font-weight: 900; display: block; margin-bottom: 0.5rem;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 3.5rem 2rem; background: white; border-radius: 12px; border-top: 8px solid var(--accent); display: none; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .results-section h2 { font-size: 2.5rem; color: var(--primary); margin-top: 0; margin-bottom: 2.5rem; letter-spacing: -0.5px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.8rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 0.8rem; font-size: 1.8rem; min-width: 150px; border: 1px solid #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.03); background: #f8fafc;}
+        .stat span { font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b;}
+        .stat.correct { background: #ecfdf5; color: var(--green); border-color: #a7f3d0;}
+        .stat.wrong { background: #fff1f2; color: var(--red); border-color: #fecdd3;}
+        .stat.empty { background: #f1f5f9; color: #475569; }
+        .stat.net { background: #fffbeb; color: var(--accent); border: 2px solid var(--accent); transform: scale(1.1); box-shadow: 0 8px 20px rgba(217, 119, 6, 0.15);}
+        
+        footer { background: #1e1b4b; color: #94a3b8; text-align: center; padding: 2.5rem; margin-top: 5rem; font-size: 1rem; border-top: 5px solid var(--accent); font-weight: 500; letter-spacing: 1px;}
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: none; padding: 0; margin-bottom: 0;}
+            .questions-grid { display: block; }
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px dashed #cbd5e1; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .solution-box { display: block !important; border: 1px solid #e2e8f0; background: #faf5ff; padding: 1rem; margin-top: 1rem; }
+            .option { border: 1px solid #e2e8f0; padding: 0.5rem; background: white; margin-bottom: 0.5rem;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 2 - Test 3</h2>
+        <h1>Uzmanlık Seviyesi Testleri | Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 2: Deri ve Deri Ürünleri Sektöründe İSG - TEST 3 (İleri Düzey)</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Ana sayfa </a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İş Sağlığı ve Güvenliği</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn">Test 1 (Temel)</a>
+            <a href="test_2.html" class="nav-btn">Test 2 (Orta)</a>
+            <a href="test_3.html" class="nav-btn active">Test 3 (İleri)</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn">Test 5 (Zor)</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem;">İleri Düzey Mevzuat ve Limit Analizi</h2>
+            <p style="text-align: center; font-size: 1.15rem; color: #475569; margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>⚠️ Test 3 Stratejisi: İleri Düzey Kavramlar</h3>
+                <ul>
+                    <li><strong>Derinlemesine İSG Mevzuatı:</strong> Bu test, kimyasalların 8 saatlik ve 15 dakikalık (STEL) maruziyet sınır değerlerini (Tablo 2.4), NACE kodlarının spesifik tehlike sınıflarını ve SGK istatistiksel detaylarını sorgular.</li>
+                    <li><strong>Süreç Dinamikleri:</strong> pH değerlerinin yaş işlemlerdeki spesifik değişimlerini (Pikle pH 3, Kireçlik pH 12-13) ve çevresel ayak izi terminolojilerini (Karbon, Su, Zehir Bilimsel, REACH) ayırt etmeniz beklenir.</li>
+                    <li><strong>Makine - Risk Spesifikasyonu:</strong> Pervaneli tekneler, rotopresler ve kuru tıraş makinelerindeki özel koruyucu mekanizmalar (kalınlık ölçer kumpas vb.) detaylıca incelenmiştir.</li>
+                    <li><strong>Puanlama Sistemi:</strong> 4 yanlış 1 doğruyu götürecek şekilde hesaplanmaktadır.</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">İleri Düzey Testi Başlat</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">🛑 Sınavı Bitir</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>İleri Düzey Analiz Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text">Sosyal Güvenlik Kurumunun (SGK) 2019 yılı verileri incelendiğinde, deri imalatı sektöründe kaza ve hastalık tabloları çarpıcıdır. Buna göre, 2019 yılında deri imalatı sektöründe toplam kaç çalışanda <u>meslek hastalığı tespiti</u> yapılmıştır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> Sektörde hiçbir meslek hastalığı tespit edilmemiştir.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> 1039 çalışanda tespit edilmiştir.</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>C)</span> Sadece 4 erkek çalışanda meslek hastalığı tespiti yapılmıştır.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> 1 erkek ve 1 kadın çalışanda tespit edilmiştir.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> 181'i kadın olmak üzere toplam 858 çalışanda tespit edilmiştir.</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 İstatistiksel Kesinlik:</strong> Ders kitabı sayfa 66'ya göre; SGK 2019 verilerinde deri sektöründe 1039 çalışan iş kazası geçirmiştir. Ancak "Meslek Hastalığı" tespiti oldukça azdır ve sadece <strong>4 erkek çalışanda</strong> tespit edilmiştir. 1 erkek ve 1 kadın çalışan ise iş kazası sonucu hayatını kaybetmiştir.
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text">Deri imalatı sektöründe kullanılan bazı tehlikeli kimyasalların ortam havasındaki gösterge niteliğindeki mesleki maruziyet sınır değerleri (8 saatlik zaman ağırlıklı ortalama) yönetmeliklerle belirlenmiştir. Buna göre, deri üretiminde yoğun kullanılan <u>Sülfürik Asit</u> ve <u>Krom</u> için 8 saatlik maruziyet sınır değerleri sırasıyla hangi seçenekte doğru verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> 2 mg/m3 -- 5 mg/m3</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> 0.5 mg/m3 -- 0.1 mg/m3</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>C)</span> 0.05 mg/m3 -- 2 mg/m3</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> 7 mg/m3 -- 14 mg/m3</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> 25 mg/m3 -- 9 mg/m3</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Limit Değer Tablosu (Tablo 2.4):</strong> Ders kitabı sayfa 76'daki (Tablo 2.4) yönetmelik limitlerine göre; Sülfürik asidin 8 saatlik maruziyet sınırı oldukça düşüktür ve <strong>0.05 mg/m3</strong>'tür. Krom'un 8 saatlik maruziyet sınırı ise <strong>2 mg/m3</strong> olarak belirlenmiştir.
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text">Derinin işlenme aşamalarında kimyasallar kullanılarak pH seviyesi (asit/baz dengesi) sürekli olarak değiştirilir. Kıl köklerinin gevşetilip derinin şişirildiği <u>Kireçlik</u> aşaması ile derinin tabaklamaya hazırlandığı <u>Pikle</u> aşamalarındaki ortam pH değerleri sırasıyla hangi aralıklarda olmaktadır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> pH 7 (Nötr) -- pH 10 (Bazik)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>B)</span> pH 12-13 (Kuvvetli Bazik) -- pH 3 (Asidik)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>C)</span> pH 3 (Asidik) -- pH 12-13 (Kuvvetli Bazik)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> pH 5-6 (Zayıf Asidik) -- pH 7 (Nötr)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> pH 14 (Kuvvetli Bazik) -- pH 8 (Zayıf Bazik)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Biyokimyasal Süreç:</strong> Kireçlik işleminde deriye Sodyum Sülfür ve kireç verilerek kuvvetli bir bazik ortam yaratılır (pH 12-13'e yükselir). Pikle işleminde ise krom tabaklamasına hazırlık için Sülfürik asit verilerek pH değeri asidik yapıya, yani <strong>pH 3'e</strong> çekilir.
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text">Deri imalat tesislerinde Finisaj (Boya ve Cila) deposunda yüksek miktarda Solvent (Çözücü) bazlı kimyasallar ve VOC (Uçucu Organik Bileşen) sınıfı uçucu gazlar bulunur. İSG standartları gereği bu depolarda alınması gereken en temel <u>yangın ve elektrik güvenliği</u> önlemi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Depoların tamamen ışıksız ve karanlık bırakılması.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Yangına su püskürterek müdahale edecek sprinkler sistemlerinin kurulması.</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>C)</span> Aydınlatma lambalarının ex-proof (alev sızdırmaz) özellikte olması ve depoda "köpük" özellikli yangın tüplerinin bulundurulması.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> Çözücü buharlarının çökmesi için zeminlerin sürekli sülfürik asitle yıkanması.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> Havalandırmanın kapatılarak gazların içeride izole edilmesi.</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Spesifik Tesisat Güvenliği:</strong> Solvent bazlı boya kimyasalları yoğun parlayıcı buhar yayarlar. Ufak bir elektrik arkı bile patlamaya yol açar. Bu nedenle lambalar kesinlikle ex-proof (alev/kıvılcım sızdırmaz) olmalı ve kimyasal yangınlarda su kullanılamayacağı için <strong>köpük özellikli</strong> yangın söndürücüler kullanılmalıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text">AB tarafından yürürlüğe konulan, deri imalatında çevresel toksikolojiyi ve "Zehir bilimsel ayak izini" düşürmeyi hedefleyen; insan sağlığı için güvenli kimyasal kullanımını şart koşan <u>REACH</u> yönetmeliğinin temel açılımı/anlamı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> Gıda ve İlaç Dairesi Onay Süreçleri</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>B)</span> Kimyasalların Kaydı, Değerlendirilmesi, Yetkilendirilmesi ve Kısıtlanması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> Biyolojik Atıkların Geri Dönüşüm Çerçevesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>D)</span> Uluslararası Ozon Tabakasını Koruma Protokolü</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> İşyerlerinde Asbest Maruziyetini Engelleme Yönergesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Çevresel İSG:</strong> REACH (Registration, Evaluation, Authorisation and Restriction of Chemicals), AB'nin tehlikeli kimyasalların (özellikle deri ve tekstil boyalarında) kullanımını kayıt altına alıp kısıtlayarak çalışan sağlığını ve zehir bilimsel ayak izini kontrol altına aldığı temel yönetmeliktir.
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text">15.11.0 kodlu "Deri ve kürklü deri imalatı (tabaklanması, sepilenmesi, boyanması)" faaliyetleri NACE (Tehlike Sınıflandırması) kodlamasına göre hangi tehlike sınıfına girmektedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>A)</span> Çok Tehlikeli</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> Tehlikeli</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> Az Tehlikeli</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> Orta Tehlikeli</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>E)</span> Ağır ve Tehlikeli Sınıf</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 NACE Kod Mevzuatı:</strong> İş Sağlığı ve Güvenliğine İlişkin İşyeri Tehlike Sınıfları Tebliği'ne göre; 15.11.0 "Deri ve kürklü deri imalatı" ile 15.11.1 "Kürklü derinin ve postların kazınarak temizlenmesi" işlemleri ağır kimyasal ve mekanik risklerinden ötürü <strong>Çok Tehlikeli</strong> sınıfta listelenmiştir. (Sadece basit saat kayışı imalatı az tehlikelidir).
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text">I. Sentetik, mineral ve bitkisel tanenler<br>II. Sülfürik asit ve Formik asit<br>III. Endüstriyel yağlar ve Aldehitler<br>IV. Polimerler ve Reçineler<br><br>Yukarıdakilerden hangisi deri imalatında <u>Retenaj (Tekrar tabaklama)</u> işlemi aşamasında deriye dolgunluk, esneklik ve beyazlık vermek amacıyla kullanılan ürünler arasında <u>kesinlikle yer almaz</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Yalnız I</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>B)</span> Yalnız II</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> I ve III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>D)</span> II ve IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Safha Analizi:</strong> Retenaj işlemi deriyi doldurmak ve yumuşatmak için yapılır (tanen, yağ, polimer, aldehit). <strong>Sülfürik asit ve formik asit</strong> ise deriyi asidik bir ortamda aşındırıp krom alımına hazırlayan "Pikle" aşamasında kullanılır. Retenajda asit gibi tahrip edici ajanlar kullanılmaz.
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text">Tavlanmış ve gergi işlemi bitmiş olan derilerin, nihai kullanım kalınlığına (milimetre seviyesine) kadar inceltildiği ve et yüzeyinin düzeltildiği <u>Kuru Tıraş Makinesinde</u>, derinin kalınlık kontrolü makine üzerindeki hangi spesifik donanım ile gerçekleştirilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>A)</span> Termal sensörlü kameralar</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>B)</span> Kalınlık ölçer kumpas</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>C)</span> Hidrolik pres göstergesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Lazerli desi okuyucular</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Çift el kumanda düğmesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Makine Mekaniği:</strong> Ders kitabında (Kuru Tıraş Makinesi bölümünde) kalınlık ayarlama ve kontrolünün makineye entegre edilmiş <strong>kalınlık ölçer kumpas</strong> donanımı ile yapıldığı özellikle vurgulanmıştır. Desi (alan) ölçümü ise Ölçüm Makinesiyle yapılır.
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text">Deri imalatında (Tablo 2.4 Mevzuat Limitleri) bazı kimyasalların hem 8 saatlik maruziyet sınırı hem de pik/ani yoğunlaşmalara karşı "15 Dakikalık (STEL)" maruziyet sınır değerleri (mg/m3) tanımlanmıştır. Aşağıdaki kimyasallardan hangisinin <u>15 dakikalık (kısa süreli) sınır değeri yönetmelikte/tabloda tanımlanmamıştır (yoktur)</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Toluen</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> Hidrojen Sülfür</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>C)</span> Krom (Trivalent krom sülfat formları vb.)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> Amonyak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> Amil Asetat</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 İleri Düzey Mevzuat Tablosu:</strong> Tablo 2.4'te Toluen (384 mg/m3), Hidrojen Sülfür (14 mg/m3), Amonyak (36 mg/m3) ve Amil Asetat'ın 15 dakikalık sınır değerleri varken; Sülfürik Asit, Asetik asit, Formik asit ve <strong>Krom'un</strong> 15 dakikalık sınır değeri için bir parametre girilmemiş, tire (-) bırakılmıştır.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text">Pikle aşamasında kuvvetli asitle muamele edilen derinin; retanaj, boyama ve yağlama aşamalarına problemsiz geçebilmesi için pH derecesinin tekrar ayarlanması gerekir. <u>Nötralizasyon</u> adı verilen bu işlemde genellikle hangi kimyasal madde sınıfı kullanılır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>A)</span> Zayıf alkali maddeler (sodyum veya amonyum bikarbonat, format veya asetat)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> Kuvvetli asitler (Sülfürik asit veya hidroklorik asit)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>C)</span> Trikloretilen gibi uçucu solventler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>D)</span> Bitkisel ve sentetik tanenler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> Zırnık (Sodyum sülfür) ve Kireç</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Kimyasal Nötralizasyon:</strong> Çok düşük (pH 3) olan asitliği, boya ve yağlama seviyesine çekmek için "zayıf" bazik/alkali ajanlara ihtiyaç vardır. Bunun için deriye Sodyum Bikarbonat, Amonyum Bikarbonat gibi <strong>Zayıf alkali maddeler</strong> verilir.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text">Deri finisaj boyaması bitmiş veya nubuk/süet hâline gelmiş olan ürünlerin üretim hattından çıkmadan hemen önce, satılmak veya istiflenmek üzere net metrekare/yüzey <u>alanının ölçüldüğü</u> kuru işlem makinesinin sektörel ismi nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> Zımpara Makinesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> Rotopres</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>C)</span> Ölçüm (Desi) Makinesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>D)</span> Vakum Makinesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> Kuru Tıraş Makinesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Ekipman ve Metrikler:</strong> Dericilikte nihai ürün ağırlıkla değil "alan/yüzey" birimiyle satılır. Bu ölçü birimi "Desimetrekare (Desi)"dir. Bu işi yapan makineye <strong>Ölçüm Makinesi (veya Desi Makinesi)</strong> denilmektedir.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text">Kireç giderme işleminin ardından, derinin içindeki "kolajen dışı" istenmeyen sert, globüler protein yapılarını <u>pankreas enzimleri (biyolojik ajanlar)</u> kullanarak parçalayan, deriye esneklik ve yumuşaklık kazandıran enzimatik banyo işlemi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>A)</span> Pikle</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>B)</span> Sama</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> Etleme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> Islatma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> Retenaj</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Biyolojik İşlem (Sama):</strong> Kimyasal kireçlik sürecinden sonra mekanik olmayan "enzimatik" bir yıkıma geçilir. Sama banyosunda özel enzimler, derinin faydalı lifleri (kolajen) haricindeki istenmeyen kaba proteinlerini yiyerek/parçalayarak deriyi yumuşatır.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text">Deri imalatının ilk aşamalarında mezbahalardan gelen ham postlardaki Biyolojik Faktörlerin (Bakteri, mantar, şarbon) tespit edilmesi ve kontrolü için, işçilerin işe girişlerinde ve periyodik muayenelerinde yapılması <u>zaruri olan tıbbi tarama dizisi</u> hangi seçenekte doğru ve eksiksiz verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> Odyogram ve EKG (Elektrokardiyografi)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> Sadece solunum fonksiyon testi ve akciğer grafisi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>C)</span> Tam kan sayımı, tam idrar tahlili, serolojik testler ve alerji testleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Kemik yoğunluğu ölçümü (DEXA) ve lomber MR</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> Kanda ağır metal (Kurşun/Cıva) taraması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Meslek Tıbbı:</strong> Ders kitabı sayfa 68 ve devamındaki tablolara göre, şarbon ve tetanoz gibi hayvansal/biyolojik ajanların kana karışıp karışmadığını bulmanın tek yolu <strong>Tam kan, tam idrar, serolojik (antikor) testleri ve alerji testlerinden</strong> oluşan kan bazlı mikrobiyolojik tarama dizisidir.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text">Büyükbaş hayvan yetiştiriciliğinden dolayı atmosfere salınan yoğun Metan ve CO2 gazı (biyogaz) emisyonlarının, derinin endüstriyel üretim aşamalarındaki karbon salınımına eklenmesiyle hesaplanan ve deri sektöründe ekolojik bir tehdit/baskı unsuru oluşturan çevresel terminoloji aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>A)</span> Zehir bilimsel ayak izi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> Su ayak izi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>C)</span> Karbon ayak izi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Geri dönüşüm indeksi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> Toksikoloji emisyon oranı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Çevresel Faktör:</strong> Karbon ayak izi, bir ürünün tarladan çıkıp mağazaya girene dek yarattığı sera gazı toplamıdır. Deride, sadece fabrikanın dumanı değil; o deriyi veren "büyükbaş hayvanın" yetiştirilirken doğaya saldığı karbon (CO2 ve metan) da mamul derinin "Karbon Ayak İzine" eklenir.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text">Pervaneli ahşap tekneler, tabaklama dolapları veya kimyasal yıkama işlemlerinde doğrudan çalışan personelde (ıslak ortamlarda yoğun sıvı kimyasal teması ve kas gücü harcanan yerlerde) aşağıdaki risklerden/tehlikelerden hangisi <u>kesinlikle bulunmaz</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>A)</span> İyonize radyasyon sızıntısına bağlı doku mutasyonu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> Kaygan ve bozuk zemine bağlı düşme ve çarpmalar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>C)</span> Kimyasal sıvı temasından kaynaklı atopik dermatit ve alerji</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> Suya ve neme bağlı elektrik kaçağı/çarpması riski</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Pervane ve kayış-kasnak gibi dönen parçalara bağlı mekanik uzuv kapılmaları</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Risk Matrisi:</strong> Islak dolap alanları kimyasal, elektrik (su teması), mekanik ve ergonomik risklerin zirve yaptığı yerlerdir. Ancak "İyonize radyasyon" deri imalatı yaş işlemlerinin bir parçası değildir (tahribatsız muayene veya nükleer tıp konusudur).
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text">Derilerin üzerindeki deri (organik) tozlarının ve zımpara partiküllerinin hava/fırça sistemiyle emildiği <u>Toz Alma Makinesi</u>'nin İSG açısından en kritik katkısı (koruduğu hastalık türü) nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> Beyaz parmak sendromu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>B)</span> Gürültüye bağlı işitme kaybı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>C)</span> Organik tozların akciğerlerde birikmesine bağlı Pnömokonyoz ve mesleki astım riskini azaltması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> Siyatik ve Lomber disk hernisi (Bel Fıtığı)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Karpal Tünel Sendromu</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Solunum Tehlikesi:</strong> Toz alma makinesinin entegre emiş sistemi, havada asılı kalabilecek "solunabilir çaplı (genelde 5 mikron altı)" ince organik deri tozlarını çeker. Bu da doğrudan solunum yollarına giden tozu keserek Pnömokonyoz gibi geri dönülmez ciğer hastalıklarını engeller.
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text">Tabaklama sonrası, sıcak sac levhalar arasında yüksek basınç uygulanarak derinin içindeki serbest suyun aniden emilmesi (çekilmesi) ve deriye ilk pürüzsüzlük (ütü) formunun kazandırılmasında kullanılan iş ekipmanı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> Rotopres (Döner Pres)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> Zımpara Makinesi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>C)</span> Vakum Makinesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> Sıkma (Merdane) Makinesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> Gergi Makinesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Termal ve Mekanik İşlem:</strong> Merdaneli sıkma makineleri suyu fiziksel olarak ezer atar. Ancak <strong>Vakum makinesi</strong>, sıcak saclar arasına sıkıştırılmış derideki nemi "vakum" kuvvetiyle aniden çekerek deriyi kurutur ve ilk ütü işlemini yapmış olur.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text">Deri endüstrisinde kullanılan Finisaj (boya) malzemelerinin temizliğinde ve inceltilmesinde kullanılan <u>Trikloretilen</u> kimyasalının ortam havasında buharlaşarak çalışanlar tarafından solunması halinde, aşağıdaki organ sistemlerinden hangilerinde akut çöküş/tahribat yaşanması beklenir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> Kemik iliği ve iskelet sistemi (Osteoporoz)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>B)</span> Merkezi sinir sistemi (Sarhoşluk hissi) ile Karaciğer ve Böbrekler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>C)</span> Pankreas (Diyabet)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>D)</span> Göz retinası (Katarakt)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> Kalp kapakçıkları (Romatizmal kalp)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Toksikolojik Hedef Organ:</strong> Trikloretilen çok kuvvetli ve uçucu bir solventtir. Solunduğu an kandan beyne geçer, merkezi sinir sistemini baskılayarak sersemlik/sarhoşluk yapar. Uzun vadede ise bu zehri süzmeye çalışan Karaciğer ve Böbrek dokusunu iflas ettirir.
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text">Sektörde çalışan işçilerde yarma, etleme ve boya dolabı alanlarında sıklıkla el bileği kanalında sinir sıkışması sonucu oluşan <u>Karpal Tünel Sendromu</u> görülür. Bu hastalığı tetikleyen birincil kök neden (İSG tehlike sınıfı) aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>A)</span> Ergonomik Riskler (Aynı işin mola verilmeden sık tekrarlanan hareketlerle yapılması)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> Titreşim Maruziyeti (El-kol sistemine aktarılan titreşimin doğrudan kemiği eritmesi)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>C)</span> Kimyasal Yanıklar (Bilekteki asit tahribatının kasları kesmesi)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>D)</span> Biyolojik ajanlar (Bilek kanalında üreyen termofilik bakteriler)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> Termal stres (Sürekli soğuk suya maruz kalmanın damarları büzmesi)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Patogenez:</strong> Karpal Tünel, bilek kanallarından geçen sinirlerin (median sinir) sıkışmasıdır. Titreşimle de tetiklenebilse de, asıl ve birincil kök nedeni deriyi iterken/çekerken durmaksızın yapılan "Sık tekrarlanan hareketler (Ergonomik Riskler)"dır.
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text"><strong>(Kapsamlı Entegrasyon Sorusu)</strong><br>Ham bir derinin tabaklanarak mamul deriye dönüşme sürecinin <u>yaş işlem hattı baz alındığında</u>; I. Asit ile deriyi tabaklamaya hazırlamak<br>II. Kılları yakmak ve deriyi şişirmek<br>III. pH bazifikasyonu ile kromun deriye nüfuzunu sabitlemek<br><br>Sırasıyla bu amaçlara hizmet eden işlemler/aşama isimleri hangi seçenekte doğru olarak dizilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> Sama -- Retenaj -- Finisaj</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>B)</span> Kireçlik -- Islatma -- Sama</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>C)</span> Pikle -- Kireçlik -- Tabaklama (Krom Fiksasyonu)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> Tabaklama -- Kireçlik -- Pikle</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> Pikle -- Sama -- Retenaj</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Üretim Kimyası Sentezi:</strong> Asit verilip pH'ı 3'e düşürerek deriyi krom alımına hazırlayan işlem <strong>Pikle</strong>'dir. Kılları döküp, etleme için deriyi şişiren işlem <strong>Kireçlik</strong>'tir. Kromun sodyum formiyat ile pH'ı yükseltilerek deriye hapsedilmesi ise <strong>Tabaklamanın</strong> ta kendisidir.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com 
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                // Show correct option
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            // Show solution button
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Klinik ve Yasal Analiz';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Wrong = -1 Right (Net calculation)
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "Sınav Sona Erdi";
+            
+            // Lock unanswered, show correct
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

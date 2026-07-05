@@ -1,0 +1,646 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genel Deneme Sınavı 4 | Sektörel İSG</title>
+    <style>
+        :root {
+            /* Deneme 4: Yakut Kırmızısı ve Obsidyen Siyahı (Seviye 4) */
+            --primary: #991b1b;    /* Yakut Kırmızısı */
+            --accent: #1f2937;     /* Obsidyen / Koyu Gri */
+            --accent-hover: #111827;
+            --bg: #fef2f2;         /* Uçuk Kırmızı/Pembe Arka Plan */
+            --panel-bg: #ffffff;   /* Beyaz Panel */
+            --text: #450a0a;       /* Çok Koyu Bordo / Siyah Metin */
+            --light-gray: #fee2e2;
+            --green: #15803d;
+            --red: #dc2626;
+            --steel: #374151;
+            --gold-light: #fca5a5; 
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%); color: white; padding: 3rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 8px 25px rgba(153, 27, 27, 0.4); }
+        header h1 { margin: 0; font-size: 2.4rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.6); color: #fecaca;}
+        header p { margin: 0.8rem 0 0 0; color: #f8fafc; font-weight: 700; font-size: 1.25rem; letter-spacing: 1px;}
+        
+        nav { background: #111827; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; border-bottom: 1px solid #000000; }
+        .nav-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; }
+        .nav-btn { background: #374151; color: #f8fafc; border: 1px solid #4b5563; padding: 0.7rem 1.2rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; text-transform: uppercase;}
+        .nav-btn:hover, .nav-btn.active { background: var(--primary); color: #ffffff; border-color: #ef4444; box-shadow: 0 0 15px rgba(220, 38, 38, 0.5); font-weight: 800;}
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.06); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--primary); background: #fee2e2; padding: 2rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: inset 0 0 15px rgba(153, 27, 27, 0.05);}
+        .strategy-box h3 { margin-top: 0; color: #7f1d1d; display: flex; align-items: center; gap: 0.6rem; font-size: 1.5rem; text-transform: uppercase; border-bottom: 2px solid #fca5a5; padding-bottom: 0.5rem;}
+        .strategy-box p { color: var(--text); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 500;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: var(--text); font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.6rem; }
+        .strategy-box .highlight { background: #fca5a5; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: bold; color: #7f1d1d;}
+        
+        .start-btn { display: block; width: 100%; max-width: 450px; margin: 3rem auto 1rem; background: var(--primary); color: #ffffff; text-align: center; padding: 1.2rem; border-radius: 8px; font-size: 1.4rem; cursor: pointer; border: none; font-weight: 900; transition: all 0.3s; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 6px 20px rgba(153, 27, 27, 0.4);}
+        .start-btn:hover { background: #7f1d1d; color: #ffffff; box-shadow: 0 8px 25px rgba(127, 29, 29, 0.6); transform: translateY(-3px); }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1.2rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--accent); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px);}
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--steel); color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid var(--light-gray); padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;}
+        .question-card:hover { border-color: var(--primary); box-shadow: 0 8px 30px rgba(153, 27, 27, 0.15);}
+        
+        .badge-deneme { position: absolute; top: -15px; right: 2.5rem; background: var(--accent); color: white; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(31, 41, 55, 0.4); border: 2px solid #fff; letter-spacing: 1px;}
+        
+        .question-header { font-weight: 900; color: white; background: var(--steel); display: inline-block; padding: 0.6rem 1.4rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 1rem; align-self: flex-start; letter-spacing: 1px;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: var(--text); }
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.1rem; border: 2px solid #fee2e2; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #f8fafc; color: #450a0a; font-weight: 600;}
+        .option span { font-weight: 800; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; background: #9ca3af; border-radius: 6px; font-size: 1.05rem; transition: all 0.3s;}
+        .option:hover:not(.locked) { background: #ffffff; border-color: var(--primary); box-shadow: 0 4px 10px rgba(153, 27, 27, 0.15);}
+        .option:hover:not(.locked) span { background: var(--primary); color: #ffffff;}
+        .option.locked { cursor: default; }
+        .option.correct { background: #f0fdf4; border-color: var(--green); color: #14532d; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fef2f2; border-color: var(--red); color: #991b1b; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 900; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: #fef2f2; border-left: 5px solid var(--primary); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: var(--text); box-shadow: inset 0 0 15px rgba(153, 27, 27, 0.05); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: #7f1d1d; font-weight: 900; font-size: 1.15rem; display: block; margin-bottom: 0.8rem; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 4rem 2rem; background: white; border-radius: 12px; border-top: 8px solid var(--primary); display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .results-section h2 { font-size: 2.6rem; color: var(--primary); margin-top: 0; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.8rem 3rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; border: 1px solid #fee2e2; box-shadow: 0 6px 15px rgba(0,0,0,0.05); background: #f8fafc;}
+        .stat span { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #4b5563;}
+        .stat.correct { color: var(--green); border-color: #34d399; background: #ecfdf5;}
+        .stat.wrong { color: var(--red); border-color: #fca5a5; background: #fef2f2;}
+        .stat.empty { color: #4b5563; }
+        .stat.net { color: #ffffff; border-color: var(--accent); transform: scale(1.08); box-shadow: 0 10px 25px rgba(31, 41, 55, 0.3); background: var(--primary);}
+        
+        footer { background: #111827; color: #9ca3af; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1.05rem; border-top: 5px solid var(--primary); font-weight: 600; letter-spacing: 1px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .badge-deneme { border: 1px solid #000; color: #000; background: #eee; }
+            .solution-box { display: block !important; border: 1px solid #9ca3af; background: #f8fafc; padding: 1rem; margin-top: 1rem; color: black; }
+            .option { border: 1px solid #e2e8f0; background: white; color: black; margin-bottom: 0.5rem;}
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>DENEME SINAVI 4 - (ZORLUK: SEVİYE 4 / UZMANLIK)</p>
+    </header>
+
+    <nav class="no-print">
+        <div class="nav-row">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+        </div>
+        <div class="nav-row">
+            <span style="color: #9ca3af; font-weight: bold; align-self: center; margin-right: 10px;">ÇIKMIŞ SORULAR:</span>
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html" class="nav-btn">2021 Yaz Okulu</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2022.html" class="nav-btn">2022 Yaz Okulu</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2023.html" class="nav-btn">2023 Yaz Okulu</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2024.html" class="nav-btn">2024 Yaz Okulu</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">2025 Yaz Okulu</a>
+        </div>
+        <div class="nav-row">
+            <span style="color: #9ca3af; font-weight: bold; align-self: center; margin-right: 10px;">DENEME SINAVLARI:</span>
+            <a href="deneme_1.html" class="nav-btn">Deneme 1 (Seviye 1)</a>
+            <a href="deneme_2.html" class="nav-btn">Deneme 2 (Seviye 2)</a>
+            <a href="deneme_3.html" class="nav-btn">Deneme 3 (Seviye 3)</a>
+            <a href="deneme_4.html" class="nav-btn active">Deneme 4 (Seviye 4)</a>
+            <a href="deneme_5.html" class="nav-btn">Deneme 5 (Seviye 5)</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.6rem; margin-bottom: 0.5rem; text-transform: uppercase;">Karma Deneme Sınavı 4</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--steel); margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>📜 Sınav Analizi ve Strateji (Seviye 4)</h3>
+                <p>Bu seviye "Detay ve Ayırt Edicilik" üzerine kuruludur. Metinler ve şıklar arasındaki ince ayrıntıları, istisnaları ve spesifik bilgileri test eder.</p>
+                <ul>
+                    <li><span class="highlight">Analiz Notu:</span> "Hangisi değildir?", "Asgari kural nedir?", "İstisna nedir?" gibi doğrudan uzmanlık gerektiren ve sınavda %10'luk bir dilimi oluşturan zor sorulara odaklanılmıştır.</li>
+                    <li><span class="highlight">Öneri:</span> Çeldiriciler birbirine çok yakındır. Örneğin Tarım ve Ormancılık arasındaki sınırların (çiftçi akciğeri gibi) veya Upstream/Downstream arasındaki ayrımların net bilinmesi gerekir.</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Denemeyi Başlat 🚀</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir 🛑</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Sınav Sonuç Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Detay | Tarım ve Hayvancılık</div>
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text">Tarım sektöründe özellikle kapalı depolarda, gübre çukurlarında ve silolarda biriken, "dekompozisyon (çürüme)" sonucu ortaya çıkan zararlı gazlardan biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> Amonyak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> Hidrojen</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>C)</span> Metan</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> Karbonmonoksit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>E)</span> Arsenik</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 Çözüm:</strong> Tarımsal dekompozisyon (çürüme ve gübre fermantasyonu) sonucu ortama yoğunlukla Amonyak, Hidrojen, Metan ve Karbonmonoksit gibi gazlar salınır. <strong>Arsenik</strong> ise bu tür doğal bir çürüme sonucu oluşan bir gaz değil, zehirli bir ağır metal/elementtir.
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Kavram | Ormancılık Sektörü</div>
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi ormancılık sektörüne özgü (odun üretimi ve kesim sahası) çalışma alanlarında karşılaşılan tehlikelerden biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Toz (Ağaç tozu)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> Gürültü (Motorlu testere kaynaklı)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>C)</span> Ağır yük kaldırma</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>D)</span> Çiftçi Akciğeri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> Böcek ve çeşitli zararlılar ile mücadele ilaçları</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Çözüm:</strong> Ormancılık işlerinde ağır efor, titreşim, gürültü ve toz (odun tozu) temel risklerdir. Ancak küflü saman ve tahıl tozlarının solunmasıyla oluşan <strong>Çiftçi Akciğeri</strong> hastalığı, ormancılık değil spesifik olarak <strong>Tarım/Hayvancılık</strong> sektörünün bir meslek hastalığıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Uzmanlık | Deri İmalatı</div>
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text">Deri sanayinde sürdürülebilirlik tartışmalarında, "Zehir Bilimsel (Toksikolojik) Ayak İzi" kapsamında, tehlikeli maddelerin sınırlandırılması hedeflenmektedir. Bu amaçla nihai deri ürününde bulunması istenmeyen ve sınırlandırılmaya çalışılan <u>başlıca iki kimyasal madde</u> aşağıdakilerden hangisinde birlikte verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> Formik asit ve Sülfürik asit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>B)</span> Cr (Krom) ve NMP (N-metilpirolidon)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>C)</span> Magnezyum oksit ve Karbondioksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> Hidrojen sülfür ve Amonyak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> Asbest ve Silika</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Çözüm:</strong> Deri üretiminde "Zehir bilimsel (toksikolojik) ayak izi", ürün güvenliğini merkeze alır. AÖF kitabında açıkça belirtildiği üzere, tedarik zincirinde ve nihai üründe sınırlandırılması istenen temel iki madde kanserojen/toksik etki riski taşıyan <strong>Cr (Krom) ve NMP (N-metilpirolidon)</strong>'dur.
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Sınıflandırma | Deri İmalatı</div>
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi deri imalatı aşamalarında <u>"kuru işlemlerde"</u> (suyun kullanılmadığı, mekanik bitim işlemleri) kullanılan iş ekipmanlarından biridir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Pervaneli tekne</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Dolap</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>C)</span> Sıkma makinesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> Yarma makinesi (yaş yarma)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>E)</span> Rotopres</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Çözüm:</strong> Pervaneli tekne (yıkama), dolap, sıkma ve yaş yarma işlemleri su ve sıvı kimyasalların kullanıldığı yaş proseslere aittir. Kuru işlemler ise zımparalama, tıraşlama ve ütüleme/baskı işlemlerini içerir. Deriye son şeklini (ütüleme/baskı) veren makine olan <strong>Rotopres</strong> kuru işlemlere ait bir iş ekipmanıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Kavram | Konaklama Hizmetleri</div>
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text">Özellikle gençlik turizmine cevap verebilecek nitelikte dizayn edilen, en az 10 odalı konaklama ve yeme-içme hizmeti veren veya <u>müşterinin kendi yemeğini bizzat hazırlama imkânı sağlayan</u> paylaşımlı konaklama tesislerine ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> Motel</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>B)</span> Oberj</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> Pansiyon</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>D)</span> Hostel</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> Apart otel</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Çözüm:</strong> Müşterilerin ortak alanları, yatakhane tarzı odaları ve ortak bir mutfağı kullanarak kendi yemeğini yapmasına olanak tanıyan, daha çok genç gezginlerin tercih ettiği uygun maliyetli konaklama tesisi literatürde <strong>Hostel</strong> olarak adlandırılır.
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Detay | Konaklama Hizmetleri</div>
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text">Konaklama faaliyetlerinde tehlikeler tanımlanırken, çalışma ortamına, çalışanlara ve işyerine ilişkin bazı asgari temel bilgilerin toplanması şarttır. <br><br>Aşağıdakilerden hangisi İş Sağlığı ve Güvenliği Risk Değerlendirmesi sürecinde toplanması gereken bu asgari bilgilerden biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> İş kazası kayıtları ve ramak kala olayları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> Malzeme bilgi güvenlik formları (MSDS)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> İş ekipmanlarının listesi ve bakım kayıtları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> İşyerinin daha önceki teftiş sonuçları</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>E)</span> Çalışanların doğum yeri</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 Çözüm:</strong> Risk analizleri çalışma ortamının fiziksel şartlarına ve tehlike geçmişine dayanır. Bu yüzden ekipman listesi, malzeme güvenlik formları ve eski kaza kayıtları şarttır. Ancak çalışanların özlük bilgisi niteliğindeki <strong>"Doğum Yeri"</strong> bilgisinin, teknik bir risk analizi dosyası için toplanması gereken asgari iş sağlığı bilgileri arasında hiçbir geçerliliği yoktur.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Sistem Analizi | Gıda Üretimi</div>
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text">HACCP (Tehlike Analizi ve Kritik Kontrol Noktaları) sisteminin kurulmasında, "Sistemin başarısını etkileyecek olan, sıcaklık, süre, bağıl nem, tuz derişimi gibi somut sayısal eşik değerlerin" tanımlandığı ve literatürde <u>sistemin uygulanmasının en zor kısmı</u> olarak kabul edilen aşama aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Tehlike Analizi Yapılması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>B)</span> Kritik Kontrol Noktalarının (KKN) Belirlenmesi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>C)</span> Kritik Limitlerin Belirlenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>D)</span> Doğrulama İşlemleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> Kayıt Tutma Sisteminin Kurulması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Çözüm:</strong> KKN (noktanın kendisi) belirlendikten sonra asıl zorluk, bu noktada güvenliği kanıtlayacak net matematiksel eşiklerin hesaplanmasıdır. AÖF kitabına göre "HACCP sisteminin en zor kısmı; sistemin başarısını etkileyecek somut değerlerin, yani <strong>Kritik Limitlerin Belirlenmesi</strong> aşamasıdır."
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Kimya | Gıda Üretimi</div>
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text">Süt ve süt ürünleri imalatı yapan bir tesiste, ürünlerin bozulmaması için tutuldukları devasa soğuk depolarda hava üfleyen kısımların yakınında çalışan işçilerin hipotermi geçirme riski vardır. <br><br>Bu depolarda endüstriyel boyutta kullanılan <u>"amonyaklı soğutma ünitelerinin"</u> çevresinde olası bir sızıntı/ayrıştırma durumunda, uzun süreli maruziyet sonucu çalışanlarda <u>koku alma duyusunun kaybolmasına</u> ve sinir sistemi sorunlarına yol açan spesifik kimyasal aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>A)</span> Sodyum Hidroksit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>B)</span> Hidrojen Sülfür</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>C)</span> Karbondioksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Sülfürik Asit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Ozon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Çözüm:</strong> Soğutma sistemlerindeki amonyağın ayrışması veya sızıntısı durumunda ortaya çıkan, çürük yumurta kokusuna sahip olan ve belli bir seviyeden sonra kişinin koku alma sinirlerini felç ederek hissizleştiren (bu yüzden uyarıcı kokusunun kaybolduğu) tehlikeli gaz <strong>Hidrojen Sülfür (H2S)</strong>'tür.
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Teori | Havacılık Sektörü</div>
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text">Havacılık sektöründe sivil hava taşıtlarının organizasyonu sosyo-teknik bir "Sistemler Sistemi (System of Systems)" yaklaşımıyla incelenmektedir. (Maier, 1998) teorisine göre bu sistemlerin 5 temel özelliği bulunmaktadır. <br><br>Aşağıdakilerden hangisi bu "sistemler sistemi" teorisinin özelliklerinden biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Elemanların operasyonel bağımsızlığa sahip olması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> Elemanların yönetimsel bağımsızlığa sahip olması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>C)</span> Zamansal gelişme göstermesi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>D)</span> Tamamen dışa kapalı (izole) sistemler olması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> Elemanların coğrafi dağılıma sahip olması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 Çözüm:</strong> Havacılıktaki uçak, kule, bakım atölyesi gibi tüm bileşenler birbiriyle (ve çevreyle) sürekli etkileşim halinde çalışmak zorundadır. Bu yüzden havacılık teorisinde bu yapılar "Açık Sistemler" veya "Seçici Açık Sistemler" olarak tanımlanır. Bunların <strong>"Tamamen dışa kapalı (izole) sistemler olması"</strong> mümkün değildir.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Bakım Sınıfları | Havacılık Sektörü</div>
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text">Havacılıkta uçakların sürekli uçuşa elverişlilik durumunda tutulurken, gerekli FAA ve üretici denetimlerinin zamana yayılarak (tek seferde büyük bir süre harcamak yerine parça parça) gerçekleştirildiği sürekli bir bakım programıdır. <br><br>Özellikle özel sektöre ait uçaklardan ziyade sürekli havada kalması gereken <u>kiralık uçaklar, hava taksileri ve eğitim uçakları</u> için daha cazip olan bu bakım programı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>A)</span> Seviye I Bakımı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> Seviye II Bakımı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>C)</span> Yıllık İnceleme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>D)</span> 100 Saatlik Muayene</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>E)</span> Aşamalı Bakım Programı (Progressive Maintenance)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Çözüm:</strong> Ticari olarak uçuşa devam etmesi gereken uçakların, uzun süreli ağır bakımlara (Seviye 2 vb.) yatırılmak yerine, rutin kontrollerinin belli aralıklara ve kısa sürelere bölünerek sürekli hale getirilmesine <strong>Aşamalı Bakım Programı</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Limitler | Tekstil Sektörü</div>
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text">Tekstil sektöründe havada uçuşan pamuk, keten ve kendir tozlarının solunmasıyla "Bisinozis" adı verilen ciddi mesleki akciğer hastalığı oluşmaktadır. İSG standartlarına göre, bu hastalığın kalıcı (kronik) etkiler yaratabilmesi için havadaki toz konsantrasyonunun hangi sınır değerin üzerinde olması halinde ortamda <u>devamlı toz ölçümlerinin yapılması</u> zorunlu kabul edilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> 0,2 mg/m³</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> 0,5 mg/m³</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>C)</span> 1,0 mg/m³</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>D)</span> 1,5 mg/m³</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> 5,0 mg/m³</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Çözüm:</strong> AÖF verilerine göre Bisinoziste "Akut etkilerin görülebilmesi için 0,2 mg/m³ yoğunlukta tozlu havada 5 saat soluma yeterlidir." Ancak hastalığın "Kronik (kalıcı) etkileri" için <strong>1,5 mg/m³'ün üzerindeki</strong> konsantrasyonlarda devamlı ölçümler yapılması gerektiği kabul edilmiştir.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Proses | Tekstil Sektörü</div>
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text">Tekstil iplik üretim tesislerinde (Ring iplikçiliği sürecinde); tarak ve cer aşamalarından geçen şeritlerin, son eğirme işlemine (vater makinesine) girmeden önce bir miktar inceltildiği ve <u>kendini taşıyabilecek kadar çok hafif bir büküm verilerek</u> yeterli mukavemetin sağlandığı "ön eğirme" işlemine ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>A)</span> Harman-hallaç</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>B)</span> Fitil işlemi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> Taraklama</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> Merserizasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> Haşıllama</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Çözüm:</strong> Pamuk liflerinin tam iplik haline gelmeden hemen önceki formuna "fitil" denir. Şeritlerin inceltilip kopmayacak kadar hafif bir bükümle vater makinesine hazırlanması süreci <strong>Fitil işlemi</strong> olarak adlandırılır.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Kavram | Petrol ve Gaz Sektörü</div>
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text">Petrol ve gaz endüstrisindeki tedarik zinciri; Üretim (Upstream), İletim (Midstream) ve İşleme (Downstream) olmak üzere üç ana başlıkta incelenir. <br><br>Buna göre, aşağıdakilerden hangisi petrolün son tüketiciye ulaştırılmasına hazırlık yapılan <u>"İşleme (Downstream)"</u> aşamasında yer alan faaliyetlerden biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> Ürün iyileştirme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> Petrokimyasalların üretimi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>C)</span> Satış ve dağıtım</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Petrol Rafinerisi operasyonları</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>E)</span> Sismik etütler ve arama kuyuları</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Çözüm:</strong> "Downstream (İşleme)"; rafinerilerde petrolün benzin, dizel veya petrokimya ürünlerine dönüştürüldüğü ve satışa sunulduğu aşamadır. Yeraltındaki petrolü arama, sismik etütler yapma ve sondaj ile çıkarma faaliyetleri ise <strong>"Upstream (Üretim/Arama)"</strong> aşamasının konusudur.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Yönetim | Petrol ve Gaz Sektörü</div>
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text">Petrol tesislerinde İş Güvenliği ve Sağlık risklerinin yönetiminde kullanılan PUKÖ döngüsüne (Planla, Uygula, Kontrol Et, Önlem Al) göre; "Stratejik İSG Yol Haritası, İş Akışları, Amaçlar ve Temel Önceliklerin belirlenmesi" adımları döngünün hangi aşamasında yer almaktadır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>A)</span> Planla</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> Uygula</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>C)</span> Kontrol Et</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Önlem Al</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> Risk Değerlendirme</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Çözüm:</strong> Bir sistemin kurulmasında öncelikle hedefler, akış şemaları, politikalar ve yol haritası çizilir. Tüm bu hazırlık, amaç belirleme ve öncelik sıralaması adımları PUKÖ döngüsünün ilk aşaması olan <strong>Planla (Plan)</strong> evresinde gerçekleştirilir.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="badge-deneme">KKD | Mobilya İmalatı</div>
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text">Mobilya imalatının "Metal İşleme" bölümlerinde sac ve iskelet birleştirmeleri için sıklıkla Gazaltı Kaynağı (MIG/MAG) kullanılmaktadır. İSG standartlarına göre aşağıdakilerden hangisi bu spesifik kaynak işlemi sırasında kullanılması zorunlu olan Kişisel Koruyucu Donanımlardan (KKD) biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> Yüz siperi (vizör/maske)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> Isıya ve kıvılcıma dayanıklı eldiven</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>C)</span> Emniyet kemeri (Paraşüt tipi)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> Kaynak gazı ve tozuna karşı gaz maskesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Deri önlük</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Çözüm:</strong> Kaynak işleminde gözü alan UV ışınlarından, sıçrayan çapaklardan (kıvılcım) ve kaynak dumanından korunmak gerekir (Vizör, Deri önlük, Eldiven, Gaz maskesi). Ancak <strong>Emniyet kemeri</strong> yüksekte çalışma (düşmeyi önleme) donanımı olup, standart bir zemin kaynak işlemi donanımı değildir.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Kimya | Mobilya İmalatı</div>
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text">Mobilya imalat sektöründe restorasyon işlemlerinde boya çıkarmada (boya sökücü), vernik-tiner üretiminde ve güçlü bir çözücü olarak genel atölye yüzey temizliğinde kullanılan; ancak buharı solunduğunda ciddi sağlık (kanserojen vb.) riski taşıyan kimyasal bileşik aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> Formaldehit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>B)</span> Amonyak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>C)</span> Hidroklorik Asit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>D)</span> Diklorometan</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Sodyum Sülfür</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Çözüm:</strong> Mobilya (ve metal) sektöründe kurumuş boyaların/verniklerin sökülmesinde veya sanayi tipi genel yüzey çözücüsü (solvent) olarak en çok başvurulan, yüksek toksik etkiye sahip sıvı <strong>Diklorometan'dır</strong>.
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Proses | Gıda Üretimi</div>
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text">Gıda ürünleri imalatı çok geniş bir yelpazeyi kapsar ve ürün tipine göre çok farklı ısıl ve kimyasal işlemler barındırır. <br><br>Buna göre aşağıdakilerden hangisi et ve et ürünleri işlenmesinde kullanılan "temel" endüstriyel işlemlerden biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> Soğutma ve dondurma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> Isıtma veya ısıl işlem uygulama (Pastörizasyon)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>C)</span> Kurutma ve konsantre etme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> Işınlama (Raf ömrü uzatma)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>E)</span> Rafinasyon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Çözüm:</strong> Et ürünlerinde dondurma, pişirme/ısıtma, pastırma gibi kurutma ve koruyucu ışınlama standart süreçlerdir. <strong>Rafinasyon</strong> işlemi ise ham sıvı yağların (ayçiçek, zeytinyağı vb.) asitliğini alma, kokusunu giderme ve saflaştırma işlemi olup et sektörüne değil sıvı yağ üretim sektörüne aittir.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Kimya | Tekstil Sektörü</div>
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text">Tekstil üretiminde kullanılan bazı kimyasalların cilt, mesane, akciğer ve böbrek kanserlerine, ayrıca kısırlık veya genetik doğumsal anomalilere yol açabildiği bilimsel olarak kanıtlanmıştır. Bu sebeple Türkiye'de (TS EN ISO 14362 vb. standartlarla) ve dünyada kullanımı sıkı bir şekilde kısıtlanan veya yasaklanan <u>başlıca kimyasal madde grubu</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> Silika (Kuvars) tozları</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>B)</span> Azo boyar maddeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>C)</span> Asbest lifleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>D)</span> Sülfürik asitler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> Formaldehit reçineleri</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Çözüm:</strong> Tekstil terbiye ve renklendirme aşamalarında geçmişte çok yaygın kullanılan ancak insan tenine değdiği andan itibaren ter yoluyla vücuda girerek güçlü bir şekilde kanser başlatan kimyasal boya grubu <strong>Azo boyar maddelerdir</strong>. Günümüzde standart testlerle (sıfır toleransla) kısıtlanmıştır.
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Kavram | Tarım Sektörü</div>
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text">Geleneksel tarımsal üretimde insan ve hayvan emeğinin yerini alan; binlerce dönüm arazinin ve toprağın seri bir şekilde işlenebilmesine olanak sağlayarak tarımda verimin ve üretim kapasitesinin inanılmaz oranda artmasını sağlayan <u>endüstriyel gelişmeye (sisteme)</u> ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> İlaçlama Teknolojisi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> Gübreleme Otomasyonu</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>C)</span> Mekanizasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>D)</span> Yeşil İnovasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> Biyoteknoloji</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Çözüm:</strong> İnsan gücünün yerini traktör, biçerdöver, mibzer ve diğer motorlu tarım aletlerinin alması ve üretimin sanayi tipi bir hıza kavuşması olgusu tarımda <strong>Mekanizasyon</strong> (makineleşme) olarak adlandırılmaktadır. (2021 Çıkmış Sınav sorusudur).
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Taşıma | Havacılık Sektörü</div>
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text">Havaalanı yer hizmetleri kapsamında (Apron ve Kargo faaliyetlerinde), uçaklara yüklenen veya indirilen tehlikeli kimyasallar ve parlayıcı maddeler uluslararası IATA kuralları gereği son derece sıkı prosedürlerle taşınır. <br><br>Söz konusu tehlikeli maddeler ve kimyasallar uluslararası kabul görmüş standartlarda <u>kaç farklı kodlama (sınıf) grubunda</u> ele alınmaktadır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> 3</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>B)</span> 4</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>C)</span> 6</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>D)</span> 9</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> 12</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Çözüm:</strong> Havacılık kargo operasyonlarında Tehlikeli Maddeler (Dangerous Goods - DGR); patlayıcılar, gazlar, yanıcı sıvılar, yanıcı katılar, oksitleyiciler, toksik/bulaşıcılar, radyoaktifler, aşındırıcılar ve diğer muhtelif tehlikeliler olmak üzere tam <strong>9 sınıf (Grup)</strong> halinde kodlanmaktadır.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
+    </footer>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Detaylı Çözüm';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Yanlış 1 Doğru Kuralı
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SÜRE BİTTİ";
+            
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

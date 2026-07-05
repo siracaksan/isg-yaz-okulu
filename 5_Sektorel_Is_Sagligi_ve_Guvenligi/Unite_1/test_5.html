@@ -1,25 +1,611 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 1 - Test 5 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Uzmanlık Seviyesi Testleri | Sektörel İSG Ünite 1 - TEST 5</title>
+    <style>
+        :root {
+            /* Test 5: EN ZOR (Master) Seviye - Koyu Siyah, Kan Kırmızı ve Altın Sarısı Tema */
+            --primary: #0a0a0a;    /* Saf Siyah/Antrasit */
+            --accent: #dc2626;     /* Kan Kırmızı */
+            --gold: #d97706;       /* Altın/Bronz Vurgu */
+            --bg: #171717;         /* Çok Koyu Gri Arka Plan */
+            --panel-bg: #262626;   /* Panel Arka Planı */
+            --text: #f5f5f5;       /* Açık Gri/Beyaz Metin */
+            --light-gray: #525252;
+            --green: #16a34a;
+            --red: #ef4444;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #000000 0%, #450a0a 100%); color: white; padding: 2.5rem 1.5rem; text-align: center; border-bottom: 4px solid var(--gold); position: relative; box-shadow: 0 8px 16px rgba(0,0,0,0.5); }
+        header h1 { margin: 0; font-size: 2.2rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; color: #facc15; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+        header p { margin: 0.8rem 0 0 0; color: #e5e5e5; font-weight: 600; font-size: 1.2rem; letter-spacing: 2px; }
+        
+        nav { background: #000000; padding: 1rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--light-gray); }
+        .nav-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav-btn { background: #1f2937; color: #d1d5db; border: 1px solid #374151; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; }
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 0 15px rgba(220, 38, 38, 0.6); }
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 8px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 2rem; border: 1px solid #404040; border-top: 4px solid var(--accent); }
+        
+        .strategy-box { border-left: 5px solid var(--gold); background: #1c1917; padding: 1.8rem; border-radius: 4px; margin: 1.5rem 0; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        .strategy-box h3 { margin-top: 0; color: var(--gold); display: flex; align-items: center; gap: 0.6rem; font-size: 1.3rem; text-transform: uppercase;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: #d4d4d8; font-size: 1rem; }
+        .strategy-box li { margin-bottom: 0.8rem; }
+        
+        .start-btn { display: block; width: 100%; max-width: 400px; margin: 2.5rem auto 1rem; background: transparent; color: var(--accent); text-align: center; padding: 1.2rem; border-radius: 4px; font-size: 1.4rem; cursor: pointer; border: 2px solid var(--accent); font-weight: 900; transition: all 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+        .start-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 25px rgba(220, 38, 38, 0.5); transform: scale(1.02); }
+        
+        .timer-bar { position: sticky; top: 0; background: #000000; color: white; padding: 1rem 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.8); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--gold); display: flex; align-items: center; gap: 0.5rem; font-family: 'Courier New', Courier, monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase; }
+        .btn:hover { filter: brightness(1.2); }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-secondary { background: #4b5563; color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid #404040; padding: 2.5rem; border-radius: 8px; display: flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; }
+        .question-header { font-weight: 900; color: #000; background: var(--gold); display: inline-block; padding: 0.4rem 1.2rem; border-radius: 2px; margin-bottom: 1.5rem; font-size: 1rem; letter-spacing: 1.5px; align-self: flex-start; text-transform: uppercase; }
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: #f5f5f5; }
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.2rem; border: 1px solid #525252; border-radius: 4px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1rem; line-height: 1.5; background: #1c1917; color: #d4d4d8; }
+        .option span { font-weight: 900; min-width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; color: white; background: #404040; border-radius: 4px; font-size: 1.1rem;}
+        .option:hover:not(.locked) { background: #262626; border-color: var(--gold); }
+        .option.locked { cursor: default; }
+        .option.correct { background: rgba(22, 163, 74, 0.1); border-color: var(--green); color: #4ade80; }
+        .option.correct span { background: var(--green); color: white; }
+        .option.wrong { background: rgba(220, 38, 38, 0.1); border-color: var(--accent); color: #f87171; opacity: 0.8; }
+        .option.wrong span { background: var(--accent); color: white; }
+        
+        .solution-btn { margin-top: 2.5rem; background: #171717; color: var(--gold); border: 1px solid var(--gold); padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; align-self: flex-start; font-size: 1rem; font-weight: 800; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--gold); color: black; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: #000000; border-left: 4px solid var(--accent); border-radius: 0 4px 4px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: #d4d4d8; box-shadow: inset 0 0 15px rgba(220,38,38,0.1); }
+        .solution-box.show { display: block; animation: fadeIn 0.5s ease; }
+        .solution-box strong { color: var(--accent); font-weight: 900; font-size: 1.1rem; display: block; margin-bottom: 0.8rem; letter-spacing: 1px; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 2rem; padding: 4rem 2rem; background: #171717; border-radius: 8px; border: 2px solid var(--accent); border-top: 8px solid var(--accent); display: none; box-shadow: 0 15px 40px rgba(220,38,38,0.2); }
+        .results-section h2 { font-size: 2.8rem; color: white; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2.5rem; }
+        .stat { padding: 2rem 3rem; border-radius: 8px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); background: #262626; border: 1px solid #404040; }
+        .stat span { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #a3a3a3; }
+        .stat.correct { color: #4ade80; border-color: #16a34a; }
+        .stat.wrong { color: #f87171; border-color: #dc2626; }
+        .stat.empty { color: #9ca3af; }
+        .stat.net { color: var(--gold); border-color: var(--gold); transform: scale(1.1); box-shadow: 0 0 20px rgba(217, 119, 6, 0.3); }
+        
+        footer { background: #000000; color: #6b7280; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1rem; border-top: 1px solid #374151; font-weight: 600; letter-spacing: 1px;}
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box, .question-card, .option { background: white; border: 1px solid #ccc; color: black; box-shadow: none; }
+            .question-header { background: #ccc; color: black; }
+            .solution-box { display: block !important; border-left: 3px solid black; background: #f9f9f9; color: black; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 1 - Test 5</h2>
+        <h1>Uzmanlık Seviyesi Testleri | Sektörel İSG</h1>
+        <p>ÜNİTE 1: Tarım, Orman ve Hayvancılık Sektörü - TEST 5 (MASTER)</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Kök Dizin</a>
+            <a href="../index.html" class="nav-btn">📚 1. İş Hijyeni ve Ergonomi</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">⬅️ Orijinal Sınavlar</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn active">Test 5 (Zor)</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--gold); font-size: 2.5rem; margin-bottom: 0.5rem; text-transform: uppercase;">Final Denemesi: Master Seviye</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: #a3a3a3; margin-bottom: 3rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>⚠️ Test 5 Konsepti ve Yönergesi</h3>
+                <ul>
+                    <li><strong>Akademik Derinlik:</strong> Bu test, önceki 4 testin tüm konseptlerini birleştiren, İSG alanındaki yasal, medikal ve teknik istisnaları sorgulayan en zorlu denemedir.</li>
+                    <li><strong>Vaka ve Diferansiyel Analiz:</strong> Tıbbi terimler (Hipersensitivite Pnömonisi, Asfiksi vb.), teknik standartlar (TS 1214) ve ILO mevzuatları arasındaki ince farkları ayırt etmeniz beklenecektir.</li>
+                    <li><strong>Çoklu Öncül ve Asimetri:</strong> Soruların çoğunda birbiriyle çelişen veya birbirini tamamlayan uzun paragraflı öncüller kullanılmıştır. Mantık yürütmeden şık elemek imkânsızdır.</li>
+                    <li><strong>Değerlendirme:</strong> 4 yanlış 1 doğruyu götürür. Net sistemine göre puanınız hesaplanacaktır.</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Sınavı Başlat</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">PDF Olarak Kaydet</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Master Seviye Analiz Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text">Türkiye, çalışma hayatının iyileştirilmesi bağlamında pek çok Uluslararası Çalışma Örgütü (ILO) sözleşmesini iç hukukuna entegre etmiştir. Ancak ülkedeki tarım istihdamının %94.7 gibi devasa bir oranının kadınlardan oluşan "kayıt dışı" işgücüne dayanması ve göçebelik gibi nedenlerle, doğrudan <u>tarım sektöründeki İSG standartlarını ve risk bertarafını</u> emreden spesifik sözleşme henüz TBMM tarafından onaylanmamıştır. Bahsi geçen bu ILO belgesi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> 155 sayılı İSG ve Çalışma Ortamına İlişkin Sözleşme</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>B)</span> 184 sayılı Tarımda İş Sağlığı ve Güvenliği Sözleşmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>C)</span> 11 No’lu Örgütlenme Özgürlüğü Sözleşmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> 161 sayılı Sağlık Hizmetlerine İlişkin Sözleşme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> 187 sayılı İSG Geliştirme Çerçeve Sözleşmesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 Orijinal Sınav Analizi:</strong> 155, 161 ve 11 nolu sözleşmeler Türkiye tarafından onaylanmıştır. Ancak doğrudan tarım sektöründeki tehlike sınıflarını ve çalışan haklarını bağlayan 184 nolu sözleşme sosyo-ekonomik yapı (kayıt dışılık vb.) nedeniyle Türkiye tarafından henüz onaylanmamıştır.
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text">Tarımsal zehir bilimi (Toksikoloji) kategorizasyonunda aktif maddelerin yarattığı yıkım tipleri farklılık gösterir. Bitkisel hastalıkları ve mantarları önlemek için kullanılan "dithiocarbamate" ile böcek/haşere öldürücü olarak kullanılan "organophosphate" (organofosfat) grubu kimyasallar sırasıyla hangi farmakolojik / sektörel sınıfa aittir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Herbisit / Fungisit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>B)</span> Fungisit / İnsektisit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>C)</span> İnsektisit / Herbisit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> Fungisit / Rodentisit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> Dekompozit / Pestisit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Farmakolojik Sınıflandırma:</strong> Dithiocarbamate grubu kimyasallar mantarlara karşı kullanılan "Fungisit"lerdir. Asetilkolinesteraz enzimini inhibe ederek sinir sistemini çökerten organofosfatlar ise böceklere karşı kullanılan "İnsektisit" grubundandır.
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text"><strong>(Diferansiyel Tanı Vakası)</strong>: Bir kırsal işletmede çalışan iki farklı işçiden; 1. İşçi küflenmiş saman balyalarını taşıdıktan aylar sonra şiddetli alerjik alveolit şikayetiyle, 2. İşçi ise mısır silajı üretimi yapılan havasız fermente bir siloya maskesiz girdikten hemen sonra akut pulmoner ödem şikayetiyle acil servise başvurmuştur.<br><br>Bu iki işçinin maruz kaldığı hastalığı tetikleyen birincil patojen/kimyasal etken sırasıyla hangi seçenekte doğru verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> 1. İşçi: Metan gazı | 2. İşçi: Sülfürik Asit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> 1. İşçi: Asbest | 2. İşçi: Anhidrit Amonyak</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>C)</span> 1. İşçi: Termofilik aktinomiçetler (Çiftçi Akciğeri) | 2. İşçi: Nitrojen Dioksit (Silo Doldurucusu Hastalığı)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> 1. İşçi: Bagassosis | 2. İşçi: Karbonmonoksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> 1. İşçi: Furocoumarin | 2. İşçi: Hidrojen Sülfür</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Medikal Ayrım:</strong> Küflü samandaki "termofilik aktinomiçetler" Çiftçi Akciğerine (hipersensitivite pnömonisi) yol açar. Silolardaki bitkisel fermantasyon ise ölümcül "Nitrojen Dioksit (NO2)" üreterek Silo Doldurucusu Hastalığı (akut ödem) yaratır. İki farklı mesleki maruziyetin klasik tablosudur.
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text">I. Çalışanların örgütsüz olmaları veya sendikal faaliyetlerin yetersizliği.<br>II. Kırsaldaki işletmelerde eğitim seviyelerinin yetersiz olması.<br>III. Mevsimlik sirkülasyon oranının ve yer değiştirme hızının çok düşük olması.<br>IV. İş gücünün büyük bölümünü kadınların oluşturması.<br><br>Geleneksel tarım sektöründe İSG uygulamalarının arzulanan seviyeye ulaşmasını engelleyen sosyo-kültürel nedenler analiz edildiğinde yukarıdaki ifadelerden hangisi/hangileri bilimsel saha gerçekleriyle <u>çelişir (yanlıştır)</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Yalnız I</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>B)</span> Yalnız III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>C)</span> I ve II</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> III ve IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> I, III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Çeldirici Analizi:</strong> 2022/2023 Çıkmış Soru formatıdır. Tarım işçilerinde mevsimlik yer değiştirme oranı "düşük" değildir; aksine çok YÜKSEK'tir. Bu aşırı sirkülasyon, işçilerin eğitilmesini ve takip edilmesini imkansızlaştırır. III. öncül saha gerçeğiyle tamamen çelişir.
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text">Mekanizasyon süreciyle tarım arazilerinde insan gücünün yerini alan Traktörlerin eğimli arazilerde devrilmesi, ölümcül iş kazalarının başını çekmektedir. Bu ölümcül "Ezilme ve Sıkışma" kazalarını engellemek üzere traktör kabinlerine veya şasisine mühendislik olarak entegre edilmesi zorunlu olan <u>Devrilmeye Karşı Koruyucu Yapı'nın</u> uluslararası kısaltması nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> PTO (Power Take-Off)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>B)</span> HVAC</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>C)</span> ROPS (Roll-Over Protective Structure)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>D)</span> IPM (Integrated Pest Management)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> AD (Airworthiness Directives)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Mühendislik Önlemi:</strong> ROPS, devrilme anında sürücünün traktör altında kalarak ezilmesini önleyen çelik koruma kafesidir. PTO (Kuyruk Mili) ise dönen bir aksam olup uzuv kopmalarına neden olan bir başka tehlike kaynağıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text">Güneş ışığından gelen ultraviyole (UV) radyasyonu, tarım işçileri için sadece bir termal stres kaynağı değildir. Özellikle bitkilerin özsularında, havuç, kereviz yapraklarında veya ahşap koruyucu kimyasallarda bulunan hangi organik bileşenler/ajanlar ciltte UV ile reaksiyona girerek "Fototoksik Dermatit" (şiddetli cilt yanıkları) tablosu yaratır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>A)</span> Furocoumarin ve Creosote</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> Organofosfat ve Karbamat</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> Sodyum siyanür ve Arsenik</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> Termofilik aktinomiçetler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>E)</span> Anhidrit amonyak buharı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 Biyolojik/Dermatolojik Tehlike:</strong> Furocoumarin (bitki özsularında) ve Creosote (katran bazlı ahşap koruyucu) fotosensitif (ışığa duyarlı) maddelerdir. Cilde temas ettiklerinde masum görünürler ancak işçi güneşe çıktığında ciltte ağır hücresel yanıklar (fototoksisite) oluştururlar.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text">İş hijyeni açısından partikül mekaniği incelendiğinde; solunum yollarındaki silyer (tüycüklü) bariyerleri aşarak doğrudan "alveollere" penetre olan, kanda oksijen transferini kalıcı olarak bloke ederek fibrozise yol açan ve literatürde "Solunabilir Toz / Duman" olarak sınıflandırılan partiküllerin <u>maksimum aerodinamik çapı</u> nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Kesinlikle 15 mikrondan büyük olanlar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>B)</span> 10 ile 20 mikron aralığında olan floküler yapılar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> Sadece 1 milimetreden büyük tozlar</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>D)</span> 5 mikrondan daha küçük partiküller</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> 50 mikron ve üzeri makro yapılar</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Anatomik Sınır:</strong> 10 mikron boyutundaki tozlar üst solunum yollarında takılır (inhalable). Ancak 5 mikrondan (µm) küçük partiküller doğrudan akciğer hava keseciklerine (alveollere) iner ve pnömokonyoz gibi geri dönülemez meslek hastalıklarını başlatır.
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text">İşletmelerdeki hayvansal ve bitkisel atıkların bakteriyel çürümesi ile kapalı hacimlerde hapsolan "Dekompozisyon Gazları" oksijeni deplase ederek akut boğulmalara neden olur. Ders kitabının solunum tehlikeleri matrisine göre, aşağıdakilerden hangisi bu "çürüme gazları" sınıfının <u>doğal bir yan ürünü olamaz</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>A)</span> Metan (CH4)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>B)</span> Formaldehit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>C)</span> Karbonmonoksit (CO)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Amonyak (NH3)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Hidrojen Sülfür (H2S)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Kimyasal Ayrım:</strong> Biyolojik organik maddeler çürüdüğünde Metan, H2S, CO, Amonyak, Ozon ve Nitrojen Oksitleri gibi gazlar çıkar. Formaldehit ise tekstil, ahşap (MDF) ve kimya sanayisinde sentetik olarak kullanılan, doğal çürümeyle oluşmayan bir endüstriyel solventtir.
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text">Anadolu tarım tarihinde vahşi kapitalizme ve işçi sömürüsüne karşı atılmış en erken hukuki adım olarak kabul edilen; günlük çalışma saatleri, ücretler ve kısmi barınma haklarına yönelik bilinen <u>ilk resmi İSG düzenlemesi</u> hangi dönemde, hangi sektör işçileri için hayata geçirilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> 1945-1950 Çok Partili Dönem / İç Anadolu Pancar İşçileri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> 1923-1930 Erken Cumhuriyet / Ege Tütün İşçileri</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>C)</span> 1833-1840 Osmanlı Dönemi / Çukurova (Adana) Pamuk Tarlası İşçileri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> 1700-1750 Osmanlı Dönemi / Karadeniz Fındık İşçileri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> 1500-1600 Klasik Dönem / Trakya Çay İşçileri</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 Tarihsel Bağlam:</strong> Türkiye'nin tarımsal emek tarihinde, sanayileşen Çukurova pamuk tarlalarındaki ağır mevsimlik işçi sömürüsünü regüle etmek adına 1833-1840 yıllarında atılan adımlar ilk primitif işçi hakkı düzenlemeleri olarak tarihe geçmiştir.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text">Pestisit kullanımında İSG yönetiminin en kritik kuralı "Re-Entry Interval" olarak bilinen kavramdır. Uluslararası literatürde yer alan bu yönetsel tedbirin, tarım sektörü özelindeki Türkçe tam karşılığı ve teknik amacı nedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>A)</span> Maksimum maruziyet sınırı: İşçinin bir günde alabileceği en yüksek zehir dozu limitini belirler.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> İkame zamanı: Çok zehirli bir ilacın yerine daha az zehirli olanın konması için gereken geçiş süresidir.</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>C)</span> Araziye tekrar giriş süresi: İlaçlamadan sonra havadaki zehir bulutunun (aerosollerin) çökmesi ve yarılanma ömrünü tamamlaması için, tarlaya veya seraya maskesiz girmenin kesinlikle yasak olduğu süreyi ifade eder.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>D)</span> Toksikolojik eliminasyon: İnsanın kanına giren zehrin idrar yoluyla atılma süresidir.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> Biyolojik yarılanma ömrü: Seradaki bitkinin ilacı emme kapasitesidir.</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Yönetsel Kontrol:</strong> "Re-entry interval", pestisit yönetmeliğinin omurgasıdır. Zehir uygulandıktan sonra, toksik gazlar havada asılı kalır. Bu gazlar tamamen çöküp nötralize olana dek işçilerin araziye sokulmasını yasaklayan "Araziye Tekrar Giriş Süresi" kuralıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text">Kapalı hayvancılık barınaklarında (ahır, silo, ambar) çürüme gazlarının artmasıyla ortam havasındaki "Oksijen" miktarının düşerek deplase olması (yer değiştirmesi) sonucunda işçilerin ani bilinç kaybı ve "Asfiksi" geçirme tehlikesi başlar. Kanuni/teknik olarak, kapalı ortam havasındaki oksijen oranının <u>yüzde kaçın altına düşmesi</u> ölümcül asfiksi alarmı gerektirir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> %25.5</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> %21.0</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>C)</span> %19.5</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>D)</span> %15.5</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> %10.0</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Atmosferik Standartlar:</strong> Atmosferde normal şartlarda %20.9 oksijen bulunur. İSG standartlarına göre ortamdaki H2S veya Metan gibi gazların artarak Oksijen miktarını %19.5'in altına itmesi durumu (deplasman) anında boğulma/asfiksi riski doğurur.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text">Endüstriyel gübrelemede kullanılan son derece tahriş edici bir gaz olan <u>Anhidrit amonyak</u>, insan vücuduna temas ettiğinde hangi patofizyolojik mekanizmayla akut hücresel yıkım (yanık) yaratır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>A)</span> Doğrudan akciğer zarına kristal iğneler saplayarak fibrozise yol açar.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>B)</span> Kırmızı kan hücrelerindeki hemoglobin ile birleşerek karboksihemoglobin oluşturur ve hücreleri oksijensiz bırakır.</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>C)</span> Susuz yapısı nedeniyle göz, geniz ve akciğerlerdeki mukozal sıvılarla (nem) saniyeler içinde reaksiyona girerek dokuları eriten "amonyum hidroksite" (güçlü bir baza) dönüşür.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> Asetilkolinesteraz enzimini kalıcı olarak bloke edip kas spazmı yaratır.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> Sadece güneş ışığına (UV) maruz kaldığında aktifleşerek fototoksik yanık oluşturur.</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Kimyasal Etki Mekanizması:</strong> Anhidrit kelimesi "susuz" demektir. Bu kimyasal, ortamda su arar. İnsan soluduğunda akciğer veya gözdeki suyu/nemi çekerek anında yüksek pH değerine sahip korozif (yakıcı) bir madde olan Amonyum Hidroksite dönüşür.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text">I. TS 1214 standardına tabidir.<br>II. Uluslararası arenada "3D (Difficult, Dangerous, Dirty)" kuralıyla simgelenir.<br>III. Çalışanlarda uzun süreli vibrasyona (titreşim) bağlı Beyaz Parmak Sendromu gibi meslek hastalıkları gözlemlenir.<br>IV. Ortam gürültüsü asgari 90-100 dB(A) aralığındadır.<br><br>Yukarıdaki özelliklerin ve İSG tehlikelerinin <u>tamamını</u> bünyesinde barındıran alt sektör aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>A)</span> Ormancılık (Ağaç kesme ve odun üretimi)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> Süt ve mandıra işletmeciliği</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>C)</span> Seracılık ve çiçek üretimi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Tavukçuluk (Kanatlı hayvan tesisleri)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> Mevsimlik pamuk hasadı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Sektörel Sentez:</strong> TS 1214 ağaç kesme standardıdır. 3D kuralı (Zor, Tehlikeli, Kirli) ormancılığın küresel sembolüdür. Motorlu testerelerin 90-100 dB sesi ve yarattığı şiddetli titreşim (beyaz parmak/Raynaud fenomeni) doğrudan Ormancılık üretim sahasını tanımlar.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text">Tarım, orman ve hayvancılık faaliyetlerinde tehlikeler salt fiziksel ve kimyasal değildir. Aynı zamanda, izolasyon (yalnız çalışma), ağır iş yükü, şiddet, madde bağımlılığı veya mantıksız risk alma eğilimleriyle seyreden ve işçinin merkezi sinir sistemini çökerten sorunlar bütünü İSG literatüründe hangi ana sınıfta incelenir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>A)</span> Ergonomik Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> Biyomekanik Stresler</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>C)</span> Davranış Kaynaklı (Psikososyal) Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Toksikolojik Sendromlar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> Dermatolojik Sapmalar</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Psikososyal Riskler:</strong> Özellikle yoğun zehirlere maruziyet ve yalnızlığın beynin kimyasını bozması neticesinde çalışanda oluşan madde kullanımı, şiddet ve kuşaklar arası çatışmalar "Davranış Kaynaklı Tehlikeler" başlığında incelenir.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text">Ağaç kesme ve boylama operatörlüğü yasal yeterlilikler çerçevesinde icra edilmelidir. Bir işverenin sahaya indireceği operatöründen İSG açısından talep etmesi gereken belgeler/yeterlilikler arasında aşağıdakilerden hangisi <u>teknik olarak aranmaz</u> (bir zorunluluk değildir)?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> Ağacın yapısal özelliklerini analiz etme ve yön belirleme becerisi.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> Motorlu zincirli testerenin söküp takılması ve temel arıza onarım bilgisi.</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>C)</span> Her türlü motorlu taşıtı karayolunda sevk ve idare edebilecek Sürücü Belgesi (Ehliyet).</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> İlk yardım ve acil durumda yangına müdahale donanımı bilgisi.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Çevre koruma ve İSG standartları bilgisi.</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Yanıltıcı Beklenti:</strong> İş makinesi veya testere kullanan bir operatörün, ağaç ve makine mekaniğine hakim olması şarttır. Ancak bu kişinin trafiğe açık alanda araç kullanmak anlamına gelen genel bir "Sürücü Belgesine" sahip olması, orman içi ağaç kesim mesleğinin MYK standartlarında aranmaz.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text">Birleşmiş Milletler Nüfus Fonu (UNFPA) araştırmasına göre, Türkiye'de tarım istihdamında en riskli gruplardan olan "Mevsimlik Tarım İşçilerinin", konaklama, altyapı ihlalleri ve trafik kazaları açısından zirve yaptıkları; hasat takvimlerinin üst üste bindiği en yoğun <u>üç kritik göç ayı</u> hangileridir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>A)</span> Nisan, Temmuz, Eylül</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>B)</span> Mart, Haziran, Ekim</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>C)</span> Ocak, Mayıs, Ağustos</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> Mayıs, Ağustos, Kasım</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Haziran, Eylül, Aralık</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 İstatistiksel Gerçeklik:</strong> Türkiye tarımında ilkbahar hazırlığı/ilk göçler (Nisan), ara hasatlar (Temmuz) ve son hasatlar/sökümler (Eylül) ayları mevsimlik işçi hareketliliğinin tepe yaptığı dönemlerdir. Bu aylarda İSG ihlalleri tavan yapar.
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text">Orman ürünleri üretimi yapan şantiyelerde, kış aylarında sıcaklığın -10 °C (Eksi On) ve daha altındaki derecelere inmesi durumunda, sahada ağaç kesim işlemlerinin resmi / mühendislik kararıyla tamamen tatil edilmesinin <u>gerçek fiziksel sebebi</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> Testere yakıtının vizkozitesini kaybederek jelleşmesi.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> Zemin donması sebebiyle kök söküm aletlerinin toprağa işlememesi.</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>C)</span> Birbirine tutunarak tamamen donan ağaç dallarının, kesim anında ufak bir titreşimle veya ısı değişimiyle aniden fırlayarak şarapnel etkisi yaratması ve öngörülemez ölümcül kazalara (mekanik travma) neden olması.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> İşçilerin hipotermi riski oranının anında %100'e ulaşması.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> Motor sesinin donuk havada yankılanarak kulak zarını patlatacak akustik sınırlara ulaşması.</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Operasyonel Fizik:</strong> Çıkmış soru ve ders kitabı bilgisine göre, çok düşük derecelerde kesimin durdurulmasının ana sebebi doğrudan soğuk çarpması değildir. Donan dallar birer "gerilmiş yay" gibi davranır. Kesim sırasında aniden fırlayarak görünmez bir kinetik silah haline gelirler.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text">Zehirli kimyasallarla temas eden tarım ve orman çalışanlarında kontakt dermatit vakaları yaygındır. Ancak haşere ısırmaları, yılan/akrep sokmaları gibi organik canlıların vücuda enjekte ettiği zehirlere karşı vücudun gösterdiği bölgesel doku tahribatları İSG tehlike kategorilerinden hangisine dahil edilmektedir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> Psikolojik Tehlikeler</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>B)</span> Dermatolojik Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>C)</span> Biyomekanik Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>D)</span> Ergonomik Stresler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> İyonize Radyasyon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Sınıflandırma:</strong> 2023 Çıkmış Sorusudur. Akrep, yılan, arı, kene gibi haşere sokmalarının yarattığı nekroz, kaşıntı, enflamasyon ve enfeksiyonlar; cildi tahrip ettiği için İSG tablosunda "Dermatolojik Tehlikeler" altında tasnif edilmiştir.
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text">Dünya tarım işgücünün coğrafi dağılımı analiz edildiğinde, ağırlıklı olarak emek-yoğun yöntemlerin kullanıldığı, pirinç ve çay gibi ürünlerin kültivasyonu sebebiyle dünyadaki tarım işçilerinin <u>%75'i gibi ezici bir oranını</u> bünyesinde barındıran kıta aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> Afrika</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> Avrupa</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>C)</span> Güney Amerika</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>D)</span> Asya</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> Kuzey Amerika</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Makro Veriler:</strong> Çin, Hindistan, Güneydoğu Asya ülkelerindeki milyarlarca nüfus ve geleneksel (makineleşmemiş) ekim dikim yöntemleri, küresel tarım iş gücünün 4'te 3'ünün (yüzde 75) Asya kıtasında bulunmasına sebep olmuştur.
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text"><strong>(Nihai Entegrasyon Sorusudur)</strong><br><br>Tarım, hayvancılık ve ormancılık işleri tehlike yelpazesi bakımından "çoklu sistem çökmelerine" açıktır. Buna göre aşağıda maruz kalınan tehlike ile İSG tehlike sınıfı eşleştirmelerinden hangisi <u>bilimsel olarak hatalıdır</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> Traktör kabininde koruma (ROPS) olmaması yüzünden ezilme -> Mekanik Tehlike</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>B)</span> Püskürtülen suni gübrenin rüzgarla göze gelerek akut körlük yaratması -> Biyolojik Tehlike</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>C)</span> Uzun süre motorlu testere kullanan işçide titreşim kaynaklı nöropati görülmesi -> Fiziksel Tehlike</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> Kapalı barınaklarda dekompozisyon sonucu oksijenin %19.5 altına düşmesi -> Toksik/Solunum Yolu Tehlikesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> İşçilerin küflü samanı soluyarak Bagassosis / Çiftçi Akciğerine yakalanması -> Solunum Yolu / Biyolojik Tehlikesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Klinik ve Yasal Analiz</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Kategori Analizi:</strong> Suni gübre, pestisit veya diğer tarım kimyasallarının göze / cilde gelerek dokuyu tahrip etmesi "Biyolojik" değil, tamamen sentetik ve zehir kökenli olduğu için <strong>Toksikolojik / Kimyasal Tehlike</strong> sınırları içinde incelenir. Biyolojik tehlike ancak bakteri, virüs, mantar vb. patojenleri kapsar.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                // Doğru şıkkı göster
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            // Çözüm butonunu göster
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Klinik ve Yasal Analiz';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Yanlış 1 Doğru hesaplaması
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SINAV BİTTİ";
+            
+            // Cevaplanmayan soruları kilitle ve doğrularını göster
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

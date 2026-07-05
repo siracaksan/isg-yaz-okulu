@@ -1,25 +1,645 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 4 - Test 5 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Sektörel İSG | Ünite 4 - TEST 5 (Final Sınavı)</title>
+    <style>
+        :root {
+            /* Ünite 4 Final Sınavı - Kraliyet Mavisi ve Altın Sarısı Teması */
+            --primary: #1e3a8a;    /* Kraliyet Mavisi */
+            --accent: #d97706;     /* Altın Sarısı / Amber */
+            --bg: #f8fafc;         /* Çok Açık Mavi/Gri Arka Plan */
+            --panel-bg: #ffffff;   /* Beyaz Panel */
+            --text: #0f172a;       /* Koyu Lacivert/Siyah Metin */
+            --light-gray: #e2e8f0;
+            --green: #059669;
+            --red: #dc2626;
+            --gold: #b45309;
+            --dark-blue: #172554;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #172554 0%, #1e3a8a 100%); color: white; padding: 3rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 8px 20px rgba(30, 58, 138, 0.2); }
+        header h1 { margin: 0; font-size: 2.3rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: #ffffff; }
+        header p { margin: 0.8rem 0 0 0; color: #fde68a; font-weight: 700; font-size: 1.25rem; letter-spacing: 1px;}
+        
+        nav { background: #172554; padding: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #1e3a8a; }
+        .nav-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .nav-btn { background: #1e3a8a; color: #e0e7ff; border: 1px solid #3b82f6; padding: 0.7rem 1.4rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; letter-spacing: 0.5px; text-transform: uppercase;}
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: #fffbeb; border-color: var(--accent); box-shadow: 0 0 15px rgba(217, 119, 6, 0.5); font-weight: 800;}
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(30, 58, 138, 0.08); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--accent); background: #eff6ff; padding: 2rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: inset 0 0 15px rgba(30, 58, 138, 0.05);}
+        .strategy-box h3 { margin-top: 0; color: #1e3a8a; display: flex; align-items: center; gap: 0.6rem; font-size: 1.4rem; text-transform: uppercase; border-bottom: 2px solid #bfdbfe; padding-bottom: 0.5rem;}
+        .strategy-box h4 { margin-top: 1.5rem; margin-bottom: 0.5rem; color: #172554; font-size: 1.15rem; display: flex; align-items: center; gap: 0.4rem;}
+        .strategy-box p { color: #1e3a8a; font-size: 1.05rem; margin-bottom: 0.5rem;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: #1e3a8a; font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.6rem; }
+        .strategy-box .highlight { background: #fef3c7; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: bold; color: #b45309;}
+        
+        .start-btn { display: block; width: 100%; max-width: 400px; margin: 3rem auto 1rem; background: var(--primary); color: white; text-align: center; padding: 1.2rem; border-radius: 8px; font-size: 1.3rem; cursor: pointer; border: none; font-weight: 800; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);}
+        .start-btn:hover { background: #172554; box-shadow: 0 6px 20px rgba(30, 58, 138, 0.5); transform: translateY(-3px); }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1.2rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--accent); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px);}
+        .btn-primary { background: var(--accent); color: #fffbeb; }
+        .btn-secondary { background: #475569; color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid var(--light-gray); padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;}
+        .question-card:hover { border-color: var(--primary); box-shadow: 0 8px 30px rgba(30, 58, 138, 0.12);}
+        
+        .final-badge { position: absolute; top: -15px; right: 2.5rem; background: var(--accent); color: white; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.3); border: 2px solid #fff; letter-spacing: 1px;}
+        
+        .question-header { font-weight: 900; color: white; background: var(--primary); display: inline-block; padding: 0.6rem 1.4rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 1rem; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: var(--text); }
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.1rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #f8fafc; color: #334155; font-weight: 600;}
+        .option span { font-weight: 800; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; background: #94a3b8; border-radius: 6px; font-size: 1.05rem; transition: all 0.3s;}
+        .option:hover:not(.locked) { background: #ffffff; border-color: var(--primary); box-shadow: 0 4px 10px rgba(30, 58, 138, 0.1);}
+        .option:hover:not(.locked) span { background: var(--primary); color: white;}
+        .option.locked { cursor: default; }
+        .option.correct { background: #ecfdf5; border-color: var(--green); color: #065f46; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fef2f2; border-color: var(--red); color: #991b1b; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 800; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: #eff6ff; border-left: 5px solid var(--accent); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: var(--text); box-shadow: inset 0 0 15px rgba(30, 58, 138, 0.05); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: var(--primary); font-weight: 900; font-size: 1.15rem; display: block; margin-bottom: 0.8rem; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 4rem 2rem; background: white; border-radius: 12px; border-top: 8px solid var(--primary); display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .results-section h2 { font-size: 2.6rem; color: var(--text); margin-top: 0; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.8rem 3rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; border: 1px solid #e2e8f0; box-shadow: 0 6px 15px rgba(0,0,0,0.05); background: #f8fafc;}
+        .stat span { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b;}
+        .stat.correct { color: var(--green); border-color: #34d399; background: #ecfdf5;}
+        .stat.wrong { color: var(--red); border-color: #fca5a5; background: #fef2f2;}
+        .stat.empty { color: #64748b; }
+        .stat.net { color: var(--primary); border-color: var(--primary); transform: scale(1.08); box-shadow: 0 10px 25px rgba(30, 58, 138, 0.2); background: white;}
+        
+        footer { background: #172554; color: #bfdbfe; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1.05rem; border-top: 5px solid var(--accent); font-weight: 600; letter-spacing: 1px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: none; padding: 0; margin-bottom: 0;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .final-badge { border: 1px solid #000; color: #000; background: #eee; }
+            .solution-box { display: block !important; border: 1px solid #9ca3af; background: #f8fafc; padding: 1rem; margin-top: 1rem; color: black; }
+            .option { border: 1px solid #e2e8f0; background: white; color: black; margin-bottom: 0.5rem;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 4 - Test 5</h2>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 4: Gıda Ürünleri Üretimi - TEST 5 (Genel Tekrar / Final)</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">⬅️ Çıkmış Sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn">Test 1</a>
+            <a href="test_2.html" class="nav-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn active">Test 5 (Final)</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.4rem; margin-bottom: 0.5rem; text-transform: uppercase;">Ünite 4 - Genel Tekrar (Final) Sınavı</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: #475569; margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>🏆 Final Testi Hakkında (Genel Değerlendirme)</h3>
+                <p>Bu test, Gıda Ürünleri Üretimi ünitesinin <strong>tamamını</strong> kapsayan, önceki 4 testteki kazanımları harmanlayan "Büyük Final" niteliğindedir. Vize veya Final sınavınız öncesi kendinizi denemeniz için en ideal formattır.</p>
+                
+                <h4>📚 Testin Kapsadığı Temel Konu Başlıkları:</h4>
+                <ul>
+                    <li><span class="highlight">Mevzuat ve Standartlar:</span> 5996 sayılı Kanun, ISO 22000, HACCP prensipleri ve BRC/IFS detayları.</li>
+                    <li><span class="highlight">Fiziksel, Kimyasal ve Biyolojik Riskler:</span> Gürültü limitleri, amonyak/klor tehlikeleri, toz patlamaları, brusella ve aflatoksin.</li>
+                    <li><span class="highlight">Gıda İşleme Prosesleri:</span> Evaporasyon, ışınlama, filetolama, rafinasyon ayrımları.</li>
+                    <li><span class="highlight">Ergonomik Sorunlar ve Hastalıklar:</span> Karpal Tünel Sendromu, Tendinit ve eldiven kaynaklı Maserasyon.</li>
+                    <li><span class="highlight">İstatistikler ve Kavramlar:</span> Kaza oranları, uzuv kopması (ampütasyon), gıda savunması (food defense).</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Final Sınavını Başlat 🚀</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir 🛑</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Ünite 4 - Final Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="final-badge">Mevzuat</div>
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text">Çiftlikten sofraya gıda güvenliği konseptiyle, üretim zincirinin tüm aşamalarının risk esasına dayalı kontrolünü sağlayan ve Tarım ve Orman Bakanlığı'nı "tek yetkili otorite" kılan <u>5996 sayılı Veteriner Hizmetleri, Bitki Sağlığı, Gıda ve Yem Kanunu'nun</u> çıkarıldığı yıl aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> 1967</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> 1981</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>C)</span> 1999</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>D)</span> 2010</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> 2015</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 Hatırlatma:</strong> Ünite başı değerlendirme sorularında da yer aldığı üzere (Neler Öğrendik Soru 1); gıda mevzuatını AB ile uyumlu hale getiren ve eski yasaları tek çatı altında toplayan 5996 sayılı Kanun <strong>2010</strong> yılında yürürlüğe girmiştir.
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="final-badge">İşlem Ayrımı</div>
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text">Gıda sektöründe ürünlerin dayanıklılığını ve güvenliğini sağlamak için çeşitli endüstriyel işlemler uygulanır. <br><br>Aşağıdakilerden hangisi <u>et ürünlerinin işlenmesi</u> sırasında uygulanan temel işlemlerden biri <u>değildir</u>? (Ders kitabı genel sorusu)</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Soğutma ve Dondurma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> Isıtma veya Isıl İşlem Uygulama</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>C)</span> Rafinasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> Kurutma ve Konsantre Etme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> Işınlama (İradyasyon)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(2)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Hatırlatma:</strong> Soğutma, kurutma, ısıl işlem ve ışınlama et/süt/meyve gibi birçok gıdaya uygulanır. Ancak <strong>Rafinasyon</strong>, bitkisel ham yağların (ayçiçek, zeytin, pamuk vb.) içindeki istenmeyen maddeleri uzaklaştırmak (asit alma/ağartma/koku alma) için uygulanan spesifik bir sıvı yağ üretim sürecidir, et işleminde kullanılmaz.
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="final-badge">Gıda Standardı</div>
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text">Küreselleşme ile birlikte uluslararası düzeyde güvenli gıda üretimi için 2005 yılında yayınlanan, HACCP prensiplerini de kapsayan ve bir şirketin "Tarladan Çatala" tüm zincirde gıda güvenliği kurallarına uyduğunu kanıtlayan standart aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> ISO 9001 Kalite Yönetim Sistemi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> OHSAS 18001 (ISO 45001)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>C)</span> ISO 22000 Gıda Güvenliği Yönetim Sistemi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> ISO 14001 Çevre Yönetim Sistemi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> IFS (Uluslararası Gıda Standardı)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Hatırlatma:</strong> Gıda sektörünün "Yönetim Sistemi" bazlı en büyük evrensel standardı (ISO'nun hazırladığı) <strong>ISO 22000 Gıda Güvenliği Yönetim Sistemi</strong>'dir. (BRC ve IFS perakendeci birliklerinin hazırladığı diğer özel standartlardır).
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="final-badge">Fiziksel Kirlenme</div>
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text">Üretim bandından geçen gıda ürünlerinin içerisine kazara; cam kırıkları, vida, somun (metal parçası), taş, ahşap kıymığı, saç veya tüy gibi maddelerin karışması durumu HACCP risk analizinde hangi tehlike sınıfında değerlendirilir? (2021 ve 2022 Çıkmış Soru)</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Kimyasal Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Biyolojik Tehlikeler</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>C)</span> Fiziksel Tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> Çapraz Kontaminasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> Radyolojik Tehlikeler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Hatırlatma:</strong> Gıdanın yapısında bulunmayan, ürünle dışarıdan taşınan veya ekipmanlardan koparak düşen sert ve yabancı cisimlere (cam, metal, taş vb.) <strong>Fiziksel Tehlikeler</strong> adı verilir.
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="final-badge">İş Kazası Nedeni</div>
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text">SGK'nın 2008-2009 yılları (ve günümüz) istatistiklerine göre, gıda ürünleri imalatı sektöründe <u>en fazla</u> iş kazasına sebep olan (kazaların büyük çoğunluğunu oluşturan) olay türü aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>A)</span> Elle Taşıma (Malzeme kaldırma vb.)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>B)</span> Yangın ve Patlama</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> Yüksekten Düşme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>D)</span> Elektrik Çarpması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> Sabit Cisimlere Çarpma</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Hatırlatma:</strong> Gıda sektöründe iş kazalarının çoğu ağır çuvalların, kasaların kaldırılması ve taşınmasından kaynaklanan <strong>Elle Taşıma</strong> ve ardından kayma/düşme vakalarından oluşur. (Ders kitabı s. 126 / Neler Öğrendik Q5).
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="final-badge">Ergonomi</div>
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text">Et işleme, hamur yoğurma veya paketleme gibi gıda sektörü işlerinde çalışanlarda, el ve bileklerin hızlı ve sürekli tekrarlayan hareketleri sonucu el bileğindeki 'Median Sinir'in sıkışması ile ortaya çıkan meslek hastalığı aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> Silikozis</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>B)</span> Karpal Tünel Sendromu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> Kontakt Dermatit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> Astım</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>E)</span> Lumbago</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 Hatırlatma:</strong> Bilekteki median sinirin sıkışmasıyla oluşan uyuşma ve ağrı tablosuna <strong>Karpal Tünel Sendromu</strong> denir. Bu, sürekli el hareketlerine bağlı tipik bir <u>ergonomik</u> meslek hastalığıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="final-badge">Kimyasal Risk</div>
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text">Özellikle salam, sosis, sucuk gibi ileri işlenmiş et ürünlerinde ürüne kırmızı/pembe rengini vermek ve botulinum bakterisinin gelişimini önlemek için kullanılan, ancak buharları ve tozları solunduğunda veya çok tüketildiğinde <u>kanserojen (nitrosamin)</u> etki yaratan gıda katkı maddesi nedir? (2025 Çıkmış Soru)</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Sodyum Klorür</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>B)</span> Glikoz Şurubu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> Karbonat</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>D)</span> Nitrat / Nitrit Tuzları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>E)</span> Aminoasitler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Hatırlatma:</strong> İşlenmiş et endüstrisinin en meşhur tehlikeli kimyasallarından biri <strong>Nitrat ve Nitrit</strong> tuzlarıdır. Güvenli kullanım limitleri çok sıkı denetlenmelidir.
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="final-badge">Gıda Teknolojisi</div>
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text">Meyve suyu konsantrelerinin, salça, pekmez, reçel ve marmelatların üretiminde ürünün kıvamını artırmak (koyulaştırmak) amacıyla, ürünün içerisindeki suyun buharlaştırılarak ortamdan uzaklaştırılmasını sağlayan işleme ne ad verilir? (2022 Çıkmış Soru)</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>A)</span> Evaporasyon (Buharlaştırma)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>B)</span> Santrifüj</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>C)</span> Işınlama</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Rafinasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Ekstraksiyon</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Hatırlatma:</strong> Suyun uçurularak (buharlaştırılarak) ürünün konsantre hale getirilmesi sürecine gıda teknolojisinde <strong>Evaporasyon</strong> denir. Bu işlem sırasında dev basınçlı buhar kazanları kullanılır.
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="final-badge">Teknoloji / İradyasyon</div>
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text">Baharatlar, soğan, patates gibi bazı gıda ürünlerinin raf ömrünü uzatmak, filizlenmeyi ve böceklenmeyi önlemek amacıyla kontrollü ve düşük dozlarda uygulanan (İyonize Radyasyon kullanımı) işlem aşağıdakilerden hangisidir? (2024 Çıkmış Soru)</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Fermantasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> Isıl İşlem Uygulama</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>C)</span> Işınlama (İradyasyon)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> Kurutma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> Soğutma ve Dondurma</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 Hatırlatma:</strong> Gıdaya doğrudan gama veya X ışını verilerek patojenlerin ve böceklerin hücresel bazda yok edilmesi işlemine <strong>Işınlama</strong> adı verilir. Gıda kalitesini ve aromasını (ısıl işlem gibi) bozmadan raf ömrünü uzatır.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="final-badge">Üretim Akışı</div>
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text">Su ürünleri (balık ve kabuklu deniz hayvanları) işleme tesislerinde üretimin standart ve hijyenik olabilmesi için uygulanan ön işlemlerin doğru sıralanışı (2023 Çıkmış Soru) aşağıdakilerin hangisinde verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>A)</span> Ayıklama -> Yıkama -> Sınıflandırma -> Filetolama -> Buzlama -> Porsiyonlama</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> Yıkama -> Sınıflandırma -> Ayıklama -> Porsiyonlama -> Filetolama -> Buzlama</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>C)</span> Yıkama -> Ayıklama -> Sınıflandırma -> Filetolama -> Porsiyonlama -> Buzlama</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>D)</span> Filetolama -> Yıkama -> Sınıflandırma -> Ayıklama -> Buzlama -> Porsiyonlama</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> Sınıflandırma -> Yıkama -> Ayıklama -> Filetolama -> Porsiyonlama -> Buzlama</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Hatırlatma:</strong> Tesisin içine giren balık önce <strong>Yıkanır</strong>, yenmeyen kısımları <strong>Ayıklanır</strong>, boyuna göre <strong>Sınıflandırılır</strong>, yaprak et olarak <strong>Filetosu</strong> çıkarılır, gramaja göre <strong>Porsiyonlanır</strong> ve sevkiyat için <strong>Buzlanır</strong>.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="final-badge">İstatistik / Analiz</div>
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text">Gıda ürünleri imalatı sektöründe şerit testere, konveyör ve paketleme makineleri gibi cihazlara kapılma sonucu yaşanan "Makine ve Ekipman Kaynaklı Kazalar", fabrikada gerçekleşen tüm kazaların <u>yaklaşık yüzde kaçlık</u> bir dilimini oluşturur? (Buna karşın ölümlerin/uzuv kayıplarının %10'undan fazlasıdır)</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>A)</span> % 7</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> % 35</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>C)</span> % 55</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>D)</span> % 70</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> % 85</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Hatırlatma:</strong> Makine kazaları oransal olarak sadece <strong>%7</strong> gibi küçük bir sayısal dilim tutar (geri kalanı elle taşıma, düşme vs. dir). Ancak yol açtığı şiddet (uzuv kopması, ölüm) bakımından sektörün en büyük belasıdır.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="final-badge">Gıda Terminolojisi</div>
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text">HACCP sistemi, gıdanın üretimindeki "istemsiz" fiziksel ve biyolojik kazaları (hataları) önler. Ancak gıda zincirine dışarıdan bilerek ve isteyerek (kasıtlı) yapılan sabotajlara (Örn: Gıdaya bilerek zehir/radyasyon katılması) karşı alınan güvenlik önlemlerinin bütününe ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>A)</span> Ürün Geri Çağırma (Recall)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>B)</span> Gıda Savunması (Food Defense) / Biyoterörizm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> Çapraz Kontaminasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> Pestisit Kalıntı Yönetimi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> İyi Üretim Uygulamaları (GMP)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Hatırlatma:</strong> Kasıtlı sabotaj, şantaj ve biyolojik terör saldırılarına karşı fabrikanın ve gıdanın korunmasını amaçlayan HACCP/ISO 22000 alt disiplinine <strong>Gıda Savunması (Food Defense)</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="final-badge">Toksikoloji</div>
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text">Gıda sektöründe CIP (Yerinde Temizlik) operasyonları sırasında inatçı kireçleri çözmek için kullanılan "asidik kireç çözücüler" ile dezenfeksiyon için kullanılan "çamaşır suyu (sodyum hipoklorit)" yanlışlıkla karıştırıldığında <u>ortaya çıkan ve akciğer ödemine/ölüme yol açan zehirli gaz</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> Amonyak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> Karbonmonoksit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>C)</span> Klor Gazı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Metan</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> Hidrojen Sülfür</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Hatırlatma:</strong> Çamaşır suyu (baz) ile kireç çözücü / tuz ruhu (asit) karıştığında derhal yeşilimsi/sarı renkli, boğucu <strong>Klor Gazı</strong> açığa çıkar. Gıda fabrikalarındaki temizlik personeli için en kritik kimyasal uyarılardan biridir.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="final-badge">Biyolojik Risk</div>
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text">Süt işletmelerinde, çiğ süt ile temas eden veya hasta hayvanların sıvılarına dokunan laborant/işçilerde görülen; inip çıkan dalgalı ateş, terleme ve eklem ağrılarıyla karakterize, hayvandan insana bulaşan (zoonoz) meşhur meslek hastalığı (Malta Humması) aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>A)</span> Bruselloz (Brucella)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> Silikozis</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>C)</span> Tüberküloz (Verem)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Tetanoz</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> Salmonelloz</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Hatırlatma:</strong> Süt ve süt ürünleri endüstrisinin en belirgin biyolojik meslek hastalığı (halk arasında Malta Humması) <strong>Bruselloz</strong>'dur.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="final-badge">Kimyasal (Soğutma)</div>
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text">Endüstriyel gıda tesislerinde (et, süt, dondurma) devasa soğutma ve dondurma odalarının kompresör sistemlerinde "soğutucu akışkan gaz" olarak tonlarca kullanılan; sızıntı anında körlüğe ve boğulmaya neden olabilen keskin kokulu tehlikeli kimyasal madde hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> Azot</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>B)</span> Amonyak (NH3)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>C)</span> Hekzan</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> Karbondioksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Oksijen</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Hatırlatma:</strong> Verimi çok yüksek olduğu için endüstriyel dev soğutma ünitelerinin (şok odalarının) borularında <strong>Amonyak</strong> gazı dolaşır. Kaçağı çok tehlikelidir.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="final-badge">Fizyoloji / Cilt</div>
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text">Su ürünleri veya et kesim tesislerinde işçilerin hijyen amacıyla sürekli "kalın lastik eldiven" takması sonucu, cildin havasız kalıp terlemesiyle doğal yapısının bozulması, yumuşaması ve soyularak mantara açık hale gelmesi durumuna tıbbi literatürde ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> Frostbite</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>B)</span> Maserasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>C)</span> Nekroz</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> Asfiksi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Tendinit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Hatırlatma:</strong> Havasızlığa ve sıvıya bağlı cilt buruşması/soyulması sendromuna <strong>Maserasyon</strong> denir. Altına ter emici pamuklu astar giyilerek önlenir.
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="final-badge">HACCP Kavramı</div>
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text">HACCP sisteminde "Kritik Limitlerin Belirlenmesi" prensibine göre, bir kritik kontrol noktasında (KKN) güvenli ile güvensizi birbirinden ayıracak <u>ideal bir limit</u> aşağıdaki özelliklerden hangisine sahip olmalıdır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> Çalışanın anlık göz zevkine veya tahminimize bırakılmalıdır.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> Sadece koklama veya tatma duyusuna dayanmalıdır.</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>C)</span> Sıcaklık (örn: 72°C), süre (örn: 15 saniye), pH değeri veya nem oranı gibi kesin, ölçülebilir ve somut rakamsal değerler olmalıdır.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> Kritik limitler bir kere yazıldıktan sonra bir daha asla ölçülmemelidir.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> Laboratuvara gönderilip haftalar sonra sonucu çıkacak şekilde (anında düzeltilemeyen) süreçlerden seçilmelidir.</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Hatırlatma:</strong> Kritik limit (Critical Limit), üretim anında derhal ölçülebilen ve yoruma kapalı olan <strong>sıcaklık, süre, basınç, pH veya nem</strong> gibi bilimsel/rakamsal hedefler olmak zorundadır. "Yeterince ısındı" demek bir HACCP limiti olamaz.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="final-badge">Fiziksel Risk (Gürültü)</div>
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text">İş Sağlığı ve Güvenliği gürültü mevzuatına göre; ortamdaki kişisel gürültü maruziyeti (8 saatlik) <u>kesin olarak kaç desibele (dB)</u> ulaştığında veya aştığında, işverenin işçilere kulaklık temin edip bu kulaklıkları kullandırması <u>Yasal Olarak Zorunludur (Mecburidir)</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> 70 dB(A)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> 75 dB(A)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>C)</span> 80 dB(A)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>D)</span> 85 dB(A)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> 100 dB(A)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Hatırlatma:</strong> 80 dB(A) seviyesi En Düşük Maruziyet sınırıdır ve kulaklık "hazır bulundurulur". Ancak <strong>85 dB(A)</strong>, En Yüksek Maruziyet Eylem Değeridir ve bu seviyeye ulaşıldığında kulak koruyucu KKD'lerin takılması/kullanılması <strong>KESİN ZORUNLUDUR.</strong>
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="final-badge">Kapalı Alan Riski</div>
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text">Buğday, mısır veya un gibi organik ürünlerin depolandığı kapalı silolarda; ürünlerin uzun süre bekleyerek kendi kendini ısıtması ve organik fermantasyonu sonucu, ortamdaki oksijeni tüketip yerine dibe çöken ve işçilerde anında <u>asfiksiye (boğulmaya) neden olan birincil gaz</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> Karbonmonoksit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>B)</span> Karbondioksit (CO2)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>C)</span> Klor</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>D)</span> Ozon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> Amonyak</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Hatırlatma:</strong> Tarımsal silolarda organik solunum sonucu ortamdaki Oksijen (O2) tükenir, yerine saniyeler içinde boğulma yapan <strong>Karbondioksit (CO2)</strong> ve Azot Oksitler yayılır.
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="final-badge">Makine Güvenliği</div>
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text">Gıda ürünleri imalatında en sık uzuv kaybı (ampütasyon) yaratan aletlerden biri olan "Küçük Tip Et Kıyma Makineleri"nde (işçinin elinin döner bıçak helezonuna ulaşmasını fiziksel olarak engellemek amacıyla tasarlanan), dikey besleme borusunun ağız çapı <u>en fazla kaç milimetre (mm)</u> olmalıdır? (Ders Kitabı Soru Tipi)</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>A)</span> 54 mm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>B)</span> 70 mm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>C)</span> 100 mm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> 120 mm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> 150 mm</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Hatırlatma:</strong> Makine Emniyet Direktifleri ve ders kitabı verilerine göre; insan elinin (parmakların) makine bıçak helezonuna sıkışmasını mekanik olarak önlemek için küçük tip et kıyma makinelerinde besleme ağzı çapı maksimum <strong>54 mm</strong> olarak tasarlanmalıdır. (Besleme uzunluğu ise 50 cm'dir).
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                // Yanlışı seçince doğruyu otomatik göster
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Çözümü Gör';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Yanlış 1 Doğruyu Götürür Kuralı (Final Standardı)
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SÜRE BİTTİ";
+            
+            // Boş bırakılanları kilitleyip doğru cevabı yeşil ile göster
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

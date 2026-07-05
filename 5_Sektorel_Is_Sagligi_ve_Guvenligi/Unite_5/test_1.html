@@ -1,25 +1,647 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 5 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Sektörel İSG | Ünite 5 - TEST 1 (Havacılık)</title>
+    <style>
+        :root {
+            /* Ünite 5: Havacılık İSG - Gök Mavisi ve Çelik Grisi Teması */
+            --primary: #0284c7;    /* Gök Mavisi */
+            --accent: #f59e0b;     /* Uyarı Sarısı */
+            --bg: #f0f9ff;         /* Çok Açık Mavi Arka Plan */
+            --panel-bg: #ffffff;   /* Beyaz Panel */
+            --text: #0f172a;       /* Koyu Lacivert Metin */
+            --light-gray: #e2e8f0;
+            --green: #10b981;
+            --red: #ef4444;
+            --steel: #64748b;      /* Çelik Grisi */
+            --dark-blue: #0c4a6e;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 100%); color: white; padding: 3rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 8px 20px rgba(2, 132, 199, 0.2); }
+        header h1 { margin: 0; font-size: 2.3rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: #ffffff; }
+        header p { margin: 0.8rem 0 0 0; color: #bae6fd; font-weight: 700; font-size: 1.25rem; letter-spacing: 1px;}
+        
+        nav { background: #0c4a6e; padding: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #0284c7; }
+        .nav-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .nav-btn { background: #0284c7; color: #f0f9ff; border: 1px solid #38bdf8; padding: 0.7rem 1.4rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; letter-spacing: 0.5px; text-transform: uppercase;}
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: #0c4a6e; border-color: var(--accent); box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); font-weight: 800;}
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(2, 132, 199, 0.08); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--primary); background: #e0f2fe; padding: 2rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: inset 0 0 15px rgba(2, 132, 199, 0.05);}
+        .strategy-box h3 { margin-top: 0; color: #0c4a6e; display: flex; align-items: center; gap: 0.6rem; font-size: 1.4rem; text-transform: uppercase; border-bottom: 2px solid #7dd3fc; padding-bottom: 0.5rem;}
+        .strategy-box h4 { margin-top: 1.5rem; margin-bottom: 0.5rem; color: #0369a1; font-size: 1.15rem; display: flex; align-items: center; gap: 0.4rem;}
+        .strategy-box p { color: #0c4a6e; font-size: 1.05rem; margin-bottom: 0.5rem;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: #0c4a6e; font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.6rem; }
+        .strategy-box .highlight { background: #bae6fd; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: bold; color: #0c4a6e;}
+        
+        .start-btn { display: block; width: 100%; max-width: 350px; margin: 3rem auto 1rem; background: var(--primary); color: white; text-align: center; padding: 1.2rem; border-radius: 8px; font-size: 1.3rem; cursor: pointer; border: none; font-weight: 800; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);}
+        .start-btn:hover { background: #0369a1; box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5); transform: translateY(-3px); }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1.2rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--accent); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px);}
+        .btn-primary { background: var(--accent); color: #0c4a6e; }
+        .btn-secondary { background: var(--steel); color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid var(--light-gray); padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;}
+        .question-card:hover { border-color: var(--primary); box-shadow: 0 8px 30px rgba(2, 132, 199, 0.12);}
+        
+        .neler-badge { position: absolute; top: -15px; right: 2.5rem; background: var(--text); color: white; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(15, 23, 42, 0.3); border: 2px solid #fff;}
+        .cikmis-badge { position: absolute; top: -15px; right: 2.5rem; background: var(--accent); color: #0c4a6e; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); border: 2px solid #fff;}
+        
+        .question-header { font-weight: 900; color: white; background: var(--primary); display: inline-block; padding: 0.6rem 1.4rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 1rem; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: var(--text); }
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.1rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #f8fafc; color: #334155; font-weight: 600;}
+        .option span { font-weight: 800; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; background: #94a3b8; border-radius: 6px; font-size: 1.05rem; transition: all 0.3s;}
+        .option:hover:not(.locked) { background: #ffffff; border-color: var(--primary); box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1);}
+        .option:hover:not(.locked) span { background: var(--primary); color: white;}
+        .option.locked { cursor: default; }
+        .option.correct { background: #ecfdf5; border-color: var(--green); color: #065f46; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fef2f2; border-color: var(--red); color: #991b1b; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 800; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: #e0f2fe; border-left: 5px solid var(--primary); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: var(--dark-blue); box-shadow: inset 0 0 15px rgba(2, 132, 199, 0.05); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: var(--primary); font-weight: 900; font-size: 1.15rem; display: block; margin-bottom: 0.8rem; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 4rem 2rem; background: white; border-radius: 12px; border-top: 8px solid var(--primary); display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .results-section h2 { font-size: 2.6rem; color: var(--dark-blue); margin-top: 0; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.8rem 3rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; border: 1px solid #e2e8f0; box-shadow: 0 6px 15px rgba(0,0,0,0.05); background: #f8fafc;}
+        .stat span { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b;}
+        .stat.correct { color: var(--green); border-color: #34d399; background: #ecfdf5;}
+        .stat.wrong { color: var(--red); border-color: #fca5a5; background: #fef2f2;}
+        .stat.empty { color: #64748b; }
+        .stat.net { color: var(--primary); border-color: var(--primary); transform: scale(1.08); box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2); background: white;}
+        
+        footer { background: #0c4a6e; color: #bae6fd; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1.05rem; border-top: 5px solid var(--accent); font-weight: 600; letter-spacing: 1px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: none; padding: 0; margin-bottom: 0;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .neler-badge, .cikmis-badge { border: 1px solid #000; color: #000; background: #eee; }
+            .solution-box { display: block !important; border: 1px solid #94a3b8; background: #f8fafc; padding: 1rem; margin-top: 1rem; color: black; }
+            .option { border: 1px solid #e2e8f0; background: white; color: black; margin-bottom: 0.5rem;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 5 - Test 1</h2>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 5: Havacılıkta İş Sağlığı ve Güvenliği - TEST 1</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">⬅️ Çıkmış Sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn active">Test 1 (Karma)</a>
+            <a href="test_2.html" class="nav-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn">Test 5</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.4rem; margin-bottom: 0.5rem; text-transform: uppercase;">Ünite 5: Havacılıkta İSG - Başlangıç Testi</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--steel); margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>✈️ Ünite 5 Çıkmış Soru Analizi (Geçmiş Yıllar Raporu)</h3>
+                <p>Havacılıkta İSG (Ünite 5) genellikle sınavın bel kemiği konularından biridir. Sınavlarda genellikle <strong>Risk Analizleri, Bakım Seviyeleri, Havacılık Tıbbı Tarihçesi ve Kimyasal Etkenler</strong> yoğun olarak sorulmuştur. İşte yıl yıl soru analizi:</p>
+                
+                <h4>📊 Yıllara Göre Çıkan Konu Başlıkları:</h4>
+                <ul>
+                    <li><span class="highlight">2021 Yılı:</span> Havaalanı bakım seviyeleri (Özellikle III. Seviye), Havacılık tıbbının başlangıcı kabul edilen 1862 yılı balonlu uçuşta tespit edilen hastalıklar (görme kaybı, işitme, felç vb.) ve FAA tarafından önerilen 5 adımlı risk analizi aşamalarının sıralaması sorulmuştur.</li>
+                    <li><span class="highlight">2022 Yılı:</span> Kargo faaliyetlerinde tehlikeli kimyasalların kodlama grupları (9 grup), Uçakların içinde ve çevresinde mesleki hastalıkların başlıca nedeni sayılan kimyasal (Karbonmonoksit) ve Havaalanı Bakım Risk Analizinin Unsurları sorulmuştur.</li>
+                    <li><span class="highlight">2023 Yılı:</span> Kişi-Makine sistemindeki insan faktörünün performansı etkileyen nedenleri (Yaş, cinsiyet, motivasyon, eğitim) ile havacılık sistemi bileşenleri sorulmuştur.</li>
+                    <li><span class="highlight">2024 Yılı:</span> Bu yılda 2022 yılı ile aynı sorular havuzdan çekilmiştir: Uçak çevresindeki Karbonmonoksit tehlikesi ve Bakım Faaliyetleri Risk Analizi Unsurları tekrar sorulmuş, ek olarak hava yolu operasyonlarında "gıda kaynaklı hastalık" olarak Tifo Ateşi sorulmuştur.</li>
+                    <li><span class="highlight">2025 Yılı:</span> Ergonomik açıdan malzeme taşıyıcıların kişisel güç sınırlarının yüzde kaçı (%50) ile taşıma yapması gerektiği, kaynak işlemlerinde maruz kalınan zararlı ışınlar (Kızılötesi ve UV) ve yine Risk analizi unsurları farklı bir çeldiriciyle sorulmuştur.</li>
+                </ul>
+                <p style="margin-top: 1rem;"><em>Testin ilk 10 sorusu kitabınızın sonundaki orijinal <strong>"Neler Öğrendik"</strong> bölümünden, diğer 10 sorusu ise yukarıdaki analize uygun olarak <strong>Çıkmış Soru ve Genel Konu</strong> havuzundan derlenmiştir.</em></p>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Sınavı Başlat</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir 🛑</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Test 1 Sonuç Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 (Neler Öğrendik) -->
+                <div class="question-card">
+                    <div class="neler-badge">Neler Öğrendik - 1</div>
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text">Havacılık tıbbının başlangıç tarihi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> 1750'li yıllar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> 1800'lü yıllar</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>C)</span> 1850'li yıllar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> 1900'lü yıllar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> 1950'li yıllar</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>📖 Kitap Çözümü:</strong> Havacılık tıbbının başlangıcı, 1862 senesinde Glaisher ve Coxwell tarafından 29000 ft irtifada gerçekleştirilen balonlu uçuşlara kadar gitmektedir. Bu nedenle başlangıç <strong>1850'li yıllar</strong> olarak kabul edilir. Doğru Cevap: C.
+                    </div>
+                </div>
+
+                <!-- Soru 2 (Neler Öğrendik) -->
+                <div class="question-card">
+                    <div class="neler-badge">Neler Öğrendik - 2</div>
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text">Havacılık bir sistem olarak düşünüldüğünde aşağıdakilerden hangisi bu sisteme dahil değildir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Havaalanları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> Uçaklar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>C)</span> Havayolu şirketleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> Kule operatörleri</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>E)</span> Otoyollar</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>📖 Kitap Çözümü:</strong> Havacılık sistemi; Havaalanı, Hava Yolları, Destek (Kule, Hava Trafik vs.) ve Uçuş Hattı bileşenlerinden oluşur. Otoyollar karayolu sisteminin bir parçasıdır. Doğru Cevap: E.
+                    </div>
+                </div>
+
+                <!-- Soru 3 (Neler Öğrendik) -->
+                <div class="question-card">
+                    <div class="neler-badge">Neler Öğrendik - 3</div>
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text">Uçuş ekibi toplam havacılık iş gücünün yüzde kaçlık kısmını oluşturur?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> % 0-5</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>B)</span> %10-15</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>C)</span> %20-25</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> %30-35</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> %40-45</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>📖 Kitap Çözümü:</strong> Havacılık sektörünün vazgeçilmezi olan uçuş ekibi toplam havacılık iş gücünün sadece <strong>%10-15</strong>'ini oluşturmaktadır. Geri kalan %85-90'ı yer personelidir. Doğru Cevap: B.
+                    </div>
+                </div>
+
+                <!-- Soru 4 (Neler Öğrendik) -->
+                <div class="question-card">
+                    <div class="neler-badge">Neler Öğrendik - 4</div>
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text">FAA tarafından önerilen risk analizi listesinde aşağıdakilerden hangisi ilk sırada yer alır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Risklerin analiz edilmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Riskleri azaltılması</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>C)</span> Sistemin tanımlanması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> Riskleri değerlendirilmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> Tehlikelerin belirlenmesi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>📖 Kitap Çözümü:</strong> FAA tarafından önerilen 5 adımlı risk analizi aşamalarının sırası şöyledir: I. Sistemin tanımlanması, II. Tehlikelerin belirlenmesi, III. Risklerin analiz edilmesi, IV. Risklerin değerlendirilmesi, V. Risklerin azaltılması. İlk sırada <strong>Sistemin tanımlanması</strong> yer alır. Doğru Cevap: C.
+                    </div>
+                </div>
+
+                <!-- Soru 5 (Neler Öğrendik) -->
+                <div class="question-card">
+                    <div class="neler-badge">Neler Öğrendik - 5</div>
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text">Uçak bakımında yer alan "uçak iç temizliğinin" yer aldığı bakım seviyesi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>A)</span> Seviye I Bakımı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>B)</span> Seviye II Bakımı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> Seviye III Bakımı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>D)</span> Seviye IV Bakımı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> Seviye V Bakımı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>📖 Kitap Çözümü:</strong> Uçak iç temizliği, yakıt ve malzeme ikmali gibi günlük, rutin operasyonel işlemler <strong>Seviye I Bakımı (Hat Bakımı)</strong> içerisinde yer alır. Doğru Cevap: A.
+                    </div>
+                </div>
+
+                <!-- Soru 6 (Neler Öğrendik) -->
+                <div class="question-card">
+                    <div class="neler-badge">Neler Öğrendik - 6</div>
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text">"Kabin ekibi veya yer personeli, terminal binasında uçmaktan korkan ya da kaybolan bir çocuğu rahatlatma, sakinleştirme" sırasında aşağıdakilerden hangisine dayalı bir stresin etkisinde kalmıştır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> Mesleki zorluklar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> Tükenmişlik</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> Yorgunluk</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> Emek-ödül dengesizliği</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>E)</span> Duygusal emek</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>📖 Kitap Çözümü:</strong> Havacılık personelinin, özellikle kabin ekibi ve yer görevlilerinin, yolcularla etkileşim halindeyken duygularını yönetme ve empati kurma çabalarına <strong>Duygusal Emek</strong> denir. Doğru Cevap: E.
+                    </div>
+                </div>
+
+                <!-- Soru 7 (Neler Öğrendik) -->
+                <div class="question-card">
+                    <div class="neler-badge">Neler Öğrendik - 7</div>
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text">Uçak parçalarını boyayan ve boya çıkaran işçilerin aşırı maruz kaldığı tehlike içeren kimyasal madde aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Çinko</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>B)</span> Siyanür</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> Asbest</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>D)</span> Freon</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>E)</span> Metilen Klorür</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>📖 Kitap Çözümü:</strong> Uçak parçalarını boyayan ve boya çıkaran işçiler genellikle <strong>metilen klorür</strong> ve altı değerlikli kroma aşırı maruz kalırlar ve mühendislik önlemleri gerektirir. Doğru Cevap: E.
+                    </div>
+                </div>
+
+                <!-- Soru 8 (Neler Öğrendik) -->
+                <div class="question-card">
+                    <div class="neler-badge">Neler Öğrendik - 8</div>
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text">Havacılık personelinin maruz kaldığı, ulaşım esnasında taşınan virüs ve parazitlerin değerlendirildiği tehlike tipi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>A)</span> Biyolojik Tehlike</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>B)</span> Kimyasal Tehlike</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>C)</span> Biyomekanik Tehlike</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Radyoaktif Tehlike</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Elektromanyetik Tehlike</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>📖 Kitap Çözümü:</strong> Virüsler, bakteriler, parazitler, kargo ile taşınan hayvanlar ve yolculardan kaynaklanan salgınlar havacılıktaki <strong>Biyolojik Tehlikeler</strong> sınıfında değerlendirilir. Doğru Cevap: A.
+                    </div>
+                </div>
+
+                <!-- Soru 9 (Neler Öğrendik) -->
+                <div class="question-card">
+                    <div class="neler-badge">Neler Öğrendik - 9</div>
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi hava taşıtları ile taşınan olası biyolojik maruziyet kaynakları arasında yer almaz?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Gemide (uçakta) hazırlanan gıdalar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> Su</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>C)</span> Açığa çıkması muhtemel biyolojik olarak aktif malzemeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> Taşınan hayvanlar</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>E)</span> Kabin için bagaj</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>📖 Kitap Çözümü:</strong> Bagaj, fiziksel ve ergonomik bir yük kaynağıdır, ancak içerisinde spesifik bir biyolojik materyal açığa çıkmadığı sürece başlı başına bir biyolojik maruziyet (virüs, mikrop) kaynağı olarak sınıflandırılmaz. Gıda, su, hayvan ve biyolojik materyaller ana kaynaklardır. Doğru Cevap: E.
+                    </div>
+                </div>
+
+                <!-- Soru 10 (Neler Öğrendik) -->
+                <div class="question-card">
+                    <div class="neler-badge">Neler Öğrendik - 10</div>
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text">Havacılık yer personelindeki kazaların yaygın nedenleri arasında yer alan "kaymalar ve düşmelerden kaynaklanan kazalar" toplam yer kazalarının yaklaşık yüzde kaçını oluşturur?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>A)</span> %10</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> %20</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>C)</span> %30</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>D)</span> %40</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> %50</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>📖 Kitap Çözümü:</strong> Uçak çevresinde ve yer hizmetlerinde (rampa, merdiven vs.) meydana gelen kayma ve düşmeler, toplam yer kazalarının önemli bir kısmını (%40) oluşturmaktadır. Doğru Cevap: D.
+                    </div>
+                </div>
+
+                <!-- Soru 11 (Çıkmış Soru) -->
+                <div class="question-card">
+                    <div class="cikmis-badge">Çıkmış Soru (2021)</div>
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text">Uluslararası kabul görmüş uygulamalara göre havaalanı tesislerinin "III. seviye bakımı" (Seviye 3) içerisinde aşağıdakilerden hangisi yer alır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> Yakıt ve malzeme ikmali</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> Uçak iç temizliği</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>C)</span> Küçük onarım</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>D)</span> Temel bakım ve revizyon çalışmaları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> Sistem kontrolleri</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Analiz:</strong> 2021 Yaz Okulu sınav sorusudur. Uçak bakım seviyelerinde Seviye I günlük (ikmal, temizlik), Seviye II küçük onarımlar, Seviye III ise hangar şartlarında yapılan <strong>Temel bakım ve revizyon çalışmaları</strong>dır. Doğru Cevap: D.
+                    </div>
+                </div>
+
+                <!-- Soru 12 (Çıkmış Soru) -->
+                <div class="question-card">
+                    <div class="cikmis-badge">Çıkmış Soru (2021)</div>
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text">Havacılık meslek hastalıklarının başlangıcı balonlu uçuşlara kadar gitmektedir. 1862 yılında Glaisher ve Coxwell tarafından 29000 ft irtifada gerçekleştirilen uçuş esnasında bazı hastalıklar tespit edilmiştir.<br><br>Buna göre, aşağıdakilerden hangisi söz konusu balon uçuşunda tespit edilen meslek hastalıklarından (fizyolojik durumlardan) biri <u>değildir</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>A)</span> Kaşıntı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>B)</span> Görme keskinliği kaybı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> İşitme kaybı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> Bacak ve kollarda felç</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> Bilinç kaybı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Analiz:</strong> 2021 Yaz Okulu sınavında sorulmuştur. Kitapta belirtildiği üzere 1862 yılındaki uçuşta görme keskinliği, işitme kaybı, uzuvlarda felç ve bilinç kaybı tespit edilmiştir. Ancak <strong>Kaşıntı</strong> rapor edilen bulgular arasında yer almaz. Doğru Cevap: A.
+                    </div>
+                </div>
+
+                <!-- Soru 13 (Çıkmış Soru) -->
+                <div class="question-card">
+                    <div class="cikmis-badge">Çıkmış Soru (2021)</div>
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text">I. Risklerin analiz edilmesi<br>II. Risklerin azaltılması<br>III. Sistemin tanımlanması<br>IV. Risklerin değerlendirilmesi<br>V. Tehlikelerin belirlenmesi<br><br>FAA (Federal Havacılık İdaresi) tarafından önerilen yukarıdaki 5 adımlı risk analizi aşamalarının yürütülme sırası aşağıdakilerin hangisinde doğru olarak verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> I-II-III-IV-V</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> II-IV-III-V-I</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>C)</span> III-V-I-IV-II</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> IV-III-V-II-I</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> V-III-II-I-IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Analiz:</strong> FAA risk analizi 5 adımı: 1- Sistemin tanımlanması (III), 2- Tehlikelerin belirlenmesi (V), 3- Risklerin analiz edilmesi (I), 4- Risklerin değerlendirilmesi (IV), 5- Risklerin azaltılması (II). Sıralama <strong>III - V - I - IV - II</strong> şeklindedir. Doğru Cevap: C.
+                    </div>
+                </div>
+
+                <!-- Soru 14 (Çıkmış Soru) -->
+                <div class="question-card">
+                    <div class="cikmis-badge">Çıkmış Soru (2022/2024)</div>
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text">Uçakların içinde ve çevresinde mesleki hastalıkların (solunum ve zehirlenme) başlıca nedeni sayılan spesifik kimyasal madde aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>A)</span> Sülfürik asit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> Fenol</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>C)</span> Titanyum</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Kurşun</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>E)</span> Karbonmonoksit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Analiz:</strong> Hem 2022 hem de 2024 yıllarında tekrar tekrar sorulmuş çok önemli bir konudur. Uçak motor egzozları ve yer destek araçlarının emisyonlarından yayılan <strong>Karbonmonoksit (CO)</strong> uçak çevresindeki başlıca mesleki solunum tehlikesidir. Doğru Cevap: E.
+                    </div>
+                </div>
+
+                <!-- Soru 15 (Çıkmış Soru) -->
+                <div class="question-card">
+                    <div class="cikmis-badge">Çıkmış Soru (2022)</div>
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text">Havaalanı yer hizmetleri kargo faaliyetlerinde taşınan tehlikeli kimyasallar ve maddeler, uluslararası kabul görmüş standartlara göre kaç farklı kodlama grubunda (sınıfta) ele alınır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> 3</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> 4</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>C)</span> 9</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> 10</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> 12</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Analiz:</strong> 2022 yılı sınav sorusudur. Havacılıkta kargo ile taşınan tehlikeli maddeler (Dangerous Goods) uluslararası havacılık kuralları gereği <strong>9</strong> ana risk sınıfında / grubunda kodlanır (Patlayıcılar, Gazlar, Yanıcı Sıvılar vb.). Doğru Cevap: C.
+                    </div>
+                </div>
+
+                <!-- Soru 16 (Çıkmış Soru) -->
+                <div class="question-card">
+                    <div class="cikmis-badge">Çıkmış Soru (2025)</div>
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text">Havacılık sektöründe kaldırma ve taşıma kazalarını önlemek için, malzeme taşıyıcıların kişisel güç sınırlarını test ettirmeleri ve nesneleri (yükü) kendi maksimum sınırlarının yüzde kaçı ile kaldırmakla sınırlandırması tavsiye edilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> %20</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>B)</span> %25</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>C)</span> %30</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>D)</span> %50</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> %75</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Analiz:</strong> En güncel sınavlardan olan 2025 yılında sorulmuştur. Ergonomik sakatlanmaları önlemek için işçinin kaldıracağı yük, test edilmiş olan kendi kişisel güç sınırının maksimum <strong>%50'si</strong> ile sınırlandırılmalıdır. Doğru Cevap: D.
+                    </div>
+                </div>
+
+                <!-- Soru 17 (Çıkmış Soru) -->
+                <div class="question-card">
+                    <div class="cikmis-badge">Çıkmış Soru (2025)</div>
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text">Havacılık sektöründe (özellikle bakım atölyelerinde) yapılan kaynak işlemlerinde çalışanların maruz kaldığı, cilt ve gözlerde zararlara (ark yanığı vb.) neden olan tehlikeli ışınlar aşağıdakilerden hangisinde doğru olarak verilmiştir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>A)</span> Kızılötesi ve ultraviyole ışınlar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> Gama ve X ışınları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>C)</span> Kızılötesi ve alfa ışınları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> X ve alfa ışınları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> Alfa ve beta ışınları</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Analiz:</strong> Kaynak işlemleri elektromanyetik spektrumda iyonlaştırıcı olmayan yüksek enerjili <strong>Kızılötesi (IR) ve Ultraviyole (UV - Morötesi)</strong> ışınlar yayar. Bunlar retina yanıklarına ve cilt tahrişine yol açar. X ve Gama ışınları ise metal yorgunluğunu tespitte (tahribatsız muayenede) kullanılır. Doğru Cevap: A.
+                    </div>
+                </div>
+
+                <!-- Soru 18 (Çıkmış Soru) -->
+                <div class="question-card">
+                    <div class="cikmis-badge">Çıkmış Soru (2024)</div>
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi hava yolu operasyonları ve yolcu taşımacılığı sırasında uçak içerisinde veya terminalde bulaşabilecek <u>gıda kaynaklı (catering kaynaklı)</u> hastalıklardan biridir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> Veba</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> Sarı humma</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>C)</span> Tifo ateşi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>D)</span> Sıtma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> Dang Humması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Analiz:</strong> Veba, Sarı Humma, Sıtma ve Dang humması böcek, pire veya sivrisinek ısırması (vektör yoluyla) yayılan hastalıklardır. Ancak <strong>Tifo ateşi</strong> kontamine (kirli) su ve gıdalar yoluyla bulaşır ve uçak içi ikram servislerinde bir risk olarak değerlendirilir. Doğru Cevap: C.
+                    </div>
+                </div>
+
+                <!-- Soru 19 (Çıkmış Soru) -->
+                <div class="question-card">
+                    <div class="cikmis-badge">Çıkmış Soru (2022/2024/2025)</div>
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text">Havaalanı bakım faaliyetlerinde yapılacak kapsamlı bir "Risk Analizi" sürecinde çeşitli unsurlar incelenir.<br><br>Aşağıdakilerden hangisi havacılıkta kapsamlı bir risk analizi oluşturulurken incelenmesi gereken unsurlar arasında <u>yer almaz</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>A)</span> Çalışanların gelir seviyesi (maaş) arasındaki farkların belirlenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> Endüstriyel süreçlerin (makine/ikmal) incelenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>C)</span> Tehlikeli ve kimyasal maddelerin belirlenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>D)</span> Çalışma ortamının (sıcaklık, aydınlatma vb.) incelenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> İş uygulamaları ve işçi-iş etkileşimleri (ergonomi)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Analiz:</strong> 3 yıl üst üste farklı varyasyonlarla sorulmuş favori sorulardan biridir. Risk analizi süreci fiziksel, kimyasal ve çevresel süreçleri inceler. Çalışanların <strong>gelir düzeyi veya maaş farklılıkları</strong> bir İSG Risk Analizi parametresi değildir. Doğru Cevap: A.
+                    </div>
+                </div>
+
+                <!-- Soru 20 (Çıkmış Soru) -->
+                <div class="question-card">
+                    <div class="cikmis-badge">Çıkmış Soru (2023)</div>
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text">Havacılık sektöründe kokpit, radar kulesi veya bakım atölyelerinde kişi-makine sistemindeki "insan faktörü" değerlendirildiğinde, çalışanların işteki performansını etkileyen birçok bireysel değişken vardır.<br><br>Aşağıdakilerden hangisi insan faktörü bağlamında kişinin performansını etkileyen "bireysel değişkenlerden (nedenlerden)" biri <u>değildir</u>?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>A)</span> İşyeri konumu (Lokasyon)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>B)</span> Yaş</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>C)</span> Sağlık durumu</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> Cinsiyet</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> Eğitim düzeyi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Çözümü Gör</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Analiz:</strong> 2023 Yılı sınav sorusudur. Yaş, cinsiyet, sağlık, eğitim, uyum, motivasyon ve sosyolojik yapı doğrudan "bireysel/insani" değişkenlerdir. <strong>İşyeri konumu</strong> ise çevresel (organizasyonel) bir faktördür, kişinin bireysel bir özelliği değildir. Doğru Cevap: A.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                // Yanlışı seçince doğruyu otomatik göster
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Çözümü Gör';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Yanlış 1 Doğru Kuralı
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SÜRE BİTTİ";
+            
+            // Boş bırakılanları kilitleyip doğru cevabı yeşil ile göster
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,649 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genel Deneme Sınavı 1 | Sektörel İSG</title>
+    <style>
+        :root {
+            /* Deneme 1: Safir Mavisi ve Gümüş Teması */
+            --primary: #1e40af;    /* Safir Mavisi */
+            --accent: #64748b;     /* Gümüş */
+            --accent-hover: #475569;
+            --bg: #eff6ff;         /* Uçuk Mavi Arka Plan */
+            --panel-bg: #ffffff;   /* Beyaz Panel */
+            --text: #0f172a;       /* Koyu Metin */
+            --light-gray: #e2e8f0;
+            --green: #15803d;
+            --red: #b91c1c;
+            --steel: #334155;
+            --gold-light: #fef08a; 
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 3rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4); }
+        header h1 { margin: 0; font-size: 2.4rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.6); color: #bfdbfe;}
+        header p { margin: 0.8rem 0 0 0; color: #f8fafc; font-weight: 700; font-size: 1.25rem; letter-spacing: 1px;}
+        
+        nav { background: #0f172a; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; border-bottom: 1px solid #020617; }
+        .nav-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; }
+        .nav-btn { background: #1e293b; color: #f8fafc; border: 1px solid #334155; padding: 0.7rem 1.2rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; text-transform: uppercase;}
+        .nav-btn:hover, .nav-btn.active { background: var(--primary); color: #ffffff; border-color: #60a5fa; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); font-weight: 800;}
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.06); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--primary); background: #dbeafe; padding: 2rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: inset 0 0 15px rgba(59, 130, 246, 0.05);}
+        .strategy-box h3 { margin-top: 0; color: #1e3a8a; display: flex; align-items: center; gap: 0.6rem; font-size: 1.5rem; text-transform: uppercase; border-bottom: 2px solid #93c5fd; padding-bottom: 0.5rem;}
+        .strategy-box p { color: var(--text); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 500;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: var(--text); font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.6rem; }
+        .strategy-box .highlight { background: #93c5fd; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: bold; color: #1e3a8a;}
+        
+        .start-btn { display: block; width: 100%; max-width: 450px; margin: 3rem auto 1rem; background: var(--primary); color: #ffffff; text-align: center; padding: 1.2rem; border-radius: 8px; font-size: 1.4rem; cursor: pointer; border: none; font-weight: 900; transition: all 0.3s; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);}
+        .start-btn:hover { background: #1e3a8a; color: #ffffff; box-shadow: 0 8px 25px rgba(30, 64, 175, 0.6); transform: translateY(-3px); }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1.2rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--accent); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px);}
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--steel); color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid var(--light-gray); padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;}
+        .question-card:hover { border-color: var(--primary); box-shadow: 0 8px 30px rgba(30, 64, 175, 0.15);}
+        
+        .badge-deneme { position: absolute; top: -15px; right: 2.5rem; background: #ea580c; color: white; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(234, 88, 12, 0.4); border: 2px solid #fff; letter-spacing: 1px;}
+        
+        .question-header { font-weight: 900; color: white; background: var(--steel); display: inline-block; padding: 0.6rem 1.4rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 1rem; align-self: flex-start; letter-spacing: 1px;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: var(--text); }
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.1rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #f8fafc; color: #0f172a; font-weight: 600;}
+        .option span { font-weight: 800; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; background: #94a3b8; border-radius: 6px; font-size: 1.05rem; transition: all 0.3s;}
+        .option:hover:not(.locked) { background: #ffffff; border-color: var(--primary); box-shadow: 0 4px 10px rgba(30, 64, 175, 0.15);}
+        .option:hover:not(.locked) span { background: var(--primary); color: #ffffff;}
+        .option.locked { cursor: default; }
+        .option.correct { background: #f0fdf4; border-color: var(--green); color: #14532d; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fef2f2; border-color: var(--red); color: #991b1b; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 900; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: #eff6ff; border-left: 5px solid var(--primary); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: var(--text); box-shadow: inset 0 0 15px rgba(30, 64, 175, 0.05); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: #1e3a8a; font-weight: 900; font-size: 1.15rem; display: block; margin-bottom: 0.8rem; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 4rem 2rem; background: white; border-radius: 12px; border-top: 8px solid var(--primary); display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .results-section h2 { font-size: 2.6rem; color: var(--primary); margin-top: 0; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.8rem 3rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; border: 1px solid #e2e8f0; box-shadow: 0 6px 15px rgba(0,0,0,0.05); background: #f8fafc;}
+        .stat span { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #475569;}
+        .stat.correct { color: var(--green); border-color: #34d399; background: #ecfdf5;}
+        .stat.wrong { color: var(--red); border-color: #fca5a5; background: #fef2f2;}
+        .stat.empty { color: #475569; }
+        .stat.net { color: #ffffff; border-color: var(--accent); transform: scale(1.08); box-shadow: 0 10px 25px rgba(30, 64, 175, 0.3); background: var(--primary);}
+        
+        footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1.05rem; border-top: 5px solid var(--primary); font-weight: 600; letter-spacing: 1px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .badge-deneme { border: 1px solid #000; color: #000; background: #eee; }
+            .solution-box { display: block !important; border: 1px solid #94a3b8; background: #f8fafc; padding: 1rem; margin-top: 1rem; color: black; }
+            .option { border: 1px solid #e2e8f0; background: white; color: black; margin-bottom: 0.5rem;}
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>DENEME SINAVI 1 - (ZORLUK: SEVİYE 1)</p>
+    </header>
+
+    <nav class="no-print">
+        <!-- Üst Menü -->
+        <div class="nav-row">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+        </div>
+        <!-- Çıkmış Sorular Menüsü -->
+        <div class="nav-row">
+            <span style="color: #94a3b8; font-weight: bold; align-self: center; margin-right: 10px;">ÇIKMIŞ SORULAR:</span>
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html" class="nav-btn">2021 Yaz Okulu</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2022.html" class="nav-btn">2022 Yaz Okulu</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2023.html" class="nav-btn">2023 Yaz Okulu</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2024.html" class="nav-btn">2024 Yaz Okulu</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2025.html" class="nav-btn">2025 Yaz Okulu</a>
+        </div>
+        <!-- Deneme Sınavları Menüsü -->
+        <div class="nav-row">
+            <span style="color: #94a3b8; font-weight: bold; align-self: center; margin-right: 10px;">DENEME SINAVLARI:</span>
+            <a href="deneme_1.html" class="nav-btn active">Deneme 1 (Seviye 1)</a>
+            <a href="deneme_2.html" class="nav-btn">Deneme 2 (Seviye 2)</a>
+            <a href="deneme_3.html" class="nav-btn">Deneme 3 (Seviye 3)</a>
+            <a href="deneme_4.html" class="nav-btn">Deneme 4 (Seviye 4)</a>
+            <a href="deneme_5.html" class="nav-btn">Deneme 5 (Seviye 5)</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.6rem; margin-bottom: 0.5rem; text-transform: uppercase;">Karma Deneme Sınavı 1</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--steel); margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>📜 Sınav Analizi ve Strateji (Seviye 1)</h3>
+                <p>Geçmiş 5 yılın çıkmış sorularının analizine dayanarak hazırlanan bu deneme; sınavda karşılaşma ihtimaliniz en yüksek olan <strong>Temel prensipler, Sınır değerleri ve NACE kodlarına</strong> odaklanmaktadır.</p>
+                <ul>
+                    <li><span class="highlight">Analiz Notu:</span> Her üniteden eşit ağırlıkta soru mevcuttur. Çeldiriciler, önceki yıllarda adayların en çok hata yaptığı seçeneklerden özenle seçilmiştir.</li>
+                    <li><span class="highlight">Öneri:</span> Bu sınav "Seviye 1" dir. Sektörel İSG'de temel sınır değerlerini ve kimyasalların eşleşmelerini test edeceksiniz. Yanlış yaptığınız sorulardaki çözüm kutucukları, ünitenin özetini niteliğindedir.</li>
+                </ul>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Denemeyi Başlat 🚀</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir 🛑</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Sınav Sonuç Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 1 | Tarım ve Ormancılık</div>
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text">İş Sağlığı ve Güvenliği standartları kapsamında, "duman formunda" veya "solunabilir toz" olarak adlandırılabilmesi için bir tozun partikül büyüklüğü <u>en fazla</u> kaç mikron olmalıdır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> 2</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>B)</span> 3</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>C)</span> 5</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> 7</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> 10</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 Çözüm:</strong> Tozla mücadele mevzuatında ve hijyen standartlarında, akciğerin en uç noktalarına (alveollere) kadar ulaşabilen ve "solunabilir toz" olarak tanımlanan partiküllerin boyutu <strong>5 mikrondan küçük</strong> olmalıdır. (Geçmiş yıllarda 2 kez sorulmuştur).
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 2 | Deri İmalatı</div>
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text">İş Sağlığı ve Güvenliğine İlişkin İşyeri Tehlike Sınıfları Tebliği’ne göre, aşağıdaki deri iş kollarından hangisi <u>istisnai olarak "az tehlikeli"</u> sınıfta yer alır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Deri ve kürklü deri imalatı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> Kürklü derinin kazınarak temizlenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>C)</span> Saraçlık ve koşum takımı imalatı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>D)</span> Kumaş ve diğer malzemelerden saat kayışı imalatı (metal olanlar hariç)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> Deri ve kösele esaslı levha imalatı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Çözüm:</strong> Derinin işlenmesi ve tabaklanması "Çok Tehlikeli", saraçlık/cüzdan imalatı "Tehlikeli"dir. Ancak deri sınıflandırması içerisinde yer alsa da <strong>kumaş ve diğer malzemelerden saat kayışı imalatı</strong> mevzuata göre "Az Tehlikeli" sınıftadır. (Bu soru çok güçlü bir çeldiricidir ve AÖF bunu sıklıkla sorar).
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 3 | Konaklama Hizmetleri</div>
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text">Konaklama ve yiyecek hizmeti faaliyetleri için belirlenen NACE (Avrupa Birliği Ekonomik Faaliyetlerin İstatistiki Sınıflaması) kodu ana grup numarası aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> 31</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> 47</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>C)</span> 55</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> 56</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>E)</span> 62</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Çözüm:</strong> Sektörel İSG sınavlarında NACE kodları ezberlenmesi gereken kısımlardandır. Konaklama faaliyetlerinin NACE kodu ana grubu <strong>55</strong>'tir. (Not: 56 kodu yiyecek-içecek için kullanılır ancak konaklamanın birleşik NACE kodu 55 olarak kabul edilir. Mobilya ise 31'dir).
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 4 | Gıda Üretimi</div>
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text">Gıda sektöründe kullanılan et kıyma ve öğütme makinelerinde (elle besleme yapılanlarda), makineye el kaptırma riskini önlemek için besleme yapılan en üst nokta ile oluğun en alt noktası (bıçakların bulunduğu yer) arasındaki mesafe <u>en az</u> kaç cm olmalıdır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> 50 cm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> 75 cm</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>C)</span> 100 cm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> 150 cm</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> 200 cm</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Çözüm:</strong> Et öğütme ve kıyma makinelerinde, çalışanların kollarını veya ellerini makinenin döner bıçak (helezon) sistemine kaptırmaması için fiziksel güvenlik mesafesi standart olarak en az <strong>100 cm (1 metre)</strong> olarak belirlenmiştir.
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 5 | Havacılık Sektörü</div>
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text">Uçakların içinde ve çevresinde (apron) mesleki hastalıkların ve akut zehirlenmelerin başlıca nedeni sayılan, yer araçları ve uçak egzozlarından salınan kimyasal madde aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> Sodyum klorür</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>B)</span> Hidrojen peroksit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>C)</span> Karbonmonoksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>D)</span> Karbondioksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> Azot gazı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Çözüm:</strong> Apronda sürekli çalışan jet motorları ve dizel/benzinli yer destek araçları (jeneratör, yakıt tankeri vb.), tam yanmama sonucu yoğun miktarda <strong>Karbonmonoksit (CO)</strong> gazı salgılar. Bu gaz havayolu personelinin en çok maruz kaldığı renksiz/kokusuz zehirli kimyasaldır.
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 6 | Tekstil ve Hazır Giyim</div>
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text">Akciğerlerde küçük toz parçacıklarına karşı oluşan koyu müküs birikmesinin hava geçişini azaltması sonucunda oluşan ve özellikle <u>pamuk tozlarını</u> soluyan işçilerde görülen meslek hastalığına ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> Silikozis</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> Asbestozis</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>C)</span> Bisinozis</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> Pnömokonyoz</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>E)</span> Vertigo</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 Çözüm:</strong> Tekstil sektöründe (iplik fabrikalarında, harman-hallaç dairelerinde vb.) uçuşan pamuk, keten ve kendir tozlarının sürekli solunmasıyla oluşan, pazartesi günleri nefes darlığı ile kendini gösteren mesleki akciğer hastalığına <strong>Bisinozis</strong> denir.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 7 | Petrol ve Gaz Sektörü</div>
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text">Petrol ve gaz endüstrisinde, tanklar, silolar ve kapalı proses odalarındaki <u>Oksijen (O2) miktarının yüzde kaçın altına düşmesi</u> işçilerde baş dönmesi, boğulma ve bilinç kaybı tehlikesi yaratır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> %15,5</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>B)</span> %16,5</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> %17,5</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>D)</span> %18,5</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>E)</span> %19,5</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Çözüm:</strong> Soluduğumuz normal havada oksijen oranı %20,9'dur. İSG standartlarına göre kapalı alanlarda oksijen miktarının <strong>%19,5'in altına</strong> düşmesi hayati risk (oksijen yetersizliği / asfiksi) oluşturur.
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 8 | Mobilya İmalatı</div>
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi mobilya imalat sektöründe boya çıkarmada (boya sökücü olarak), vernik ve tiner üretiminde, genel yüzey temizliğinde kullanılan güçlü bir çözücü kimyasaldır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>A)</span> Diklorometan</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>B)</span> Hidroklorik Asit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>C)</span> Amonyak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> Formaldehit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> Hidrojen Peroksit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Çözüm:</strong> Mobilya restorasyonu veya temizliği aşamalarında eski kurumuş boyaları/vernikleri sökmek için yoğun olarak kullanılan solvent <strong>Diklorometan'dır</strong>. Güçlü bir çözücüdür ve kanserojen etki riski taşır. (Hidrojen peroksit ise renk açma/ağartma işleminde kullanılır).
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 2 | Deri İmalatı</div>
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text">Deri imalatında tabaklama işlemi sırasında, kromun deriye daha iyi nüfuz etmesi ve etkinliğinin artırılması için pH düzenleyici (bazifikasyon) amaçlı kullanılan kimyasal aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Oksalik Asit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> Sodyum Sülfür</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>C)</span> Trikloretilen</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>D)</span> Magnezyum Oksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> Asetik Asit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 Çözüm:</strong> Derinin krom ile tabaklanması sırasında asidik olan ortamın yavaşça nötrleştirilmesi (bazifikasyon) gerekir ki krom deri liflerine sıkıca bağlansın. Bu işlem için asitliği yavaşça alan bazik karakterli <strong>Magnezyum Oksit (MgO)</strong> tozu kullanılır.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 5 | Havacılık Sektörü</div>
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text">Federal Havacılık İdaresi (FAA) tarafından önerilen 5 adımlı Risk Analizi sürecinin <u>birinci aşaması (ilk adımı)</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>A)</span> Risklerin analiz edilmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> Tehlikelerin belirlenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>C)</span> Risklerin değerlendirilmesi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>D)</span> Sistemin tanımlanması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>E)</span> Risklerin azaltılması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Çözüm:</strong> FAA'nın 5 adımlı risk yönetimi sıralaması şöyledir: <strong>1. Sistemin Tanımlanması</strong> -> 2. Tehlikelerin Belirlenmesi -> 3. Risklerin Analiz Edilmesi -> 4. Risklerin Değerlendirilmesi -> 5. Risklerin Azaltılması. Tehlikeleri belirlemeden önce neyi inceleyeceğinizi (sistemi) tanımlamalısınız.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 8 | Mobilya İmalatı</div>
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text">Çok çeşitli ürün yelpazesine sahip olan mobilya sektörü genelde "Tehlikeli" sınıfta yer alır. Ancak bu sektördeki bazı spesifik işlemler içerdiği yoğun kimyasal gaz ve parlama riski nedeniyle istisnai olarak <u>"Çok Tehlikeli"</u> sınıftadır. Aşağıdakilerden hangisi bu işlemlerdendir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> Mutfak mobilyalarının montajı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>B)</span> Sandalye ve koltukların döşenmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>C)</span> Ahşap latalı somya kesimi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>D)</span> Mobilyaların boyanması, verniklenmesi ve cilalanması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> Plastikten tabure ve masa imalatı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Çözüm:</strong> NACE tehlike kodlamasına göre mobilya imalatı genel olarak Tehlikeli'dir. Fakat <strong>boyama, vernikleme ve cilalama</strong> yapılan cila hane atölyeleri; kullanılan tinerler, poliüretanlar ve selülozik maddelerin patlayıcı/zehirleyici olmasından dolayı Çok Tehlikeli statüdedir.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 6 | Tekstil ve Hazır Giyim</div>
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text">Tekstil ve hazır giyim sektöründe kullanılan hızlı devirli pres ve dokuma makinelerinde, işçinin elini tehlikeli bölgeye sokmasını mekanik olarak engellemek amacıyla, makinenin çalışması için <u>en az kaç adet butonla</u> kumanda edilen (çift el kumandası) bir sistem kurulmalıdır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>A)</span> 1</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>B)</span> 2</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> 3</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> 4</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> 5</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Çözüm:</strong> Yüksek hızlı makinelerde işçinin iki elinin de tehlike bölgesi dışında (butonların üzerinde) olmasını garantilemek için makinenin çalışması <strong>en az 2 (iki) butona</strong> aynı anda basılması prensibine dayanır.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 1 | Tarım Sektörü</div>
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text">Tarım sektöründeki çalışma ortamlarında bulunan pestisitler (tarım ilaçları), kimyasal gübreler ve traktör yakıtından kaynaklanan tehlike türü aşağıdakilerden hangisinin kapsamında değerlendirilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> Fiziksel tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> Ergonomik tehlikeler</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>C)</span> Toksikolojik tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Mekanik tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> Psikolojik tehlikeler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Çözüm:</strong> Pestisitler, gübre ve egzoz/yakıt gazları kimyasal yapıdadır. Tarım işçisinin solunum veya deri yoluyla bunları alması zehirlenmelere (toksisiteye) neden olur. Bu nedenle İSG literatüründe <strong>Toksikolojik (Kimyasal) tehlikeler</strong> olarak sınıflandırılırlar.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 4 | Gıda Üretimi</div>
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text">Gıda ürünleri üretim sektöründe ileri işlenmiş şarküteri gıdalarından (salam, sosis vb.) ürünlere kırmızı rengini veren, mikrobiyal bozulmayı engelleyen fakat tozlarının/buharlarının solunması çalışanlar için ciddi zehirlenme riski oluşturan katkı maddesi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>A)</span> Aminoasit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> Fruktoz</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>C)</span> Nitrat</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Hidrojen</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> Kalsiyum karbonat</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Çözüm:</strong> Et endüstrisinde gıdayı korumak ve o canlı kırmızı/pembe rengi sağlamak için sodyum <strong>Nitrat ve Nitrit</strong> kullanılır. Bu kimyasalın toz halinde solunması çalışanlar için tahriş edici ve uzun vadede kanserojen etki taşıyan bir risktir.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 3 | Konaklama Hizmetleri</div>
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text">Otel ve konaklama faaliyetlerinde "Kat Hizmetleri" departmanında çalışan bir personelin çalışma esnasında maruz kalacağı en temel <u>kimyasal tehlike</u> aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>A)</span> Kaygan zeminde yürüme</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> Ağır yatak veya dolap kaldırma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>C)</span> Kırık cam toplama</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>D)</span> Deterjan, çamaşır suyu ve kireç çözücü kullanımı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Yüksekte cam silme işi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Çözüm:</strong> A, B, C ve E seçenekleri mekanik ve fiziksel (ergonomik) tehlikelerdir. Soru spesifik olarak "Kimyasal tehlikeyi" sorduğu için kat hizmetlerinin yoğun olarak kullandığı <strong>Deterjan ve kireç çözücüler</strong> doğru yanıttır.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 7 | Petrol ve Gaz Sektörü</div>
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text">Petrol ve rafineri tesislerinde; yere dökülmüş, sıfır veya düşük başlangıç momentumuna sahip, yatay bir düzlemde buharlaşan hidrokarbon yakıt birikintisinin üzerinde yanan türbülanslı yayılma ateşine ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>A)</span> Jet yangınları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>B)</span> Ateş topları</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>C)</span> Havuz yangınları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> Parlama / Flaş yangınlar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Elektrik yangınları</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Çözüm:</strong> Petrol tesislerinde yere sızan ve göllenerek bir havuza benzeyen sıvı yakıtın üzerinde çıkan yangın literatürde <strong>Havuz Yangınları (Pool Fires)</strong> olarak adlandırılır. Basınçla fışkıran bir sızıntının yanması ise "Jet yangınıdır".
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 1 | Ormancılık Sektörü</div>
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi ormanlık alanda motorlu testere ile çalışan bir "Ağaç kesme ve boylama operatörünün" mesleki İSG gereklilikleri arasında <u>yer almaz?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> Ağaçların yapısal özellikleri bilgisi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> İlkyardım bilgisi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>C)</span> Sürücü belgesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> Acil durum bilgisi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>E)</span> Çevre koruma standartları bilgisi</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Çözüm:</strong> Bir testere operatörü acil durum, ilkyardım, devrilme yönü (ağaç özelliği) ve standartları bilmek zorundadır. Ancak ağaç kesme işi için <strong>Sürücü Belgesine (ehliyet)</strong> sahip olması mesleki bir zorunluluk veya İSG şartı değildir.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 6 | Tekstil ve Hazır Giyim</div>
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text">Tekstil ve dokuma sektöründe gürültüye karşı önlem alınırken, mevzuata göre "en yüksek maruziyet eylem değeri" kaç dB (A) düzeyine ulaştığında çalışanlara kulak koruyucu donanımlar kullandırılması <u>zorunludur?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> 75 dB(A)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> 80 dB(A)</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>C)</span> 85 dB(A)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>D)</span> 90 dB(A)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>E)</span> 95 dB(A)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Çözüm:</strong> Gürültü yönetmeliğine göre 80 dB (A) sınırında işveren kulaklık "sağlamak" zorundadır ancak <strong>85 dB (A)</strong> değerine ulaşıldığında bu kulak koruyucuların "kullandırılması (takılması)" yasal olarak zorunlu hale gelir.
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 2 | Deri İmalatı</div>
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi deri imalat sektöründe yoğun kimyasal ve suyun bir arada kullanıldığı <u>"Yaş işlemler"</u> kategorisinde yer alan bir proses/aşamadır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> Zımpara / Toz alma</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> Kuru tıraş</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>C)</span> Kenar alma</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>D)</span> Pikle</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> Finisaj (Bitim)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Çözüm:</strong> Islatma, kireçlik, etleme, sama, <strong>Pikle</strong> ve tabaklama suyla ve sülfürik asit gibi kimyasallarla yapılan "Yaş İşlemler" dir. Kurutmadan sonra yapılan tıraşlama, kenar alma, boya, ütüleme ve finisaj işlemleri ise kuru/bitim işlemleridir.
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="badge-deneme">Ünite 7 | Petrol ve Gaz Sektörü</div>
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text">Uluslararası standartlara (OSHA) göre petrol ve gaz sektöründe; tehlikeli bir atmosfere (veya potansiyeline) sahip, içine gireni hapseden materyallerle dolu olan ve özel giriş prosedürleri gerektiren kapalı alanlara ne ad verilir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> Kamu alanı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>B)</span> İzin gerektirmeyen alan</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>C)</span> Güvenli alan</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>D)</span> İzin gerekli alan</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> Kısıtlı güvenlik alanı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Detaylı Çözüm</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Çözüm:</strong> Tank, depo, menhol gibi tehlikeli gaz birikimi ihtimali olan, giriş çıkışları kısıtlı ve ancak form/imza onaylarıyla giriş yapılabilen yerlere OSHA literatüründe <strong>İzin Gerekli Alan (Permit-Required Confined Space)</strong> adı verilmektedir.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
+    </footer>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Detaylı Çözüm';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Yanlış 1 Doğru Kuralı
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SÜRE BİTTİ";
+            
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

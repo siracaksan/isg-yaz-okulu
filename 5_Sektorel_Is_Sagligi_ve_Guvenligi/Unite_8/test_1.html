@@ -1,0 +1,641 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sektörel İSG | Ünite 8 - TEST 1 (Analiz & Neler Öğrendik)</title>
+    <style>
+        :root {
+            /* Ünite 8 Test 1: Doğal Ahşap ve Orman Yeşili Teması */
+            --primary: #166534;    /* Orman Yeşili */
+            --accent: #b45309;     /* Doğal Ahşap / Amber */
+            --accent-hover: #92400e;
+            --bg: #fdf8f6;         /* Çok Açık Ahşap Tonu Arka Plan */
+            --panel-bg: #ffffff;   /* Beyaz Panel */
+            --text: #292524;       /* Koyu Kahve/Gri Metin */
+            --light-gray: #e7e5e4;
+            --green: #15803d;
+            --red: #dc2626;
+            --steel: #57534e;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(135deg, #14532d 0%, #166534 100%); color: white; padding: 3rem 1.5rem; text-align: center; border-bottom: 5px solid var(--accent); box-shadow: 0 8px 20px rgba(22, 101, 52, 0.3); }
+        header h1 { margin: 0; font-size: 2.3rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
+        header p { margin: 0.8rem 0 0 0; color: #fef3c7; font-weight: 700; font-size: 1.25rem; letter-spacing: 1px;}
+        
+        nav { background: #052e16; padding: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #1c1917; }
+        .nav-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .nav-btn { background: #1c1917; color: #f8fafc; border: 1px solid #44403c; padding: 0.7rem 1.4rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; text-transform: uppercase;}
+        .nav-btn:hover, .nav-btn.active { background: var(--accent); color: white; border-color: #fcd34d; box-shadow: 0 0 15px rgba(180, 83, 9, 0.4); font-weight: 800;}
+        
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .box { background: var(--panel-bg); border-radius: 12px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.06); margin-bottom: 2rem; border-top: 5px solid var(--primary); }
+        
+        .strategy-box { border-left: 5px solid var(--accent); background: #fffbeb; padding: 2rem; border-radius: 8px; margin: 1.5rem 0; box-shadow: inset 0 0 15px rgba(180, 83, 9, 0.05);}
+        .strategy-box h3 { margin-top: 0; color: #92400e; display: flex; align-items: center; gap: 0.6rem; font-size: 1.4rem; text-transform: uppercase; border-bottom: 2px solid #fde68a; padding-bottom: 0.5rem;}
+        .strategy-box p { color: var(--text); font-size: 1.05rem; margin-bottom: 0.5rem;}
+        .strategy-box ul { margin: 0; padding-left: 1.5rem; color: var(--text); font-size: 1.05rem; }
+        .strategy-box li { margin-bottom: 0.6rem; }
+        .strategy-box .highlight { background: #fef3c7; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: bold; color: #78350f;}
+        
+        .start-btn { display: block; width: 100%; max-width: 400px; margin: 3rem auto 1rem; background: var(--primary); color: white; text-align: center; padding: 1.2rem; border-radius: 8px; font-size: 1.3rem; cursor: pointer; border: none; font-weight: 900; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(22, 101, 52, 0.3);}
+        .start-btn:hover { background: var(--accent); box-shadow: 0 6px 20px rgba(180, 83, 9, 0.4); transform: translateY(-3px); }
+        
+        .timer-bar { position: sticky; top: 0; background: #ffffff; padding: 1.2rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--accent); border-radius: 0 0 12px 12px;}
+        .timer { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-family: monospace; letter-spacing: 2px;}
+        
+        .action-btns { display: flex; gap: 1rem; }
+        .btn { padding: 0.7rem 1.4rem; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; text-transform: uppercase;}
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px);}
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-secondary { background: var(--steel); color: white; }
+        
+        .questions-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+        
+        .question-card { background: var(--panel-bg); border: 1px solid var(--light-gray); padding: 2.5rem; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 5px 20px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;}
+        .question-card:hover { border-color: var(--primary); box-shadow: 0 8px 30px rgba(22, 101, 52, 0.12);}
+        
+        .badge { position: absolute; top: -15px; right: 2.5rem; background: var(--primary); color: white; font-weight: 900; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 10px rgba(22, 101, 52, 0.3); border: 2px solid #fff; letter-spacing: 1px;}
+        .badge.neler-ogrendik { background: var(--accent); }
+        
+        .question-header { font-weight: 900; color: white; background: var(--steel); display: inline-block; padding: 0.6rem 1.4rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 1rem; align-self: flex-start; letter-spacing: 1px;}
+        .question-text { font-weight: 600; margin-bottom: 2rem; font-size: 1.15rem; line-height: 1.7; color: var(--text); }
+        
+        .options { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.1rem; border: 2px solid #e7e5e4; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.05rem; background: #fafaf9; color: #292524; font-weight: 600;}
+        .option span { font-weight: 800; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: white; background: #a8a29e; border-radius: 6px; font-size: 1.05rem; transition: all 0.3s;}
+        .option:hover:not(.locked) { background: #ffffff; border-color: var(--accent); box-shadow: 0 4px 10px rgba(180, 83, 9, 0.15);}
+        .option:hover:not(.locked) span { background: var(--accent); color: white;}
+        .option.locked { cursor: default; }
+        .option.correct { background: #f0fdf4; border-color: var(--green); color: #14532d; }
+        .option.correct span { background: var(--green); color: white;}
+        .option.wrong { background: #fef2f2; border-color: var(--red); color: #991b1b; }
+        .option.wrong span { background: var(--red); color: white;}
+        
+        .solution-btn { margin-top: 2rem; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; align-self: flex-start; font-size: 0.95rem; font-weight: 900; display: none; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        .solution-btn:hover { background: var(--primary); color: white; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 2rem; background: #fdf8f6; border-left: 5px solid var(--accent); border-radius: 0 8px 8px 0; display: none; font-size: 1.05rem; line-height: 1.7; color: var(--text); box-shadow: inset 0 0 15px rgba(180, 83, 9, 0.05); }
+        .solution-box.show { display: block; animation: fadeIn 0.4s ease; }
+        .solution-box strong { color: #b45309; font-weight: 900; font-size: 1.15rem; display: block; margin-bottom: 0.8rem; text-transform: uppercase;}
+        
+        .results-section { text-align: center; margin-top: 3rem; padding: 4rem 2rem; background: white; border-radius: 12px; border-top: 8px solid var(--primary); display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .results-section h2 { font-size: 2.6rem; color: var(--primary); margin-top: 0; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px;}
+        .results-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; }
+        .stat { padding: 1.8rem 3rem; border-radius: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 1rem; font-size: 2.2rem; min-width: 180px; border: 1px solid #e7e5e4; box-shadow: 0 6px 15px rgba(0,0,0,0.05); background: #fafaf9;}
+        .stat span { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #57534e;}
+        .stat.correct { color: var(--green); border-color: #4ade80; background: #f0fdf4;}
+        .stat.wrong { color: var(--red); border-color: #f87171; background: #fef2f2;}
+        .stat.empty { color: #57534e; }
+        .stat.net { color: var(--accent); border-color: var(--accent); transform: scale(1.08); box-shadow: 0 10px 25px rgba(180, 83, 9, 0.2); background: white;}
+        
+        footer { background: #1c1917; color: #a8a29e; text-align: center; padding: 3rem; margin-top: 5rem; font-size: 1.05rem; border-top: 5px solid var(--accent); font-weight: 600; letter-spacing: 1px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media print {
+            .no-print, header p, nav, .timer-bar, .solution-btn, .start-btn { display: none !important; }
+            body { background: white; color: black; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .box { box-shadow: none; border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem;}
+            .question-card { page-break-inside: avoid; border: none; border-bottom: 2px solid #e7e5e4; margin-bottom: 2rem; padding-bottom: 2rem; border-radius: 0; box-shadow: none;}
+            .badge { border: 1px solid #000; color: #000; background: #eee; }
+            .solution-box { display: block !important; border: 1px solid #a8a29e; background: #fafaf9; padding: 1rem; margin-top: 1rem; color: black; }
+            .option { border: 1px solid #e7e5e4; background: white; color: black; margin-bottom: 0.5rem;}
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Sektörel İş Sağlığı ve Güvenliği</h1>
+        <p>ÜNİTE 8: Mobilya İmalat Sektörü - TEST 1</p>
+    </header>
+
+    <nav class="no-print">
+        <div class="nav-group">
+            <a href="../../index.html" class="nav-btn">🏠 Ana Sayfa</a>
+            <a href="../index.html" class="nav-btn">📚 Sektörel İSG</a>
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html" class="nav-btn">⬅️ Çıkmış Sorular</a>
+        </div>
+        <div class="nav-group">
+            <a href="test_1.html" class="nav-btn active">Test 1 (Analiz & Temel)</a>
+            <a href="test_2.html" class="nav-btn">Test 2</a>
+            <a href="test_3.html" class="nav-btn">Test 3</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn">Test 5</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="start-screen" class="box">
+            <h2 style="text-align: center; color: var(--primary); font-size: 2.4rem; margin-bottom: 0.5rem; text-transform: uppercase;">Ünite 8: Sınav Analizi ve Neler Öğrendik Testi</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--steel); margin-bottom: 2.5rem;">Sınav Süresi: <strong>30 Dakika</strong> | Soru Sayısı: <strong>20</strong></p>
+            
+            <div class="strategy-box">
+                <h3>📊 Geçmiş Yılların AÖF Sınav Analizi (2021-2025)</h3>
+                <p>Mobilya İmalat Sektöründe İSG ünitesi, sınavlarda düzenli olarak karşımıza çıkan net kalıplara sahiptir. Son 5 yılın (2021-2025) sınav istatistikleri şu şekildedir:</p>
+                <ul>
+                    <li><span class="highlight">Tehlike Sınıfları (Frekans: Yüksek):</span> Mobilya sektörünün büyük bölümü "Tehlikeli" sınıftayken, sadece <strong>"Boyama, Vernikleme ve Cilalama"</strong> işleri <u>Çok Tehlikeli</u> sınıftadır. Bu ayrım 2022 ve 2023 yıllarında direkt soru olarak gelmiştir.</li>
+                    <li><span class="highlight">Kullanılan Kimyasallar (Frekans: Çok Yüksek):</span> Neredeyse her yıl banko 1 soru kimyasallardan gelmektedir. <strong>Diklorometan</strong> (boya/vernik çıkarmada - 2021 ve 2023'te soruldu), <strong>Toluen</strong> (tutkal/boyada çözücü, yanıcı - 2024'te soruldu), <strong>İncelticiler</strong> (tinerler - 2025'te soruldu) ve <strong>Hidrojen Peroksit</strong> (renklendirme/açma - 2022'de soruldu) mutlaka bilinmelidir.</li>
+                    <li><span class="highlight">İş Ekipmanları ve Periyodik Kontrol (Frekans: Yüksek):</span> Tezgâhların periyodik bakımının <strong>Yılda 1 kez</strong> yapılması kuralı hem 2021'de sorulmuş hem de Neler Öğrendik kısmında vardır. Yüzey düzeltmede kullanılan <strong>Planya</strong> (2023) ve <strong>metal kesim aletleri</strong> (2024) çıkmış sorulardandır.</li>
+                    <li><span class="highlight">Odun Tozu (Frekans: Orta):</span> Odun tozu oluşum nedenleri (Sulama işleri olamaz - 2025) ve Yasal Sınır (5 mg/m3) yine kritik noktalardır.</li>
+                </ul>
+                <p style="margin-top: 1rem;"><em>Bu test, "Neler Öğrendik" bölümündeki 10 soru ve analizini yaptığımız bu kilit çıkmış konuları kapsayan 10 destekleyici sorudan oluşmaktadır.</em></p>
+            </div>
+            
+            <button class="start-btn" onclick="startExam()">Sınava Başla 🚀</button>
+        </div>
+
+        <div id="exam-screen" style="display: none;">
+            <div class="timer-bar no-print">
+                <div class="timer">⏱️ <span id="timer-display">30:00</span></div>
+                <div class="action-btns">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ PDF İndir</button>
+                    <button class="btn btn-primary" onclick="finishExam()">Sınavı Bitir 🛑</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-screen">
+                <h2>Test Sonuç Raporu</h2>
+                <div class="results-grid">
+                    <div class="stat correct"><span>Doğru</span><div id="res-right">0</div></div>
+                    <div class="stat wrong"><span>Yanlış</span><div id="res-wrong">0</div></div>
+                    <div class="stat empty"><span>Boş</span><div id="res-empty">20</div></div>
+                    <div class="stat net"><span>Net (4Y=1D)</span><div id="res-net">0.00</div></div>
+                </div>
+            </div>
+
+            <div class="questions-grid">
+                
+                <!-- Soru 1 -->
+                <div class="question-card">
+                    <div class="badge neler-ogrendik">Neler Öğrendik 1 / Çıkmış Soru</div>
+                    <div class="question-header">Soru 1 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi İş Sağlığı ve Güvenliğine İlişkin İşyeri Tehlike Sınıfları Tebliğinde mobilya imalatı yapan çok tehlikeli sınıfta yer alan iş yerlerinden biridir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>A)</span> Büro mobilyalarının iskeletlerinin imalatı</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 1, true)"><span>B)</span> Mobilyaların boyanması, verniklenmesi, cilalanması vb. tamamlayıcı işler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>C)</span> Mutfak mobilyalarının imalatı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>D)</span> Yatak imalatı</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 1, false)"><span>E)</span> Laboratuvarlar için mobilyaların imalatı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-1" onclick="toggleSolution(1)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-1">
+                        <strong>💡 Açıklama:</strong> Mobilya sektörünün çok büyük bir bölümü "Tehlikeli" sınıftadır. Sadece kimyasal solventlerin, tinerlerin ve parlayıcı maddelerin çok yoğun kullanıldığı <strong>"Boyama, Vernikleme ve Cilalama"</strong> işleri <u>Çok Tehlikeli</u> sınıfta kabul edilir. (2022 ve 2023 yıllarında da çıkmış sorudur).
+                    </div>
+                </div>
+
+                <!-- Soru 2 -->
+                <div class="question-card">
+                    <div class="badge neler-ogrendik">Neler Öğrendik 2</div>
+                    <div class="question-header">Soru 2 / 20</div>
+                    <div class="question-text">Aşağıdakilerin hangisinde mobilya imalat işyeri birimi içerisinde “Kaplama Hazırlık” işlemi bulunur?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>A)</span> Destek birimleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>B)</span> Lojistik birimi</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 2, true)"><span>C)</span> Üretim birimleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>D)</span> Açık alanlar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 2, false)"><span>E)</span> İdari ve sosyal birimler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-2" onclick="toggleSolution(2)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-2">
+                        <strong>💡 Açıklama:</strong> Ahşap panel kesim, metal kesim, kaynak, kaplama hazırlık, tutkallama-presleme gibi tüm imalat adımları doğrudan <strong>Üretim Birimleri</strong> çatısı altında gerçekleştirilir.
+                    </div>
+                </div>
+
+                <!-- Soru 3 -->
+                <div class="question-card">
+                    <div class="badge neler-ogrendik">Neler Öğrendik 3</div>
+                    <div class="question-header">Soru 3 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi mobilya imalatında kullanılan kimyasal maddelerden biri değildir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>A)</span> Tutkallar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>B)</span> Astar ve dolgu vernikleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>C)</span> Macunlar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 3, false)"><span>D)</span> İncelticiler</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 3, true)"><span>E)</span> Taşlar</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-3" onclick="toggleSolution(3)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-3">
+                        <strong>💡 Açıklama:</strong> Tutkallar, astar/dolgu vernikleri, macunlar, incelticiler (tinerler), sonkat boyalar kimyasal ürünlerdir. Ancak <strong>Taşlar</strong> kimyasal bir madde değil, zımpara veya bileme için kullanılan fiziksel / mineral bir unsurdur.
+                    </div>
+                </div>
+
+                <!-- Soru 4 -->
+                <div class="question-card">
+                    <div class="badge neler-ogrendik">Neler Öğrendik 4</div>
+                    <div class="question-header">Soru 4 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi Kimyasal Maddelerle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelikte belirtilen tehlikeli kimyasal maddelerle çalışmalarda alınması gereken önlemlerden biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>A)</span> Tehlikeli kimyasal maddelerle çalışmalar, en az sayıda çalışan ile yapılır.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>B)</span> Çalışanların maruz kalacakları madde miktarının en az düzeyde olması sağlanır.</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 4, true)"><span>C)</span> Kişisel koruma önlemlerine öncelik verilir.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>D)</span> İşyerinde kullanılması gereken kimyasal madde miktarı en az düzeyde tutulur.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 4, false)"><span>E)</span> İşyerinde uygun düzenleme ve iş organizasyonu yapılır.</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-4" onclick="toggleSolution(4)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-4">
+                        <strong>💡 Açıklama:</strong> İSG'nin en temel kurallarından biri risklerin kaynağında yok edilmesidir. Eğer edilemiyorsa önce "Toplu Korunma" önlemleri alınır. <strong>Kişisel koruma önlemleri her zaman en son çaredir, öncelikli değildir.</strong> Bu nedenle C şıkkı yanlıştır.
+                    </div>
+                </div>
+
+                <!-- Soru 5 -->
+                <div class="question-card">
+                    <div class="badge neler-ogrendik">Neler Öğrendik 5</div>
+                    <div class="question-header">Soru 5 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi Tozla Mücadele Yönetmeliğinde belirtilen "odun tozu" maruziyet sınır değeridir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>A)</span> 0.5 mg/m³</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>B)</span> 1.5 mg/m³</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>C)</span> 3 mg/m³</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 5, true)"><span>D)</span> 5 mg/m³</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 5, false)"><span>E)</span> 10 mg/m³</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-5" onclick="toggleSolution(5)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-5">
+                        <strong>💡 Açıklama:</strong> Mobilya ve ahşap sektöründe astım ve akciğer kanserlerine yol açabilen odun tozunun yönetmelikte belirlenmiş yasal mesleki maruziyet sınır değeri <strong>5 mg/m³</strong>'tür.
+                    </div>
+                </div>
+
+                <!-- Soru 6 -->
+                <div class="question-card">
+                    <div class="badge neler-ogrendik">Neler Öğrendik 6</div>
+                    <div class="question-header">Soru 6 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi İş Ekipmanlarının Kullanımında Sağlık ve Güvenlik Şartları Yönetmeliği kapsamında işverenin yükümlülüklerinden biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>A)</span> İşveren, iş ekipmanlarının periyodik kontrollerini yetkili kişilere yaptırır.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>B)</span> İşveren, işyerinde kullanılacak iş ekipmanının yapılacak işe uygun olması için tedbirler alır.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>C)</span> Özel risk taşıyan iş ekipmanı, sadece o ekipmanı kullanmak üzere görevlendirilen kişilerce kullanılır.</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 6, false)"><span>D)</span> İş ekipmanının tamiri, tadili, kontrol ve bakımı konularında çalışanlara işverenlerce yeterli özel eğitim verilir.</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 6, true)"><span>E)</span> İşverenin, bu Yönetmelikte belirtilen konularda çalışanların görüşlerini almasına gerek yoktur.</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-6" onclick="toggleSolution(6)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-6">
+                        <strong>💡 Açıklama:</strong> Yönetmeliğin 12. Maddesine göre; "İşveren, bu Yönetmelik ve eklerinde belirtilen konularda <strong>çalışanların veya temsilcilerinin görüşlerini alır ve katılımlarını sağlar.</strong>" Bu yüzden E şıkkı kesinlikle yanlıştır.
+                    </div>
+                </div>
+
+                <!-- Soru 7 -->
+                <div class="question-card">
+                    <div class="badge neler-ogrendik">Neler Öğrendik 7</div>
+                    <div class="question-header">Soru 7 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi İş Ekipmanlarının Kullanımında Sağlık ve Güvenlik Şartları Yönetmeliğine göre çalışanların işveren tarafından bilgilendirilmesi gereken konulardan biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>A)</span> Çalışanların kullandıkları iş ekipmanına ait bilgi ve yazılı talimatlar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>B)</span> İş ekipmanlarının çalışanları etkileyebilecek tehlikeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>C)</span> İş ekipmanının kullanım koşulları</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 7, false)"><span>D)</span> Bulunması hâlinde iş ekipmanının önceki kullanım deneyiminden elde edilen sonuçlar</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 7, true)"><span>E)</span> İş ekipmanının fiyatı</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-7" onclick="toggleSolution(7)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-7">
+                        <strong>💡 Açıklama:</strong> Çalışanların İSG bağlamında makinenin kullanımı, tehlikeleri ve talimatları hakkında bilgi sahibi olması zorunludur ancak ticari bir veri olan <strong>iş ekipmanının fiyatı</strong> çalışanı ilgilendiren veya bildirilmesi gereken bir konu değildir.
+                    </div>
+                </div>
+
+                <!-- Soru 8 -->
+                <div class="question-card">
+                    <div class="badge neler-ogrendik">Neler Öğrendik 8 / Çıkmış Soru</div>
+                    <div class="question-header">Soru 8 / 20</div>
+                    <div class="question-text">İş Ekipmanlarının Kullanımında Sağlık ve Güvenlik Şartları Yönetmeliği’ne göre tezgâhların bakım ve muayenelerinin kaç yılda bir yapılması yeterli görülür?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 8, true)"><span>A)</span> 1</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>B)</span> 2</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>C)</span> 3</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>D)</span> 4</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 8, false)"><span>E)</span> 5</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-8" onclick="toggleSolution(8)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-8">
+                        <strong>💡 Açıklama:</strong> Ahşap veya metal işleyen tezgahların (torna, freze, pres vb.) ilgili yönetmeliğe göre <strong>yılda 1 kez</strong> (standartlarda aksi belirtilmediği sürece) yetkili kişilerce periyodik bakım ve muayenesinin yapılması zorunludur. (2021 yılı yaz okulu sınavında da birebir çıkmıştır).
+                    </div>
+                </div>
+
+                <!-- Soru 9 -->
+                <div class="question-card">
+                    <div class="badge neler-ogrendik">Neler Öğrendik 9</div>
+                    <div class="question-header">Soru 9 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi mobilya imalatında gazaltı kaynak işleminde kullanılan Kişisel Koruyucu Donanımlar (KKD) arasında <u>yer almaz?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>A)</span> Yüz Siperi (Vizör)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>B)</span> Eldiven</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 9, true)"><span>C)</span> Emniyet Kemeri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>D)</span> Gaz Maskesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 9, false)"><span>E)</span> Deri Önlük</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-9" onclick="toggleSolution(9)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-9">
+                        <strong>💡 Açıklama:</strong> Kaynak işlemleri UV ışınları (yüz siperi), gaz çıkışı (gaz maskesi) ve kıvılcım (deri önlük ve yanmaz eldiven) barındırır. Ancak <strong>Emniyet Kemeri</strong> yüksekte çalışma gerektiren durumlarda kullanılır, doğrudan bir kaynak donanımı değildir.
+                    </div>
+                </div>
+
+                <!-- Soru 10 -->
+                <div class="question-card">
+                    <div class="badge neler-ogrendik">Neler Öğrendik 10</div>
+                    <div class="question-header">Soru 10 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi mobilya imalatında kullanılan iş ekipmanlarından "panel boya hattındaki" tehlikelerden biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>A)</span> Gürültü</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>B)</span> Titreşim</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>C)</span> Kimyasal maddeler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 10, false)"><span>D)</span> Dönen makine parçaları</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 10, true)"><span>E)</span> Pürüzlü parçalar</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-10" onclick="toggleSolution(10)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-10">
+                        <strong>💡 Açıklama:</strong> Panel boya hattında çalışan motorlar/kompresörler gürültü ve titreşim yapar, boyalar kimyasaldır, bantlar dönen parçalardır. Ancak boyama aşamasına gelen panel zaten zımparalanmış ve pürüzsüzleştirilmiş durumdadır, <strong>pürüzlü parçalar</strong> bir tehlike kaynağı olarak değerlendirilmez.
+                    </div>
+                </div>
+
+                <!-- Soru 11 -->
+                <div class="question-card">
+                    <div class="badge">Analiz 2021 & 2023</div>
+                    <div class="question-header">Soru 11 / 20</div>
+                    <div class="question-text">Mobilya imalat sektöründe boya çıkarmada, vernik ve tiner üretiminde, genel temizlikte kullanılan çok etkili bir çözücü kimyasal aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>A)</span> Hidroklorik Asit</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 11, true)"><span>B)</span> Diklorometan</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>C)</span> Hidrojen Sülfür</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>D)</span> Formaldehit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 11, false)"><span>E)</span> Amonyak</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-11" onclick="toggleSolution(11)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-11">
+                        <strong>💡 Açıklama:</strong> 2021 ve 2023 yıllarında birebir sorulmuş bir bilgidir. Ahşap yüzeylerden boyayı veya verniği sökmek için sektörde yaygın olarak <strong>Diklorometan</strong> adlı tehlikeli solvent (çözücü) kullanılmaktadır.
+                    </div>
+                </div>
+
+                <!-- Soru 12 -->
+                <div class="question-card">
+                    <div class="badge">Analiz 2024</div>
+                    <div class="question-header">Soru 12 / 20</div>
+                    <div class="question-text">-----, mobilya imalat sektöründe tutkal, boya ve verniklerde çözücü olarak kullanılır. Oldukça yanıcı, renksiz bir sıvıdır. Çalışanların solunum, deri, göz ve yutma sistemlerinde ciddi sağlık sorunları oluşturur.<br><br>Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru şekilde tamamlar?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 12, true)"><span>A)</span> Toluen</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>B)</span> Amonyak</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>C)</span> Etil Benzen</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>D)</span> Hidroklorik Asit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 12, false)"><span>E)</span> Formaldehit</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-12" onclick="toggleSolution(12)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-12">
+                        <strong>💡 Açıklama:</strong> 2024 yılı sınav sorusudur. Uçucu organik bileşiklerden biri olan ve bali tarzı tutkallar, boya-vernik üretiminde temel çözücü görevi gören yanıcı/renksiz sıvı <strong>Toluen</strong>'dir.
+                    </div>
+                </div>
+
+                <!-- Soru 13 -->
+                <div class="question-card">
+                    <div class="badge">Analiz 2022</div>
+                    <div class="question-header">Soru 13 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi mobilya imalat sektöründe ahşap üzerinde renklendirme ve "açma (ağartma)" malzemesi olarak kullanılmaktadır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>A)</span> Hidrolik yağlar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>B)</span> Silikon</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 13, true)"><span>C)</span> Hidrojen peroksit</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>D)</span> Sentetik tiner</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 13, false)"><span>E)</span> Benzen</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-13" onclick="toggleSolution(13)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-13">
+                        <strong>💡 Açıklama:</strong> 2022 yılı çıkmış sorusudur. Ahşabın doğal rengini açmak (ağartmak) veya sararmaları gidermek için tekstil ve kuaför sektöründe de kullanılan <strong>Hidrojen Peroksit (Oksijenli Su bazlı karışım)</strong> kullanılmaktadır.
+                    </div>
+                </div>
+
+                <!-- Soru 14 -->
+                <div class="question-card">
+                    <div class="badge">Analiz 2025</div>
+                    <div class="question-header">Soru 14 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi mobilya endüstrisinde kimyasal bir tehdit olan "odun tozlarının" (talaş tozunun) oluşmasına ve ortama yayılmasına neden olan faktörlerden biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 14, true)"><span>A)</span> Sulama işleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>B)</span> Isıtma ve Havalandırma (Yanlış hava akımları)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>C)</span> Elle yapılan işler (Zımpara vb.)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>D)</span> Temizlik işlemleri (Kuru süpürme)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 14, false)"><span>E)</span> Makineler (Testereler, frezeler)</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-14" onclick="toggleSolution(14)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-14">
+                        <strong>💡 Açıklama:</strong> 2025 yılı çıkmış sorusudur. Makinelerle kesim yapmak, elle zımparalamak, hatalı havalandırma pervaneleri ve atölyeyi basınçlı hava/kuru süpürgeyle temizlemek toz bulutları oluşturur. Ancak <strong>sulama işleri</strong> tozu bastırır, toz oluşumuna neden olmaz.
+                    </div>
+                </div>
+
+                <!-- Soru 15 -->
+                <div class="question-card">
+                    <div class="badge">Analiz 2025</div>
+                    <div class="question-header">Soru 15 / 20</div>
+                    <div class="question-text">Mobilya imalat sektöründe kullanılan selülozik tiner, poliüretan tiner, akrilik tiner ve sentetik tiner gibi kimyasallar genel olarak aşağıdakilerden hangisi ile adlandırılır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 15, true)"><span>A)</span> İncelticiler</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>B)</span> Astar boyalar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>C)</span> Macunlar</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>D)</span> Renklendirme ve açma malzemeleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 15, false)"><span>E)</span> Tutkallar</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-15" onclick="toggleSolution(15)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-15">
+                        <strong>💡 Açıklama:</strong> Tiner kelimesi İngilizce "thinner" (inceltici) kelimesinden dilimize geçmiştir. Tüm tiner türevleri boya, vernik veya tutkalın kıvamını seyreltmek için kullanılan <strong>İncelticiler</strong> kategorisinde yer alır.
+                    </div>
+                </div>
+
+                <!-- Soru 16 -->
+                <div class="question-card">
+                    <div class="badge">İş Ekipmanları (2023)</div>
+                    <div class="question-header">Soru 16 / 20</div>
+                    <div class="question-text">Aşağıdakilerden hangisi mobilya imalat sektöründe, toleranslı ölçülendirilmiş parçaların yüzeylerini rendeleyerek düzgün hâle getirme, komşu iki yüzeyi birbirine dik veya istenen açıda rendeleme işlemlerinde kullanılan iş ekipmanıdır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="true" onclick="selectOption(this, 16, true)"><span>A)</span> Planya</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>B)</span> CNC panel kesim</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>C)</span> Kopya torna</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>D)</span> Freze</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 16, false)"><span>E)</span> Giyotin</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-16" onclick="toggleSolution(16)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-16">
+                        <strong>💡 Açıklama:</strong> Ahşabın kaba yüzeyini tıraşlayarak pürüzsüzleştiren ve açılı yüzeyler elde edilmesini sağlayan marangozluk aletine/makinesine <strong>Planya</strong> adı verilir. (2023 sınavında sorulmuştur).
+                    </div>
+                </div>
+
+                <!-- Soru 17 -->
+                <div class="question-card">
+                    <div class="badge">Üretim Süreçleri (2024)</div>
+                    <div class="question-header">Soru 17 / 20</div>
+                    <div class="question-text">I. Sabit Taşlama / Zımpara<br>II. CNC Ahşap İşleme Tezgâhı<br>III. Eksantrik Pres<br>IV. Giyotin<br><br>Yukarıdaki iş ekipmanlarından hangisi/hangileri mobilya imalat sektörünün "metal işleme" (örneğin masa bacağı yapımı) bölümünde kullanılmaktadır?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>A)</span> Yalnız II</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>B)</span> I ve III</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>C)</span> II ve IV</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 17, false)"><span>D)</span> I, II ve III</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 17, true)"><span>E)</span> I, III ve IV</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-17" onclick="toggleSolution(17)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-17">
+                        <strong>💡 Açıklama:</strong> CNC Ahşap işleme tezgâhı adı üstünde ahşap için kullanılır. Metal sacları kesmek için <strong>Giyotin</strong>, bükmek/delmek için <strong>Eksantrik Pres</strong> ve çapaklarını almak için <strong>Sabit Taşlama(Zımpara-Spiral)</strong> kullanılır. Yanıt I, III ve IV.
+                    </div>
+                </div>
+
+                <!-- Soru 18 -->
+                <div class="question-card">
+                    <div class="badge">Tehlike Analizi (2025)</div>
+                    <div class="question-header">Soru 18 / 20</div>
+                    <div class="question-text">Mobilya imalat sektöründe kullanılan "yatay daire testerelerinin" oluşturduğu tehlikeler göz önüne alındığında, aşağıdakilerden hangisi bir tehlike değil, ideal bir çalışma koşuludur?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>A)</span> Operasyon noktasına (testere bıçağına) doğrudan temas</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>B)</span> Kesilen iş parçasının geriye doğru şiddetle fırlaması (Geri tepme)</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>C)</span> Testerenin motorundan kaynaklı yüksek gürültü ve titreşim</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 18, false)"><span>D)</span> Kesim esnasında yoğun olarak havaya kalkan odun tozu</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 18, true)"><span>E)</span> Malzeme beslemesinin makine koruyucuları sayesinde fazla fiziksel güç kullanmadan yapılması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-18" onclick="toggleSolution(18)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-18">
+                        <strong>💡 Açıklama:</strong> Testereye temas, geri tepme, gürültü, titreşim ve toz testere makinesinin tehlikeleridir. Ancak malzemenin <strong>aşırı güç kullanmadan, rahat (ergonomik) şekilde beslenebilmesi</strong> bir risk veya tehlike değil; alınması gereken bir güvenlik/konfor önlemidir. (2025 çıkmış soru varyasyonu).
+                    </div>
+                </div>
+
+                <!-- Soru 19 -->
+                <div class="question-card">
+                    <div class="badge">Makine Riskleri</div>
+                    <div class="question-header">Soru 19 / 20</div>
+                    <div class="question-text">Mobilya imalatında çekmece yuvaları ve tas menteşe deliklerini standart açmak için kullanılan "Çoklu Delik" makineleriyle çalışırken aşağıdakilerden hangisi maruz kalınabilecek tehlikelerden biri <u>değildir?</u></div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>A)</span> Matkap uçları (hareketli parçalar) ile temas sonucu elin veya parmakların delinmesi</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>B)</span> Çok sayıda matkap motorunun aynı anda çalışmasına bağlı gürültü</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 19, true)"><span>C)</span> Operasyon sırasında ortaya çıkan metal kaynak ışınları ve UV radyasyon</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>D)</span> Delme sırasında oluşan yoğun talaş ve odun tozu maruziyeti</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 19, false)"><span>E)</span> Yanlış bağlanan veya fırlayan matkap ucu/nesnelerin çarpması</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-19" onclick="toggleSolution(19)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-19">
+                        <strong>💡 Açıklama:</strong> Ahşap delme operasyonunda hareketli uç tehlikesi, gürültü ve toz vardır. <strong>UV Radyasyon ve Kaynak Işınları</strong> sadece metal işleme departmanında (gaz altı/elektrik ark kaynağında) karşılaşılan bir tehlikedir.
+                    </div>
+                </div>
+
+                <!-- Soru 20 -->
+                <div class="question-card">
+                    <div class="badge">Sektörel Genel Bakış</div>
+                    <div class="question-header">Soru 20 / 20</div>
+                    <div class="question-text">Sosyal Güvenlik Kurumu (SGK) verileri ve sektör analizlerine göre, mobilya üretim endüstrisinde görülen sağlık problemleri ve uzuv kayıplarının en büyük sebebi aşağıdakilerden hangisidir?</div>
+                    <div class="options">
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>A)</span> İşe gidiş gelişlerde yaşanan servis kazaları</div>
+                        <div class="option" data-correct="true" onclick="selectOption(this, 20, true)"><span>B)</span> Çoğunlukla genç, mesleki eğitimi zayıf ve deneyimsiz çalışanların keskin makinelerde işi yaparak öğrenmeye çalışması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>C)</span> Uzun çalışma saatlerine bağlı kalp krizleri</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>D)</span> Fabrika binalarının sık sık çökmesi veya yıkılması</div>
+                        <div class="option" data-correct="false" onclick="selectOption(this, 20, false)"><span>E)</span> Ortamdaki gürültüden kaynaklı psikolojik krizler</div>
+                    </div>
+                    <button class="solution-btn" id="btn-sol-20" onclick="toggleSolution(20)">Çözümü Göster</button>
+                    <div class="solution-box" id="sol-20">
+                        <strong>💡 Açıklama:</strong> Ders kitabına göre; Mobilya üretim endüstrisindeki kaza tehdidinin yüksek olmasının temel sebebi, çalışanların <strong>genç/deneyimsiz olması ve işi tehlikeli makineleri kullanarak sahada "deneme-yanılma" ile öğrenmesinden</strong> kaynaklanmaktadır. Bu durum el-parmak kesiklerine yol açar.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com
+    </footer>
+
+    <script>
+        let timeLeft = 30 * 60;
+        let timerInterval;
+        let answers = {};
+        let score = { right: 0, wrong: 0, empty: 20 };
+        let isFinished = false;
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            timerInterval = setInterval(updateTimer, 1000);
+            window.scrollTo(0, 0);
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = m + ':' + s;
+        }
+
+        function selectOption(el, qId, isCorrect) {
+            if (answers[qId] || isFinished) return;
+            
+            answers[qId] = true;
+            score.empty--;
+            
+            const options = el.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                score.right++;
+            } else {
+                el.classList.add('wrong');
+                score.wrong++;
+                
+                options.forEach(opt => {
+                    if(opt.dataset.correct === "true") opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('btn-sol-' + qId).style.display = 'block';
+        }
+
+        function toggleSolution(qId) {
+            const solBox = document.getElementById('sol-' + qId);
+            const solBtn = document.getElementById('btn-sol-' + qId);
+            
+            if (solBox.classList.contains('show')) {
+                solBox.classList.remove('show');
+                solBtn.innerText = 'Çözümü Göster';
+            } else {
+                solBox.classList.add('show');
+                solBtn.innerText = 'Çözümü Gizle';
+            }
+        }
+
+        function finishExam() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            
+            // 4 Yanlış 1 Doğru Kuralı
+            let net = score.right - (score.wrong * 0.25);
+            if (net < 0) net = 0;
+
+            document.getElementById('res-right').innerText = score.right;
+            document.getElementById('res-wrong').innerText = score.wrong;
+            document.getElementById('res-empty').innerText = score.empty;
+            document.getElementById('res-net').innerText = net.toFixed(2);
+            
+            document.getElementById('results-screen').style.display = 'block';
+            document.querySelector('.timer').innerHTML = "SÜRE BİTTİ";
+            
+            document.querySelectorAll('.options').forEach((opts, index) => {
+                const qId = index + 1;
+                if (!answers[qId]) {
+                    opts.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.add('locked');
+                        if(opt.dataset.correct === "true") opt.classList.add('correct');
+                    });
+                    document.getElementById('btn-sol-' + qId).style.display = 'block';
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

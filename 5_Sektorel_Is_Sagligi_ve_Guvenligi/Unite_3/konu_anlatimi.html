@@ -3,23 +3,393 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 3 Konu Anlatımı - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 3: Konaklama Faaliyetlerinde İSG</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --danger-color: #dc2626;
+            --warning-color: #ea580c;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%); color: white; padding: 3rem 2rem; text-align: center; position: relative; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+
+        .unit-subtitle {
+            display: inline-block;
+            background-color: #f8fafc;
+            color: #0f172a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-top: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 2px solid #ffffff;
+        }
+
+        .header-buttons { position: absolute; top: 1.5rem; left: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background 0.2s; font-size: 0.95rem; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; flex-grow: 1; width: 100%; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding-bottom: 3rem; }
+
+        .content-header { display: flex; justify-content: flex-end; align-items: center; padding: 1.5rem 0; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; }
+        h2 { color: var(--primary-color); margin: 2rem 0 1rem 0; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-left: 4px solid var(--secondary-color); padding-left: 0.75rem; }
+        h3 { color: #334155; margin: 1.5rem 0 0.75rem 0; font-size: 1.25rem; }
+        p { margin-bottom: 1rem; color: #475569; line-height: 1.7; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #475569; line-height: 1.7; }
+        strong { color: var(--dark-color); }
+
+        .concept-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .concept-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1.25rem; text-align: center; transition: all 0.2s; }
+        .concept-card:hover { border-color: var(--secondary-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transform: translateY(-2px); }
+        .concept-icon { font-size: 2rem; color: var(--secondary-color); margin-bottom: 0.75rem; }
+        .concept-title { font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .concept-desc { font-size: 0.9rem; color: #64748b; }
+
+        .alert-box { border-left: 5px solid; padding: 1.25rem; border-radius: 0.5rem; margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start; }
+        .alert-icon { font-size: 1.5rem; margin-top: 0.2rem; }
+        .alert-content h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
+        .alert-content p { margin: 0; font-size: 0.95rem; line-height: 1.6; }
+
+        .exam-focus { background-color: #fef2f2; border-color: var(--danger-color); }
+        .exam-focus .alert-icon { color: var(--danger-color); }
+        .exam-focus h4 { color: var(--danger-color); }
+
+        .memory-hack { background-color: #fffbeb; border-color: var(--warning-color); }
+        .memory-hack .alert-icon { color: var(--warning-color); }
+        .memory-hack h4 { color: #b45309; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        .comparison-table th, .comparison-table td { padding: 1rem; border: 1px solid #cbd5e1; text-align: left; }
+        .comparison-table th { background-color: var(--primary-color); color: white; font-weight: 600; }
+        .comparison-table tr:nth-child(even) { background-color: #f8fafc; }
+        .highlight-cell { font-weight: 700; color: var(--danger-color); }
+
+        .regulation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .regulation-item { background: #f1f5f9; padding: 1.25rem; border-radius: 0.75rem; border-left: 4px solid var(--secondary-color); }
+        .regulation-item h4 { color: var(--primary-color); margin-bottom: 0.25rem; }
+        .regulation-item p { margin: 0.5rem 0 0 0; font-size: 0.95rem; }
+
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+        .info-card { background: #f8fafc; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #e2e8f0; transition: all 0.2s; }
+        .info-card:hover { border-color: var(--secondary-color); }
+        .info-card h4 { color: var(--primary-color); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .info-card p { margin: 0.5rem 0 0 0; font-size: 0.95rem; }
+
+        .process-steps { counter-reset: step; list-style: none; padding-left: 0; }
+        .process-steps li { counter-increment: step; padding: 0.75rem 0 0.75rem 3rem; position: relative; border-bottom: 1px solid #e2e8f0; }
+        .process-steps li::before { content: counter(step); position: absolute; left: 0; top: 0.75rem; background: var(--secondary-color); color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+
+        .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .risk-item { background: #f8fafc; border-radius: 0.75rem; padding: 1.25rem; border-left: 4px solid var(--danger-color); }
+        .risk-item h4 { color: var(--danger-color); margin-bottom: 0.5rem; }
+
+        footer { background-color: var(--dark-color); color: #94a3b8; padding: 2rem; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+        @media (max-width: 768px) {
+            .header-buttons { position: relative; top: 0; left: 0; justify-content: center; margin-bottom: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .regulation-grid, .risk-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 3 Konu Anlatımı</h2>
+        <div class="header-buttons">
+            <a href="../../index.html" class="back-btn"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+            <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Üniteler</a>
+        </div>
+        <h1>3. Konaklama Faaliyetlerinde İş Sağlığı ve Güvenliği</h1>
+        <div class="unit-subtitle">Ünite 3: Otel ve Konaklama Sektöründe İSG – Departmanlar, Tehlikeler ve Riskler</div>
     </header>
-    
+
     <main>
-        </main>
-    
+        <div class="content-header">
+            <span style="background: #dbeafe; color: #1e40af; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 600;"><i class="fa-regular fa-clock"></i> Tahmini Okuma: 32 Dk</span>
+        </div>
+
+        <!-- Giriş -->
+        <div style="background: white; border: 1px solid #e2e8f0; border-left: 5px solid var(--primary-color); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3 style="color: var(--primary-color); margin-top: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bullseye"></i> Bölümün Amacı</h3>
+            <p style="color: #475569; margin-bottom: 0; line-height: 1.7;">Bu ünitede, konaklama ve otelcilik sektörünün genel yapısı, temel departmanlar (ön büro, kat hizmetleri, yiyecek-içecek, teknik servis, güvenlik) ve bu birimlerde karşılaşılan başlıca tehlike ve riskler ele alınmaktadır. Sektörün "az tehlikeli" sınıfta olmasına rağmen bazı faaliyetlerin tehlikeli ve çok tehlikeli işler kapsamında değerlendirilmesi, çalışanların maruz kaldığı fiziksel, kimyasal, ergonomik, psikososyal ve biyolojik riskler ve bunlara karşı alınması gereken korunma önlemleri detaylandırılmıştır.</p>
+        </div>
+
+        <!-- 1. Konaklama Sektörüne Genel Bakış ve Organizasyon Yapısı -->
+        <h2><i class="fa-solid fa-hotel"></i> 1. Konaklama Sektörü ve İşletme Organizasyonu</h2>
+        <p>Konaklama işletmeleri, İş Sağlığı ve Güvenliğine İlişkin İşyeri Tehlike Sınıfları Tebliği’ne göre <span class="highlight-cell">"Az Tehlikeli"</span> sınıfta yer almasına rağmen, sunulan hizmetler sırasında tehlikeli ve çok tehlikeli işler kapsamındaki faaliyetler de yürütülmektedir. Bu nedenle, işletmenin her departmanı kendi risk profiline göre değerlendirilmelidir.</p>
+
+        <div class="concept-map">
+            <div class="concept-card">
+                <i class="fa-solid fa-clipboard-list concept-icon"></i>
+                <div class="concept-title">Ön Büro (Resepsiyon)</div>
+                <div class="concept-desc">Rezervasyondan ayrılışa kadar konukla ilgili tüm iş ve işlemlerin yürütüldüğü departman.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-broom concept-icon"></i>
+                <div class="concept-title">Kat Hizmetleri</div>
+                <div class="concept-desc">Odalar, koridorlar, salonlar ve tesisin genel temizlik, düzen ve bakımından sorumlu birim.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-utensils concept-icon"></i>
+                <div class="concept-title">Yiyecek-İçecek</div>
+                <div class="concept-desc">Konuk, ziyaretçi ve personelin yeme-içme ihtiyaçlarının karşılandığı bölüm (mutfak, restoran, bar).</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-screwdriver-wrench concept-icon"></i>
+                <div class="concept-title">Teknik Destek</div>
+                <div class="concept-desc">Binanın, donanımın ve dış alanların bakım, onarım ve enerji verimliliğinden sorumlu birim.</div>
+            </div>
+            <div class="concept-card">
+                <i class="fa-solid fa-shield concept-icon"></i>
+                <div class="concept-title">Güvenlik</div>
+                <div class="concept-desc">Otel girişi, iç ve çevre güvenliği ile genel emniyet tedbirlerini alan departman.</div>
+            </div>
+        </div>
+
+        <h3>Departmanların Temel Görev ve Sorumlulukları</h3>
+        <ul>
+            <li><strong>Ön Büro:</strong> Konuk karşılama, kayıt, oda tahsisi, bilgilendirme, fatura ve check-out işlemleri.</li>
+            <li><strong>Kat Hizmetleri:</strong> Oda temizliği, çarşaf değişimi, genel alan temizliği, çamaşırhane işlemleri.</li>
+            <li><strong>Yiyecek-İçecek:</strong> Gıda hazırlama, pişirme, servis, mutfak hijyeni ve bulaşık yıkama.</li>
+            <li><strong>Teknik Destek:</strong> Elektrik, sıhhi tesisat, iklimlendirme, asansör, havuz bakımı ve küçük onarımlar.</li>
+            <li><strong>Güvenlik:</strong> Yangın önleme, CCTV izleme, alarm sistemleri, giriş kontrolü ve acil durum yönetimi.</li>
+        </ul>
+
+        <!-- 2. Bölümlere Göre Temel Tehlikeler -->
+        <h2><i class="fa-solid fa-triangle-exclamation"></i> 2. Departmanlara Göre Temel Tehlikeler</h2>
+        <p>Konaklama işletmelerinde her departmanın kendine özgü tehlike kaynakları vardır. Bu tehlikeler, çalışma ortamı, kullanılan ekipman ve kimyasallar, fiziksel zorlanmalar ve psikososyal faktörlerden kaynaklanır.</p>
+
+        <div class="risk-grid">
+            <div class="risk-item">
+                <h4><i class="fa-solid fa-desktop"></i> Ön Büro</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Ergonomik:</strong> Uzun süre oturma, kötü duruş (bel ve boyun ağrıları).</li>
+                    <li><strong>Psikososyal:</strong> Yoğun stres, vardiyalı çalışma, mobbing, sözlü şiddet.</li>
+                    <li><strong>Fiziksel:</strong> Ofis ekipmanları (ekran, klavye) göz yorgunluğu ve tekrarlayan hareket.</li>
+                </ul>
+            </div>
+            <div class="risk-item">
+                <h4><i class="fa-solid fa-broom"></i> Kat Hizmetleri</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Kimyasal:</strong> Temizlik maddeleri (çamaşır suyu, asitler, dezenfektanlar) – solunum ve deri yoluyla maruziyet.</li>
+                    <li><strong>Ergonomik:</strong> Ağır yük kaldırma (yatak, çarşaf), eğilme, uzanma (bel, omuz, diz rahatsızlıkları).</li>
+                    <li><strong>Biyolojik:</strong> Kirli çamaşırlar, çöp, biyolojik sıvılar – enfeksiyon riski.</li>
+                    <li><strong>Fiziksel:</strong> Islak zeminlerde kayma, yüksekten düşme (perde, aydınlatma temizliği).</li>
+                </ul>
+            </div>
+            <div class="risk-item">
+                <h4><i class="fa-solid fa-utensils"></i> Yiyecek-İçecek</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Kimyasal:</strong> Temizlik maddeleri, dezenfektanlar, mutfak kimyasalları.</li>
+                    <li><strong>Fiziksel:</strong> Kesici aletler (bıçak), sıcak yüzeyler (ocak, fırın), taşma, kaygan zemin.</li>
+                    <li><strong>Biyolojik:</strong> Gıda patojenleri, kesik enfeksiyonları.</li>
+                    <li><strong>Ergonomik:</strong> Ayakta uzun süre çalışma, ağır tencere taşıma.</li>
+                    <li><strong>Yangın/Patlama:</strong> Yağlı ocaklar, gaz kaçakları.</li>
+                </ul>
+            </div>
+            <div class="risk-item">
+                <h4><i class="fa-solid fa-screwdriver-wrench"></i> Teknik Destek</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Elektrik:</strong> Çarpma, ark, yangın riskleri.</li>
+                    <li><strong>Mekanik:</strong> Döner/kesici parçalar (havalandırma, asansör, pompa).</li>
+                    <li><strong>Kimyasal:</strong> Soğutucu gazlar, yağlar, solventler.</li>
+                    <li><strong>Fiziksel:</strong> Yüksekte çalışma (çatı, merdiven), dar alanlar, gürültü, titreşim.</li>
+                </ul>
+            </div>
+            <div class="risk-item">
+                <h4><i class="fa-solid fa-shield"></i> Güvenlik</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Psikososyal:</strong> Tehdit, şiddet, saldırı (sarhoş, saldırgan konuk).</li>
+                    <li><strong>Fiziksel:</strong> Yangın, sel, deprem gibi acil durumlar.</li>
+                    <li><strong>Ergonomik:</strong> Uzun süre ayakta, devriye yürüme.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 3. Risk Değerlendirmesi ve Korunma Stratejileri -->
+        <h2><i class="fa-solid fa-shield-halved"></i> 3. Risk Değerlendirmesi ve Korunma Önlemleri</h2>
+        <p>Konaklama işletmelerinde <strong>risk değerlendirmesi</strong> yapılması yasal bir zorunluluktur. İş kazaları ve meslek hastalıklarına karşı önlem alınmalı; çalışanların sağlık ve güvenliğini tehdit eden tüm faktörler sistematik olarak analiz edilmelidir.</p>
+
+        <h3>Korunma Önlemleri (Hiyerarşik Yaklaşım)</h3>
+        <div class="info-grid">
+            <div class="info-card">
+                <h4><i class="fa-solid fa-wrench"></i> Mühendislik Kontrolleri</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Havalandırma sistemleri (kimyasal buharları azaltmak).</li>
+                    <li>Kaymaz zemin kaplamaları.</li>
+                    <li>Aydınlatma ve ergonomik ekipman (ayarlanabilir masa/sandalye).</li>
+                    <li>Makine koruyucuları (mutfak ekipmanları).</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h4><i class="fa-solid fa-clipboard-list"></i> İdari Kontroller</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li>Çalışan eğitimleri (kimyasal güvenlik, yangın, ilk yardım).</li>
+                    <li>İş rotasyonu (tekrarlayan hareketleri azaltmak).</li>
+                    <li>Çalışma programlarının düzenlenmesi (vardiya, mola).</li>
+                    <li>Risk değerlendirme raporlarının güncellenmesi (yılda en az bir kez).</li>
+                </ul>
+            </div>
+            <div class="info-card" style="grid-column: 1 / -1;">
+                <h4><i class="fa-solid fa-vest"></i> Kişisel Koruyucu Donanım (KKD)</h4>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem;">
+                    <li><strong>Kat Hizmetleri:</strong> Kimyasallara dayanıklı eldiven, önlük, kaymaz tabanlı ayakkabı, toz maskesi.</li>
+                    <li><strong>Mutfak:</strong> Isıya dayanıklı eldiven, alev geciktirici önlük, bıçak geçirmez eldiven (temizlik/kesim), kaymaz ayakkabı.</li>
+                    <li><strong>Teknik Servis:</strong> Dielektrik eldiven, koruyucu gözlük, baret, emniyet kemeri (yüksekte çalışma).</li>
+                    <li><strong>Güvenlik:</strong> Reflektör yelek, taşınabilir yangın söndürücü, iletişim cihazı.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="alert-box memory-hack">
+            <i class="fa-solid fa-brain alert-icon"></i>
+            <div class="alert-content">
+                <h4>Hafıza Taktikleri: KKD Seçimi</h4>
+                <p>Kat hizmetlerinde <span class="highlight-cell">kimyasal eldiven + kaymaz ayakkabı</span>; mutfakta <span class="highlight-cell">ısıya dayanıklı eldiven + kaymaz ayakkabı</span>; teknik serviste <span class="highlight-cell">baret + emniyet kemeri</span>. Sınavda her departmanın ihtiyaç duyduğu temel KKD’ler sorulabilir.</p>
+            </div>
+        </div>
+
+        <!-- 4. Mevzuat ve Yasal Yükümlülükler -->
+        <h2><i class="fa-solid fa-gavel"></i> 4. Mevzuat ve Yasal Yükümlülükler</h2>
+        <p>Konaklama sektörü, 6331 Sayılı İş Sağlığı ve Güvenliği Kanunu kapsamında olup, işverenler aşağıdaki yükümlülükleri yerine getirmekle sorumludur:</p>
+
+        <div class="regulation-grid">
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-file-lines"></i> Risk Değerlendirmesi</h4>
+                <p>İşyerindeki tüm tehlikelerin belirlenmesi ve risklerin analiz edilmesi. <span class="highlight-cell">Yılda en az bir kez</span> güncellenmelidir.</p>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-chalkboard-user"></i> Çalışan Eğitimi</h4>
+                <p>İşe girişte, değişen risklere göre periyodik olarak eğitim verilmesi. <span class="highlight-cell">Temel eğitim süresi en az 16 saat</span> (teorik+pratik).</p>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-triangle-exclamation"></i> Acil Durum Planı</h4>
+                <p>Yangın, deprem, sel, sabotaj gibi olası acil durumlar için plan hazırlanması ve tatbikatlar yapılması.</p>
+            </div>
+            <div class="regulation-item">
+                <h4><i class="fa-solid fa-notes-medical"></i> Sağlık Gözetimi</h4>
+                <p>Çalışanların periyodik sağlık muayeneleri (işe giriş, periyodik, işten çıkış). Özellikle mutfak ve kat hizmetleri çalışanları için biyolojik ve kimyasal maruziyet takibi.</p>
+            </div>
+        </div>
+
+        <div class="alert-box exam-focus">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <div class="alert-content">
+                <h4>Sınav Bilgisi: Tehlike Sınıfı</h4>
+                <p>Konaklama sektörü <span class="highlight-cell">"Az Tehlikeli"</span> sınıfta olmasına rağmen, mutfak, teknik servis gibi alanlarda tehlikeli ve çok tehlikeli işler yapılmaktadır. Bu nedenle risk değerlendirmesi <strong>sadece genel tehlike sınıfına göre değil</strong>, <strong>faaliyet bazında</strong> yapılmalıdır.</p>
+            </div>
+        </div>
+
+        <!-- 5. Sınavda Çıkabilecek Kritik Bilgiler -->
+        <h2><i class="fa-solid fa-list-check"></i> 5. Özet ve Sınav Odaklı Kritik Bilgiler</h2>
+        <p>Aşağıdaki tablo, ünite genelinde en yüksek soru potansiyeline sahip kavramları ve eşik değerleri özetlemektedir.</p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Kavram / Kategori</th>
+                    <th>Kritik Veri / Bilgi</th>
+                    <th>Açıklama / Dikkat Noktası</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tehlike Sınıfı</strong></td>
+                    <td><span class="highlight-cell">Az Tehlikeli</span></td>
+                    <td>Ancak alt faaliyetler tehlikeli/çok tehlikeli olabilir (mutfak, teknik).</td>
+                </tr>
+                <tr>
+                    <td><strong>Ön Büro Riski</strong></td>
+                    <td>Psikososyal / Ergonomik</td>
+                    <td>Stres, uzun süreli oturma, tekrarlayan hareketler.</td>
+                </tr>
+                <tr>
+                    <td><strong>Kat Hizmetleri</strong></td>
+                    <td>Kimyasal &amp; Biyolojik &amp; Ergonomik</td>
+                    <td>Temizlik maddeleri, kirli çamaşır, ağır kaldırma.</td>
+                </tr>
+                <tr>
+                    <td><strong>Mutfak</strong></td>
+                    <td>Fiziksel (kesici, sıcak) &amp; Yangın</td>
+                    <td>Bıçak yaralanmaları, yağ yangınları, kaymalar.</td>
+                </tr>
+                <tr>
+                    <td><strong>Teknik Servis</strong></td>
+                    <td>Elektrik / Mekanik / Yüksekte çalışma</td>
+                    <td>Dielektrik eldiven, baret, emniyet kemeri zorunludur.</td>
+                </tr>
+                <tr>
+                    <td><strong>KKD (Kat Hizmetleri)</strong></td>
+                    <td>Kimyasal eldiven + kaymaz ayakkabı</td>
+                    <td>Toz maskesi de kullanılabilir (hava süzen maske değil).</td>
+                </tr>
+                <tr>
+                    <td><strong>KKD (Mutfak)</strong></td>
+                    <td>Isıya dayanıklı eldiven + kaymaz ayakkabı</td>
+                    <td>Bıçak geçirmez eldiven (temizlik/kesim).</td>
+                </tr>
+                <tr>
+                    <td><strong>Eğitim Süresi (Temel)</strong></td>
+                    <td><span class="highlight-cell">16 saat</span> (teori+pratik)</td>
+                    <td>Az tehlikeli sınıf için asgari süre.</td>
+                </tr>
+                <tr>
+                    <td><strong>Risk Değerlendirme Güncelleme</strong></td>
+                    <td>Yılda en az <span class="highlight-cell">1 kez</span></td>
+                    <td>Değişen koşullarda daha sık güncellenmelidir.</td>
+                </tr>
+                <tr>
+                    <td><strong>Acil Durum Tatbikatı</strong></td>
+                    <td>Yılda en az <span class="highlight-cell">2 kez</span></td>
+                    <td>Özellikle yangın tatbikatı zorunludur.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Özet Kutusu -->
+        <div style="background: #e0f2fe; border-radius: 0.75rem; padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;"><i class="fa-regular fa-lightbulb"></i> Ünite Özeti</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div><strong>Tehlike Sınıfı:</strong> Az Tehlikeli (ancak mutfak, teknik servis tehlikeli).</div>
+                <div><strong>Ön Büro:</strong> Psikososyal ve ergonomik riskler.</div>
+                <div><strong>Kat Hizmetleri:</strong> Kimyasal, biyolojik, ergonomik riskler.</div>
+                <div><strong>Mutfak:</strong> Kesici, sıcak, yangın, kayma riskleri.</div>
+                <div><strong>Teknik Servis:</strong> Elektrik, mekanik, yüksekte çalışma.</div>
+                <div><strong>Güvenlik:</strong> Şiddet, acil durum yönetimi.</div>
+                <div><strong>Temel Eğitim Süresi:</strong> 16 saat.</div>
+                <div><strong>Risk Değerlendirme:</strong> Yılda en az 1 kez güncelleme.</div>
+                <div><strong>Yangın Tatbikatı:</strong> Yılda en az 2 kez.</div>
+                <div><strong>KKD Özeti:</strong> Kat → kimyasal eldiven; mutfak → ısı eldiven; teknik → baret + kemer.</div>
+            </div>
+        </div>
+
+        <!-- Test Butonu -->
+        <div style="text-align: center; margin-top: 3.5rem;">
+            <a href="test_3.html" style="background-color: var(--secondary-color); color: white; text-decoration: none; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: bold; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(13, 148, 136, 0.3); transition: all 0.2s;">
+                Konuyu Anladım, Ünite 3 Test-1'e Başla <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <p>&copy; 2026 Anadolu Üniversitesi İSG Yaz Okulu E-Hazırlık | Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
 </body>
 </html>
