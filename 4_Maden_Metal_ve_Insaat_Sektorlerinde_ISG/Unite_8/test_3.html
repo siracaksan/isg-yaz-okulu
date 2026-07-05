@@ -1,25 +1,1042 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 8 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 8: Tahlisiye ve Yıkım İşleri - TEST 3 (Özgün Sentez ve Vaka Analizleri)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Profesyonel Kurtarma Turuncusu & Antrasit Konsepti - Test 3 Teması */
+            --primary: #334155;        /* Antrasit / Slate 700 */
+            --primary-dark: #0f172a;   /* Koyu Antrasit / Slate 900 */
+            --primary-light: #f8fafc;  /* Çok Açık Gri / Slate 50 */
+            --accent: #ea580c;         /* Kurtarma Turuncusu / Orange 600 */
+            --accent-dark: #c2410c;    /* Koyu Turuncu / Orange 700 */
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --error: #dc2626;
+            --error-light: #fee2e2;
+            --bg-color: #f1f5f9;       
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border-radius: 12px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            padding-bottom: 80px;
+        }
+
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Montserrat', sans-serif; }
+
+        /* --- Header & Navigation --- */
+        .site-header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            margin-bottom: 2.5rem;
+            border-bottom: 6px solid var(--accent);
+            position: relative;
+        }
+
+        .site-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px;}
+        .site-header p { font-size: 1.1rem; font-weight: 500; opacity: 0.9; color: #fdba74; }
+
+        .main-nav {
+            max-width: 1200px;
+            margin: 0 auto 2.5rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .nav-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-label { font-weight: 700; color: var(--primary-dark); margin-right: 0.5rem; font-family: 'Montserrat', sans-serif;}
+
+        .nav-btn {
+            background-color: #f8fafc;
+            color: var(--primary);
+            border: 1px solid #cbd5e1;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.active {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent-dark);
+            box-shadow: 0 4px 6px rgba(234, 88, 12, 0.3);
+        }
+
+        /* --- Start Screen & AI Analysis --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+
+        .start-screen {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            box-shadow: var(--shadow-md);
+            margin: 0 auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        .timer-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff7ed;
+            color: var(--accent-dark);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            font-family: 'Montserrat', sans-serif;
+            border: 2px solid var(--accent);
+        }
+
+        .ai-analysis {
+            background-color: #f8fafc;
+            border-left: 6px solid var(--accent);
+            padding: 2rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            margin-bottom: 2.5rem;
+        }
+
+        .ai-analysis h3 {
+            color: var(--primary-dark);
+            margin-bottom: 1.25rem;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.75rem;
+        }
+
+        .ai-analysis p { margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.6; color: #334155;}
+        .ai-analysis ul { list-style-type: none; margin-bottom: 1rem; }
+        .ai-analysis li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.75rem;
+            color: #475569;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .ai-analysis li::before {
+            content: "🛡️";
+            position: absolute;
+            left: 0;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box {
+            background: #ffffff;
+            border: 1px solid #fdba74;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: #c2410c;
+            font-weight: 600;
+        }
+
+        .text-center { text-align: center; margin-top: 2rem;}
+
+        .btn-start {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 1.25rem 3.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(234, 88, 12, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-start:hover {
+            background-color: var(--accent-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgba(194, 65, 12, 0.5);
+        }
+
+        /* --- Sticky Exam Panel --- */
+        .sticky-panel {
+            position: sticky;
+            top: 1.5rem;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2.5rem;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .time-display {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .time-display.warning { color: var(--error); animation: pulse 1s infinite; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .panel-actions { display: flex; gap: 1rem; }
+
+        .btn-action {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-finish { background-color: var(--primary); color: white; }
+        .btn-finish:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--text-muted); color: white; }
+        .btn-print:hover { background-color: var(--text-main); }
+
+        /* --- Question Grid & Cards --- */
+        .question-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+            border-left: 6px solid var(--primary);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); border-left-color: var(--accent); }
+
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+
+        .q-number {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+        }
+
+        .q-tag {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            background-color: #f1f5f9;
+            color: #0f172a;
+            border: 1px solid #cbd5e1;
+        }
+
+        .q-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--primary-dark);
+            line-height: 1.7;
+        }
+
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .option-item {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 1.1rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        .option-item:hover:not(.disabled) {
+            border-color: var(--accent);
+            background-color: #fff7ed;
+        }
+
+        .option-item.disabled { cursor: not-allowed; opacity: 0.6; }
+
+        .option-item.selected-correct {
+            background-color: var(--success-light);
+            border-color: var(--success);
+            color: #065f46;
+            font-weight: 700;
+            box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+        }
+
+        .option-item.selected-wrong {
+            background-color: var(--error-light);
+            border-color: var(--error);
+            color: #991b1b;
+            text-decoration: line-through;
+        }
+
+        .option-item.actual-correct {
+            background-color: var(--success-light);
+            border-color: var(--success);
+            color: #065f46;
+            border-style: dashed;
+            border-width: 2px;
+            font-weight: 700;
+        }
+
+        .btn-solution {
+            background-color: white;
+            color: var(--primary-dark);
+            border: 1px solid var(--primary);
+            padding: 0.85rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-solution:hover { background-color: var(--primary-light); }
+
+        .solution-content {
+            margin-top: 1.25rem;
+            padding: 1.25rem;
+            background-color: #f8fafc; 
+            border-radius: 8px;
+            font-size: 0.95rem;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+            color: var(--text-main);
+            line-height: 1.6;
+            border: 1px solid #e2e8f0;
+        }
+
+        .solution-content strong {
+            color: var(--accent-dark);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- Results Modal --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .result-board {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 90%;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .result-board h2 { font-size: 2.2rem; color: var(--primary-dark); margin-bottom: 2rem; font-family: 'Montserrat', sans-serif; font-weight: 800;}
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+
+        .stat-box { padding: 1.5rem; border-radius: 12px; font-weight: 600; border: 1px solid #e2e8f0; }
+        .stat-box.correct { background-color: var(--success-light); color: #166534; border-color: #bbf7d0; }
+        .stat-box.wrong { background-color: var(--error-light); color: #991b1b; border-color: #fecaca; }
+        .stat-box.empty { background-color: #f1f5f9; color: #475569; }
+        .stat-box.net { background-color: #fff7ed; color: #c2410c; grid-column: span 2; font-size: 1.2rem; border-color: #fdba74; }
+
+        .stat-value { font-size: 2.5rem; font-weight: 800; display: block; line-height: 1; margin-bottom: 0.25rem;}
+
+        .btn-close-modal {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .btn-close-modal:hover { background-color: var(--accent-dark); }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-dark);
+            color: #d1d5db;
+            margin-top: 4rem;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-top: 4px solid var(--accent);
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.8rem;
+            display: inline-block;
+        }
+        
+        .footer-contact {
+            font-size: 0.95rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* --- Print CSS --- */
+        @media print {
+            body { background-color: white; color: black; padding-bottom: 0; font-size: 11px; }
+            .site-header { padding: 0.5rem; border-radius: 0; margin-bottom: 1rem; background: #eee !important; color: black !important; border: 1px solid #ccc; }
+            .site-header h1 { font-size: 1.2rem; }
+            .site-header p { color: #333 !important; font-size: 0.9rem;}
+            .main-nav, .sticky-panel, .btn-solution { display: none !important; }
+            #start-screen, #result-modal { display: none !important; }
+            #exam-screen { display: block !important; }
+            footer { display: none; }
+            
+            .question-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
+            .question-card { box-shadow: none; border: 1px solid #ccc !important; break-inside: avoid; page-break-inside: avoid; margin-bottom: 0; padding: 0.5rem; }
+            .q-header { margin-bottom: 0.5rem; }
+            .q-number { font-size: 0.8rem; padding: 0.2rem 0.5rem; border: 1px solid #000; color: #000; background: none;}
+            .q-tag { font-size: 0.7rem; border: none; padding: 0;}
+            .q-text { font-size: 0.95rem; margin-bottom: 0.5rem; color: #000; }
+            .options-list { margin-bottom: 0.5rem; gap: 0.3rem;}
+            .option-item { border: none; padding: 0.15rem 0; font-size: 0.85rem; background: none;}
+            .solution-content { display: block !important; background-color: transparent !important; border-left: 2px solid #555 !important; color: black !important; padding: 0.3rem; margin-top: 0.3rem; font-size: 0.8rem; border: none !important;}
+        }
+
+    </style>
 </head>
 <body>
-    <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 8 - Test 3</h2>
+
+    <!-- Header -->
+    <header class="site-header">
+        <h1 class="font-heading">Maden, Metal ve İnşaat Sektörlerinde İSG</h1>
+        <p>Ünite 8: Tahlisiye ve Yıkım İşleri | TEST 3 (Özgün Sentez ve Vaka Analizleri)</p>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-group">
+            <span class="nav-label">Genel Sayfalar:</span>
+            <a href="../../index.html" class="nav-btn">🏠 Tüm Dersler</a>
+            <a href="../index.html" class="nav-btn">📚 Ders Ana Sayfası</a>
+            <a href="konu_anlatimi.html" class="nav-btn">📖 Konu Anlatımı</a>
+        </div>
+        <div class="nav-group">
+            <span class="nav-label">Ünite 8 Testleri:</span>
+            <a href="test_1.html" class="nav-btn">Test 1 (Karma & Çıkmış)</a>
+            <a href="test_2.html" class="nav-btn">Test 2 (İleri Analiz)</a>
+            <a href="test_3.html" class="nav-btn active">Test 3 (Özgün Sentez)</a>
+            <a href="test_4.html" class="nav-btn">Test 4</a>
+            <a href="test_5.html" class="nav-btn">Test 5</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Start Screen & Analysis -->
+        <div id="start-screen" class="start-screen">
+            <div class="timer-info">⏱️ Sınav Süresi: 25 Dakika | 20 Soru</div>
+            
+            <div class="ai-analysis">
+                <h3 class="font-heading">🛡️ Test 3: Vaka Analizleri ve Sentez Soruları</h3>
+                <p>Bu test, Tahlisiye (Arama Kurtarma) süreçleri ile Yıkım Şantiyelerindeki teorik bilgilerinizi saha senaryolarına ve pratik durumlara uyarlayabilmeniz için özel olarak hazırlanmıştır.</p>
+                <ul>
+                    <li><strong>Maden Kazaları:</strong> Grizu patlama limitleri, tahlisiye personelinin görev tanımları ve Şili San Jose kazasında kullanılan sığınma odaları.</li>
+                    <li><strong>Yıkım Uygulamaları:</strong> Şehir merkezinde vinçle çatıya makine çıkarılması (Kat eksiltme), kolonları çelik halatla zayıflatma (Çekme halatı) ve patlatma delikleri (76 mm kuralı).</li>
+                    <li><strong>Yasal İstisnalar:</strong> Hangi küçük yapılarda yıkım planı aranmayacağı (6.0m açıklık / 1.5m konsol) ve idari izin süreçlerinin işleyişi.</li>
+                </ul>
+                <div class="highlight-box">
+                    DİKKAT: Metan gazının hava ile karışımı hacimsel olarak %5 ile %14 arasında patlama özelliği gösterir, en şiddetli patlama %9.5'te yaşanır. Ayrıca asbest veya tehlikeli atık içeren binalar, yıkımdan önce "seçici yıkım" yöntemiyle mutlaka arındırılmalıdır.
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button class="btn-start" onclick="startExam()">Vaka Analizi Testini Başlat</button>
+            </div>
+        </div>
+
+        <!-- Exam Screen -->
+        <div id="exam-screen" style="display: none;">
+            <div class="sticky-panel">
+                <div class="time-display" id="time-display">
+                    ⏳ <span id="timer">25:00</span>
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-action btn-finish" onclick="finishExam()">📝 Testi Bitir</button>
+                    <button class="btn-action btn-print" onclick="window.print()">🖨️ PDF Kaydet</button>
+                </div>
+            </div>
+
+            <div class="question-grid" id="question-grid">
+                <!-- Questions will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="result-modal" class="modal-overlay" style="display: none;">
+        <div class="result-board">
+            <h2>🏆 Test 3 Sonucu</h2>
+            <div class="stats-grid">
+                <div class="stat-box correct">
+                    <span class="stat-value" id="stat-correct">0</span>
+                    Doğru
+                </div>
+                <div class="stat-box wrong">
+                    <span class="stat-value" id="stat-wrong">0</span>
+                    Yanlış
+                </div>
+                <div class="stat-box empty">
+                    <span class="stat-value" id="stat-empty">0</span>
+                    Boş
+                </div>
+                <div class="stat-box net">
+                    <span class="stat-value" id="stat-net">0.00</span>
+                    Net (4 Yanlış 1 Doğru)
+                </div>
+            </div>
+            <button class="btn-close-modal" onclick="closeModal()">Sonuçları ve Açıklamaları İncele</button>
+        </div>
+    </div>
+
+    <!-- Footer Alanı -->
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="footer-content">
+            <span class="footer-name">Hazırlayan: Sıraç Aksan</span>
+            <div class="footer-contact">
+                <span>📞 0506 928 22 10</span>
+                <span>✉️ saracaksan@gmail.com</span>
+            </div>
+        </div>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        const questionsData = [
+            {
+                tag: "Grizu Dinamiği",
+                question: "1. Bir kömür madeninde yapılan gaz ölçümünde havadaki metan oranının %6.5 olduğu tespit edilmiştir. İSG uzmanı bu veriyi değerlendirirken metan gazının hangi aralıkta 'patlama' özelliği gösterdiğini dikkate almalıdır?",
+                options: [
+                    "A) %5 ile %14 arasında",
+                    "B) %1 ile %4 arasında",
+                    "C) %14 ile %28 arasında",
+                    "D) %28 ile %40 arasında",
+                    "E) %0.5 ile %2 arasında"
+                ],
+                correctIndex: 0, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Ders kitabındaki tanıma göre grizu (metan-hava karışımı) hacim olarak <strong>%5 ile %14 arasında patlama özelliği</strong> gösterir. (%14 ile %28 arasında ise sadece yanma özelliği gösterir)."
+            },
+            {
+                tag: "Tahlisiye Ekip Yönetimi",
+                question: "2. Bir yer altı maden işletmesinde olası göçük ve yangınlara müdahale edebilmek amacıyla kurulacak standart bir tahlisiye (arama-kurtarma) ekibi asgari ve azami kaç personelden oluşmalıdır?",
+                options: [
+                    "A) En az 2, en çok 5",
+                    "B) En az 4, en çok 7",
+                    "C) En az 5, en çok 10",
+                    "D) En az 3, en çok 6",
+                    "E) En az 6, en çok 12"
+                ],
+                correctIndex: 1, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Ünite 8'de Tahlisiye ekiplerinin çalışma sistematiğinde belirtildiği üzere; etkin bir arama kurtarma faaliyeti için bir tahlisiye ekibi <strong>en az 4, en fazla 7 kişiden</strong> oluşmaktadır."
+            },
+            {
+                tag: "Yıkım Teknikleri Vaka",
+                question: "3. Şehir merkezinde bitişik nizam bulunan 12 katlı eski bir binanın yıkımı planlanmaktadır. Çevredeki binalara zarar vermemek adına bir vinç yardımıyla binanın terasına bir mini ekskavatör çıkarılarak, binanın üstten aşağıya doğru parça parça yıkılması kararlaştırılmıştır. <br><br>Uygulanan bu yıkım metodunun literatürdeki adı nedir?",
+                options: [
+                    "A) Uzun erişimli makine ile yıkım",
+                    "B) Beton delme ve kesme ile yıkım",
+                    "C) Kat eksiltme suretiyle yıkım",
+                    "D) Çekme halatı vasıtasıyla yıkım",
+                    "E) Patlayıcı kullanarak yıkım"
+                ],
+                correctIndex: 2, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>İş makinesinin (mini ekskavatör) binanın en üst katına çıkarılarak binanın yukarıdan aşağıya doğru kırılarak katlarının azaltılması işlemine <strong>Kat eksiltme suretiyle yıkım tekniği</strong> adı verilir."
+            },
+            {
+                tag: "İdari İzin Süreçleri",
+                question: "4. Riskli olduğu tespit edilen bir yapının yıkım sürecinde, yapının tamamen tahliye edildiği ve elektrik, su, doğalgaz gibi tesisatlarının güvenle kapatıldığı belgelenmiştir. Bu belgelerin sunulması durumunda ilgili idare 'Yıkım Ruhsatını' maliklerin onayını aramaksızın en fazla kaç iş günü içinde vermelidir?",
+                options: [
+                    "A) 6 iş günü",
+                    "B) 10 iş günü",
+                    "C) 15 iş günü",
+                    "D) 20 iş günü",
+                    "E) 30 iş günü"
+                ],
+                correctIndex: 0, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Kentsel Dönüşüm mevzuatına göre tüm aboneliklerin iptal edildiği ve binanın tahliye edildiği belgelendiğinde, idare <strong>6 (altı) iş günü</strong> içinde yıkım ruhsatını düzenlemek zorundadır."
+            },
+            {
+                tag: "Yıkım Planı İstisnaları",
+                question: "5. Aşağıdaki yapı türlerinden hangisinin yıkımında mevzuat gereği resmi bir 'Yıkım Planı' hazırlanması yasal olarak <u>aranmaz?</u>",
+                options: [
+                    "A) Etrafında 8.0 metreden daha yakın bir yapı bulunmayan sanayi tesislerinde",
+                    "B) 6.0 metreden fazla serbest açıklığı olmayan ve çıkma şeklinde 1.50 metreden fazla konsolu bulunmayan yapılarda",
+                    "C) Bir bodrum katı dışında en çok iki katlı ve 750 m2'yi geçmeyen yapılarda",
+                    "D) Yalnızca ahşap ve kerpiç kullanılarak inşa edilmiş tek katlı binalarda",
+                    "E) Kırsal bölgelerde yer alan ve nüfusu 2000'in altında olan yerleşimlerdeki tüm yapılarda"
+                ],
+                correctIndex: 1, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Mevzuatta yer alan çok net bir sınır değerdir: <strong>6.0 metreden fazla serbest açıklığı olmayan ve çıkma şeklinde 1.50 metreden fazla konsol (balkon vb.) uzunluğu bulunmayan</strong> ufak çaplı yapılar için özel bir yıkım planı aranmaz."
+            },
+            {
+                tag: "Tehlikeli Madde Yönetimi",
+                question: "6. 1970'li yıllarda inşa edilmiş bir çimento fabrikasının yıkımından önce, yalıtım borularında ve çatı kaplamalarında kanserojen bir lif olan asbest (amyant) kullanıldığı tespit edilmiştir. Yıkım işlemine başlanmadan önce bu tehlikeli atığın özel ekiplerce arındırılıp güvenle uzaklaştırılması sürecine ne ad verilir?",
+                options: [
+                    "A) Ön İşlem",
+                    "B) Seçici Yıkım",
+                    "C) Sentez Söküm",
+                    "D) Geçici Bertaraf",
+                    "E) Çevre Lisanslaması"
+                ],
+                correctIndex: 1, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Yıkıntı atıklarının geri dönüşümünü sağlamak veya asbest gibi tehlikeli atıkları binadan güvenle ayıklamak amacıyla yıkımın kontrollü ve aşamalı sökülerek yapılmasına <strong>Seçici Yıkım</strong> adı verilir."
+            },
+            {
+                tag: "Patlatmalı Yıkım Standardı",
+                question: "7. Eski bir termik santralin devasa betonarme bacalarının yıkımı için 'Patlayıcı Kullanarak Yıkım Tekniği' tercih edilmiştir. Bu operasyonda, patlayıcı lokumların kolonlara standart ve güvenli bir şekilde yerleştirilebilmesi için kolonlara açılacak deliklerin çapı kaç mm olmalıdır?",
+                options: [
+                    "A) 36 mm",
+                    "B) 56 mm",
+                    "C) 76 mm",
+                    "D) 96 mm",
+                    "E) 120 mm"
+                ],
+                correctIndex: 2, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>AÖF'nin 2023 sınavında da sorduğu mühendislik ölçütüdür. Patlatmalı yıkım tekniğinde dinamit veya benzeri patlayıcıların yerleştirilmesi için ana taşıyıcı kolonlarda açılacak delik çapı <strong>76 mm</strong> olmalıdır."
+            },
+            {
+                tag: "Uluslararası Tahlisiye Vakası",
+                question: "8. 2010 yılında Şili'nin San Jose bakır madeninde yaşanan göçükte 33 madenci, yerin 700 metre altında tam 70 gün mahsur kalmıştır. Bu madencilerin sağ olarak kurtarılmasını sağlayan ve uluslararası literatürde 'İyi Uygulama Örneği' kabul edilen, içinde oksijen, gıda ve haberleşme ekipmanları barındıran donanım nedir?",
+                options: [
+                    "A) Oksijenli Ferdi Kurtarıcı (OFK) İstasyonları",
+                    "B) Grizu Kalkanları",
+                    "C) Betonarme Tahkimat Cepleri",
+                    "D) Kaçış (Sığınma) Odaları",
+                    "E) Yüksek Basınçlı Tahlisiye Çadırları"
+                ],
+                correctIndex: 3, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Ders kitabında detaylıca incelenen Şili maden kazasında işçiler, yer altına önceden inşa edilmiş olan ve yaşam destek üniteleri barındıran <strong>Kaçış (Sığınma) Odalarına</strong> sığınarak hayatta kalmayı başarmışlardır."
+            },
+            {
+                tag: "Yıkım Teknikleri Vaka",
+                question: "9. Taşıyıcı kolonları zayıflatıldıktan sonra bu kolonlara yüksek mukavemetli çelik halat bağlanarak bir iş makinesinin çekici kuvveti ile binanın yapay bir şekilde çöktürülmesi prensibine dayanan yıkım yöntemi hangisidir?",
+                options: [
+                    "A) Uzun erişimli makine ile yıkım",
+                    "B) Kat eksiltme suretiyle yıkım",
+                    "C) Çekme halatı vasıtasıyla yıkım",
+                    "D) Beton delme ve kesme",
+                    "E) Sarkaç gülle ile yıkım"
+                ],
+                correctIndex: 2, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Kolonların zayıflatılıp çelik halat bağlanarak iş makinesinin çekme kuvveti ile binanın çökmesinin sağlandığı yöntem <strong>Çekme halatı vasıtasıyla yıkım tekniği</strong>dir."
+            },
+            {
+                tag: "Yıkım Planı Sorumluluğu",
+                question: "10. Bir kentsel dönüşüm projesinde, riskli yapının güvenle yıkılabilmesi için 'Yıkım Planını' hazırlayan, yıkım işinin tüm statik ve teknik sorumluluğunu üstlenen yetkili inşaat mühendisi mevzuatta hangi isimle adlandırılır?",
+                options: [
+                    "A) Şantiye Şefi",
+                    "B) İş Güvenliği Uzmanı",
+                    "C) Yapı Denetçisi",
+                    "D) Statik Fenni Mesul",
+                    "E) Proje Müellifi"
+                ],
+                correctIndex: 3, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Yıkım İşleri Yönetmeliğine göre (Madde 8), yıkım planını bizzat hazırlayan ve bu sürecin teknik ve statik güvenliğinden sorumlu olan yetkili mühendise <strong>Statik Fenni Mesul</strong> denir."
+            },
+            {
+                tag: "Tahlisiye Tarihçesi",
+                question: "11. Türkiye'nin madencilik tarihinde, yer altı kömür ocaklarında yaşanabilecek yangın, patlama ve göçüklere profesyonel müdahale etmek amacıyla kurulan 'İlk Tahlisiye İstasyonu' hangi yıl kurulmuştur?",
+                options: [
+                    "A) 1923",
+                    "B) 1938",
+                    "C) 1955",
+                    "D) 1972",
+                    "E) 1990"
+                ],
+                correctIndex: 1, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Türkiye'de ilk tahlisiye istasyonu, Zonguldak havzasındaki kömür madenlerinde meydana gelebilecek kazalara müdahale edebilmek amacıyla <strong>1938</strong> yılında kurulmuştur."
+            },
+            {
+                tag: "Tehlikeli Atık Mevzuatı",
+                question: "12. Yıkım alanından çıkan asbest, cıva, kurşun boyalı moloz gibi tehlikeli atıkların toplanmasına, geri dönüşümüne ve doğaya zarar vermeden bertaraf edilmesine ilişkin işletmelere Bakanlık tarafından verilen yasal izin belgesi nedir?",
+                options: [
+                    "A) Çevre Lisansı",
+                    "B) Tehlikeli Atık Ruhsatı",
+                    "C) İSG Uygunluk Belgesi",
+                    "D) Geri Kazanım Sertifikası",
+                    "E) Ön İşlem Onayı"
+                ],
+                correctIndex: 0, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>AÖF 2021 sınavında sorulmuştur. Atıkların toplanıp işlenmesi ve nihai bertarafı için yeterli teknolojiye sahip işletmelere verilen teknik yeterlilik belgesine <strong>Çevre Lisansı</strong> adı verilir."
+            },
+            {
+                tag: "Patlatmalı Yıkım İzni",
+                question: "13. İlgili mevzuat gereği şehir merkezlerindeki kontrollü patlatmalı bina yıkım projelerinde görev alacak statik fenni mesulün, bu işlemi yapabilmesi için hangi şarta mutlaka sahip olması gerekir?",
+                options: [
+                    "A) İSG alanında yüksek lisans yapmış olması",
+                    "B) A Sınıfı İş Güvenliği Uzmanı olması",
+                    "C) Bakanlıkça veya onaylı kurumlardan 'Patlatmalı Yıkım Sertifikası' almış olması",
+                    "D) Şantiye şefliği konusunda en az 5 yıl tecrübesi olması",
+                    "E) Maden Mühendisi diplomasına sahip olması"
+                ],
+                correctIndex: 2, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Mevzuata göre, patlatmalı yıkım çok özel ve tehlikeli bir işlem olduğu için süreci yönetecek statik fenni mesulün <strong>Bakanlıkça düzenlenen eğitimlere katılıp 'Patlatmalı Yıkım Sertifikası' almış olması</strong> zorunludur."
+            },
+            {
+                tag: "Grizu Maksimum Etki",
+                question: "14. Maden havasındaki metan gazının oksijenle tam stökiyometrik (eksiksiz yanma) oranda karıştığı, patlamanın ısı ve basınç şiddetinin maksimum seviyeye (en yıkıcı) ulaştığı metan yüzdesi kaçtır?",
+                options: [
+                    "A) %5.0",
+                    "B) %7.5",
+                    "C) %9.5",
+                    "D) %12.0",
+                    "E) %14.0"
+                ],
+                correctIndex: 2, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Metan-Hava karışımında (grizu) patlama aralığı %5 ile %14 arasıdır. Ancak reaksiyonun eksiksiz tamamlandığı ve patlamanın en şiddetli olduğu nokta metan oranının <strong>%9.5 olduğu andır.</strong>"
+            },
+            {
+                tag: "Tahlisiye Ekipmanı Standartları",
+                question: "15. Tahlisiye (Arama Kurtarma) personelinin yer altında yoğun gazlı ve dumanlı alanlara girerken hayatta kalmalarını sağlayan kapalı devre 'Oksijenli Ferdi Kurtarıcı (OFK)' cihazlarının uluslararası üretim/uygunluk standardı hangisidir?",
+                options: [
+                    "A) TS EN 388",
+                    "B) TS EN 12464",
+                    "C) TS EN 13794",
+                    "D) TS EN 149",
+                    "E) ISO 45001"
+                ],
+                correctIndex: 2, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Madencilik mevzuatına göre Oksijenli Ferdi Kurtarıcıların (OFK) sahip olması ve belgelendirilmesi gereken standart <strong>TS EN 13794</strong>'tür."
+            },
+            {
+                tag: "Afet Yönetimi Mevzuatı",
+                question: "16. Türkiye'nin afet yönetimindeki ilk ve en köklü yasal çerçevesi olan; deprem, sel, heyelan gibi afetler sonucu yıkılan veya ağır hasar görerek yıkılması gereken binaların durumunu düzenleyen kanun aşağıdakilerden hangisidir?",
+                options: [
+                    "A) 6306 sayılı Kentsel Dönüşüm Kanunu",
+                    "B) 4857 sayılı İş Kanunu",
+                    "C) 3194 sayılı İmar Kanunu",
+                    "D) 7269 sayılı Umumi Hayata Müessir Afetler Kanunu",
+                    "E) 6331 sayılı İSG Kanunu"
+                ],
+                correctIndex: 3, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Afet alanları açısından Türkiye'deki ilk yasal düzenleme olan ve 1959 yılında yürürlüğe giren kanun <strong>7269 sayılı (Umumi Hayata Müessir Afetler Dolayısiyle Alınacak Tedbirlerle Yapılacak Yardımlara Dair) Kanun</strong>'dur."
+            },
+            {
+                tag: "Tahlisiye Terminolojisi",
+                question: "17. Osmanlıca kökenli bir kelime olup madencilik literatüründe arama, kurtarma ve tahliye kavramlarının bütününü ifade eden sözcük aşağıdakilerden hangisidir?",
+                options: [
+                    "A) Dekompresyon",
+                    "B) Barajlama",
+                    "C) Tahlisiye",
+                    "D) Sıkılama",
+                    "E) Degaj"
+                ],
+                correctIndex: 2, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Ders kitabı 8. Ünite girişinde vurgulandığı üzere, Arapça 'halas' (kurtulma) kökünden gelen <strong>Tahlisiye</strong> kelimesi, madenlerde can ve mal kurtarma, tahliye etme işlemlerinin genel adıdır."
+            },
+            {
+                tag: "Atık Hacim Yönetimi",
+                question: "18. Yıkım sahasından çıkan tehlikeli ve tehlikesiz atıkların hacmini küçültmek, zararlı özelliklerini azaltmak, taşımasını ve bertarafını kolaylaştırmak amacıyla atıklara uygulanan parçalama, ezme gibi fiziksel veya kimyasal işlemlere genel olarak ne ad verilir?",
+                options: [
+                    "A) Ön İşlem",
+                    "B) Seçici Ayrıştırma",
+                    "C) Topyekün Geri Kazanım",
+                    "D) Cüruf Ayrıştırma",
+                    "E) Nihai Bertaraf"
+                ],
+                correctIndex: 0, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Yıkım İşleri Yönetmeliği Tanımlar bölümüne göre (Madde 8), atıkların hacmini veya tehlikelilik özelliklerini azaltmak amacıyla atığa uygulanan işlemlere <strong>Ön İşlem</strong> adı verilir."
+            },
+            {
+                tag: "Uluslararası Mevzuat - ABD",
+                question: "19. Amerika Birleşik Devletleri'nde modern anlamda maden güvenliğinin dönüm noktası sayılan ve tahlisiyecilik uygulamalarına federal bir standart getiren 'Federal Maden Sağlık ve Güvenlik Kanunu' hangi yıl yasalaşmıştır?",
+                options: [
+                    "A) 1938",
+                    "B) 1972",
+                    "C) 1986",
+                    "D) 1999",
+                    "E) 2011"
+                ],
+                correctIndex: 1, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>ABD'de maden güvenliği mevzuatının federal bir çatı altında zorunlu hale getirildiği Federal Maden Sağlık ve Güvenlik Kanunu (MSHA kuruluş temeli) <strong>1972</strong> yılında yasalaşmıştır."
+            },
+            {
+                tag: "Yıkım İşleri Riskleri",
+                question: "20. Aşağıdakilerden hangisi yapı yıkım şantiyelerinde çalışanların ve çevrenin anlık olarak karşılaşabileceği öncelikli tehlike ve risklerden <u>biri değildir?</u>",
+                options: [
+                    "A) Asbest ve silika tozu maruziyeti (Tozuma)",
+                    "B) Makine ve enkaz parçalarının çarpması",
+                    "C) Beklenmedik anlık göçmeler",
+                    "D) Eklemlerde artroz (kireçlenme) oluşumu",
+                    "E) Yüksek şiddette gürültü ve titreşim"
+                ],
+                correctIndex: 3, 
+                solution: "<strong>💡 Uzman Çözümü:</strong><br>Yıkım şantiyelerinde çarpma, tozuma, ağır gürültü/titreşim ve plansız göçme anlık tehlikelerdir. <strong>Artroz (eklem kireçlenmesi)</strong> ise anlık bir şantiye tehlikesi değil, uzun yıllar sonucu yavaş yavaş oluşabilecek kronik bir rahatsızlıktır."
+            }
+        ];
+
+        let examStarted = false;
+        let examFinished = false;
+        let timerInterval;
+        let timeLeft = 25 * 60; // 25 minutes
+        const userAnswers = new Array(questionsData.length).fill(null);
+
+        window.onload = () => {
+            renderQuestions();
+        };
+
+        function renderQuestions() {
+            const grid = document.getElementById('question-grid');
+            grid.innerHTML = '';
+
+            questionsData.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `card-${index}`;
+
+                let optionsHtml = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <li class="option-item" id="opt-${index}-${optIndex}" onclick="selectOption(${index}, ${optIndex})">
+                            ${opt}
+                        </li>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="q-header">
+                        <span class="q-number font-heading">Soru ${index + 1}</span>
+                        <span class="q-tag">${q.tag}</span>
+                    </div>
+                    <div class="q-text">${q.question}</div>
+                    <ul class="options-list">
+                        ${optionsHtml}
+                    </ul>
+                    <button class="btn-solution" id="btn-sol-${index}" onclick="toggleSolution(${index})">
+                        💡 Uzman Çözümünü Göster
+                    </button>
+                    <div class="solution-content" id="solution-${index}">
+                        ${q.solution}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function startExam() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'block';
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            
+            examStarted = true;
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            if(timeLeft <= 0) {
+                finishExam();
+                return;
+            }
+            timeLeft--;
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            const display = document.getElementById('timer');
+            display.innerText = `${m}:${s}`;
+            
+            if(timeLeft < 60) {
+                document.getElementById('time-display').classList.add('warning');
+            }
+        }
+
+        function selectOption(qIndex, optIndex) {
+            if(examFinished || userAnswers[qIndex] !== null) return;
+
+            userAnswers[qIndex] = optIndex;
+            const correctIndex = questionsData[qIndex].correctIndex;
+            
+            questionsData[qIndex].options.forEach((_, idx) => {
+                const optEl = document.getElementById(`opt-${qIndex}-${idx}`);
+                optEl.classList.add('disabled');
+            });
+
+            const selectedEl = document.getElementById(`opt-${qIndex}-${optIndex}`);
+            const correctEl = document.getElementById(`opt-${qIndex}-${correctIndex}`);
+
+            if(optIndex === correctIndex) {
+                selectedEl.classList.add('selected-correct');
+            } else {
+                selectedEl.classList.add('selected-wrong');
+                correctEl.classList.add('actual-correct');
+            }
+        }
+
+        function toggleSolution(qIndex) {
+            const solDiv = document.getElementById(`solution-${qIndex}`);
+            if (solDiv.style.display === 'none' || solDiv.style.display === '') {
+                solDiv.style.display = 'block';
+            } else {
+                solDiv.style.display = 'none';
+            }
+        }
+
+        function finishExam() {
+            if(examFinished) return;
+            examFinished = true;
+            clearInterval(timerInterval);
+
+            let correct = 0;
+            let wrong = 0;
+            let empty = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                if(ans === null) {
+                    empty++;
+                    const correctIndex = questionsData[idx].correctIndex;
+                    const correctEl = document.getElementById(`opt-${idx}-${correctIndex}`);
+                    if(correctEl) correctEl.classList.add('actual-correct');
+                } else if(ans === questionsData[idx].correctIndex) {
+                    correct++;
+                } else {
+                    wrong++;
+                }
+            });
+
+            const net = (correct - (wrong / 4)).toFixed(2);
+
+            document.getElementById('stat-correct').innerText = correct;
+            document.getElementById('stat-wrong').innerText = wrong;
+            document.getElementById('stat-empty').innerText = empty;
+            document.getElementById('stat-net').innerText = net;
+
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('result-modal').style.display = 'none';
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+    </script>
 </body>
 </html>
