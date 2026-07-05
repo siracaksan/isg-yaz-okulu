@@ -1,25 +1,638 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 7 - Test 5 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 7: Test 5 (Final) - İş Sağlığı Yönetimi</title>
+    <style>
+        :root {
+            --primary: #1A5276; 
+            --secondary: #F1C40F; 
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #a9cce3;
+            --timer-bg: #e74c3c;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--secondary);
+        }
+        header h1 { margin: 0; font-size: 1.6em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; color: #d4e6f1; }
+        
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #d35400; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eaf2f8;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid #d4e6f1;
+        }
+        .test-numaralari span { font-weight: bold; color: #1A5276; margin-right: 10px; }
+        .test-numaralari a {
+            color: #1A5276;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+        .test-numaralari a.active {
+            background: var(--secondary);
+            border: 1px solid #b7950b;
+        }
+        
+        /* Geçmiş Yıl Analiz Paneli Özel Tasarım */
+        .analiz-paneli {
+            background: #eef7f2;
+            border: 2px solid #27ae60;
+            border-left: 6px solid #1e8449;
+            color: #1b4f34;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-size: 0.95em;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: #1e8449; display: flex; align-items: center; gap: 8px; font-size: 1.2em;}
+        .analiz-paneli ul { padding-left: 20px; margin: 10px 0; }
+        .analiz-paneli li { margin-bottom: 5px; }
+        .analiz-paneli strong { color: #c0392b; }
+
+        .dashboard {
+            background: #eaf2f8;
+            border: 1px solid #a9cce3;
+            color: #1A5276;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .timer-box {
+            background: var(--timer-bg);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse { from { opacity: 1; } to { opacity: 0.8; } }
+
+        main { max-width: 1200px; margin: auto; padding: 0 15px; }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 1.05em; color: #2c3e50; }
+        .options { list-style: none; padding: 0; margin: 0; }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+        .options.answered li { pointer-events: none; }
+        .options.timeout li { pointer-events: none; opacity: 0.7; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+        }
+        
+        details.solution {
+            margin-top: 15px;
+            background: #eaf2f8;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed #3498db;
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #2980b9;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+        
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #555; font-size: 0.9em; }
+
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 7 - Test 5</h2>
+        <h1>İş Sağlığı Yönetimi</h1>
+        <h2>Ünite 7: Sağlık Kuruluşlarında Enfeksiyon, İş Kazaları ve İSG Eğitimleri - Test 5 (Final)</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="konu_anlatimi.html">📖 Ünite 7 Konu Anlatımı</a> | 
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📝 Çıkmış Sorular</a>
+        </div>
+        <hr>
+        <div class="test-numaralari">
+            <span>Testler:</span>
+            <a href="test_1.html">Test 1</a>
+            <a href="test_2.html">Test 2</a>
+            <a href="test_3.html">Test 3</a>
+            <a href="test_4.html">Test 4</a>
+            <a href="test_5.html" class="active">Test 5 (Final)</a>
+        </div>
+    </nav>
+
+    <!-- PÜF NOKTALARI -->
+    <div class="analiz-paneli">
+        <h3>🏆 Ünite 7 - Final Testi Püf Noktaları ve Genel Tekrar</h3>
+        <ul>
+            <li><strong>İş Kazası Hukuki Tanımı (6331 Sayılı Kanun):</strong> İş yerinde veya işin yürütümü nedeniyle meydana gelen, bedenen veya ruhen özre uğratan olaydır. (ILO tanımı ise "planlanmamış, etrafa zarar veren olay" şeklindedir).</li>
+            <li><strong>Eğitim Sınıfları ve Süreleri:</strong> İSG eğitim süreleri Çok Tehlikeli yerler için <strong>yılda 1 defa 16 saat</strong>, Tehlikeli yerler için <strong>2 yılda 1 defa 12 saat</strong>, Az Tehlikeli yerler için <strong>3 yılda 1 defa 8 saat</strong> olarak düzenlenir. Tüm masrafları <strong>işveren</strong> karşılar.</li>
+            <li><strong>Evrensel Önlemler:</strong> Tüm hastaların kan ve vücut sıvılarının enfeksiyon (HIV, HBV vb.) taşıdığı varsayılarak daima bariyer (eldiven) kullanılması esastır.</li>
+            <li><strong>Atık Hiyerarşisi (Piramidi):</strong> Çevre korumada en çok istenen tepedeki adım <strong>"Önleme"</strong>; en son başvurulması gereken ve en alt basamakta yer alan adım ise <strong>"Bertaraf (Yok etme/Gömme)"</strong>dir.</li>
+            <li><strong>Yaralanmalara İlk Müdahale:</strong> İğne batan bölge kesinlikle <strong>sıkılmaz, kanatılmaz, emilmez.</strong> Sadece su ve sabunla (ya da cilt antiseptiği ile) yıkanır.</li>
+        </ul>
+    </div>
+
+    <!-- Puanlama ve Zamanlayıcı -->
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+        </div>
+        <div class="timer-box" id="timer-display">
+            ⏱️ Kalan Süre: <span id="time">30:00</span>
+        </div>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid" id="quiz-container">
+
+            <div class="question-card">
+                <div class="question-text">1. 6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre (Madde 3/g) "İş Kazası" tanımı aşağıdakilerden hangisinde tam ve doğru olarak verilmiştir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Önceden planlanmamış, bilinmeyen ve kontrol altına alınmamış olan olaydır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sadece mesai saatleri içinde gerçekleşen ve maddi hasara neden olan olaydır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) İş yerinde veya işin yürütümü nedeniyle meydana gelen, ölüme sebebiyet veren veya vücut bütünlüğünü ruhen ya da bedenen özre uğratan olaydır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Çalışanın meslek hastalığına yakalanması sürecinin genel adıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İşverenin kasti ihmali sonucu ortaya çıkan yaralanmalardır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> 6331 sayılı yasada iş kazası doğrudan doğruya, bedenen veya ruhen özre uğratan, ölümle veya yaralanmayla sonuçlanan iş kaynaklı olay olarak tanımlanır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. Uluslararası Çalışma Örgütü (ILO) "iş kazasını" aşağıdakilerden hangisindeki gibi tanımlamaktadır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Önceden planlanmamış, bilinmeyen ve kontrol altına alınmamış olan, etrafa zarar verecek nitelikteki olaylar.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İşin yürütümü nedeniyle insanı ruhen veya bedenen sakat bırakan olaylar.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Sosyal güvenlik sistemini maddi zarara uğratan mesleki faaliyetler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İşe gidiş ve dönüş esnasında gerçekleşen trafik olayları.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sadece fabrikalardaki makine hasarlarıdır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> ILO evrensel tanımında kaza; "önceden planlanmamış, bilinmeyen ve etrafa zarar veren" nitelikteki olaylar olarak geçer.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. Sağlık kuruluşlarında Atık Yönetimi piramidinde "çevreyi korumak" adına en değerli ve hiyerarşinin <u>en tepesinde</u> (ilk tercih edilmesi gereken) yer alan basamak hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Bertaraf (Yok etme)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Geri Dönüşüm</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Enerji Geri Kazanımı</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Önleme (Kaynağında hiç üretmeme)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Tekrar Kullanım</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Atık hiyerarşisinde en öncelikli ve en çok arzulanan hedef atığı baştan hiç oluşturmamak yani "Önleme" (Prevention) adımıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. Sağlık çalışanlarının el hijyenini sağlarken dikkat etmesi gereken kurallara göre; su ve sabunla etkili bir el yıkama işleminde sürenin <u>en az</u> kaç saniye olması gerekmektedir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) 5 saniye</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) 10 saniye</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) 20 saniye</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) 40 saniye</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) 60 saniye</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> İdeal el yıkama süresi en az 20 saniye olmalı ve bu sürenin 15 saniyesi sabunla mekanik olarak masaj yapma (ovuşturma) şeklinde olmalıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. "Hastanelerdeki şiddet ve saldırı olaylarında, personelin tehlike altında olduğunu bildirerek güvenlik görevlilerini hızla olay yerine çağıran acil uyarı sistemine" ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kırmızı Kod</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Mavi Kod</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Beyaz Kod</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Pembe Kod</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sarı Kod</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> AÖF sınavlarında en çok sorulan kavramlardan biridir. Sağlıkta şiddet eşittir "Beyaz Kod" sistemidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Tüberküloz (Verem) hastalığı gibi; havaya saçılan ve havalandırma akımlarıyla çok geniş alanlara yayılarak uzun süre havada asılı kalabilen partiküllerin sağlam insana geçmesi ile oluşan bulaşma yolu hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Hava yolu ile bulaşma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Damlacık saçılması ile bulaşma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Vektör yolu ile bulaşma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Doğrudan temas ile bulaşma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Ara kaynak ile bulaşma</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Toz partiküllerine tutunup asılı kalarak (damlacıktan daha uzak mesafelere) yayılan bulaş mekanizmasına "Hava Yolu" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. İSG eğitim konularından "Teknik Konular" başlığı altında aşağıdakilerden hangisinin personele verilmesi beklenir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Çalışanların yasal hak ve sorumlulukları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Meslek hastalıklarının sebepleri ve korunma yolları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Tütün ürünlerinin zararları</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) İş ekipmanlarının güvenli kullanımı, yangın ve ergonomi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İlk yardım teknikleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Hastalık, tütün ve ilk yardım "Sağlık"; yasal haklar "Genel"; makine, yangın, elektrik, KKD kullanımı ve ergonomi ise "Teknik Konular" başlığı altındadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. Çalışanların İSG eğitim süreleri dikkate alındığında; hastaneler gibi "Çok Tehlikeli" sınıfta yer alan bir iş yerinde İSG temel eğitimlerinin hangi periyotla ve asgari kaç saat verilmesi zorunludur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Altı ayda bir, 4 saat</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Yılda en az bir defa, en az 16 saat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İki yılda en az bir defa, en az 12 saat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Üç yılda en az bir defa, en az 8 saat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yılda en az bir defa, en az 8 saat</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Çok tehlikeli iş yerlerinde İSG eğitimleri her yıl tekrarlanır ve süresi en az 16 saattir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Sağlık kuruluşlarında toplanan tıbbi atıkların hastane içerisinde bekletildiği "Geçici Atık Deposu"nun dış kapısı standart olarak hangi renkte olur ve üzerinde hangi ibare bulunur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kırmızı kapı / Radyasyon Yoncası</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Turuncu kapı / Uluslararası Biyotehlike Amblemi ve "Dikkat Tıbbi Atık" ibaresi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Siyah kapı / Geri Dönüşüm işareti</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Sarı kapı / Kuru kafa ve kemikler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yeşil kapı / İlk Yardım Hilali</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Mevzuata göre tıbbi atık depolarının kapısı turuncudur ve üzerinde siyah Biyolojik Tehlike (Biohazard) amblemi yer alır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. "Enjektör uçları, bisturi (neşter), lanset, kırık cam, iğneler ve ampul parçaları" gibi cildi delme veya kesme riski taşıyan atıklar hangi kutulara atılır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kırmızı tıbbi atık çöp poşetlerine</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Siyah evsel çöp poşetlerine</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Sarı renkli, delinmeye ve yırtılmaya dayanıklı sert plastik kutulara</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Mavi geri dönüşüm çöp poşetlerine</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Turuncu bez çuvallara</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Çöp poşetini yırtıp personelin eline batmaması için "Kesici/Delici Atıklar" kesinlikle sert kapaklı Sarı plastik kutulara atılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">11. Zekâ seviyesi, görme yeteneği, kaza eğilimi, iş tatmini, yabancılaşma duygusu, monotonluk, stres ve psikolojik rahatsızlıklar iş kazalarının oluşmasında etkili olan hangi etken grubunda sayılmaktadır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Fizyolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sosyolojik etkenler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Psikolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Biyolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kimyasal etkenler</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Duygusal durum, stres, iş tatmini ve yabancılaşma gibi içsel ruhsal faktörler "Psikolojik Etkenler" sınıfındadır (Yorgunluk ve duyu kayıpları ise fizyolojiktir).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Cerrahi girişim, otopsi, anatomi çalışmaları sonucu ortaya çıkan insan dokuları, organları, vücut parçaları ve fetüsü içeren kırmızı torbalara atılan atık grubuna ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Patolojik atıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Enfeksiyon yapıcı atıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kesici-delici atıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tehlikeli atıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Evsel atıklar</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Hastanelerden kaynaklanan insan dokusu, ameliyat parçaları ve otopsi materyalleri özel bir tıbbi atık türü olan "Patolojik Atık" olarak adlandırılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. Dünya Sağlık Örgütü (DSÖ) tarafından sigaradan sonra "ikinci büyük kanserojen" kabul edilen; sağlık çalışanlarının iğne batmasıyla sıkça maruz kaldığı ve Karaciğer Kanseri (PHC) riskini 200-400 kat artıran viral etken aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) HIV (AIDS virüsü)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) SARS-CoV-2 (Covid-19 virüsü)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Hepatit B Virüsü (HBV)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Influenza (Grip virüsü)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Tüberküloz (Verem bakterisi)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Ders kitabına göre, sağlık sektörü için en ölümcül ve yaygın sinsi tehlikelerden olan HBV (Hepatit B), doğrudan karaciğer kanserini (PHC) tetikleyen 2. büyük risk faktörüdür.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Hastanelerde "Evrensel (Standart) Önlemler" kavramının temel felsefesi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnızca bulaşıcı hastalığı olduğu laboratuvar testiyle kanıtlanan hastalara eldivenle dokunmak.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Tıbbi atıkların tamamını yakarak yok etmek.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Hastanın test sonucu (HIV, HBV vb.) bilinmese dahi, tüm hastaların kan ve vücut sıvılarını hastalık taşıyormuş (enfekte) gibi riskli kabul ederek koruyucu bariyer (eldiven, maske) kullanmak.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İşe yeni başlayan tüm personele derhal aşı yapmak.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sadece doktorların eldiven takmasını zorunlu kılmak.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Patojen taşıyıp taşımadığına bakılmaksızın tüm hastaların çıkartılarına "potansiyel hastalık taşıyıcısı" olarak yaklaşıp tedbir almak "Evrensel Önlemler"in ana kuralıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. Çalışanların biyolojik etkenlere maruziyet kayıtları kural olarak maruziyet bitiminden sonra 15 yıl saklanır. Ancak "Tüberküloz (Verem)" gibi çok uzun kuluçka dönemli ve kalıcı (gizli) enfeksiyona neden olan ajanlarda bu kayıtların saklanma süresi <u>en az</u> kaç yıldır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) 20 yıl</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) 25 yıl</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) 30 yıl</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) 40 yıl</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) 50 yıl</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Mevzuata göre verem (tüberküloz) gibi yıllarca uykuda kalabilen biyolojik risk maruziyetlerinin sicil kayıtları "en az 40 yıl" saklanmak zorundadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Asıl işveren ile Alt işverenin (taşeron) bir arada çalıştığı bir hastanede, taşeron çalışanlarının İSG eğitimlerinin gerçekleştirilmesinde yasal sorumluluk paylaşımı nasıldır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Alt işveren kendi çalışanlarına eğitimleri bizzat vermek zorundadır; Asıl işveren ise bu eğitimlerin alt işveren tarafından verilip verilmediğini kontrol etmekle yükümlüdür.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Asıl işveren, taşeron işçilerin eğitimlerinden kesinlikle sorumlu tutulamaz.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Alt işveren işçileri eğitim masraflarını kendi ceplerinden öderler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tüm çalışanların (taşeron dahil) eğitimini yalnızca asıl işveren verir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Taşeron işçilerinin İSG eğitimi alması yasaktır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Alt işveren (taşeron) kendi işçisini eğitmekle yükümlüdür. Asıl işveren (hastane yönetimi) ise taşeronun bu yükümlülüğünü yerine getirip getirmediğini belgeler üzerinden denetlemekle sorumludur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Sağlık çalışanı olarak görev yaparken bir kaza sonucu cildinize kullanılmış kanlı bir iğne batması halinde (kesici/delici alet yaralanması), maruziyet anında yapacağınız <u>ilk acil müdahale</u> aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yarayı derhal şiddetle sıkarak kanatmaya ve mikrobu dışarı akıtmaya çalışmak.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Yaralı bölgeye çamaşır suyu dökmek.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Yaralı bölgeyi su ve sabunla bolca yıkamak ancak cildi kesinlikle sıkmamak ve kanatmaya çalışmamak.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Parmağa sıkı bir turnike uygulayıp kanı durdurmak.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sadece yara bandı yapıştırıp çalışmaya devam etmek.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> İğne batmalarında ilk müdahale sabun/su ile yıkamaktır. Yarayı sıkmak, emmek veya kanatmaya çalışmak doku içi basıncı artırarak virüsün kana geçiş hızını kolaylaştıracağı için tehlikeli ve yasaktır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Sağlık kurumlarındaki atık torbalarının renklerine göre sınıflandırılmasında aşağıdakilerden hangisi <u>yanlış</u> bir eşleştirmedir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Evsel Atık (Ofis, Mutfak çöpü) = Siyah torba</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Tıbbi (Enfeksiyöz) Atık = Kırmızı torba</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Geri Dönüşüm (Plastik, Kağıt, Cam) = Kırmızı torba</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Patolojik Atık (Organ parçaları) = Kırmızı torba</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kesici/Delici Atık = Sarı sert plastik kutu</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Kâğıt, cam, karton ve plastik gibi ambalaj/geri dönüşüm atıkları kırmızıya değil, "Mavi" renkli çöp torbalarına atılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. İstatistiklere göre sağlık çalışanlarının (hemşire, laborant vb.) en sık yaşadığı iş kazası olan "iğne batmaları" eylemin hangi aşamasında en yoğun olarak yaşanmaktadır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İğne ambalajdan çıkarılırken</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sterilizasyon makinesinde yıkama yapılırken</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) İşlem tamamlandıktan sonra kullanılmış iğne ucunun kapağı el yordamıyla tekrar kapatılmaya (kılıfına sokulmaya) çalışılırken</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Hastaya ilk batırma (enjeksiyon) anında</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İlaç çekimi sırasında flakon kırıldığında</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Kazaların aslan payı işlemi bitirdikten sonra iğne kapağını geri takmaya çalışmak (recapping) sırasında yaşanır. Bu nedenle kural şudur: "İğne kapakları asla kapatılmaz, ucu açık şekilde doğrudan sarı kutuya atılır."</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Çalışanların İSG eğitimlerinin planlanması, araç-gereçlerin temin edilmesi ve eğitimin verilmesi sürecinden doğan tüm maddi/manevi yasal sorumluluk ile maliyetler kime aittir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sosyal Güvenlik Kurumu (SGK)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) İşveren</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İşçinin kendisi (maaşından kesilerek)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İş Sağlığı ve Güvenliği Uzmanı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İşçi Sendikası</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Kanuna göre İSG ile ilgili çalışanlara verilecek her türlü eğitimin sağlanması ve tüm masrafların işçiye yansıtılmadan (ücretsiz) karşılanması "İşverenin" tartışılmaz yasal yükümlülüğüdür.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+        let isTimeUp = false;
+
+        function updateScore() {
+            let netScore = correctCount - (wrongCount / 4);
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            if (isTimeUp) return;
+
+            const parentUl = clickedLi.parentElement;
+            if (parentUl.classList.contains('answered')) return;
+            
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            updateScore();
+        }
+
+        // Zamanlayıcı
+        let timeLeft = 1800; // 30 dk
+        const timerElement = document.getElementById("time");
+
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = "00:00";
+                document.getElementById('timer-display').style.background = "#333";
+                document.getElementById('timer-display').innerHTML = "⏳ Süre Bitti!";
+                isTimeUp = true;
+                
+                const allUls = document.querySelectorAll('.options');
+                allUls.forEach(ul => { ul.classList.add('timeout'); });
+                alert("Süreniz doldu! İşaretleme yapamazsınız, ancak doğru cevaplar için çözümleri inceleyebilirsiniz.");
+            } else {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                
+                if(seconds < 10) { seconds = "0" + seconds; }
+                if(minutes < 10) { minutes = "0" + minutes; }
+
+                timerElement.innerText = minutes + ":" + seconds;
+                timeLeft--;
+            }
+        }, 1000);
+    </script>
 </body>
 </html>

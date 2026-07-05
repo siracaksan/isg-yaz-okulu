@@ -1,25 +1,639 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 5 - Test 4 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 5: Test 4 - İş Sağlığı Yönetimi</title>
+    <style>
+        :root {
+            --primary: #1A5276; 
+            --secondary: #F1C40F; 
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #a9cce3;
+            --timer-bg: #e74c3c;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--secondary);
+        }
+        header h1 { margin: 0; font-size: 1.6em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; color: #d4e6f1; }
+        
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #d35400; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eaf2f8;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid #d4e6f1;
+        }
+        .test-numaralari span { font-weight: bold; color: #1A5276; margin-right: 10px; }
+        .test-numaralari a {
+            color: #1A5276;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+        .test-numaralari a.active {
+            background: var(--secondary);
+            border: 1px solid #b7950b;
+        }
+        
+        /* Geçmiş Yıl Analiz Paneli Özel Tasarım */
+        .analiz-paneli {
+            background: #fdf2e9;
+            border: 2px solid #e67e22;
+            border-left: 6px solid #d35400;
+            color: #333;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-size: 0.95em;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: #d35400; display: flex; align-items: center; gap: 8px; font-size: 1.2em;}
+        .analiz-paneli ul { padding-left: 20px; margin: 10px 0; }
+        .analiz-paneli li { margin-bottom: 5px; }
+        .analiz-paneli strong { color: #c0392b; }
+
+        .dashboard {
+            background: #eaf2f8;
+            border: 1px solid #a9cce3;
+            color: #1A5276;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .timer-box {
+            background: var(--timer-bg);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse { from { opacity: 1; } to { opacity: 0.8; } }
+
+        main { max-width: 1200px; margin: auto; padding: 0 15px; }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 1.05em; color: #2c3e50; }
+        .options { list-style: none; padding: 0; margin: 0; }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+        .options.answered li { pointer-events: none; }
+        .options.timeout li { pointer-events: none; opacity: 0.7; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+        }
+        
+        details.solution {
+            margin-top: 15px;
+            background: #eaf2f8;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed #3498db;
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #2980b9;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+        
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #555; font-size: 0.9em; }
+
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 5 - Test 4</h2>
+        <h1>İş Sağlığı Yönetimi</h1>
+        <h2>Ünite 5: Sağlık Kuruluşlarında Riskler ve Risk Analizleri - Test 4</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="konu_anlatimi.html">📖 Ünite 5 Konu Anlatımı</a> | 
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📝 Çıkmış Sorular</a>
+        </div>
+        <hr>
+        <div class="test-numaralari">
+            <span>Testler:</span>
+            <a href="test_1.html">Test 1</a>
+            <a href="test_2.html">Test 2</a>
+            <a href="test_3.html">Test 3</a>
+            <a href="test_4.html" class="active">Test 4</a>
+            <a href="test_5.html">Test 5</a>
+        </div>
+    </nav>
+
+    <!-- GEÇMİŞ YILLARIN SINAV ANALİZİ -->
+    <div class="analiz-paneli">
+        <h3>🔍 Ünite 5 - Sınav Analizi ve Test 4 Odak Noktaları</h3>
+        <p>AÖF'nin Sağlık Kuruluşlarında Riskler ve Risk Analizleri ünitesine yaklaşımını analiz ettiğimizde bu testte karşınıza çıkacak anahtar başlıklar şunlardır:</p>
+        <ul>
+            <li><strong>Tehlike vs. Risk:</strong> Tehlike, olumsuz etki yaratabilecek "zarar potansiyelidir" (Örn: Köpek balığı). Risk ise bu tehlikeden oluşan hasar veya "yaralanma ihtimalidir". İkisi kesinlikle aynı şey değildir.</li>
+            <li><strong>L Tipi Matristeki Şiddetler (Detaylı):</strong> 5 Puan: Çok ciddi (Ölüm), 4 Puan: Ciddi (Sürekli iş göremezlik), 3 Puan: Orta (Tedavi gerektiren), 2 Puan: Hafif (İlk yardım), <strong>1 Puan: Çok hafif (Beş yılda bir oluşan, ilk yardım bile gerektirmeyen)</strong> şeklindedir.</li>
+            <li><strong>Risk Değerlendirmesinin Adımları:</strong> Bilgi toplama ile başlar; Tehlikelerin belirlenmesi, Risklerin değerlendirilmesi, Önlem alma (Riski ortadan kaldırma) ve son olarak <strong>İzleme ve Gözden Geçirme</strong> şeklinde biter.</li>
+            <li><strong>Psikososyal Etkenler ve Ergonomi:</strong> 2021, 2023, 2024 ve 2025 sınavlarında en çok sorulan başlıktır. Monotonluk, stres, zeka seviyesi = Psikolojik etkendir. Hoşnutluk (İşin psikolojik beklentilere uygun olması) ise ergonominin hedeflerinden biridir.</li>
+        </ul>
+        <p><em>Bu test, yukarıdaki bilgi ve kavramların "tanım ve tablo okuma" düzeyindeki kavrayışını ölçmek için hazırlanmıştır.</em></p>
+    </div>
+
+    <!-- Puanlama ve Zamanlayıcı -->
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+        </div>
+        <div class="timer-box" id="timer-display">
+            ⏱️ Kalan Süre: <span id="time">30:00</span>
+        </div>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid" id="quiz-container">
+
+            <div class="question-card">
+                <div class="question-text">1. İş sağlığı alanında birbiriyle sıklıkla karıştırılan "Tehlike" ve "Risk" kavramları arasındaki farkı en iyi açıklayan ifade aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tehlike ve risk tamamen aynı anlama gelir ve birbirinin yerine kullanılır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Tehlike olumsuz etki yaratabilecek zarar potansiyelidir; Risk ise bu tehlikeye bağlı ortaya çıkan zarar veya hasar ihtimalidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Risk, tehlikenin geçmişte yaşanmış hâline verilen addır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tehlike sadece makinelere özgüdür, risk ise sadece insanlarla ilgilidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Olay gerçekleştiğinde adı tehlike olur, henüz gerçekleşmemişse risktir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Ders kitabına göre (Örn: Köpek balığı bir tehlikedir. Köpek balığının sizi ısırma ihtimali ise risktir). Tehlike zarar potansiyeli barındırır, risk bu zararın gerçekleşme olasılığıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. L Tipi Risk Matrisi değerlendirme tablosuna göre; "Beş yılda bir ve üzeri oluşması beklenen, iş kaybı olmayan, ilk yardım dahi gerektirmeyen durumlar" için verilen risk derecesi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Ciddi (4)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Orta (3)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Hafif (2)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Çok hafif (1)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İhmal edilebilir (0)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Matriste en alt basamak (Şiddet: 1) "Çok Hafif" olarak adlandırılır. İş kaybı yaratmayan ve ilk yardım bile gerektirmeyen (Örn: masadan kalemin düşmesi) en masum olaylardır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. Aşağıdakilerden hangisi sağlık kuruluşlarında çalışanları etkileyen "Psikososyal (Psikolojik) Risk Etmenlerinden" biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yüksek çalışma temposu ve iş yükü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Görev ve rol belirsizliği</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Radyasyon ve gürültülü ortamda çalışmak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İletişim yetersizlikleri ve yöneticilerle çatışma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Hastaların sözlü veya fiziksel tacizi (şiddet tehlikesi)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> İletişimsizlik, stres, şiddet, mobbing ve aşırı iş yükü psikososyal etkenlerdir. Gürültü ve radyasyon ise doğrudan "Fiziksel Risk Etmenleri" sınıfındadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. Risk değerlendirmesi sürecinin son basamağı olan "İzleme ve Gözden Geçirme" faaliyetinin temel amacı nedir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İş yerinin yıllık kazanç maliyetlerini hesaplamak</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Alınan kontrol önlemlerinin riskleri gerçekten azaltıp azaltmadığını ve yeni bir risk oluşturup oluşturmadığını takip etmek</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Çalışanların mesai saatlerini denetlemek</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Alt işverenlerle olan sözleşmeleri gözden geçirmek</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Hastane polisine verilen tutanakların takibini yapmak</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> PUKO döngüsünün ruhuna uygun olarak, aldığımız önlemin işe yarayıp yaramadığını (K-Kontrol Et) görmek için izleme ve gözden geçirme yapılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. Joint Commission'a göre; hasta bakımı alan kişilerin, çalışanların, ziyaretçilerin yaralanma riskini ve organizasyonda oluşabilecek zarar ziyan riskini belirleme, değerlendirme ve azaltmak amacıyla yapılan <u>klinik ve yönetsel aktivitelerin bütününe</u> ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Akreditasyon Yönetimi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Ergonomik Değerlendirme</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Risk Yönetimi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Risk Kültürü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Etik Süreç</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> 2024 yılı çıkmış sorusudur. Hastaneyi bir bütün olarak (hasta, çalışan, ziyaretçi) güvenceye almayı hedefleyen tüm klinik ve idari faaliyetler Risk Yönetimidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Kalitatif risk değerlendirmesinde (L Tipi Matriste), bir olayın ortaya çıkma olasılığı "yılda sadece bir kez ve anormal durumlarda" gerçekleşebilecek ise ------- (Düşük); "yılda birkaç kez" gerçekleşebilecek ise ------- (Orta) olarak puanlanır.<br><br>Yukarıdaki boşlukları doğru tamamlayan puan değerleri sırasıyla aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) 1 / 2</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) 2 / 3</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) 2 / 4</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) 3 / 4</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) 3 / 5</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Olasılık skalasında; 1: Çok Düşük (İmkansız), 2: Düşük (Yılda bir kez), 3: Orta (Yılda birkaç kez), 4: Yüksek (Ayda bir), 5: Çok Yüksek (Haftada bir/her gün).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. İSG mevzuatımızda dünyadaki uygulamalara paralel olarak tehlikelerin ve kazaların tamamen (%100) önlenmesinin imkansız olduğu kabul edilir. Buna göre, "yasal yükümlülüklere ve iş yerinin önleme politikasına uygun, kayıp veya yaralanma oluşturmayacak risk seviyesi" aşağıdakilerden hangisi ile tanımlanır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sıfır Risk</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Maksimum Risk</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Birincil Risk</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Kabul Edilebilir Risk</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Marjinal Risk</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Ders kitabındaki tanıma göre, tamamen yok edemediğimiz ama bizi öldürmeyecek/yasal sınırlarda olan ve idare edebildiğimiz asgari risk seviyesi "Kabul Edilebilir Risk"tir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. I. Yaşamın insana uygun hale getirilmesidir.<br>II. İşin insana, insanın ise işe uyumunun sağlanmasıdır.<br>III. Çalışma araç ve makinelerinin çalışanın vücut ölçülerine (fizyolojisine) uygun olarak tasarlanmasıdır.<br><br>Ergonomi kavramı ile ilgili yukarıdaki ifadelerden hangisi/hangileri doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Yalnız III</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) I, II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) II ve III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2024 yılı sınavında birebir sorulmuştur. Ergonomi (işbilim), çalışma hayatının insanileştirilmesi ve eşyaların çalışanın bedenine uydurulmasıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Sağlık kuruluşlarında "Psikososyal Stres" ile başa çıkabilmek ve tükenmişliği önlemek için çalışanlara önerilen davranış yöntemleri arasında aşağıdakilerden hangisi <u>yer almaz</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Olumlu alışkanlıklar ve hobiler edinmek</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Karşılaşılan bütün küçük ayrıntılara ve kusurlara aşırı odaklanarak mükemmeli aramak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İhtiyaç duyduğunda uzmanlardan (psikolog/iş yeri hekimi) destek almak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İşleri sıraya dizerken önce zor ve sevimsiz işleri aradan çıkarmak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Aile ve yakın arkadaşlarla kaliteli zaman geçirmek</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Stresle mücadelede "ayrıntılarla çok fazla uğraşmamak" ve aşırı mükemmeliyetçilikten kaçınmak esastır. Kusurlara çok odaklanmak stresi artırır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. Bir iş yerinde kullanılan, teknolojisi eski olan ve kazalara yol açma riski bulunan (örneğin fotoseli çalışmayan) bir pres makinesinin tamamen kullanımdan kaldırılarak yerine yenisinin/güvenlisinin alınması süreci, risk değerlendirme basamaklarından hangisine örnektir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tehlikelerin belirlenmesi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Riski ortadan kaldırmak ya da azaltmak için yapılacakların kararlaştırılması (Eliminasyon/İkame)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İzleme ve Gözden Geçirme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Bilgi Toplama</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) L Tipi Matris oluşturulması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> 2025 yılı sınav sorusudur. Tehlikeli bir aleti sistemden çıkarmak "Riski ortadan kaldırmak için yapılacakların kararlaştırılması" veya diğer adıyla Kontrol Önlemlerinin (Eliminasyon) alınması basamağıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">11. Yasal mevzuata göre bir iş yerinde hazırlanan Risk Değerlendirme raporu, yasal geçerlilik süresi (Çok tehlikelide 2, Tehlikelide 4, Az tehlikelide 6 yıl) dolmasa bile belirli şartlar oluştuğunda derhal yenilenmek zorundadır. Aşağıdakilerden hangisi bu durumu gerektiren bir neden <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İş yerinin başka bir adrese taşınması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İş yerinde yeni ve ciddi bir tehlikenin ortaya çıkması</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) İşletmenin rutin aylık idari toplantılarının yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İş yerinde kullanılan temel makine ve ekipmanların değiştirilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İş yerinde ciddi bir iş kazası veya meslek hastalığı yaşanması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Risk değerlendirmesi; teknoloji değişikliği, taşınma, yeni tehlike doğması veya mevcut raporun işe yaramadığını gösteren bir "iş kazası" yaşanması hâlinde yenilenir. Rutin idari toplantılarda değil.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Sağlık kuruluşlarında tehlikelerin sayısal net veriler yerine, uzman görüşü ve 1'den 5'e kadar puanlama sistemine dayalı olarak matrislerle (Olasılık x Şiddet) hesaplandığı değerlendirme türünün genel matematiksel formülü aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Risk = Olasılık x Etki (Şiddet)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Risk = Tehlike + Frekans</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Risk = Frekans / Olasılık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Risk = (Olasılık + Şiddet) / 2</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Risk = Maliyet x Olasılık</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> 2023 sınavlarında sorulan temel kavramdır. Risk formülü her zaman (R = Olasılık x Şiddet) şeklindedir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. İş sağlığında Zekâ seviyesi, duygu durumu, stres, yabancılaşma duygusu, monotonluk, tatminsizlik, alkol bağımlılığı ve kaza eğilimi gibi doğrudan kişinin ruhsal/zihinsel bütünlüğünü ilgilendiren etkenler hangi gruba dâhildir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Fizyolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sosyolojik etkenler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Psikolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Biyolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Ergonomik etkenler</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Neredeyse her yıl (2021, 2023, 2024, 2025) sorulan banko sorudur. Stres ve duygu durumu gibi unsurlar doğrudan "Psikolojik (Psikososyal)" etkenlerdir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. İş yerinde Risk Değerlendirme Puanlaması (Matrisi) yapılırken değerlerin mümkün olduğunca tarafsız ve objektif olabilmesi için aşağıdakilerden hangisinin yapılması mevzuatça önerilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Analizin sadece iş yeri hekimi tarafından gizlice yapılıp bitirilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Puanlamayı sadece en tecrübeli iş güvenliği uzmanının tek başına yapması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Puanlamanın rastgele kura yöntemiyle belirlenmesi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) İSG Kurulu, işveren, uzmanlar ve bizzat o tehlikeli işi yapan çalışanların hep birlikte görüş bildirip ortak değerlendirme yapması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sadece idari amirlerin (yöneticilerin) toplanarak kendi aralarında karar vermesi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Risk analizi disiplinler arası bir takım işidir. Olasılık ve şiddetin doğru (objektif) belirlenmesi için o işi yapan çalışanın da mutlaka ekibe katılıp fikrini söylemesi gerekir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. I. Yabancılaşma duygusu, kaza eğilimi ve stres psikolojik etkenlerdendir.<br>II. Ailevi problemler ve yasalara karşı gelme gibi durumlar fizyolojik etkenler arasındadır.<br>III. İş kazalarının oluşmasında etkili olan insani etkenler; psikolojik, sosyolojik ve fizyolojik olarak üç grupta incelenir.<br><br>İş kazalarının insani sebepleri ile ilgili yukarıdaki ifadelerden hangisi/hangileri doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) I ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Yalnız III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) I, II ve III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> 2024 yılı sınav sorusudur. II. öncülde verilen "Ailevi problemler" fizyolojik (bedensel) değil, çevresel ve sosyolojik sorunlardır. Bu nedenle I ve III doğrudur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Aşağıdakilerden hangisi bir işletmede yürütülen "Risk Değerlendirmesi" sürecinin standart basamaklarından (temel adımlarından) biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tehlikelerin Belirlenmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Risklerin Değerlendirilmesi ve Analizi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Kazaya uğrayan işçilerin tazminatlarının hesaplanması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kontrol Önlemlerinin Kararlaştırılması ve Uygulanması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İzleme ve Gözden Geçirme</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Tazminat hukuku ve işçiye ödenecek para miktarlarının hesaplanması, kaza sonrası (reaktif) adli bir süreçtir. Risk değerlendirmesi (proaktif) adımları arasında yer almaz.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Ergonomi biliminin hedefleri doğrultusunda; "İşin ve çalışma ortamının kişinin psikolojik, duygusal ve ruhsal beklentilerine uygun olması" durumu aşağıdaki kavramlardan hangisi ile ifade edilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Antropometri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Fizyolojik Denge</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Hoşnutluk</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kabul Edilebilirlik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kendini Gerçekleştirme</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Ders kitabına göre (Ergonomi başlığı altındaki tanımlarda), kişinin iş yerinde psikolojik bir beklentisinin karşılanması durumu "Hoşnutluk" olarak adlandırılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. İş yerinde var olan ya da dışarıdan gelebilecek tehlikelerin saptanması, bu tehlikelerden kaynaklanan risklerin analiz edilerek derecelendirilmesi ve sonuca göre kontrol önlemlerinin alınması sürecinin tamamına ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sağlık Sürveyansı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Olay Analizi Raporu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kalite Kontrol Süreci</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Risk Değerlendirmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Epidemiyolojik İnceleme</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2022 sınavlarında doğrudan çıkmış olan bu tanım; 6331 sayılı Yasa kapsamında da "Risk Değerlendirmesi"nin birebir yasal tanımıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. 5x5 L Tipi Matris değerlendirme tablosunda, bir kaza gerçekleştiğinde yol açtığı hasar olarak "İlk Yardım Gerektiren Durumlar" için hangi şiddet derecesi verilmektedir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Çok ciddi (5)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Ciddi (4)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Orta (3)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Hafif (2)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Çok hafif (1)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2025 yılı sınav sorusudur. Matriste; Ölüm (5), Sürekli İş Göremezlik (4), Tıbbi Tedavi Gerektiren (3), İlk Yardım Gerektiren ise Hafif (2) olarak derecelendirilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Kalitatif (Nitel) risk değerlendirme yöntemleri ile Kantitatif (Nicel) risk değerlendirme yöntemleri arasındaki en temel metodolojik fark aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Kantitatif analiz formüllere dayalı net sayısal/istatistiksel verileri (kaza kayıtları vb.) kullanırken; kalitatif analiz, riskleri uzman görüşlerine ve 1'den 5'e kadar puanlanan olasılık-şiddet matrislerine göre tahmin eder.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kantitatif analiz sadece biyolojik risklerde, kalitatif analiz ise sadece kimyasal risklerde geçerlidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kalitatif analiz yöntemi kanunlarca tamamen yasaklanmıştır, sadece kantitatif yapılabilir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kalitatif analizler geçmiş verileri, kantitatif analizler ise sadece gelecekteki verileri inceler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Her ikisi de tamamen aynı anlama gelir ve hiçbir metodolojik farkları yoktur.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Kantitatif, sayılabilir "nicel" veriye (matematiksel kayıtlara) dayanırken; kalitatif daha çok uzmanın tecrübesine ve olayın niteliğini ölçen derecelendirme (matris) puanlarına dayanır.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+        let isTimeUp = false;
+
+        function updateScore() {
+            let netScore = correctCount - (wrongCount / 4);
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            if (isTimeUp) return;
+
+            const parentUl = clickedLi.parentElement;
+            if (parentUl.classList.contains('answered')) return;
+            
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            updateScore();
+        }
+
+        // Zamanlayıcı
+        let timeLeft = 1800; // 30 dk
+        const timerElement = document.getElementById("time");
+
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = "00:00";
+                document.getElementById('timer-display').style.background = "#333";
+                document.getElementById('timer-display').innerHTML = "⏳ Süre Bitti!";
+                isTimeUp = true;
+                
+                const allUls = document.querySelectorAll('.options');
+                allUls.forEach(ul => { ul.classList.add('timeout'); });
+                alert("Süreniz doldu! İşaretleme yapamazsınız, ancak doğru cevaplar için çözümleri inceleyebilirsiniz.");
+            } else {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                
+                if(seconds < 10) { seconds = "0" + seconds; }
+                if(minutes < 10) { minutes = "0" + minutes; }
+
+                timerElement.innerText = minutes + ":" + seconds;
+                timeLeft--;
+            }
+        }, 1000);
+    </script>
 </body>
 </html>

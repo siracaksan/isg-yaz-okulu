@@ -1,25 +1,639 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 2 - Test 5 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 2: Test 5 (Final) - İş Sağlığı Yönetimi</title>
+    <style>
+        :root {
+            --primary: #1A5276; 
+            --secondary: #F1C40F; 
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #a9cce3;
+            --timer-bg: #e74c3c;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--secondary);
+        }
+        header h1 { margin: 0; font-size: 1.6em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; color: #d4e6f1; }
+        
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #d35400; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eaf2f8;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid #d4e6f1;
+        }
+        .test-numaralari span { font-weight: bold; color: #1A5276; margin-right: 10px; }
+        .test-numaralari a {
+            color: #1A5276;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+        .test-numaralari a.active {
+            background: var(--secondary);
+            border: 1px solid #b7950b;
+        }
+        
+        /* Geçmiş Yıl Analiz Paneli Özel Tasarım */
+        .analiz-paneli {
+            background: #eef7f2;
+            border: 2px solid #27ae60;
+            border-left: 6px solid #1e8449;
+            color: #1b4f34;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-size: 0.95em;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: #1e8449; display: flex; align-items: center; gap: 8px; font-size: 1.2em;}
+        .analiz-paneli ul { padding-left: 20px; margin: 10px 0; }
+        .analiz-paneli li { margin-bottom: 5px; }
+        .analiz-paneli strong { color: #c0392b; }
+
+        .dashboard {
+            background: #eaf2f8;
+            border: 1px solid #a9cce3;
+            color: #1A5276;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .timer-box {
+            background: var(--timer-bg);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse { from { opacity: 1; } to { opacity: 0.8; } }
+
+        main { max-width: 1200px; margin: auto; padding: 0 15px; }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 1.05em; color: #2c3e50; }
+        .options { list-style: none; padding: 0; margin: 0; }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+        .options.answered li { pointer-events: none; }
+        .options.timeout li { pointer-events: none; opacity: 0.7; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+        }
+        
+        details.solution {
+            margin-top: 15px;
+            background: #eaf2f8;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed #3498db;
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #2980b9;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+        
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #555; font-size: 0.9em; }
+
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 2 - Test 5</h2>
+        <h1>İş Sağlığı Yönetimi</h1>
+        <h2>Ünite 2: Meslek Hastalıkları - Test 5 (Final)</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="konu_anlatimi.html">📖 Ünite 2 Konu Anlatımı</a> | 
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📝 Çıkmış Sorular</a>
+        </div>
+        <hr>
+        <div class="test-numaralari">
+            <span>Testler:</span>
+            <a href="test_1.html">Test 1</a>
+            <a href="test_2.html">Test 2</a>
+            <a href="test_3.html">Test 3</a>
+            <a href="test_4.html">Test 4</a>
+            <a href="test_5.html" class="active">Test 5 (Final)</a>
+        </div>
+    </nav>
+
+    <!-- GEÇMİŞ YILLARIN SINAV ANALİZİ -->
+    <div class="analiz-paneli">
+        <h3>🏆 Ünite 2 - Çıkmış Sorular Analizi ve Final Özeti (2021-2025)</h3>
+        <p>İş Sağlığı Yönetimi - Ünite 2 "Meslek Hastalıkları" sınav istatistiklerine göre en çok sorulan *banko* konular bu testte bir araya getirilmiştir:</p>
+        <ul>
+            <li><strong>Nedensellik Kriterleri:</strong> Her yıl (2022, 2024, 2025) mutlaka 1 soru gelmiştir. Tutarlılık ("farklı çalışmalarda benzer sonuçlar") ve Doz-Etkisi ("maruziyet arttıkça semptomun ağırlaşması") en popülerleridir.</li>
+            <li><strong>SGK ve İstatistikler:</strong> SGK'nın resmi izlemi yaptığı (2024), en çok hastalığın Metalik Olmayan Mineral ürünlerinde (2022), en az hastalığın ise Bilecik'te (2021) olduğu net şekilde ezberlenmelidir.</li>
+            <li><strong>ILO ve Türkiye Sınıflandırmaları:</strong> AÖF komisyonu; Türkiye'deki "A grubu"nun Kimyasal olduğunu (2021) ve ILO'nun "Ajanlara bağlı" hastalıkları içinde yine "Kimyasal" başlığını sorduğunu (2023) unutmayın.</li>
+            <li><strong>Teşhis Süreci:</strong> Ön tanının işyeri hekimince konulup <em>kesin tanının yetkilendirilmiş hastanelerde (2025)</em> konulduğu, ayrıca teşhis için "klinik, öykü, nedensel bağ ve diğer risklerin elenmesi" olmak üzere 4 temel şartın arandığı (2025) kilit bilgilerdir.</li>
+        </ul>
+        <p><em>Bu test; yukarıdaki istatistiklere göre hem çıkmış soruların birebir kopyalarını hem de ders kitabındaki önemli kavramları birleştirerek Ünite 2'yi tamamen kapatmanızı sağlayacaktır. Başarılar!</em></p>
+    </div>
+
+    <!-- Puanlama ve Zamanlayıcı -->
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+        </div>
+        <div class="timer-box" id="timer-display">
+            ⏱️ Kalan Süre: <span id="time">30:00</span>
+        </div>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid" id="quiz-container">
+
+            <div class="question-card">
+                <div class="question-text">1. ------- ya da ------- göre meslek hastalığı, yapılan işe özgü neden-sonuç ilişkisi bağlamında, zararlı bir etken ile uzun süre süregelen maruziyet sonucunda ortaya çıkan hastalıklara denilmektedir.<br><br>Yukarıdaki cümlede boş bırakılan yerleri aşağıdakilerden hangisi doğru olarak tamamlar?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sağlık Bakanlığı - Sosyal Güvenlik Kurumu</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Dünya Sağlık Örgütü - Uluslararası Çalışma Örgütü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Uluslararası Kalkınma Ajansı - Uluslararası Çalışma Örgütü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Birleşmiş Milletler - Avrupa Birliği</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Dünya Sağlık Örgütü - Birleşmiş Milletler</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> (2023 Çıkmış Sorudur). Meslek hastalıklarının küresel, kapsayıcı tanımı Dünya Sağlık Örgütü (WHO) ve Uluslararası Çalışma Örgütü (ILO) tarafından ortaklaşa yapılmıştır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. Bir hastalığın nedenine karar vermek için dikkate alınan kriterlerden biri olarak, "farklı çalışma sonuçlarında benzer sonuçlar olmalıdır" şeklinde açıklanabilen epidemiyolojik kriter aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Tutarlılık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İlişkinin gücü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Zamansallık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Doz etkisi ilişkisi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Özgünlük</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> (2022 ve 2025 Çıkmış Sorudur). "Farklı araştırmacıların farklı zaman/mekânlardaki incelemelerinde de aynı risk etkenine ve aynı sonuca ulaşması" Tutarlılık (Consistency) kriteridir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. "Maruziyetin yüksek olduğu ortamlarda ya da işlerde semptomlar ağırlaşıyor mu?" sorusunun cevabı aşağıdaki nedensellik kriterlerinden hangisiyle ilgilidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Temporal ilişki</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Zamansallık</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Doz etkisi ilişkisi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tutarlılık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İlişkinin gücü</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> (2024 Çıkmış Sorudur). Risk faktörüne maruz kalma düzeyi (dozu) arttıkça hastalığın şiddetinin (cevabın) artması "Doz-Cevap (Etkisi) İlişkisi" ile açıklanır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. I. Nedensel ilişki<br>II. Klinik ve patolojik bulgular<br>III. Mesleki öykü ve risk faktörlerinin tanımlanması<br>IV. Diğer risk faktörleri<br><br>Yukarıdakilerden hangisi/hangileri bir hastalığın meslek hastalığı olarak tanımlanması için gerekli olan temel kriterlerdendir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Yalnız III</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) I, II, III ve IV</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) II ve IV</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) I, II ve III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> (2025 Çıkmış Sorudur). Kesin teşhis konulabilmesi için klinik bulgu olması, yapılan işle hastalık arasında nedensellik bağı olması, detaylı mesleki öykü alınması ve ev/yaşam kaynaklı "diğer risklerin" elenmiş olması gereklidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. Aşağıdaki sektörlerden hangisi SGK verilerine göre Türkiye'de meslek hastalıklarının <u>en çok</u> görüldüğü gruptur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kauçuk ve plastik ürünlerin imalatı</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Metalik olmayan mineral ürünlerin imalatı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Elektrikli teçhizat imalatı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tekstil ürünleri imalatı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Ana metal sanayi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> (2022 Çıkmış Sorudur). SGK raporlarına (Grafik 2.2) göre meslek hastalığının en yoğun tespit edildiği sektör, taş/toprak/seramik vb. içeren "Metalik olmayan mineral ürünlerin imalatı" sektörüdür.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Türkiye’de iş kazası ve meslek hastalıkları istatistiklerinin yasal izlemini tutan, bu konudaki tespit, tazminat ve oransal işlemleri yürüten resmi kurum aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sağlık Bakanlığı</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Sosyal Güvenlik Kurumu (SGK)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Türkiye İstatistik Kurumu (TÜİK)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Hıfzıssıhha Kurulu</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Ticaret Bakanlığı</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> (2024 Çıkmış Sorudur). Meslek hastalıklarının yasal (resmi) bildirimleri, maluliyet oran tayinleri ve ulusal istatistikleri SGK bünyesinde toplanır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. Türkiye'deki "Çalışma Gücü ve Meslekte Kazanma Kaybı Tespit İşlemleri Yönetmeliği" listesinde (2008) meslek hastalıkları sınıflandırılması A, B, C, D ve E olarak yapılmıştır. Buna göre <u>"A Grubu"</u> mesleki hastalıkları aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Kimyasal maddelerle olan meslek hastalıkları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Fiziki etkenlerle olan meslek hastalıkları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Mesleki deri hastalıkları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Mesleki bulaşıcı hastalıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Pnömokonyozlar (solunum)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> (2021 Çıkmış Sorudur). Türkiye listesine göre 5 grup vardır: A(Kimyasal), B(Deri), C(Solunum/Pnömokonyoz), D(Bulaşıcı/Enfeksiyon) ve E(Fiziksel).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. 2018 yılı SGK verilerine göre; Türkiye’de görülen meslek hastalıklarının illere göre dağılımı incelendiğinde, aşağıdaki illerden hangisinde meslek hastalığı <u>en az</u> oranda görülmektedir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İzmir</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Manisa</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Eskişehir</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Bilecik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sakarya</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> (2021 Çıkmış Sorudur). İlgili yılın grafiğine (Sayfa 46) göre meslek hastalıkları tespitinin en yoğun olduğu il İstanbul iken, bu listelenenler arasında en az görüldüğü (ya da tespit edildiği) il Bilecik'tir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Uluslararası Çalışma Örgütü (ILO) meslek hastalıkları sınıflandırmasına göre aşağıdakilerden hangisi "İş aktivitelerinden kaynaklanan ajanlara bağlı meslek hastalıkları" alt grubunda yer alır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Zihinsel ve davranışsal bozukluklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Mesleki kanserler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Hedef organ hasarına bağlı hastalıklar</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Kimyasal ajanlara bağlı hastalıklar</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Madenci nistagmusu</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> (2023 Çıkmış Sorudur). ILO listesinde "Ajanlara Bağlı Hastalıklar" ana grubunun altında Fiziksel, Biyolojik ve Kimyasal ajanlar yer alır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. "İşle İlgili Hastalıklar" ve "Meslek Hastalıkları" birbirine benzese de temel farkları vardır. Buna göre aşağıdakilerden hangisi doğrudan yapılan işe özgü (spesifik) bir "Meslek Hastalığı" örneğidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Masa başı çalışanlarda görülen obezite</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Beden işçilerindeki bel fıtığı (Lomber Disk Hernisi)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Akü fabrikası çalışanında gelişen Kurşun Zehirlenmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yöneticilerde stres kaynaklı oluşan Hipertansiyon</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Tır şoförlerinde görülen Mide Ülseri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Bel fıtığı, hipertansiyon veya obezite toplumda herkesin yaşayabildiği ancak çalışma koşullarının şiddetlendirebildiği "İşle İlgili" hastalıklardır. Kurşun zehirlenmesi ve silikozis gibi spesifik sorunlar ise doğrudan o işe has "Meslek Hastalığı"dır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">11. Meslek hastalıklarının nedenlerine karar verirken kullanılan "Zamansallık (Temporal İlişki)" kuralı neyi ifade eder?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Hastalığa sebep olan risk faktörüne (maruziyete), hastalık ortaya çıkmadan önceki bir tarihte başlanmış olması zorunluluğudur.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Risk faktörü ortadan kalktıktan tam 2 yıl sonra hastalığın kendiliğinden iyileşmesidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Hastalığın sadece yaşlılık döneminde ortaya çıkmasıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Hastalığın tanısının çalışma saatleri içerisinde konulması zorunluluğudur.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Maruziyetin dozu arttıkça hastalığın şiddetlenmesidir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Epidemiyolojide bir olayın diğerinin nedeni olabilmesi için, "etkenin (riskin)" sonuçtan (hastalıktan) daha önce gerçekleşmiş olması (zamansal sıralama) kuralına Zamansallık denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Whitehall ve arkadaşları tarafından kamu memurları üzerinde yapılan çalışmada; ofis çalışanlarının işinde karar alma inisiyatifi düştükçe ve monotonluk arttıkça aşağıdaki hastalıklardan hangisi arasında güçlü bir bağ bulunmuştur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Beyaz el sendromu</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Koroner kalp hastalığı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Asbestozis</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İşitme kaybı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Mesleki cilt kanseri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Ders kitabı sayfa 42'de belirtilen literatürün önemli psikososyal çalışmalarından Whitehall araştırmasında, inisiyatifsiz ve monoton memurlarda strese bağlı olarak "Koroner Kalp Hastalığı" riski yüksek çıkmıştır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. Türkiye'deki SGK prosedürlerine göre; meslek hastalığının kesin tanısını koymaya, iş göremezlik oranını belirlemeye ve raporlamaya <u>yetkili merci</u> neresidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Doğrudan fabrikanın kendi iş yeri hekimliği</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İlçe Sağlık Müdürlükleri ve Aile Hekimlikleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Ticaret ve Sanayi Odası</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Sağlık Bakanlığı'nın yetkilendirdiği Eğitim Araştırma veya Üniversite Hastanelerinin Sağlık Kurulları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Herhangi bir özel poliklinik</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Ön tanıyı aile hekimi ya da iş yeri hekimi koyabilir. Ancak yasal SGK sürecinin işletilebilmesi ve oranın (maluliyetin) kesinleşmesi için vakanın, SGK'nın yetkilendirdiği "Eğitim Araştırma/Üniversite/Meslek Hastanesi" sağlık kuruluna gitmesi zorunludur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Hastalık vücuda hiç etki etmeden (zarar oluşmadan) önce alınan "işe giriş muayeneleri, kişisel koruyucu donanım dağıtılması, aşılamalar ve personelin eğitimden geçirilmesi" gibi tedbirlerin tümü sağlıkta hangi korunma seviyesidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tersiyer (Üçüncül) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sekonder (İkincil) Koruma</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Primer (Birincil) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Primordiyal Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kuaterner (Dördüncül) Koruma</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Etken ile kişinin temasını en baştan kesmeyi veya kişiyi baştan güçlendirmeyi (aşı, maske, doğru işe atama/giriş muayenesi) hedefleyen her şey Birincil (Primer) korumadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. Tozlu veya gürültülü ortamlarda çalışan işçilerde, hastalık (örneğin işitme kaybı veya solunum sıkıntısı) henüz hiç şikayet yaratmadan <u>erken dönemde</u> saptanabilmesi için yapılan periyodik tarama testleri ve aralıklı muayeneler hangi koruma seviyesidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Primer Koruma</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Sekonder Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Tersiyer Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Erken Müdahale</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Rehabilitasyon</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Hastalığın başlangıç aşamasındayken yakalanması (erken tanı) için yapılan tüm periyodik muayeneler ve kan/odyometri testleri İkincil (Sekonder) korumadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Hekimin meslek hastalığından şüphelendiği bir vakada yapacağı "Ayrıntılı İş Öyküsü (Anamnez)" alma süreciyle ilgili aşağıdakilerden hangisi <u>yanlıştır</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Hastanın çalışma hayatı boyunca geçmişte girdiği tüm işler sorulmalıdır.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) İş yerindeki etkenler önemli olduğundan, işçinin ev hayatı ve hobileri (örneğin kuş beslemesi, sigara içmesi) asla sorgulanmamalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Aynı atölyede benzer şikayetleri olan başka işçilerin varlığı araştırılmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Ailesinde genetik bir hastalık (soygeçmiş) olup olmadığı mutlaka sorulmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Üretimde kullanılan kimyasal malzemelerin içerik listeleri (MSDS vb.) istenip incelenmelidir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Hastalığın gerçekten işten mi yoksa dış faktörlerden mi (sigara, evde maruz kalınan hobi kimyasalları vb.) kaynaklandığını "elemek" için, iş dışı yaşam (hobiler, alışkanlıklar) da kesinlikle sorgulanmalıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Meslek hastalıklarına yol açan ekonomik, sosyal ve çevresel koşullara doğrudan ülke politikaları seviyesinde (makro boyutta) müdahale edilmesi ve ulusal yasaların iyileştirilmesini hedefleyen en geniş koruyucu sağlık stratejisi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Primer Korunma</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Primordiyal Korunma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Sekonder Korunma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tersiyer Korunma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İdari Korunma</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Henüz herhangi bir tehlike veya hastalık bireylere ulaşmadan önce, çevresel ve ekonomik refahı genel yasalarla iyileştirerek (örneğin kurşunlu boyaların tamamen ülkede yasaklanması) tehlikeyi kökten kesmeye Primordiyal Koruma denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Dünya Sağlık Örgütü (WHO) ve Uluslararası Çalışma Örgütünün (ILO) verilerine göre sanayileşmiş ülkelerde toplumdaki tüm ölümlerin ortalama yüzde kaçının doğrudan mesleki yaralanmalara ve işle ilgili hastalıklara atfedildiği tahmin edilmektedir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) %1 - 2</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) %5 - 7</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) %20 - 25</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) %50 - 60</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) %80 - 90</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Ders kitabı istatistiklerine (Sayfa 43) göre gelişmiş ülkelerde iş ortamı kaynaklı hastalık ve kazalar, genel popülasyondaki ölümlerin ortalama %5 ile %7'sini oluşturmaktadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. Çalışma ortamında fiziksel nedenli meslek hastalıkları büyük bir yer tutar. Aşağıdaki maruziyetlerden hangisi <u>Fiziksel nedenli</u> meslek hastalıklarına yol açan risklerden biridir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Yüksek basınç (vurgun) ve titreşim (vibrasyon) maruziyeti</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Boya ve çözücü (solvent) buharı maruziyeti</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Tarım işçilerinde görülen şarbon bakterisi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Asbest veya kömür tozu maruziyeti</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sağlık personelinde Hepatit B virüsü teması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Fiziksel etkenler; gürültü, titreşim (vibrasyon), aşırı sıcak/soğuk, yüksek basınç ve radyasyondur. Boya (Kimyasal), Şarbon/Hepatit (Biyolojik), Asbest (Toz) etkenlidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Hastalığa bağlı olarak çoktan gelişmiş olan sakatlıkların etkisini en aza indirgemek, hastanın protez veya tedavi ile yeni duruma uyum sağlamasını ve yaşam kalitesinin artmasını sağlamak için uygulanan "Rehabilitasyon" süreci hangi koruma düzeyidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Birincil (Primer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İkincil (Sekonder) Koruma</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Üçüncül (Tersiyer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Dördüncül Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Erken Tanı Koruması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Hastalık veya kaza yaşandıktan sonra ortaya çıkan hasarları onarmaya, hastayı yeniden topluma/işe kazandırmaya (rehabilitasyon ve ameliyatlar) Üçüncül (Tersiyer) Koruma denir.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+        let isTimeUp = false;
+
+        function updateScore() {
+            let netScore = correctCount - (wrongCount / 4);
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            if (isTimeUp) return;
+
+            const parentUl = clickedLi.parentElement;
+            if (parentUl.classList.contains('answered')) return;
+            
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            updateScore();
+        }
+
+        // Zamanlayıcı
+        let timeLeft = 1800; // 30 dk
+        const timerElement = document.getElementById("time");
+
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = "00:00";
+                document.getElementById('timer-display').style.background = "#333";
+                document.getElementById('timer-display').innerHTML = "⏳ Süre Bitti!";
+                isTimeUp = true;
+                
+                const allUls = document.querySelectorAll('.options');
+                allUls.forEach(ul => { ul.classList.add('timeout'); });
+                alert("Süreniz doldu! İşaretleme yapamazsınız, ancak doğru cevaplar için çözümleri inceleyebilirsiniz.");
+            } else {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                
+                if(seconds < 10) { seconds = "0" + seconds; }
+                if(minutes < 10) { minutes = "0" + minutes; }
+
+                timerElement.innerText = minutes + ":" + seconds;
+                timeLeft--;
+            }
+        }, 1000);
+    </script>
 </body>
 </html>

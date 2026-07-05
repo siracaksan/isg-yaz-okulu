@@ -1,25 +1,640 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 4 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 4: Test 3 - İş Sağlığı Yönetimi</title>
+    <style>
+        :root {
+            --primary: #1A5276; 
+            --secondary: #F1C40F; 
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #a9cce3;
+            --timer-bg: #e74c3c;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--secondary);
+        }
+        header h1 { margin: 0; font-size: 1.6em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; color: #d4e6f1; }
+        
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #d35400; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eaf2f8;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid #d4e6f1;
+        }
+        .test-numaralari span { font-weight: bold; color: #1A5276; margin-right: 10px; }
+        .test-numaralari a {
+            color: #1A5276;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+        .test-numaralari a.active {
+            background: var(--secondary);
+            border: 1px solid #b7950b;
+        }
+        
+        /* Geçmiş Yıl Analiz Paneli Özel Tasarım */
+        .analiz-paneli {
+            background: #eef7f2;
+            border: 2px solid #27ae60;
+            border-left: 6px solid #1e8449;
+            color: #1b4f34;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-size: 0.95em;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: #1e8449; display: flex; align-items: center; gap: 8px; font-size: 1.2em;}
+        .analiz-paneli ul { padding-left: 20px; margin: 10px 0; }
+        .analiz-paneli li { margin-bottom: 5px; }
+        .analiz-paneli strong { color: #c0392b; }
+
+        .dashboard {
+            background: #eaf2f8;
+            border: 1px solid #a9cce3;
+            color: #1A5276;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .timer-box {
+            background: var(--timer-bg);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse { from { opacity: 1; } to { opacity: 0.8; } }
+
+        main { max-width: 1200px; margin: auto; padding: 0 15px; }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 1.05em; color: #2c3e50; }
+        .options { list-style: none; padding: 0; margin: 0; }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+        .options.answered li { pointer-events: none; }
+        .options.timeout li { pointer-events: none; opacity: 0.7; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+        }
+        
+        details.solution {
+            margin-top: 15px;
+            background: #eaf2f8;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed #3498db;
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #2980b9;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+        
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #555; font-size: 0.9em; }
+
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 4 - Test 3</h2>
+        <h1>İş Sağlığı Yönetimi</h1>
+        <h2>Ünite 4: Sağlık Kuruluşlarında İş Sağlığı ve Güvenliği - Test 3</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="konu_anlatimi.html">📖 Ünite 4 Konu Anlatımı</a> | 
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📝 Çıkmış Sorular</a>
+        </div>
+        <hr>
+        <div class="test-numaralari">
+            <span>Testler:</span>
+            <a href="test_1.html">Test 1</a>
+            <a href="test_2.html">Test 2</a>
+            <a href="test_3.html" class="active">Test 3</a>
+            <a href="test_4.html">Test 4</a>
+            <a href="test_5.html">Test 5</a>
+        </div>
+    </nav>
+
+    <!-- GEÇMİŞ YILLARIN SINAV ANALİZİ -->
+    <div class="analiz-paneli">
+        <h3>🔍 Ünite 4 - Sınav Analizi ve Test 3 Odak Noktaları</h3>
+        <p>AÖF'nin Sağlık Kuruluşlarında İSG ünitesine (Ünite 4) yaklaşımını analiz ettiğimizde, bu testte karşınıza çıkacak anahtar başlıklar şunlardır:</p>
+        <ul>
+            <li><strong>Kalite Yönetimi:</strong> Sağlıkta başarılı kalite ölçümünün <strong>hizmet amacının ortaya konmasıyla</strong> başladığı 2021 ve 2023 yıllarında, ilk uygulamanın <strong>1914 yılında ABD'de</strong> yapıldığı 2023 ve 2024 yıllarında sorulmuştur.</li>
+            <li><strong>ISO 45001'in Faydaları:</strong> Her sene (2021, 2022, 2023, 2025) sorulan fix sorudur. Maliyetleri azaltır, mevzuat uyumunu sağlar, sigorta primlerini düşürür.</li>
+            <li><strong>Koruma Düzeyleri:</strong> İş kazası olmasını tamamen engellemeye yönelik eğitim/aşı gibi faaliyetler "Birincil", işe giriş muayeneleri "Birincil", sakatlık sonrası uyum ise <strong>Üçüncül (Tersiyer)</strong> korumadır. 2021 yılında sorulmuştur.</li>
+            <li><strong>Kan Yoluyla Bulaşan Riskler:</strong> 2025 sınavında sağlık personelinin kanla bulaşan enfeksiyonlardan korunmasında "antibiyotik kullanımı"nın yanlış seçenek olduğu sorulmuştur. Öncelik eldiven, maske ve doğru atık yönetimidir.</li>
+            <li><strong>Ergonomi:</strong> İşin insana uyumu, yaşamın insanlaştırılması şeklinde 2024 yılında sınavda yer bulmuştur.</li>
+        </ul>
+        <p><em>Bu test, yukarıdaki sınav odaklı bilgileri pekiştirerek boşluk bırakmamanız için dizayn edilmiştir.</em></p>
+    </div>
+
+    <!-- Puanlama ve Zamanlayıcı -->
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+        </div>
+        <div class="timer-box" id="timer-display">
+            ⏱️ Kalan Süre: <span id="time">30:00</span>
+        </div>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid" id="quiz-container">
+
+            <div class="question-card">
+                <div class="question-text">1. Sağlık hizmetlerinin kalitesini ölçebilmek ve başarılı bir kalite programı oluşturmak için <u>öncelikli olarak</u> yapılması gereken aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Ulusal etkilerin hesaplanması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Vatandaşların bilinçlendirilmesi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Hizmet amacının net bir şekilde ortaya konması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kamuoyu yoklaması yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sağlık politikalarının tamamen değiştirilmesi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> 2021 ve 2023 Yaz Okulu sınavında sorulmuştur. Kalite ölçümünde en önemli ve öncelikli adım, ne hedeflendiğinin (hizmet amacının) açıkça belirlenmesidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. Sağlık çalışanlarına yönelik fiziksel ve sözlü şiddet olaylarının yönetimine ve anında müdahalesine ilişkin uygulanan ulusal düzenleme aşağıdakilerden hangisi ile ifade edilir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Beyaz Kod</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Mavi Kod</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Pembe Kod</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Turuncu Kod</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sarı Kod</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> AÖF'nin 2021, 2022, 2024 ve 2025 yıllarında bizzat sorduğu kilit sorudur. Sağlık personeline şiddete karşı yardım isteme sistemi "Beyaz Kod" olarak adlandırılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. Hastalığa bağlı olarak gelişebilecek sakatlık ve kalıcı bozuklukların en aza indirgenmesi, hastanın yeni duruma uyumunun sağlanarak yaşam kalitesinin artırılması için alınması gereken rehabilitasyon önlemleri olarak tanımlanan sağlık hizmeti düzeyi hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Birincil Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sekonder Koruma</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Üçüncül (Tersiyer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Primer Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İkincil Koruma</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> 2021 Çıkmış sınav sorusudur. Hastalık sonrası sakatlığın ilerlemesini durdurmak ve kişiyi rehabilite ederek topluma kazandırmak Tersiyer (Üçüncül) Koruma basamağının görevidir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. Sağlıkta kalite ölçümüyle ilgili dünya tarihindeki ilk uygulama hangi yılda ve hangi ülkede yapılmıştır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) 1925 - İtalya</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) 1914 - ABD</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) 1936 - Brezilya</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) 1945 - Rusya</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) 1952 - İngiltere</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> 2023 ve 2024 Yaz Okulu Sorusudur. Sağlık hizmetlerinde kalite standartlarının ölçümüne yönelik ilk istatistiki çalışmalar 1914 yılında Amerika Birleşik Devletleri'nde (ABD) başlamıştır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. I. Yasal mevzuat uyum yeteneklerinin geliştirilmesi<br>II. Genel olay maliyetlerinin azaltılması<br>III. Sigorta primlerinin maliyetini azaltması<br><br>Yukarıdakilerden hangisi veya hangileri ISO 45001 İSG Yönetim Sistemi standardının sağlık kuruluşlarına sağladığı faydalardandır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yalnız II</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) I, II ve III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap E:</strong> 2021, 2022, 2023 ve 2025'te sorulan vazgeçilmez bir sorudur. ISO 45001 belge ve standardı kurumlara yasal uyum, maliyetlerde ve kaza giderlerinde azalma ile sigorta primlerinin düşürülmesi gibi pek çok avantaj sağlar.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Aşağıdakilerden hangisi sağlık çalışanlarının enfeksiyon, kan ve kan ürünleriyle bulaşabilecek hastalıklardan korunması için alınan temel tedbirlerden biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Özel koruyucu giysiler ve eldiven kullanılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Riskli gruplara hepatit B gibi hastalıklar için aşılama yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Uygun ve yeterli el yıkama koşullarının sağlanması</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Profilaktik (koruyucu) olarak düzenli antibiyotik kullanılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Tıbbi atıkların uygun şekilde toplanıp imha edilmesi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2025 Yaz Okulu sorusudur. Hastalıklardan korunmak için aşı, eldiven, el yıkama ve doğru atık yönetimi şarttır ancak enfeksiyon "olmadan önce" sürekli antibiyotik kullanmak tıbben doğru ve koruyucu bir önlem değildir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. Joint Commission'a göre; hasta bakımı alan kişilerin, tıbbi çalışanların, ziyaretçilerin yaralanma riskini ve organizasyonda oluşabilecek zarar-ziyan riskini belirleme, değerlendirme ve azaltmak amacıyla yapılan klinik ve yönetsel aktivitelerin bütününe ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Risk Kültürü</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Risk Yönetimi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Ergonomik Değerlendirme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Risk Kontrolü</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İş Analizi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> 2024 çıkmış sınav sorusudur. Joint Commission'ın tanımında yer alan, tüm hastaneyi (hasta, ziyaretçi, personel) kapsayan klinik ve idari organizasyona "Risk Yönetimi" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. Zekâ seviyesi, görme yeteneği, duygu durumu, iş tatmini, yabancılaşma hissi, kaza eğilimi, monotonluk, stres ve madde bağımlılığı gibi durumlar; iş kazalarının oluşmasında etkili olan hangi "Etkenler" grubunda incelenir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sosyolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Fizyolojik etkenler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Psikolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Patolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Biyolojik etkenler</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> 2021 ve 2025 sınavlarında birebir sorulmuştur. Stres, dikkat dağınıklığı, tatminsizlik ve duygu durumu gibi kişinin iç dünyasını ve zihnini ilgilendiren nedenler "Psikolojik Etkenler"dir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Risk değerlendirmesi metodolojisinde, "yılda sadece bir gün gerçekleşmesi beklenen ve yalnızca ilk yardım gerektirebilecek durumlar" için verilen risk derecesi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Çok ciddi (5)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Ciddi (4)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Orta (3)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Hafif (2)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Çok hafif (1)</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2025 Yaz Okulu sorusudur. İlk yardım ile geçiştirilebilecek ve ölümcül olmayan görece nadir olaylar "Hafif (2)" risk olarak sınıflandırılır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. I. Yaşamın insana uygun hale getirilmesidir.<br>II. Çalışma yerinin insana uygun olarak düzenlenmesi gerekir.<br>III. Yaşamın insanlaştırılmasıdır.<br>IV. Çalışma araç ve gereçlerinin çalışanın vücut özelliklerine uygun olarak düzenlenmesi gerekir.<br><br>Ergonomi disiplini ile ilgili yukarıdaki ifadelerden hangileri doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) I, II ve III</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) I, II, III ve IV</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) II, III ve IV</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2024 Çıkmış Sınav sorusudur. Ergonomi, işin ve çalışma ortamının (fiziksel aletler dâhil) insana uyarlanmasıdır ve özetle "yaşamın insanlaştırılmasıdır". Verilen öncüllerin tümü doğrudur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">11. Aşağıdakilerden hangisi sağlık sektöründe kalite hizmetlerinin <u>kendine özgü (spesifik)</u> özelliklerinden biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Hizmet kusursuz ve mükemmel olmalıdır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Hizmetin zamanında yapılması esastır (ertelenemez).</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Hizmette verimliliği ve başarıyı ölçmek çok zordur.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Müşteri (hasta) ile hizmeti veren personel arasında sadece "dolaylı" bir ilişki vardır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Doğrudan insan hayatına hizmet eden bir alandır.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2024 yılında (soru 19'da) benzeri çıkmıştır. Sağlık hizmetlerinde hasta ile sağlık personeli (doktor, hemşire) yüz yüzedir, yani aralarında "dolaylı" değil, doğrudan ve yakın bir temas ilişkisi vardır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Çalışanların İş Sağlığı ve Güvenliği Eğitimleri Yönetmeliğine göre; hastaneler gibi <u>"Çok Tehlikeli"</u> sınıfta yer alan iş yerlerinde temel İSG eğitimleri hangi sıklıkla ve en az kaç saat olarak verilmelidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Yılda en az 1 defa / En az 16 saat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) 2 yılda bir / En az 12 saat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) 3 yılda bir / En az 8 saat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yılda en az 1 defa / En az 8 saat</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Ayda bir / En az 2 saat</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Çok Tehlikeli iş yerlerinde İSG eğitimleri her yıl tekrarlanmalı ve bu eğitim süresi minimum 16 saat olmalıdır. (Tehlikelide 2 yılda bir 12 saat, az tehlikelide 3 yılda bir 8 saattir).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. İş kazaları veya meslek hastalıkları ortaya çıktıktan sonra hasarı onarmak yerine, henüz olay yaşanmadan riskleri öngörmeye ve tehlikeleri kaynağında yok ederek önlem almaya dayanan 6331 sayılı Yasa'nın da temelini oluşturan çağdaş yaklaşıma ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Reaktif yaklaşım</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Düzeltici yaklaşım</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Proaktif yaklaşım</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Telafi edici yaklaşım</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sürveyans yaklaşımı</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Meydana gelmeden önce riski öngörüp, kazayı doğmadan engellemeye çalışan modern iş güvenliği anlayışı "Proaktif (Önleyici)" yaklaşımdır. Kaza sonrası müdahale ise "Reaktif"tir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. PUKO (Planla-Uygula-Kontrol Et-Önlem Al) döngüsünün hangi aşamasında; yapılan müdahalelerin sonuçları izlenir, değerlendirilir ve süreçte yeni bir sorun olup olmadığı belirlenerek aksaklıklar tespit edilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Planla</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Uygula</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Kontrol Et</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Önlem Al</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Karar Ver</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> PUKO döngüsünde sonuçların "izlenmesi ve değerlendirilmesi", hataların veya işe yarayıp yaramadığının ölçülmesi "Kontrol Et" basamağında yapılır. Ardından buna göre "Önlem Alınır".</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. İş yeri ortamında var olan veya dışarıdan gelebilecek tehlikelerin belirlenmesi, bu tehlikelerden oluşan risklerin derecelendirilerek analiz edilmesi ve kontrol önlemlerinin (hiyerarşinin) kararlaştırılması sürecinin tamamına ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Risk yönetimi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Olay analizi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Risk değerlendirmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Sağlık sürveyansı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Tehlike matrisi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> 2022 Yaz Okulu sorusudur. Tehlikelerin bulunup, listelenip, önceliklendirilerek önlemlerin saptandığı sürece "Risk Değerlendirmesi" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Sağlık çalışanlarının hastane ortamında maruz kaldıkları gürültü, aydınlatma, vibrasyon (titreşim), radyasyon ve termal konfor gibi unsurlar hangi tehlike (risk etmeni) grubuna girmektedir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Fiziksel risk etmenleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Biyolojik risk etmenleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kimyasal risk etmenleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Psikososyal risk etmenleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Ergonomik risk etmenleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Titreşim, basınç, radyasyon, gürültü, soğuk/sıcak (termal konfor) gibi enerji barındıran maddesel ortam faktörleri "Fiziksel Risk Etmenleri" sınıfındadır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Hastalık ortaya çıkmadan önce iş başvurusu yapan kişinin sağlık durumunun yapılacak olan işe uygunluğunu saptamak amacıyla yapılan <u>"İşe Giriş Muayeneleri"</u> epidemiyolojide hangi koruma seviyesinin en önemli örneğidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tersiyer (Üçüncül) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İkincil (Sekonder) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İdari Önlemler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Birincil (Primer) Koruma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kişisel Koruyucu Önlem</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Hastalığın etkeniyle temas etmeden önce kişiyi doğru işe yerleştirerek hiç hastalanmamasını sağlamayı hedefleyen işe giriş muayeneleri "Birincil (Primer) Koruma"ya aittir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Bradley Eğrisi tablosunda iş güvenliği kültürünün dört farklı aşaması vardır. Çalışanların kendilerini güvende tutmalarının yanında birbirlerini gözetip kolladıkları, iş kazalarının sıfıra indirilmesinin ancak takım ruhuyla başarılabileceğine inanılan <u>en olgun aşama</u> aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Reaktif Aşama</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Birbirine Bağımlı (Takım) Aşaması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Bağımlı (Denetim) Aşaması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Bağımsız (Birey) Aşaması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Doğal İçgüdü Aşaması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Eğrinin en tepesindeki ve kaza oranının sıfıra en yakın olduğu seviye "Birbirine Bağımlı" aşamasıdır. Burada bireyler sadece kendilerinden değil takım arkadaşlarının güvenliğinden de sorumluluk hisseder.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. İş sağlığı ve güvenliği uygulamalarında, "Koruyucu Önlemlerin Hiyerarşisi" kapsamında riskleri kaynağında çözmeyi amaçlayan <u>en etkili ve öncelikli (ilk sıradaki)</u> adım aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İşçilere kişisel koruyucu donanım (KKD) vermek</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İdari önlemler almak (Vardiya kısaltmak)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Tehlike ya da riski tamamen ortadan kaldırmak (Eliminasyon)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Daha az tehlikeli madde ile değiştirmek (İkame)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Mühendislik önlemleri (Havalandırma, izolasyon) almak</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Önlemler hiyerarşisinde en tepede yer alan, en maliyetli ama en kesin çözüm "Tehlikeyi ortadan kaldırmaktır (Eliminasyon)". Örnek: Tehlikeli makineyi tesisten atmak.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Aşağıdakilerden hangisi sağlık kuruluşlarında oluşturulması hedeflenen pozitif bir "Güvenlik Kültürü"nün temel özelliklerinden biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Sadece yönetici kademesinde kabul edilmesi yeterli olup, alt düzey çalışanların katılımını gerektirmez.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Bütün çalışanlar tarafından paylaşılan, benimsenen değerlerdir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Olaylardan, hatalardan ve kazalardan ders çıkarmayı (öğrenmeyi) yansıtır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Çalışanların sadece iş yerindeki değil özel yaşamdaki davranışlarını da olumlu etkiler.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Güvenlik hedeflerine ulaşmak için karşılıklı iletişimi güçlendirir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> 2023 sınavlarında çıkmış benzer bir çeldiricidir. Güvenlik kültürü "tüm çalışanların katılımını gerektirir", sadece yöneticilere ait veya izole bir sistem değildir.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+        let isTimeUp = false;
+
+        function updateScore() {
+            let netScore = correctCount - (wrongCount / 4);
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            if (isTimeUp) return;
+
+            const parentUl = clickedLi.parentElement;
+            if (parentUl.classList.contains('answered')) return;
+            
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            updateScore();
+        }
+
+        // Zamanlayıcı
+        let timeLeft = 1800; // 30 dk
+        const timerElement = document.getElementById("time");
+
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = "00:00";
+                document.getElementById('timer-display').style.background = "#333";
+                document.getElementById('timer-display').innerHTML = "⏳ Süre Bitti!";
+                isTimeUp = true;
+                
+                const allUls = document.querySelectorAll('.options');
+                allUls.forEach(ul => { ul.classList.add('timeout'); });
+                alert("Süreniz doldu! İşaretleme yapamazsınız, ancak doğru cevaplar için çözümleri inceleyebilirsiniz.");
+            } else {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                
+                if(seconds < 10) { seconds = "0" + seconds; }
+                if(minutes < 10) { minutes = "0" + minutes; }
+
+                timerElement.innerText = minutes + ":" + seconds;
+                timeLeft--;
+            }
+        }, 1000);
+    </script>
 </body>
 </html>

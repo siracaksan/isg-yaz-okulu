@@ -1,25 +1,638 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 5 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 5: Test 3 - İş Sağlığı Yönetimi</title>
+    <style>
+        :root {
+            --primary: #1A5276; 
+            --secondary: #F1C40F; 
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #a9cce3;
+            --timer-bg: #e74c3c;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--secondary);
+        }
+        header h1 { margin: 0; font-size: 1.6em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; color: #d4e6f1; }
+        
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #d35400; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eaf2f8;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid #d4e6f1;
+        }
+        .test-numaralari span { font-weight: bold; color: #1A5276; margin-right: 10px; }
+        .test-numaralari a {
+            color: #1A5276;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+        .test-numaralari a.active {
+            background: var(--secondary);
+            border: 1px solid #b7950b;
+        }
+        
+        /* Geçmiş Yıl Analiz Paneli Özel Tasarım */
+        .analiz-paneli {
+            background: #eef7f2;
+            border: 2px solid #27ae60;
+            border-left: 6px solid #1e8449;
+            color: #1b4f34;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-size: 0.95em;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: #1e8449; display: flex; align-items: center; gap: 8px; font-size: 1.2em;}
+        .analiz-paneli ul { padding-left: 20px; margin: 10px 0; }
+        .analiz-paneli li { margin-bottom: 5px; }
+        .analiz-paneli strong { color: #c0392b; }
+
+        .dashboard {
+            background: #eaf2f8;
+            border: 1px solid #a9cce3;
+            color: #1A5276;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .timer-box {
+            background: var(--timer-bg);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse { from { opacity: 1; } to { opacity: 0.8; } }
+
+        main { max-width: 1200px; margin: auto; padding: 0 15px; }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 1.05em; color: #2c3e50; }
+        .options { list-style: none; padding: 0; margin: 0; }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+        .options.answered li { pointer-events: none; }
+        .options.timeout li { pointer-events: none; opacity: 0.7; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+        }
+        
+        details.solution {
+            margin-top: 15px;
+            background: #eaf2f8;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed #3498db;
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #2980b9;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+        
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #555; font-size: 0.9em; }
+
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 5 - Test 3</h2>
+        <h1>İş Sağlığı Yönetimi</h1>
+        <h2>Ünite 5: Sağlık Kuruluşlarında Riskler ve Risk Analizleri - Test 3</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="konu_anlatimi.html">📖 Ünite 5 Konu Anlatımı</a> | 
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📝 Çıkmış Sorular</a>
+        </div>
+        <hr>
+        <div class="test-numaralari">
+            <span>Testler:</span>
+            <a href="test_1.html">Test 1</a>
+            <a href="test_2.html">Test 2</a>
+            <a href="test_3.html" class="active">Test 3</a>
+            <a href="test_4.html">Test 4</a>
+            <a href="test_5.html">Test 5</a>
+        </div>
+    </nav>
+
+    <!-- GEÇMİŞ YILLARIN SINAV ANALİZİ -->
+    <div class="analiz-paneli">
+        <h3>🔍 Ünite 5 - Sınav Analizi ve Test 3 Odak Noktaları (2024-2025 Formatı)</h3>
+        <p>Son yıllardaki AÖF sınavları Ünite 5 kapsamında daha çok <strong>örneklem üzerinden Risk Değerlendirme basamaklarını sormaya</strong> başlamıştır. Test 3 için önemli hatırlatmalar:</p>
+        <ul>
+            <li><strong>Risk Süreci Örneklemi (2025 Sorusudur!):</strong> "Teknolojisi eski olan ve tehlike saçan presin kaldırılması", riski kaynağında çözdüğü için <strong>Riski ortadan kaldırmak ya da azaltmak için yapılacakların kararlaştırılması</strong> basamağına girer.</li>
+            <li><strong>Kimyasal Tehlike Tanımları:</strong> Sıfırın altında (-0°C) parlayanlar <strong>Çok Kolay Alevlenir</strong>; oda sıcaklığında kendiliğinden parlayan (0-21°C) maddeler <strong>Kolay Alevlenir</strong> maddedir.</li>
+            <li><strong>L Tipi Matristeki Şiddetler:</strong> "Ölüm" (5 Puan-Çok Ciddi), "Sürekli iş göremezlik" (4 Puan-Ciddi), "Tedavi gerektiren" (3 Puan-Orta), "İlk yardım gerektiren" <strong>(2 Puan-Hafif / 2025 Sorusudur)</strong> şeklindedir.</li>
+            <li><strong>Güvenliğin Felsefesi:</strong> İş Sağlığında kabul edilebilir risk; "yasalara ve önleme politikasına uygun, kayıp yaratmayacak risk seviyesi" olarak tanımlanır.</li>
+        </ul>
+    </div>
+
+    <!-- Puanlama ve Zamanlayıcı -->
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+        </div>
+        <div class="timer-box" id="timer-display">
+            ⏱️ Kalan Süre: <span id="time">30:00</span>
+        </div>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid" id="quiz-container">
+
+            <div class="question-card">
+                <div class="question-text">1. Teknolojisi eski olan ve çift el kumanda ya da fotosel tertibatı yapılamayan presin kullanımdan kaldırılması, risk değerlendirme sürecinin hangi basamağına örnek teşkil eder?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İzleme ve Gözden Geçirme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Tehlikelerin belirlenmesi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Riski ortadan kaldırmak ya da azaltmak için yapılacakların kararlaştırılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kontrol önlemlerinin uygulanması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Bilgi toplama</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> 2025 Yaz Okulu çıkmış sorusudur. Tehlikeli bir makineyi tamamen sistemden çıkartmak (eliminasyon/ortadan kaldırma), risk değerlendirme sürecinde "Riskleri ortadan kaldırmak için yapılacakların kararlaştırılması" basamağıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. I. Yabancılaşma duygusu, kaza eğilimi ve stres psikolojik etkenlerdendir.<br>II. Ailevi problemler, yasalara karşı gelme gibi durumlar fizyolojik etkenler arasındadır.<br>III. İş kazalarının oluşmasında etkili olan etkenler; psikolojik, sosyolojik ve fizyolojik olarak üç grupta incelenir.<br><br>İş kazalarının sebepleri ile ilgili yukarıdaki ifadelerden hangisi/hangileri doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız II</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) I ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Yalnız III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) I, II ve III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> 2024 Yaz Okulu çıkmış sorusudur. Ailevi problemler ve yasalara karşı gelme durumu "sosyolojik/çevresel" bir sorundur, bedensel (fizyolojik) değildir. Bu nedenle I ve III doğrudur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. L Tipi Matris risk değerlendirme yöntemine göre, "ilk yardım gerektirebilecek durumlar" hangi risk derecesine girmektedir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Çok ciddi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Ciddi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Orta</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Hafif</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Çok hafif</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2025 yılı çıkmış sorusudur. Hastane ve yatış gerektirmeyen, lokal olarak olay yerinde halledilebilen "İlk yardım gerektiren" vakalar 2 Puan (Hafif) olarak değerlendirilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. L Tipi Matris tablosunda "Şiddet" kriterinde yer alan "Sürekli iş göremezlik" (uzuv kaybı vb.) durumu hangi şiddet puanı ve derece ile ifade edilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) 5 - Çok Ciddi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) 4 - Ciddi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) 3 - Orta</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) 2 - Hafif</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) 1 - Çok Hafif</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Ölüm olan kazalar Çok Ciddi (5) puan alırken, kişinin kalıcı olarak sakatlandığı (sürekli iş göremezlik) durumlara Ciddi (4) puan verilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. İş Sağlığı Yönetiminde; zekâ seviyesi, görme yeteneği, duygu durumu, iş tatmini, monotonluk, stres ve kaza eğilimi gibi etkenler iş kazalarında hangi grupta değerlendirilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sosyolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Fizyolojik etkenler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Psikolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Biyolojik etkenler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Patolojik etkenler</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> 2021, 2024 ve 2025 çıkmış favori AÖF sorusudur. Stres, depresyon, dikkat dağınıklığı, tatminsizlik doğrudan Psikolojik etkenlerdir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Ergonomi biliminde "İşin kişinin ruhsal ve psikolojik beklentilerine uygun olması" durumu aşağıdaki kavramlardan hangisi ile ifade edilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Fizyolojik denge</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Hoşnutluk</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kabul edilebilirlik</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kendini gerçekleştirme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Antropometrik uyum</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Ders kitabında ergonominin hedeflerinden biri olan "Hoşnutluk: Psikolojik bir sorundur ve işin psikolojik beklentilere uygun olmasıdır" şeklinde tanımlanır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. Kimyasal maddelerin sınıflandırılmasında, parlama noktası <0°C (sıfırın altında) ve kaynama noktası <35°C olan oldukça tehlikeli maddelere ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kolay alevlenir madde</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Çok kolay alevlenir madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Patlayıcı madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Oksitleyici madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Aşındırıcı madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Parlama noktası sıfırın bile altındaysa bunlara mevzuatta "Çok Kolay Alevlenir Madde" denir. (0 ile 21 derece arası olanlara sadece 'Kolay Alevlenir' denir).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. I. Tehlikelerin belirlenmesi<br>II. Risklerin değerlendirilmesi<br>III. Kontrol önlemlerinin uygulanması<br>IV. İzleme ve gözden geçirme<br><br>Yukarıdakilerden hangisi/hangileri sağlık kuruluşlarında yapılan "Risk Değerlendirme" sürecinin standart basamaklarındandır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) I, II ve III</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) I, II, III ve IV</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) II ve IV</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2022 Yaz Okulu çıkmış sorusudur. Risk değerlendirmesi; tehlikelerin tespiti, risk analizi, önlem alma ve en sonunda PUKO döngüsüne uygun olarak durumu izleme ve gözden geçirme (denetleme) süreçlerinin tümünü kapsar.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. L Tipi Matris analizinde, bir olayın ortaya çıkma olasılığı (frekansı) "Haftada bir gün ya da daha sık" olabiliyorsa, bu durum matriste hangi değer (puan) ile ifade edilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) 1 - Çok Düşük</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) 2 - Düşük</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) 3 - Orta</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) 4 - Yüksek</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">E) 5 - Çok Yüksek</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap E:</strong> 5x5 matriste bir olayın haftada bir veya her gün gibi çok sık gerçekleşme ihtimali en yüksek seviye olan 5 (Çok Yüksek) ile puanlanır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. İş yerlerinde veya günlük yaşamda kullandığımız titreşim yapan (vibrasyonlu) aletler, frekansına göre insan bedeninde çeşitli hasarlara yol açar. Aşağıdakilerden hangisi bu <u>hasarlardan biri değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Ellerde dolaşım bozuklukları (beyazlama)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Mide bulantısı ve kusma</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Uyku bozuklukları ve bel ağrıları</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) İşitme kaybı ve geçici sağırlık</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Avuç içinde uyuşukluk ve hassasiyet</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Titreşim (vibrasyon) dolaşımı ve kas iskelet sistemini bozar, düşük frekansta (5 Hz altı) mide bulantısı (deniz tutması gibi) yapar. Ancak "işitme kaybı" vibrasyonun değil, Gürültünün sonucudur.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">11. Yasal mevzuata göre bir iş yerinde yapılmış olan Risk Değerlendirmesi; belirli şartların oluşması durumunda "süresine bakılmaksızın" yenilenmek zorundadır. Aşağıdakilerden hangisi <u>bu durumlardan biri değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İş yerinde kullanılan makine, teknoloji veya malzemelerin değiştirilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İş yerinin üretim veya faaliyet yerinin taşınması / değiştirilmesi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) İşletmenin rutin aylık idari personel toplantılarının yapılması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İş yerinde bir iş kazası veya meslek hastalığının meydana gelmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Çalışma ortamında tamamen yeni ve ciddi bir tehlikenin ortaya çıkması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Risk değerlendirmesi rutin toplantılarda yenilenmez. Makine değiştiğinde, taşınıldığında, kaza olduğunda (mevcut sistemin işe yaramadığı kanıtlandığında) veya yeni bir tehlike doğduğunda yenilenir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. İSG mevzuatımızda "Kabul Edilebilir Risk" seviyesi genel olarak nasıl tanımlanmaktadır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Yasal yükümlülüklere ve iş yerinin önleme politikasına uygun, kayıp veya yaralanma oluşturmayacak risk seviyesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Hiçbir şekilde kaza olma ihtimali barındırmayan %0 (sıfır) risk seviyesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İşverenin kendi inisiyatifiyle ödemeyi kabul ettiği kaza tazminat bedeli sınırı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Sadece hafif yaralanmalara izin verilen ve çalışmayı durdurmayan seviye</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İşletmenin kâr oranını düşürmeyen üretim sınırı</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Dünyada riskin tamamen sıfır olması imkânsızdır (%2 önlenemez kalır). Bu yüzden "Kabul Edilebilir Risk"; yasal sınırlara uyan, çalışanlara ölüm veya kayıp yaşatmayacak makul ve güvenli seviyedir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. Sağlık kuruluşlarında "Psikososyal Stres" ile bireysel olarak başa çıkabilmek için bazı davranış yöntemleri önerilir. Aşağıdakilerden hangisi bu yöntemlerden biri <u>değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Olumlu alışkanlıklar edinmek</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Karşılaşılan bütün küçük ayrıntılara ve kusurlara odaklanarak zaman harcamak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İşleri sıraya dizerken önce zor ve sevimsiz işlere öncelik vererek bitirmeye çalışmak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) İhtiyaç duyduğunda iş yeri hekimi veya uzmandan destek almak</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Aile ve yakın arkadaşlarla kaliteli zaman geçirmek</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Stresle mücadelede temel kural "Ayrıntılarla ve mükemmeliyetçilikle gereksiz yere uğraşmamak"tır. Tüm küçük detaylara takılmak stresi ve tükenmişliği daha da artırır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. I. Yaşamın insana uygun hale getirilmesidir.<br>II. İşin insana, insanın ise işe uyumunun sağlanmasıdır.<br>III. Çalışma araç, gereç ve makinelerinin çalışanın fiziksel vücut özelliklerine uygun tasarlanmasıdır.<br><br>Ergonomi disiplini ile ilgili yukarıdaki ifadelerden hangileri doğrudur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yalnız I</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) I ve II</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) II ve III</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) I, II ve III</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yalnız III</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2024 yılı çıkmış AÖF sorusudur. Ergonomi çalışma hayatını (sandalyeyi, bilgisayarı, aydınlatmayı) insanın vücuduna (biyolojisine) uygun ve sağlıklı hale getirmektir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. İş yerlerinde tehlikelerin tanımlanması (risk analizi yapılması) için çeşitli girdi ve veri kaynaklarından yararlanılır. Aşağıdakilerden hangisi bu çalışmada <u>kullanılacak doğru bir kaynak değildir</u>?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) İş yerindeki kaza, olay ve ramak kala kayıtları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Çalışanların ve işçilerin kendi tecrübeleri ve paylaşımları</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Benzer sektör ve kuruluşlarda daha önce yaşanmış kaza olayları</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Hastane kafeteryasındaki yiyeceklerin satış fiyat listeleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Makine, ekipman ve tehlikeli kimyasal madde envanterleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Risk değerlendirmesi için kaza geçmişi, uzman gözlemi, çalışan şikayetleri ve kimyasal envanterler gerekir. Kafeteryadaki menü fiyatları İSG risk değerlendirme verisi değildir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. İş sağlığı alanında çok karıştırılan "Tehlike" ve "Risk" kavramları arasındaki ilişki aşağıdakilerden hangisinde en doğru şekilde verilmiştir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Tehlike ve risk birebir aynı anlama gelen iki kelimedir.</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Tehlike olumsuz etki yaratabilecek "zarar potansiyeli"dir; Risk ise tehlikeye bağlı ortaya çıkan hasar/yaralanma ihtimalidir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Risk, tehlikenin geçmişte yaşanmış haline verilen addır.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tehlike sadece kimyasallarda olur, risk sadece fizyolojiktir.</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Olay gerçekleştiğinde adı tehlike olur, gerçekleşmeden önce risktir.</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Kitaptaki net tanıma göre: "Tehlike olumsuz etki yaratabilecek zarar potansiyelidir (Örn: Köpek balığı). Risk ise bu tehlikeden oluşan zarar veya hasar ihtimalidir (Köpek balığının sizi ısırma ihtimali)".</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Kazalar ya da meslek hastalıkları ortaya çıktıktan sonra hasar gidermek yerine, kaza ve hastalıklar meydana gelmeden <u>önce</u> bunlara neden olabilecek kaynaklara karşı önlem almaya dayanan İSG çalışmalarına ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Reaktif yaklaşım</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Düzeltici yaklaşım</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Reorganizasyon (Yeniden yapılanma)</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Proaktif yaklaşım (Risk Değerlendirmesi vb.)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sürveyans izleme</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> Kaza olmadan önce önlem alan çağdaş güvenlik kültürüne "Proaktif (Önleyici) Yaklaşım" denir. Kaza olduktan sonra tepki veren ise Reaktif yaklaşımdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Herhangi bir enerji uygulaması olmadan (ateş vb.), normal ortam sıcaklığında havayla temas ettiğinde ısınabilen ve alevlenen, parlama noktası 0-21°C arasında olan kimyasal maddeler hangi gruptadır?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Kolay alevlenir madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Aşındırıcı (Korozif) madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Çok kolay alevlenir madde (Sıfırın altındakiler)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Alerjik madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Oksitleyici (Yakıcı) madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Parlama noktası 0 ile 21 derece arasında olan ve oda sıcaklığında kendiliğinden alevlenebilen sıvılara/maddelere "Kolay alevlenir madde" (Örn: Asetilen, Etil alkol) denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. Kalitatif bir "Risk Değerlendirmesi" (L Tipi Matris vb.) yapılırken puanlamanın objektif ve doğru olması için en uygun yöntem aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sadece patronun (işverenin) kendi başına puanlama yapması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Puanlamanın sadece iş güvenliği uzmanına bırakılması</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Uzmanların, işverenin ve bizzat o işi sahada yapan çalışanların hep birlikte görüş bildirerek ortalamasının alınması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Başka şirketlerde yapılmış eski anket sonuçlarının kopyalanması</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sadece doktorların (İş Yeri Hekiminin) puanlaması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Risk değerlendirmesi tam bir takım işidir. Matristeki "olasılık ve şiddet" kararı tek kişiye bırakılırsa taraf tutma/hata (bias) olur; bu yüzden geniş katılımlı (uzman+işçi+işveren) yapılmalıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. Risk Yönetim Sürecinin ve Risk Değerlendirmesinin ilk (başlangıç) adımı aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Risklerin Değerlendirilmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İzleme ve Gözden Geçirme</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Bilgi Toplama (İş yeri, yaş, vardiya, kullanılan maddeler hakkında)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tehlikelerin Belirlenmesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kontrol Önlemlerinin Uygulanması</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Risk analizi sürecinin 1. basamağı iş yeri, çalışanlar ve envanter hakkında "Bilgi Toplama"dır. Ardından sırasıyla; 2-Tehlikeleri belirleme, 3-Risk değerlendirme şeklinde ilerler.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+        let isTimeUp = false;
+
+        function updateScore() {
+            let netScore = correctCount - (wrongCount / 4);
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            if (isTimeUp) return;
+
+            const parentUl = clickedLi.parentElement;
+            if (parentUl.classList.contains('answered')) return;
+            
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            updateScore();
+        }
+
+        // Zamanlayıcı
+        let timeLeft = 1800; // 30 dk
+        const timerElement = document.getElementById("time");
+
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = "00:00";
+                document.getElementById('timer-display').style.background = "#333";
+                document.getElementById('timer-display').innerHTML = "⏳ Süre Bitti!";
+                isTimeUp = true;
+                
+                const allUls = document.querySelectorAll('.options');
+                allUls.forEach(ul => { ul.classList.add('timeout'); });
+                alert("Süreniz doldu! İşaretleme yapamazsınız, ancak doğru cevaplar için çözümleri inceleyebilirsiniz.");
+            } else {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                
+                if(seconds < 10) { seconds = "0" + seconds; }
+                if(minutes < 10) { minutes = "0" + minutes; }
+
+                timerElement.innerText = minutes + ":" + seconds;
+                timeLeft--;
+            }
+        }, 1000);
+    </script>
 </body>
 </html>

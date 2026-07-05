@@ -1,25 +1,643 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 6 - Test 4 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 6: Test 4 - İş Sağlığı Yönetimi</title>
+    <style>
+        :root {
+            --primary: #1A5276; 
+            --secondary: #F1C40F; 
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --analysis-bg: #eaf2f8;
+            --analysis-border: #a9cce3;
+            --timer-bg: #e74c3c;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--secondary);
+        }
+        header h1 { margin: 0; font-size: 1.6em; }
+        header h2 { margin: 5px 0 0; font-size: 1.2em; font-weight: normal; color: #d4e6f1; }
+        
+        .test-menusu {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .test-menusu a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .test-menusu a:hover { color: #d35400; text-decoration: underline; }
+        .test-menusu hr { border: 0; height: 1px; background: #ddd; margin: 15px 0; }
+        
+        .test-numaralari {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eaf2f8;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid #d4e6f1;
+        }
+        .test-numaralari span { font-weight: bold; color: #1A5276; margin-right: 10px; }
+        .test-numaralari a {
+            color: #1A5276;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+        .test-numaralari a.active {
+            background: var(--secondary);
+            border: 1px solid #b7950b;
+        }
+        
+        /* Geçmiş Yıl Analiz Paneli Özel Tasarım */
+        .analiz-paneli {
+            background: #fdf2e9;
+            border: 2px solid #e67e22;
+            border-left: 6px solid #d35400;
+            color: #333;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-size: 0.95em;
+        }
+        .analiz-paneli h3 { margin-top: 0; color: #d35400; display: flex; align-items: center; gap: 8px; font-size: 1.2em;}
+        .analiz-paneli ul { padding-left: 20px; margin: 10px 0; }
+        .analiz-paneli li { margin-bottom: 5px; }
+        .analiz-paneli strong { color: #c0392b; }
+
+        .dashboard {
+            background: #eaf2f8;
+            border: 1px solid #a9cce3;
+            color: #1A5276;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto 20px auto;
+            max-width: 1150px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .dashboard div span { margin: 0 10px; font-size: 1.1em; }
+        .timer-box {
+            background: var(--timer-bg);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse { from { opacity: 1; } to { opacity: 0.8; } }
+
+        main { max-width: 1200px; margin: auto; padding: 0 15px; }
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 1.05em; color: #2c3e50; }
+        .options { list-style: none; padding: 0; margin: 0; }
+        .options li {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .options li:hover { background: #eaf2f8; }
+        .options.answered li { pointer-events: none; }
+        .options.timeout li { pointer-events: none; opacity: 0.7; }
+        .options li.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            font-weight: bold;
+        }
+        .options li.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            font-style: italic;
+            text-decoration: line-through;
+        }
+        
+        details.solution {
+            margin-top: 15px;
+            background: #eaf2f8;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px dashed #3498db;
+            font-size: 0.9em;
+        }
+        details.solution summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #2980b9;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        details.solution summary::before { content: "💡"; margin-right: 8px; }
+        details.solution p { margin: 10px 0 0 0; color: #333; }
+        
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #555; font-size: 0.9em; }
+
+        @media (max-width: 600px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .dashboard { flex-direction: column; }
+            .test-menusu a { display: block; margin: 5px 0; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 6 - Test 4</h2>
+        <h1>İş Sağlığı Yönetimi</h1>
+        <h2>Ünite 6: Sağlık Kuruluşlarının Farklı Bölümlerinde İSG - Test 4</h2>
     </header>
-    
+
+    <nav class="test-menusu">
+        <div class="ust-linkler">
+            <a href="../../index.html">🏠 En Ana Sayfa</a> | 
+            <a href="konu_anlatimi.html">📖 Ünite 6 Konu Anlatımı</a> | 
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📝 Çıkmış Sorular</a>
+        </div>
+        <hr>
+        <div class="test-numaralari">
+            <span>Testler:</span>
+            <a href="test_1.html">Test 1</a>
+            <a href="test_2.html">Test 2</a>
+            <a href="test_3.html">Test 3</a>
+            <a href="test_4.html" class="active">Test 4</a>
+            <a href="test_5.html">Test 5</a>
+        </div>
+    </nav>
+
+    <!-- PÜF NOKTALARI VE ANALİZ -->
+    <div class="analiz-paneli">
+        <h3>🔍 Ünite 6 - Test 4 Odak Noktaları ve Tüyolar</h3>
+        <p>AÖF'nin 6. Üniteden sormayı çok sevdiği ve bu testte karşılaşacağınız temel kavram eşleştirmeleri şunlardır:</p>
+        <ul>
+            <li><strong>Şekil - Renk - Anlam Eşleştirmesi:</strong>
+                <br>✔️ <strong>Sarı + Üçgen:</strong> Uyarı İşareti (Dikkat tehlike var!)
+                <br>✔️ <strong>Mavi + Daire:</strong> Emredici İşaret (Zorunluluk bildirir, örneğin baret tak)
+                <br>✔️ <strong>Kırmızı + Daire (Çapraz Çizgili):</strong> Yasaklayıcı İşaret
+                <br>✔️ <strong>Yeşil + Kare/Dikdörtgen:</strong> Acil Çıkış ve İlk Yardım
+                <br>✔️ <strong>Kırmızı + Kare/Dikdörtgen:</strong> Yangınla Mücadele İşareti
+            </li>
+            <li><strong>Kimyasal Madde Terimleri:</strong> Oksitleyici (Yakıcı), Toksik (Zehirli/Ölümcül), Patlayıcı (Oksijensiz bile parlayan), Alerjik (Hassasiyet yaratan).</li>
+            <li><strong>Radyasyon Alanları:</strong> Dozimetre takılması zorunlu olan ve yıllık limitlerin aşılabileceği yerlere <strong>Denetimli Alan</strong>; dozimetre zorunlu olmayan ancak izlem yapılan yerlere <strong>Gözetimli Alan</strong> denir.</li>
+        </ul>
+    </div>
+
+    <!-- Puanlama ve Zamanlayıcı -->
+    <div class="dashboard">
+        <div>
+            <span>✔️ Doğru: <b id="d-count" style="color: #27ae60;">0</b></span>
+            <span>❌ Yanlış: <b id="y-count" style="color: #c0392b;">0</b></span>
+            <span>➖ Boş: <b id="b-count">20</b></span>
+            <span>🎯 Net: <b id="n-count">0.00</b></span>
+            <span>🏆 Puan: <b id="p-count">0</b>/100</span>
+        </div>
+        <div class="timer-box" id="timer-display">
+            ⏱️ Kalan Süre: <span id="time">30:00</span>
+        </div>
+    </div>
+
     <main>
-        </main>
-    
+        <div class="questions-grid" id="quiz-container">
+
+            <div class="question-card">
+                <div class="question-text">1. Sağlık kuruluşlarında "Acil Çıkış ve İlk Yardım İşaretleri" standart olarak hangi geometrik şekil ve zemin rengi kullanılarak oluşturulur?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Daire biçiminde, mavi zemin üzerine beyaz piktogram</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Üçgen biçiminde, sarı zemin üzerine siyah piktogram</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Dikdörtgen veya kare biçiminde, yeşil zemin üzerine beyaz piktogram</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Dikdörtgen veya kare biçiminde, kırmızı zemin üzerine beyaz piktogram</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Daire biçiminde, beyaz zemin üzerine kırmızı çapraz çizgi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Acil kaçış yolları, toplanma alanları ve ilk yardım ekipmanlarının yeri, daima Yeşil zemin üzerinde beyaz piktogramlar barındıran kare/dikdörtgen levhalarla gösterilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">2. Yasak işareti, uyarı işareti, emredici işaret, acil çıkış ve ilk yardım işaretleri <u>dışında</u> bilgi veren diğer tüm işaretlere ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Işıklı işaret</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Sağlık ve güvenlik işaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Sinyal işaretleri</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Bilgilendirme işareti</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yangınla mücadele işareti</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> AÖF'nin her yıl (2021, 2023, 2024, 2025) sorduğu banko sorudur. Yukarıda sayılan 4 ana gruptaki (yasak, uyarı, emredici, acil çıkış) işaretlerin dışında kalan ve genel yönerge/bilgi sunan levhalar "Bilgilendirme işareti"dir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">3. "Çalışanların tehlikelerden korunması için, ekipmanların (makinelerin) kontrolsüz hareketini ve bünyesinde depolanan enerjisini engelleme metodudur."<br><br>Yukarıda tanımı verilen güvenlik uygulaması aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Kilitleme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Etiketleme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) İzolasyon</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yenileme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Bariyerleme</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> 2021, 2022, 2023 ve 2024 yıllarında çıkmış sorudur. Güç kaynağını veya vanayı fiziksel olarak kapatıp üzerine kilit asarak makinenin kontrolsüz çalışmasını engelleme işine "Kilitleme" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">4. İş sağlığı ve güvenliği terminolojisinde; "işin yapılmasında kullanılan herhangi bir makine, alet, tesis ve tesisat" ifadesi aşağıdaki kavramlardan hangisinin tanımıdır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Kişisel koruyucu donanım</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Tehlikeli bölge</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) İş ekipmanı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Tıbbi sarf malzeme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Sürveyans aracı</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Ders kitabına göre; basit bir matkaptan büyük bir buhar kazanına, tesisattan iş aletlerine kadar işi yapmak için kullanılan her türlü cansız araca "İş Ekipmanı" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">5. Solunduğunda, ağız yoluyla alındığında veya deri yoluyla emildiğinde insan sağlığı üzerinde akut (ani) veya kronik hasarlara, hatta ölüme neden olabilen maddelere ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Oksitleyici (Yakıcı) madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Alerjik madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Patlayıcı madde</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Toksik (Zehirli) madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Çevre için tehlikeli madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2023 yılı çıkmış sorusudur. Düşük dozlarda bile alındığında zehirlenme ve ölüme yol açan kimyasallara Toksik Madde (Piktogram: Kuru Kafa) denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">6. Daire biçiminde, beyaz zemin üzerine siyah piktogram, kırmızı çerçeve ve diyagonal (çapraz) çizgiden oluşan işaretler aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yangınla mücadele işaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Uyarı işaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Emredici işaretler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Yasaklayıcı işaretler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Bilgilendirme işaretleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2021 ve 2022 yıllarında çıkmıştır. Beyaz bir yuvarlağın kırmızı bir sınırla çizildiği ve ortasından kırmızı çapraz bir çizginin (üstünü çizme) geçtiği işaretler "Yasak" bildirir (Örn: Sigara İçilmez).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">7. Özellikle yanıcı maddeler olmak üzere diğer maddelerle temasında önemli ölçüde ekzotermik (ısı veren) reaksiyona giren ve yangını şiddetlendiren maddelere ne denir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Alerjik madde</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Oksitleyici (Yakıcı) madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Toksik madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Aşındırıcı madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Patlayıcı madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> 2021 yılı çıkmış sorusudur. Kendisi yanıcı olmasa bile, yapısındaki oksijen nedeniyle temasta bulunduğu diğer maddelerin yanmasını şiddetlendiren/parlatan maddelere "Oksitleyici" madde denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">8. Tıbbi radyasyon birimlerinde (Röntgen vb.) görev yapan personelin maruz kaldığı kümülatif (birikmiş) radyasyon dozunu ölçmek ve kaydetmek için yakalarına taktıkları küçük cihaza ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Kişisel Dozimetre</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Geiger Sayacı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kalibrasyon Cihazı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Kurşun Önlük</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Oksimetre</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Radyasyon çalışanlarının vücutlarına isabet eden X-Işını miktarını aylık olarak hesaplayan yaka sensörüne "Kişisel Dozimetre" adı verilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">9. Üçgen şeklinde ve sarı zemin üzerine siyah piktogram ile siyah çerçeveden oluşan levhalar iş sağlığı ve güvenliğinde hangi amacı taşır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Yasaklama getirir</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Zorunluluk (Emir) bildirir</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Tehlikeye karşı Uyarıda bulunur</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Acil kaçış yollarını gösterir</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yangın söndürücülerin yerini belirtir</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> 2022 ve 2024 sınav sorusudur. Sarı zeminli üçgenler daima "Uyarı İşaretleri"dir. Olası bir tehlikeye (elektrik, radyasyon vb.) karşı dikkatli olunmasını sağlar.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">10. "Daire biçiminde, mavi zemin üzerine beyaz piktogram" ile oluşturulan ve uyulması gereken zorunlu bir davranışı (örneğin "Baret Tak" veya "Eldiven Kullan") ifade eden işaretlere ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Uyarı işaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Bilgilendirme işaretleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Yasaklayıcı işaretler</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">D) Emredici işaretler</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Acil çıkış işaretleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap D:</strong> 2025 yılı (en güncel) sınav sorusudur. Mavi zeminli daireler her zaman zorunluluk bildiren "Emredici İşaret"lerdir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">11. Atmosferik oksijen olmadan da ani gaz yayılımı ile ekzotermik reaksiyon verebilen ve ısınma/şok ile kendiliğinden infilak eden katı veya sıvı maddelere ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Oksitleyici madde</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Patlayıcı madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kolay alevlenir madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Aşındırıcı madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Toksik madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> 2022 yılı çıkmış sorusudur. Oksijensiz ortamda bile ısı ve şok etkisiyle hızla genleşip yıkıcı basınç oluşturan kimyasallara "Patlayıcı Madde" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">12. Solunduğunda veya cilde nüfuz ettiğinde bağışıklık sistemini tetikleyerek aşırı derecede "hassasiyet" meydana getiren kimyasallar hangi sınıfa aittir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Alerjik madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Tahriş edici madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Toksik madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Biyolojik madde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Aşındırıcı madde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> 2023 sınavında sorulmuştur. Anahtar kelime olan "hassasiyet meydana getirme (sensitizasyon)" özelliği, alerjik reaksiyonlara yol açan "Alerjik madde"lerin tanımıdır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">13. İş güvenliğinde "Tehlike alarmı, Dur, Kapat, Tahliye et" gibi acil durum komutlarını ve yangınla mücadele ekipmanlarının yerini belirtmek için kullanılan temel güvenlik rengi aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sarı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Mavi</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Kırmızı</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Yeşil</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Beyaz</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Kırmızı renk İSG levhalarında daima "Yasak, Dur/Kapat (Acil butonlar) ve Yangın Ekipmanları" anlamına gelir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">14. Tehlikeli kimyasal maddelerle yapılan çalışmalarda riskleri önlemek adına; yüksek riskli ve tehlikeli kimyasal maddenin yerine, çalışanların sağlığı yönünden "tehlikesiz veya daha az tehlikeli" olan başka bir eşdeğer maddenin kullanılması yöntemine ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) İkame (Yerine koyma) yöntemi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İzolasyon yöntemi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Eliminasyon yöntemi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Toplu koruma yöntemi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Kişisel koruyucu kullanım yöntemi</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Zehirli bir boya veya çözücünün yerine su bazlı daha masum bir muadilinin tercih edilerek tehlikenin kaynağında azaltılmasına "İkame" yöntemi denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">15. İş ekipmanlarının bünyesinde veya çevresinde yer alan, çalışanların makineye uzuvlarını kaptırabileceği veya doğrudan sağlık ve güvenlik yönünden risklerin bulunduğu alana mevzuatta ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Karantina bölgesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İzolasyon alanı</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Tehlikeli bölge</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Operasyon bölgesi</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Güvenlik koridoru</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Ders kitabındaki tanıma göre, iş ekipmanının çalışanlara doğrudan zarar verebileceği, hareketli parçaların veya enerjinin açıkta bulunduğu riskli alana "Tehlikeli Bölge" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">16. Sağlık kuruluşlarındaki radyasyon alanlarında; radyasyon görevlileri için yıllık doz sınırlarının aşılması beklenmeyen, kişisel dozimetre ölçümünü zorunlu kılmayan ancak "çevresel radyasyon izlemi yapılması gereken" alanlara ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Denetimli Alan</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Gözetimli Alan</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Kırmızı Alan</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Steril Alan</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İzolasyon Alanı</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Radyasyon seviyesinin tehlikeli limitlerin altında olduğu ancak yine de takipte tutulması gereken, dozimetre zorunluluğu olmayan alanlar "Gözetimli Alan"dır (Tehlikenin daha yüksek olup dozimetrenin zorunlu olduğu yerlere ise "Denetimli Alan" denir).</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">17. Makine bakımı veya temizliği sırasında, herhangi bir kişinin kazara şalteri açarak ekipmanı çalıştırmasını önlemek amacıyla kilit asılması işlemine (Kilitleme) ek olarak; bakım yapan personelin o an makine üzerinde çalıştığını bildiren "DİKKAT, ÇALIŞTIRMA" yazılı güvenlik uyarısının asılmasına ne ad verilir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Sinyalizasyon</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">B) Etiketleme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Sertifikasyon</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Mühürleme</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) İzolasyon</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap B:</strong> Makine güç kaynağının asma kilitle kapatılmasına "kilitleme", asılan kilidin üzerine diğer çalışanları bilgilendirici uyarıcı kart asılmasına ise "Etiketleme (Tagout)" denir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">18. Sağlık kuruluşlarında bulunan "Kaldırma ve iletme ekipmanlarının (örneğin Asansörler, hasta taşıma liftleri)" periyodik muayene, deney ve test faaliyetlerini yapmaya mevzuatça yetkili olan asıl meslek grubu aşağıdakilerden hangisidir?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) Elektrik mühendisleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) İş güvenliği uzmanları</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) Makine mühendisleri ve makine teknikerleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Çevre mühendisleri</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Biyomedikal mühendisleri</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> İş Ekipmanları Yönetmeliğine göre; asansör, vinç vb. tüm mekanik "kaldırma ve iletme" araçlarının periyodik fenni kontrolleri Makine Mühendisleri / Teknikerleri tarafından gerçekleştirilir.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">19. Çalışanların tehlikelerden korunması amacıyla makinelerin kontrolsüz hareketini ve enerjisini engellemeyi hedefleyen "Kilitleme ve Etiketleme Sistemi (LOTO)" dünya tarihinde tam olarak ilk defa nerede ve hangi standart ile zorunlu kılınmıştır?</div>
+                <ul class="options">
+                    <li data-correct="false" onclick="checkAnswer(this)">A) ISO 9001 standardı ile İsviçre'de</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) TSE 45001 standardı ile Türkiye'de</li>
+                    <li data-correct="true" onclick="checkAnswer(this)">C) OSHA 190.147 standardı ile Amerika Birleşik Devletleri'nde</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) ILO 161 standardı ile Birleşmiş Milletler'de</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) EN 14001 standardı ile Avrupa Birliği'nde</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap C:</strong> Ders kitabına göre, bu hayati güvenlik sistemi 1990 yılında Amerika Birleşik Devletleri'nde "OSHA 190.147" kodu ile zorunlu yasal standart haline getirilmiş ve tüm dünyaya yayılmıştır.</p>
+                </details>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">20. "Sağlık kuruluşlarının radyoloji ünitelerinde bulunan X-Işını cihazlarının bulunduğu kapıların üzerinde yer alan Radyasyon Uyarı İşareti" standart olarak hangi zemin ve şekil rengine sahiptir?</div>
+                <ul class="options">
+                    <li data-correct="true" onclick="checkAnswer(this)">A) Sarı zemin üzerine siyah piktogram (Yonca işareti)</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">B) Kırmızı zemin üzerine beyaz piktogram</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">C) Beyaz zemin üzerine kırmızı piktogram</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">D) Mavi zemin üzerine beyaz piktogram</li>
+                    <li data-correct="false" onclick="checkAnswer(this)">E) Yeşil zemin üzerine siyah piktogram</li>
+                </ul>
+                <details class="solution">
+                    <summary>Çözüm</summary>
+                    <p><strong>Cevap A:</strong> Radyasyon tehlikesi bir uyarıdır ve diğer tüm uyarı levhalarında olduğu gibi (üçgen ya da kare fark etmeksizin) "Sarı" zemin üzerine "Siyah" renkli radyasyon piktogramı ile gösterilir.</p>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
     <footer>
         <hr>
         <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
     </footer>
     
-    <script src="../../js/app.js"></script>
+    <script>
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 20;
+        let isTimeUp = false;
+
+        function updateScore() {
+            let netScore = correctCount - (wrongCount / 4);
+            let totalPoints = (netScore / 20) * 100;
+            if(totalPoints < 0) totalPoints = 0; 
+
+            document.getElementById('d-count').innerText = correctCount;
+            document.getElementById('y-count').innerText = wrongCount;
+            document.getElementById('b-count').innerText = emptyCount;
+            document.getElementById('n-count').innerText = netScore.toFixed(2);
+            document.getElementById('p-count').innerText = totalPoints.toFixed(1);
+        }
+
+        function checkAnswer(clickedLi) {
+            if (isTimeUp) return;
+
+            const parentUl = clickedLi.parentElement;
+            if (parentUl.classList.contains('answered')) return;
+            
+            parentUl.classList.add('answered');
+            emptyCount--;
+            
+            const isCorrect = clickedLi.getAttribute('data-correct') === 'true';
+
+            if (isCorrect) {
+                clickedLi.classList.add('correct');
+                correctCount++;
+            } else {
+                clickedLi.classList.add('wrong');
+                wrongCount++;
+                
+                const allOptions = parentUl.querySelectorAll('li');
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            updateScore();
+        }
+
+        // Zamanlayıcı
+        let timeLeft = 1800; // 30 dk
+        const timerElement = document.getElementById("time");
+
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = "00:00";
+                document.getElementById('timer-display').style.background = "#333";
+                document.getElementById('timer-display').innerHTML = "⏳ Süre Bitti!";
+                isTimeUp = true;
+                
+                const allUls = document.querySelectorAll('.options');
+                allUls.forEach(ul => { ul.classList.add('timeout'); });
+                alert("Süreniz doldu! İşaretleme yapamazsınız, ancak doğru cevaplar için çözümleri inceleyebilirsiniz.");
+            } else {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                
+                if(seconds < 10) { seconds = "0" + seconds; }
+                if(minutes < 10) { minutes = "0" + minutes; }
+
+                timerElement.innerText = minutes + ":" + seconds;
+                timeLeft--;
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
