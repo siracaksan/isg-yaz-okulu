@@ -1,25 +1,464 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 3 - Test 2 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 3 - Test 2: Biyolojik Bulaş ve Meslek Hastalıkları Simülasyonu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
+
+        :root {
+            --primary: #0f172a; /* Koyu Safir */
+            --secondary: #1e293b;
+            --accent: #94a3b8; /* Cerrahi Çelik */
+            --accent-hover: #cbd5e1;
+            --highlight: #3b82f6; /* Tıbbi Mavi */
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --success: #059669;
+            --danger: #dc2626;
+            --text-main: #334155;
+            --text-light: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Nunito Sans', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.7; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #020617 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.5);
+            border-bottom: 5px solid var(--highlight); position: relative; overflow: hidden;
+        }
+        header::after { content: '🦠'; position: absolute; right: 4%; top: 5%; font-size: 9rem; opacity: 0.05; }
+        header h1 { font-family: 'Crimson Text', serif; font-size: 2.7rem; font-weight: 700; color: #e0f2fe; margin-bottom: 12px; letter-spacing: 0.5px;}
+        header h2 { font-size: 1.25rem; font-weight: 700; color: var(--accent); letter-spacing: 2px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06); margin: -25px auto 35px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--primary); background: #f1f5f9; text-decoration: none; font-weight: 800;
+            font-size: 0.95rem; padding: 12px 24px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--highlight); color: white; border-color: var(--highlight); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--highlight);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Crimson Text', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; font-weight: 700;}
+        .analysis-box p { font-size: 1.05rem; color: #475569; text-align: justify; margin-bottom: 15px;}
+        .analysis-box ul { padding-left: 20px; margin-top: 10px;}
+        .analysis-box ul li { margin-bottom: 10px; color: #1e293b; font-weight: 600;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 50px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 3px solid var(--primary);
+        }
+        .start-screen h2 { font-family: 'Crimson Text', serif; font-size: 2.4rem; color: var(--primary); margin-bottom: 20px; font-weight: 700; }
+        .start-screen p { font-size: 1.15rem; color: #475569; margin-bottom: 35px; line-height: 1.8;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--highlight) 0%, #1d4ed8 100%); color: white; border: none;
+            padding: 20px 55px; font-size: 1.4rem; font-weight: 800; font-family: 'Nunito Sans', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.6); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 22px 30px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.05); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--highlight); }
+        .timer-box { font-size: 1.7rem; font-weight: 800; font-family: 'Nunito Sans', sans-serif; color: var(--primary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--danger); padding: 6px 20px; border-radius: 12px; font-family: 'Nunito Sans', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);}
+        .btn-group button { border: none; padding: 14px 28px; border-radius: 30px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Nunito Sans', sans-serif;}
+        .btn-finish { background: var(--primary); box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3); }
+        .btn-finish:hover { background: #020617; transform: scale(1.05);}
+        .btn-pdf { background: var(--highlight); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        .btn-pdf:hover { background: #2563eb; transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 25px; border-radius: 12px; font-size: 1.25rem; font-weight: 800; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border); background: #f8fafc;}
+        .stat-d { border-bottom: 5px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 5px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 5px solid #94a3b8; color: #64748b; } 
+        .stat-n { background: var(--primary); color: #e0f2fe; font-size: 1.6rem; box-shadow: 0 5px 20px rgba(15, 23, 42, 0.4); border:none;}
+
+        /* Soru Kartları - EŞİT UZUNLUKLU FORMU */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 35px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--border); border-left: 8px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 15px 40px rgba(0,0,0,0.08); border-left-color: var(--highlight);}
+        
+        .q-text { font-family: 'Nunito Sans', sans-serif; font-weight: 800; font-size: 1.15rem; margin-bottom: 25px; color: var(--text-main); line-height: 1.7; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; }
+        .option-label { display: flex; align-items: flex-start; padding: 20px 25px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: all 0.2s ease; color: #334155; line-height: 1.6; text-align: justify;}
+        .option-label:hover { background: #f0f9ff; border-color: var(--highlight); }
+        .option-label input { margin-top: 5px; margin-right: 20px; transform: scale(1.4); accent-color: var(--highlight); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: #065f46; }
+        .option-label.incorrect { background: #fef2f2 !important; border-color: var(--danger) !important; color: #991b1b; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f8fafc; color: var(--primary); border: 2px solid var(--primary); padding: 12px 28px; border-radius: 30px; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px;}
+        .btn-solution:hover { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);}
+        .solution-box { display: none; margin-top: 15px; padding: 25px; background: #eff6ff; border-left: 6px solid var(--highlight); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #1e3a8a; animation: slideDown 0.3s ease-out forwards; line-height: 1.7; text-align: justify;}
+        .solution-box strong { color: var(--highlight); font-size: 1.15rem; display: block; margin-bottom: 12px; font-family: 'Crimson Text', serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 45px 20px; background: var(--primary); color: #cbd5e1; margin-top: 50px; font-size: 1.05rem; border-top: 5px solid var(--highlight); }
+        .imza-kutu { display: inline-block; padding: 18px 40px; border: 2px solid rgba(148, 163, 184, 0.3); border-radius: 12px; background: #020617; box-shadow: 0 6px 20px rgba(0,0,0,0.5); font-weight: 700; letter-spacing: 0.5px;}
+        .imza-kutu span { color: #e0f2fe; font-family: 'Crimson Text', serif; font-size: 1.25rem; margin: 0 8px;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 25px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 3 - Test 2</h2>
+        <h1>Ünite 3: Biyolojik Risk Etmenleri ve Hastalıklar</h1>
+        <h2>Test 2: Bulaş Yolları ve İleri Epidemiyoloji</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">📚 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_1.html">⬅️ Test 1 (Önceki)</a>
+        <a href="test_3.html">Sonraki Test (Test 3) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>🦠 Sınav Tasarımı ve Müfredat Analizi</h3>
+            <p>Bu deneme sınavı, geçmiş yıllardaki İSG (2021-2025) yaz okulu sınavlarının en belirleyici, elleyici biyolojik hastalık sorularından modellenmiştir:</p>
+            <ul>
+                <li><strong>Viral ve Bakteriyel Ayrımlar:</strong> Varisella zoster, Bordetella pertussis ve Borrelia gibi mikroorganizmaların hem sınıfları hem de spesifik yol açtığı hastalıklar test edilmektedir.</li>
+                <li><strong>Hava vs Damlacık Analizi:</strong> 5 mikron eşiğine dayanan, havada asılı kalma prensipleri ile damlacık çökme mekanizmaları derinlemesine sorgulanmıştır.</li>
+                <li><strong>Zoonotik Odaklar:</strong> Leptospiroz, Şarbon ve Lyme hastalıklarının bulaşma ortamları (rezervuarları) şaşırtıcı distraktörlerle sunulmuştur.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>📊 Eşit Uzunluk Formatı (Kusursuz Simetri)</h3>
+            <p>Beyninizin "farklı görünen şıkkı işaretleme" eğilimini tamamen ortadan kaldıran profesyonel bir ölçme-değerlendirme yapısı kurgulanmıştır:</p>
+            <ul>
+                <li><strong>30 Kelimelik Standart:</strong> İstisnasız her bir seçenek tam teşekküllü, 30-32 kelimelik akademik birer paragraf olarak yazılmıştır.</li>
+                <li><strong>Çeldirici Derinliği:</strong> Yanlış şıklar "mantıksız" değil, aksine başka bir hastalığın veya başka bir kavramın "tamamen doğru" tanımlarıdır.</li>
+                <li>Sınav süresi <strong>25 dakikadır</strong> ve yanlışların doğruyu götürdüğü net usulü devrededir.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>🦠 2. Test: İleri Düzey Epidemiyoloji</h2>
+        <p>Biyolojik iletim zincirinden, 5 mikronluk hava yolu kurallarına, zoonotik kene vektörlerinden delici-kesici alet yaralanmalarına uzanan mükemmel simetrik sınav.<br><br>Sınav süresi <strong>25 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Testi Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">25:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 10 SORULUK KUSURSUZ EŞİT UZUNLUKTA TEST -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="D">
+            <div class="q-text">1. Çalışma ortamındaki biyolojik risk etmenlerinin sağlıklı bir bireye ulaşarak hastalık oluşturması belirli bir "iletim zinciri" dâhilinde gerçekleşmektedir. İSG literatüründe kabul edilen bu enfeksiyon iletim zincirinin doğru ve eksiksiz hiyerarşik sıralaması hangi seçenekte tam olarak verilmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Patojenik mikroorganizmaların ekolojik döngüden çıkarak insana ulaşmasını ve enfeksiyon yaratmasını sağlayan standart epidemiyolojik zincir hiyerarşisi sırasıyla; çıkış portalı, potansiyel ev sahibi, giriş portalı, bulaşma şekli ve nihai rezervuar aşamalarından oluşmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Patojenik mikroorganizmaların ekolojik döngüden çıkarak insana ulaşmasını ve enfeksiyon yaratmasını sağlayan standart epidemiyolojik zincir hiyerarşisi sırasıyla; potansiyel ev sahibi, rezervuar, bulaşma şekli, çıkış portalı ve nihai giriş portalı aşamalarından oluşmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Patojenik mikroorganizmaların ekolojik döngüden çıkarak insana ulaşmasını ve enfeksiyon yaratmasını sağlayan standart epidemiyolojik zincir hiyerarşisi sırasıyla; giriş portalı, bulaşma şekli, potansiyel ev sahibi, çıkış portalı ve nihai rezervuar aşamalarından oluşmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Patojenik mikroorganizmaların ekolojik döngüden çıkarak insana ulaşmasını ve enfeksiyon yaratmasını sağlayan standart epidemiyolojik zincir hiyerarşisi sırasıyla; rezervuar, çıkış portalı, bulaşma şekli, giriş portalı ve nihai potansiyel ev sahibi aşamalarından oluşmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Patojenik mikroorganizmaların ekolojik döngüden çıkarak insana ulaşmasını ve enfeksiyon yaratmasını sağlayan standart epidemiyolojik zincir hiyerarşisi sırasıyla; bulaşma şekli, çıkış portalı, rezervuar, potansiyel ev sahibi ve nihai giriş portalı aşamalarından oluşmaktadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Tıbbi Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2021 ve 2025 yılı sınavlarında birebir çıkmış olan iletim zinciri sıralaması sorusudur. Bir hastalığın bulaşması için ajan önce bir kaynakta (Rezervuar) bulunmalı, oradan dışarı çıkmalı (Çıkış portalı), bir yolla taşınmalı (Bulaşma şekli), yeni canlıya girmeli (Giriş portalı) ve o canlıda hastalık yapmalıdır (Potansiyel ev sahibi). Doğru sıralama D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">2. Epidemiyolojik değerlendirmelerde ve İSG biyolojik risk analizlerinde; bir mikrobiyal ajanın hastalığa neden olabilme yeteneğini ve ilgili patojenin konakçıda oluşturduğu hastalığın klinik şiddetini (kantitatif hasar yeteneğini) spesifik olarak tanımlayan bilimsel terim ikilisi sırasıyla aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Mikroorganizmaların biyolojik laboratuvar şartlarında hastalığa neden olabilme potansiyellerini ifade eden bilimsel temel kavrama toksisite, bu enfeksiyonun organizmada yarattığı hücresel mutasyonların ve kronik doku hasarının sayısal şiddetine ise mutajenite adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Mikroorganizmaların biyolojik laboratuvar şartlarında hastalığa neden olabilme potansiyellerini ifade eden bilimsel temel kavrama reaktivite, bu enfeksiyonun organizmada yarattığı hücresel mutasyonların ve kronik doku hasarının sayısal şiddetine ise karsinojenite adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Mikroorganizmaların biyolojik laboratuvar şartlarında hastalığa neden olabilme potansiyellerini ifade eden bilimsel temel kavrama morbidite, bu enfeksiyonun organizmada yarattığı hücresel mutasyonların ve kronik doku hasarının sayısal şiddetine ise mortalite adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Mikroorganizmaların biyolojik laboratuvar şartlarında hastalığa neden olabilme potansiyellerini ifade eden bilimsel temel kavrama bulaşıcılık, bu enfeksiyonun organizmada yarattığı hücresel mutasyonların ve kronik doku hasarının sayısal şiddetine ise asfeksiyan adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Mikroorganizmaların biyolojik laboratuvar şartlarında hastalığa neden olabilme potansiyellerini ifade eden bilimsel temel kavrama patojenite, bu enfeksiyonun organizmada yarattığı hücresel mutasyonların ve kronik doku hasarının sayısal şiddetine ise virülans adı verilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Tıbbi Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2022 ve 2024 yılları İSG sınavlarında sorulmuş iki temel tanımdır. Bir mikrobun hastalık yapabilme yeteneği (hastalık doğurma kapasitesi) <strong>Patojenite</strong> olarak adlandırılır. Bu patojenin oluşturduğu hastalığın ağırlığı, yıkıcılığı ve kantitatif gücü ise doğrudan <strong>Virülans</strong> terimi ile ifade edilir. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">3. Çalışma ortamlarında biyolojik ajanların solunum sistemine giriş yolları "damlacık" ve "hava yolu" olmak üzere iki farklı aerodinamik prensibe dayanır. Enfekte hastanın öksürmesiyle saçılan partiküllerin <u>"Hava Yolu"</u> bulaşı olarak kabul edilebilmesi için partikül çapının sınır değeri ve asılı kalma fiziksel özelliği ne olmalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Mikroorganizma taşıyan bu enfeksiyöz solunumsal partiküllerin spesifik hava yolu bulaşı sayılabilmesi için; mikroskobik çaplarının kesinlikle beş mikrometreden daha büyük boyutlu olmaları ve yerçekimi etkisiyle hızlıca zemine çökerek bir metreden uzağa yayılamamaları gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Mikroorganizma taşıyan bu enfeksiyöz solunumsal partiküllerin spesifik hava yolu bulaşı sayılabilmesi için; mikroskobik çaplarının kesinlikle on mikrometreden daha büyük boyutlu olmaları ve yerçekimi etkisiyle hızlıca zemine çökerek bir metreden uzağa yayılamamaları gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Mikroorganizma taşıyan bu enfeksiyöz solunumsal partiküllerin spesifik hava yolu bulaşı sayılabilmesi için; mikroskobik çaplarının kesinlikle beş mikrometreden daha küçük boyutlu olmaları ve yerçekimi etkisine direnç göstererek havada uzun süre asılı kalabilmeleri gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Mikroorganizma taşıyan bu enfeksiyöz solunumsal partiküllerin spesifik hava yolu bulaşı sayılabilmesi için; mikroskobik çaplarının kesinlikle elli mikrometreden daha büyük boyutlu olmaları ve yerçekimi etkisine direnç göstererek havada uzun süre asılı kalabilmeleri gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Mikroorganizma taşıyan bu enfeksiyöz solunumsal partiküllerin spesifik hava yolu bulaşı sayılabilmesi için; mikroskobik çaplarının kesinlikle yüz mikrometreden daha küçük boyutlu olmaları ve yerçekimi etkisiyle hızlıca zemine çökerek bir metreden uzağa yayılamamaları gerekmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Tıbbi Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> İSG kitabındaki hava/damlacık sınır çizgisidir. Partikül çapı <strong>5 mikrometreden (5 µm) büyükse</strong> ağır olup 1 metre uzağa düşer (Damlacık Yolu). Eğer partikül çapı <strong>5 mikrometreden küçükse</strong> çok hafif olduğu için havada saatlerce asılı kalır ve havalandırma ile diğer odalara kadar uçabilir (Hava Yolu Bulaşı). Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">4. Veterinerlik, hayvancılık veya tarım sektörlerinde sıkça rastlanan; hayvanlarla doğrudan temas veya enfekte hayvan idrarıyla (dışkısıyla) kontamine olmuş durgun sular ve çamurlu toprakla etkileşim sonucu insana geçen, halk arasında "Domuz Çobanı veya Weil Hastalığı" olarak da bilinen tehlikeli bakteriyel zoonoz enfeksiyonu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Hayvancılıkla uğraşan personelde kontamine toprak veya enfekte hayvan atıklarıyla temas sonucunda ortaya çıkan, yüksek ateş ve böbrek yetmezliği ile karakterize olan bu spesifik bakteriyel zoonotik meslek hastalığı tıp literatüründe Toksoplazmozis olarak tanımlanmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Hayvancılıkla uğraşan personelde kontamine toprak veya enfekte hayvan atıklarıyla temas sonucunda ortaya çıkan, yüksek ateş ve böbrek yetmezliği ile karakterize olan bu spesifik bakteriyel zoonotik meslek hastalığı tıp literatüründe Leptospiroz olarak tanımlanmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Hayvancılıkla uğraşan personelde kontamine toprak veya enfekte hayvan atıklarıyla temas sonucunda ortaya çıkan, yüksek ateş ve böbrek yetmezliği ile karakterize olan bu spesifik bakteriyel zoonotik meslek hastalığı tıp literatüründe Şistozomiyazis olarak tanımlanmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Hayvancılıkla uğraşan personelde kontamine toprak veya enfekte hayvan atıklarıyla temas sonucunda ortaya çıkan, yüksek ateş ve böbrek yetmezliği ile karakterize olan bu spesifik bakteriyel zoonotik meslek hastalığı tıp literatüründe Psittakozis olarak tanımlanmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Hayvancılıkla uğraşan personelde kontamine toprak veya enfekte hayvan atıklarıyla temas sonucunda ortaya çıkan, yüksek ateş ve böbrek yetmezliği ile karakterize olan bu spesifik bakteriyel zoonotik meslek hastalığı tıp literatüründe Kist Hidatik olarak tanımlanmaktadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Tıbbi Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2022 ve 2025 yıllarında doğrudan sorulmuştur. Hayvan idrarıyla kirlenmiş sulardan insana geçen, bataklık ateşi, pirinç tarlası hastalığı ve Weil hastalığı gibi isimleri bulunan bakteriyel zoonoz <strong>Leptospiroz</strong> hastalığıdır. Toksoplazma kedi dışkısından, Şistozomiyazis ise tatlı su salyangozlarından bulaşır. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">5. Tüm dünyada özellikle kış aylarında hastane ortamlarında sağlık sektörü çalışanları için ciddi bir mesleki biyolojik risk oluşturan İnfluenza (Grip) virüslerinin sınıflandırılmasında, güncel mikrobiyoloji literatürüne göre tanımlanmış ve insan/hayvan popülasyonlarında dolaşımda olduğu kanıtlanmış olan resmi <u>virüs tipleri</u> hangileridir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Bulaşıcı solunum yolu patojenleri arasında yer alan ve küresel epidemilere sebep olabilen influenza virüsleri, uluslararası viroloji standartlarına göre doğada Tip A, Tip C, Tip E ve Tip F olmak üzere spesifik olarak dört farklı genetik varyanta ayrılırlar.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Bulaşıcı solunum yolu patojenleri arasında yer alan ve küresel epidemilere sebep olabilen influenza virüsleri, uluslararası viroloji standartlarına göre doğada Tip B, Tip D, Tip E ve Tip F olmak üzere spesifik olarak dört farklı genetik varyanta ayrılırlar.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Bulaşıcı solunum yolu patojenleri arasında yer alan ve küresel epidemilere sebep olabilen influenza virüsleri, uluslararası viroloji standartlarına göre doğada Tip C, Tip D, Tip E ve Tip F olmak üzere spesifik olarak dört farklı genetik varyanta ayrılırlar.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Bulaşıcı solunum yolu patojenleri arasında yer alan ve küresel epidemilere sebep olabilen influenza virüsleri, uluslararası viroloji standartlarına göre doğada Tip A, Tip B, Tip C ve Tip D olmak üzere spesifik olarak dört farklı genetik varyanta ayrılırlar.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Bulaşıcı solunum yolu patojenleri arasında yer alan ve küresel epidemilere sebep olabilen influenza virüsleri, uluslararası viroloji standartlarına göre doğada Tip A, Tip B, Tip E ve Tip F olmak üzere spesifik olarak dört farklı genetik varyanta ayrılırlar.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Tıbbi Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2021 ve 2023 sınavlarında İnfluenza tipleri doğrudan sorulmuştur. Dünyada hastalık yapan Grip (İnfluenza) virüsleri sadece <strong>A, B, C ve D</strong> olmak üzere dört tipe ayrılır. Literatürde İnfluenza E veya F tipi kesinlikle bulunmamaktadır. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">6. Çocuk hastanelerinde ve pediatri servislerinde görev yapan sağlık personelinin mesleki maruziyet açısından yüksek risk altında olduğu; aerodinamik damlacık yoluyla insandan insana hızla bulaşabilen <u>"Bordetella pertussis"</u> adlı spesifik bakterinin yol açtığı şiddetli öksürük nöbetleriyle karakterize olan ağır solunum yolu enfeksiyonu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Hastane ortamındaki damlacık asılı partikülleri üzerinden hızla yayılan ve özellikle çocukluk çağında şiddetli spazmodik öksürük krizleriyle seyrederek akciğer dokusunda ağır fizyolojik hasar bırakan bu tehlikeli solunum yolu bakteriyel enfeksiyonu tıp literatüründe Boğmaca hastalığı olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Hastane ortamındaki damlacık asılı partikülleri üzerinden hızla yayılan ve özellikle çocukluk çağında şiddetli spazmodik öksürük krizleriyle seyrederek akciğer dokusunda ağır fizyolojik hasar bırakan bu tehlikeli solunum yolu bakteriyel enfeksiyonu tıp literatüründe Tüberküloz hastalığı olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Hastane ortamındaki damlacık asılı partikülleri üzerinden hızla yayılan ve özellikle çocukluk çağında şiddetli spazmodik öksürük krizleriyle seyrederek akciğer dokusunda ağır fizyolojik hasar bırakan bu tehlikeli solunum yolu bakteriyel enfeksiyonu tıp literatüründe Lejyoner hastalığı olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Hastane ortamındaki damlacık asılı partikülleri üzerinden hızla yayılan ve özellikle çocukluk çağında şiddetli spazmodik öksürük krizleriyle seyrederek akciğer dokusunda ağır fizyolojik hasar bırakan bu tehlikeli solunum yolu bakteriyel enfeksiyonu tıp literatüründe Psittakoz hastalığı olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Hastane ortamındaki damlacık asılı partikülleri üzerinden hızla yayılan ve özellikle çocukluk çağında şiddetli spazmodik öksürük krizleriyle seyrederek akciğer dokusunda ağır fizyolojik hasar bırakan bu tehlikeli solunum yolu bakteriyel enfeksiyonu tıp literatüründe Şarbon akciğeri hastalığı olarak adlandırılmaktadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Tıbbi Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2024 yılı sınavında doğrudan etken eşleştirmesi olarak sorulmuştur. "Bordetella pertussis" bakterisi, özellikle aşılanmamış çocuklarda damlacık yoluyla yayılan ve krizler halinde gelen öksürük nöbetlerine yol açan <strong>Boğmaca</strong> hastalığının mutlak etkenidir. Tüberküloz etkeni Mycobacterium tuberculosis'tir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">7. İnsan ve hayvan sağlığı için ölümcül bir potansiyele sahip olan Şarbon (Bacillus anthracis) hastalığının bulaşma zinciri incelendiğinde, veteriner hekimlerin ve tarım işçilerinin günlük mesleki uygulamaları esnasında aşağıda verilen fiziksel veya medikal eylemlerden hangisi <u>doğrudan bir "şarbon bulaşma yolu" olarak kesinlikle kabul edilmemektedir</u>?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Hayvancılık sektöründeki personelin, hastalık şüphesi taşıyan canlı veya ölü hayvanların kesimi ve derilerinin yüzülmesi işlemleri sırasında kanlı salgılarla temas etmesi mesleki olarak oldukça riskli ve kesin bir bulaşma mekanizmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Hayvancılık sektöründeki personelin, hastalık şüphesi taşıyan enfekte hayvanların kırkılmış yünlerinin, kıllarının ve postlarının endüstriyel tesislerde dokunarak kimyasal işlenmesi sırasında tozların solunması mesleki olarak oldukça riskli ve kesin bir bulaşma mekanizmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Hayvancılık sektöründeki personelin, hastalık şüphesi taşıyan enfekte büyükbaş hayvanların etlerinin mutfak departmanlarında yeterince yüksek sıcaklıkta ve sürede iyi pişirilmeden çiğ tüketime sunulması mesleki olarak oldukça riskli ve kesin bir bulaşma mekanizmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Hayvancılık sektöründeki personelin, hastalık şüphesi taşıyan enfekte tırnaklı hayvanların dışkıları ve salgıları ile yoğun olarak kirlenmiş çamurlu toprak zeminlere eldivensiz şekilde dokunması mesleki olarak oldukça riskli ve kesin bir bulaşma mekanizmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Hayvancılık sektöründeki personelin, hastalık şüphesi taşıyan ancak henüz tam teşhis konmamış olan sürü hayvan sürülerine koruyucu sağlık hizmetleri kapsamında rutin canlı aşı ve enjeksiyon uygulamalarının yapılması mesleki olarak oldukça riskli ve kesin bir bulaşma mekanizmasıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Tıbbi Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2023 sınavında kelimesi kelimesine sorulmuş eleyici bir sorudur. Şarbon; hayvan kesimi, yünlerin işlenmesi (solunum) ve az pişmiş et yenmesi (sindirim) ile bulaşır. Ancak <strong>"Hayvanların aşılanması"</strong> işlemi hastalığın insana bulaştığı bir yöntem değil, tam tersine hastalığı önlemeye yönelik medikal bir koruma protokolüdür. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">8. Sağlık hizmetleri, tıp laboratuvarları ve adli tıp birimlerinde çalışan uzman personelin; Hepatit B (HBV), Hepatit C (HCV) ve İnsan İmmünyetmezlik Virüsü (HIV) gibi kan kaynaklı ölümcül viral patojenlere mesleki ortamda maruz kalmasına yol açan <u>en yaygın ve en yüksek riskli iletim (bulaş) mekanizması</u> aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Kan kaynaklı bu tehlikeli patojenler, tıbbi işlemler sırasında doğrudan enfekte hastanın kanı ve vücut sıvıları ile kirlenmiş olan enjektör iğnesi veya bistüri gibi delici-kesici aletlerin kazara personelin vücuduna batması sonucu bulaşırlar.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Kan kaynaklı bu tehlikeli patojenler, tıbbi işlemler sırasında doğrudan enfekte hastanın hastane odasındaki öksürük ve hapşırma refleksiyle havaya saçılan damlacık çekirdeklerinin solunum yoluyla kazara personelin vücuduna girmesi sonucu bulaşırlar.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Kan kaynaklı bu tehlikeli patojenler, tıbbi işlemler sırasında doğrudan enfekte hastanın tüketmiş olduğu içme sularının veya iyi yıkanmamış tabldot gıdalarının sindirim (dışkı-ağız) yoluyla kazara personelin midesine inmesi sonucu bulaşırlar.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Kan kaynaklı bu tehlikeli patojenler, tıbbi işlemler sırasında doğrudan enfekte hastanın tedavi gördüğü yatağının ve odasının çevresindeki ekosistemde yaşayan vektör kenelerin veya sivrisineklerin kazara personelin cildini ısırması sonucu bulaşırlar.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Kan kaynaklı bu tehlikeli patojenler, tıbbi işlemler sırasında doğrudan enfekte hastanın sağlam ve herhangi bir cilt bütünlüğü bozulmamış olan dış deri yüzeyine eldivensiz şekilde kazara personelin çıplak elleriyle dokunması sonucu bulaşırlar.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Tıbbi Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> İSG ders kitabındaki Tablo: "Çalışma Ortamında Başlıca Biyolojik Etmenler ve Bulaş Yolları" incelendiğinde; kanla bulaşan HBV, HCV, HIV ve KKKA gibi ölümcül virüslerin çalışma hayatındaki tartışmasız en büyük bulaş yolu <strong>Delici ve Kesici alet (iğne batması) yaralanmaları</strong> ile gerçekleşmektedir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">9. Pediatri ve cildiye polikliniklerinde görev yapan personelde, çalışma havasındaki solunum partikülleri veya hasta derisine doğrudan fiziksel temas mekanizmalarıyla oldukça kolay bulaşabilen, patojenik yapısı <u>"Varisella zoster"</u> adlı spesifik bir DNA virüsü olarak tanımlanan ve enfekte cilt dokusunda içi sıvı dolu veziküler döküntülerle karakterize olan hastalık hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Varisella zoster adlı bu şiddetli viral patojenik ajanın hedef organlarda ve dokularda üreyerek meydana getirdiği, cilt yüzeyinde içi sıvı ve irin dolu bölgesel veziküler kabarcıklarla karakterize olan bu spesifik döküntülü hastalık Meningokok Menenjiti olarak isimlendirilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Varisella zoster adlı bu şiddetli viral patojenik ajanın hedef organlarda ve dokularda üreyerek meydana getirdiği, cilt yüzeyinde içi sıvı ve irin dolu bölgesel veziküler kabarcıklarla karakterize olan bu spesifik döküntülü hastalık Suçiçeği enfeksiyonu olarak isimlendirilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Varisella zoster adlı bu şiddetli viral patojenik ajanın hedef organlarda ve dokularda üreyerek meydana getirdiği, cilt yüzeyinde içi sıvı ve irin dolu bölgesel veziküler kabarcıklarla karakterize olan bu spesifik döküntülü hastalık Tüberküloz (Verem) olarak isimlendirilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Varisella zoster adlı bu şiddetli viral patojenik ajanın hedef organlarda ve dokularda üreyerek meydana getirdiği, cilt yüzeyinde içi sıvı ve irin dolu bölgesel veziküler kabarcıklarla karakterize olan bu spesifik döküntülü hastalık Tularemi enfeksiyonu olarak isimlendirilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Varisella zoster adlı bu şiddetli viral patojenik ajanın hedef organlarda ve dokularda üreyerek meydana getirdiği, cilt yüzeyinde içi sıvı ve irin dolu bölgesel veziküler kabarcıklarla karakterize olan bu spesifik döküntülü hastalık Kuduz enfeksiyonu olarak isimlendirilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Tıbbi Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2025 yılı (en güncel) sınavda sorulmuş net bir bilgi sorusudur. Tıpta "Varisella Zoster" olarak adlandırılan herpes ailesinden olan bu virüs, insanda çocukluk çağında <strong>Suçiçeği</strong>, yetişkinlik döneminde aktifleştiğinde ise Zona hastalığına neden olmaktadır. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">10. Özellikle ormancılık, kampçılık, açık alan tarımı ve odunculuk sektörlerinde çalışanların yüksek mesleki risk altında olduğu; doğada rezervuar olarak bulunan enfekte eklembacaklıların <u>(Kene / Ixodes türlerinin)</u> insan vücuduna tutunarak ısırması neticesinde kan dolaşımına aktarılan spesifik patojenlerin (Borrelia) yol açtığı tehlikeli bakteriyel zoonoz enfeksiyonu nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Orman işçilerinde kene tutunması gibi bir eklembacaklı ısırığı sonrasında, virülans gücü çok yüksek olan bakteriyel patojenlerin deri altından sistemik kan dolaşımına karışmasıyla birlikte ortaya çıkan bu ağır eklem ve sinir sistemi hastalığı Erisepeloid enfeksiyonudur.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Orman işçilerinde kene tutunması gibi bir eklembacaklı ısırığı sonrasında, virülans gücü çok yüksek olan bakteriyel patojenlerin deri altından sistemik kan dolaşımına karışmasıyla birlikte ortaya çıkan bu ağır eklem ve sinir sistemi hastalığı Lejyoner enfeksiyonudur.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Orman işçilerinde kene tutunması gibi bir eklembacaklı ısırığı sonrasında, virülans gücü çok yüksek olan bakteriyel patojenlerin deri altından sistemik kan dolaşımına karışmasıyla birlikte ortaya çıkan bu ağır eklem ve sinir sistemi hastalığı Lyme hastalığı enfeksiyonudur.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Orman işçilerinde kene tutunması gibi bir eklembacaklı ısırığı sonrasında, virülans gücü çok yüksek olan bakteriyel patojenlerin deri altından sistemik kan dolaşımına karışmasıyla birlikte ortaya çıkan bu ağır eklem ve sinir sistemi hastalığı Brusella enfeksiyonudur.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Orman işçilerinde kene tutunması gibi bir eklembacaklı ısırığı sonrasında, virülans gücü çok yüksek olan bakteriyel patojenlerin deri altından sistemik kan dolaşımına karışmasıyla birlikte ortaya çıkan bu ağır eklem ve sinir sistemi hastalığı Şistozomiyazis enfeksiyonudur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Tıbbi Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Kırım Kongo Kanamalı Ateşi (KKKA) viral (virüs kaynaklı) bir kene zoonozuyken; soruda "bakteriyel" olduğu ve etkenin Borrelia olduğu (veya sadece kene teması olduğu) vurgulanmıştır. Ders kitabındaki Bulaş Yolları tablosunda "Kene teması" ile bulaşan başlıca hastalık açıkça <strong>Lyme Hastalığı</strong> olarak verilmektedir. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.6; font-family: 'Nunito Sans', sans-serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 3 / Test 2 (Epidemiyolojik Bulaş Yolları Simülasyonu)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 25 * 60; // 25 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Tıbbi Analiz';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // 4 Yanlış 1 Doğru Net Sistemi
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

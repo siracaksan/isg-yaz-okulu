@@ -1,25 +1,937 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 3 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 3 - Test 1 - Kimya ve Biyoloji Sektörlerinde İSG</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #334155;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            margin-bottom: 25px;
+        }
+
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px;}
+        header h2 { font-size: 1.1rem; font-weight: 400; opacity: 0.9; }
+
+        /* Klasör Haritasına Uygun Gelişmiş Navigasyon */
+        .test-menusu {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin: 0 auto 25px;
+            width: 95%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .test-menusu .link-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .test-menusu a {
+            color: var(--primary);
+            background: #eff6ff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #dbeafe;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .test-menusu a:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .test-menusu hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 15px 0;
+        }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--white);
+            padding: 50px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin: 0 auto 30px;
+            width: 95%;
+            max-width: 800px;
+            text-align: center;
+            border-top: 6px solid var(--primary);
+        }
+
+        .start-screen h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .start-screen p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Üst Panel (Sayaç ve İşlem Butonları) */
+        .top-panel {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+            padding: 15px 25px;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 15px;
+            z-index: 1000;
+            border-left: 6px solid var(--accent);
+        }
+
+        .timer-box {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .timer-box .time {
+            color: var(--danger);
+            background: var(--danger-light);
+            padding: 6px 18px;
+            border-radius: 12px;
+        }
+
+        .btn-group button {
+            font-family: 'Nunito Sans', sans-serif;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 12px;
+            color: var(--white);
+        }
+
+        .btn-finish { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .btn-finish:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4); }
+        
+        .btn-pdf { background: linear-gradient(135deg, #475569, #334155); box-shadow: 0 4px 15px rgba(71, 85, 105, 0.3); }
+        .btn-pdf:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(71, 85, 105, 0.4); }
+
+        /* Sonuç Paneli */
+        #results-board {
+            display: none;
+            background: var(--white);
+            padding: 30px 20px;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            border: 2px solid var(--success);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .stat-box {
+            padding: 15px 25px;
+            border-radius: 14px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            flex: 1 1 200px;
+            max-width: 250px;
+        }
+
+        .stat-d { background: var(--success-light); color: #047857; }
+        .stat-y { background: var(--danger-light); color: #b91c1c; }
+        .stat-b { background: #f1f5f9; color: var(--text-muted); }
+        .stat-n { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; font-size: 1.4rem; box-shadow: 0 5px 15px rgba(37,99,235,0.3);}
+
+        /* Soru Kartları (Sıkışık ve Profesyonel) */
+        .questions-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+            gap: 20px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .question-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+            border-top: 5px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border-color: #cbd5e1;
+        }
+
+        .q-text {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+            margin-bottom: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--light);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            color: var(--text-main);
+        }
+
+        .option-label:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Anında Geri Bildirim Renkleri */
+        .option-label.correct {
+            background: var(--success-light) !important;
+            border-color: var(--success) !important;
+            color: #047857;
+        }
+        .option-label.incorrect {
+            background: var(--danger-light) !important;
+            border-color: var(--danger) !important;
+            color: #b91c1c;
+            text-decoration: line-through;
+        }
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution {
+            display: none; /* Şık işaretlenmeden görünmez */
+            align-self: flex-start;
+            background: #f1f5f9;
+            color: var(--primary);
+            border: 1px solid #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 5px;
+        }
+
+        .btn-solution:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .solution-box {
+            display: none; /* Butona basılmadan görünmez */
+            margin-top: 10px;
+            padding: 16px;
+            background: #f0fdfa;
+            border-left: 4px solid var(--success);
+            border-radius: 0 10px 10px 0;
+            font-size: 0.9rem;
+            color: var(--dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            animation: slideDown 0.3s ease-out forwards;
+        }
+
+        .solution-box strong {
+            color: var(--success);
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 800;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: var(--dark);
+            color: #94a3b8;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+        }
+
+        footer strong { color: var(--white); }
+
+        /* Mobil Uyum */
+        @media (max-width: 768px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .top-panel { flex-direction: column; gap: 15px; text-align: center; position: relative; }
+            .btn-group { display: flex; flex-direction: column; width: 100%; gap: 10px; }
+            .btn-group button { width: 100%; margin: 0; }
+            .timer-box { width: 100%; justify-content: center; }
+            .stat-box { flex: 1 1 100%; max-width: 100%; }
+        }
+
+        /* Yazdırma (PDF) Stilleri */
+        @media print {
+            body { background: white; padding: 0; color: black; }
+            .test-menusu, .top-panel, .start-screen, footer, #results-board, .btn-solution { display: none !important; }
+            .questions-grid { display: block !important; }
+            .question-card { 
+                break-inside: avoid; 
+                border: 1px solid #ccc; 
+                margin-bottom: 12px; 
+                box-shadow: none; 
+                padding: 12px; 
+            }
+            .q-text { font-size: 10pt; margin-bottom: 6px; }
+            .options { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+            .option-label { border: none; background: transparent; padding: 2px; width: 48%; font-size: 9pt; }
+            .solution-box { display: block !important; background: #fff; border: 1px solid #ccc; margin-top: 5px; padding: 8px; font-size: 8pt; }
+            header { background: white; color: black; border-bottom: 2px solid black; padding: 10px 0; margin-bottom: 15px; box-shadow: none; border-radius: 0;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 3 - Test 1</h2>
+        <h1>2026 Anadolu Üniversitesi İSG Yaz Okulu</h1>
+        <h2>3. Kimya ve Biyoloji Sektörlerinde İSG - Ünite 3 / Test 1</h2>
     </header>
-    
-    <main>
-        </main>
-    
-    <footer>
+
+    <!-- Klasör Haritasına Göre Linkler -->
+    <nav class="test-menusu">
+        <div class="link-group">
+            <a href="../../index.html">🏠 Tüm Dersler</a>
+            <a href="../index.html">📚 Kimya ve Biyoloji İSG</a>
+            <a href="konu_anlatimi.html">📖 Ünite 3 Konu Anlatımı</a>
+        </div>
         <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="link-group">
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📜 Çıkmış Sorular</a>
+            <a href="test_2.html">Sonraki Test (Test 2) ➡️</a>
+            <a href="../Unite_4/test_1.html">Sonraki Ünite (Ünite 4) ➡️</a>
+        </div>
+    </nav>
+
+    <!-- Başlangıç Ekranı -->
+    <div id="start-screen" class="start-screen">
+        <h2>Ünite 3 - Test 1</h2>
+        <p>Biyolojik Risk Etmenlerinin Bulaşma Yolları ve Ortaya Çıkan Hastalıklar<br><br>Test süresi <strong>30 dakikadır</strong>. Sayacınız sadece aşağıdaki butona tıkladığınız anda başlayacaktır. Başarılar dileriz.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Testi Başlat</button>
+    </div>
+
+    <!-- Kontrol Paneli -->
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">30:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Testi Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <!-- Sonuç Paneli -->
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net: <span id="res-n">0.00</span></div>
+        </div>
+        <p style="font-size:0.9rem; color:var(--text-muted); font-weight:700; margin-top:10px;">(4 Yanlış 1 Doğruyu Götürmektedir)</p>
+    </div>
+
+    <!-- Sorular Bölümü -->
+    <main class="questions-grid" id="test-container">
+        
+        <!-- Soru 1 -->
+        <div class="question-card" data-answer="E">
+            <div class="q-text">1. Aşağıdakilerden hangisi çalışma ortamında biyolojik etkenlere bağlı oluşan bir hastalık değildir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Hepatit B</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) HIV</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Kırım Kongo kanamalı ateşi</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Bruselloz</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Berilyoz</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Berilyoz; berilyum elementine (kimyasal bir etmen) maruz kalma sonucunda akciğerlerde oluşan kronik ve mesleki bir kimyasal zehirlenme/akciğer hastalığıdır. Diğer şıklar (Hepatit B, HIV, KKKA, Bruselloz) virüs veya bakterilerin neden olduğu biyolojik kökenli hastalıklardır. Doğru cevap E.
+            </div>
+        </div>
+
+        <!-- Soru 2 -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">2. Aşağıdaki biyolojik etkenlerden hangisinin mesleki temas yolu ile alınması kansere yol açabilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Tetanoz</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Kuduz</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Tularemi</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Hepatit C</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Şarbon</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Mesleki olarak kan yolu veya delici/kesici alet yaralanmasıyla bulaşabilen Hepatit B ve Hepatit C (HCV) virüsleri, uzun vadede kronik karaciğer enfeksiyonlarına, siroza ve karaciğer kanserine (Hepatoselüler Karsinoma) yol açabilir. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 3 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">3. Aşağıdaki biyolojik etkenlerden hangisi çalışma ortamında akciğer enfeksiyonu oluşturmaz?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Hepatit A</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Legionelle enfeksiyonu</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Tularemi</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Tüberküloz</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Şarbon</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Hepatit A (HAV), fekal-oral (dışkı-ağız) yoluyla bulaşan ve karaciğeri etkileyen bir virüstür, akciğer enfeksiyonu oluşturmaz. Ancak Legionella, Tularemi, Tüberküloz ve Şarbon solunum yolu ile alındıklarında ölümcül akciğer (pnömoni) hastalıklarına yol açabilirler. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 4 -->
+        <div class="question-card" data-answer="E">
+            <div class="q-text">4. Aşağıdakilerden hangisi çalışma ortamında kazanılan enfeksiyon hastalıklarından biri değildir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Hantavirüs enfeksiyonu</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Hepatit C enfeksiyonu</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Meningokok enfeksiyonu</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Tifo</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Lenfoma</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Lenfoma, lenf sisteminde (bağışıklık sistemi) ortaya çıkan bir kanser türüdür ve iş yeri ortamında doğrudan temasla kişiden kişiye bulaşan bir enfeksiyon hastalığı değildir. Diğer şıkların tamamı iş yerinde enfeksiyon zinciri ile alınabilen mesleki bulaşıcı hastalıklardır. Doğru cevap E.
+            </div>
+        </div>
+
+        <!-- Soru 5 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">5. Aşağıdakilerden hangisi ülkemizde sağlık çalışanları için mesleki hastalık olarak sınıflandırılmıştır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Boğmaca</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Şarbon</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Viral hepatitler</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Tetanoz</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Grip</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> SGK Meslek Hastalıkları Listesi'ne göre, kan ve vücut sıvılarıyla doğrudan temas riskinin çok yüksek olduğu sağlık hizmetlerinde (hastaneler, laboratuvarlar) "Viral Hepatitler (Hepatit B ve Hepatit C vb.)" mesleki bulaşıcı hastalık olarak kesin sınıflandırılmıştır. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 6 -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">6. Aşağıdaki biyolojik risk etmenlerinden hangisi solunum yolu ile bulaşır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Grip</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Kabakulak</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Boğmaca</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Tüberküloz</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Kızamık</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Bulaşma yolları ayrımında Grip, Kuş gribi, Covid-19 ve Boğmaca daha çok "damlacık (büyük partikül)" yolu ile bulaşırken; Tüberküloz (Verem), suçiçeği ve legionella, havada uzun süre asılı kalabilen 5 mikrondan küçük partiküllerle "solunum (aerosol) yoluyla" çok daha geniş alanlara bulaşır. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 7 -->
+        <div class="question-card" data-answer="E">
+            <div class="q-text">7. Aşağıdakilerden hangisi biyolojik risk etmenleri için bir kaynak (rezervuar) değildir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Diğer insanlar</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Hayvanlar</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Laboratuvarlar</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Kırsal alan</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Kendisi</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Mesleki biyolojik risk etmenlerinin ana kaynağı kişinin kendisi dışındaki enfekte insanlar, hayvanlar, çalışma ortamındaki doku/kan numuneleri (laboratuvarlar), kırsal ve bataklık alanlardır. Kişinin bizzat "kendisi" dışarıdan alınacak yeni bir enfeksiyon için risk kaynağı sayılamaz. Doğru cevap E.
+            </div>
+        </div>
+
+        <!-- Soru 8 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">8. Aşağıdakilerden hangisi delici kesici alet yaralanması sonucu bulaşır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Salmonella typhi</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Hepatit B virüsü</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Kuduz virüsü</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Suçiçeği virüsü</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Hanta virüsü</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Kan yolu ile bulaşan enfeksiyonların başında Hepatit B (HBV), Hepatit C (HCV) ve HIV gelir. İş ortamında kontamine olmuş enjektör, bistüri gibi delici-kesici alet yaralanmaları Hepatit B bulaşında en temel nedenlerden biridir. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 9 -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">9. Brusella enfeksiyonunun bulaşma yolu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Kaynatılmış süt</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) İyi pişirilmiş et</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Pastörize süt ile yapılan peynir</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Çiğ sütten yapılan krema</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Yoğurt</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Zoonotik bir hastalık olan Brusella (Malta Humması), enfekte hayvanların iyi pişmemiş etlerinin yenmesi veya pastörize edilmemiş çiğ süt ve çiğ sütten yapılan süt ürünlerinin (krema, taze peynir vb.) tüketilmesi yoluyla insanlara bulaşır. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 10 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">10. Aşağıdakilerden hangisi Şarbon hastalığının bulaşma yollarından biri değildir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Hayvanların kesimi sırasında</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Hayvanların yünlerinin işlenmesi sırasında</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Hayvanların aşılanması sırasında</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Hayvanların etlerinin iyi pişirilmeden tüketilmesi ile</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Hayvanların etlerinin işlenmesi sırasında</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Şarbon hastalığı enfekte hayvanların kesimi, yün, kıl ve derilerinin işlenmesi, az pişmiş etlerinin yenmesiyle bulaşır. Hayvanların veteriner hekimlerce "aşılanması" bir bulaşma yolu değil, aksine hastalıktan korunmak için alınan bir tedbirdir. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 11 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">11. Salmonella typhimurium (typhi) bakterisinin neden olduğu ve dışkı-ağız yolu ile bulaşarak bağırsaklarda oluşan enfeksiyon hastalığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) Hantavirüs enfeksiyonu</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) Tularemi</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) Tifo</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) Şarbon</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) Lyme hastalığı</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> S. typhi bakterisinin neden olduğu Tifo; genellikle kontamine yiyecek ve sularla, dışkı-ağız (fekal-oral) yoluyla bulaşan ve bağırsaklarda çoğalan tehlikeli bir enfeksiyon hastalığıdır. Doğru cevap C seçeneğidir.
+            </div>
+        </div>
+
+        <!-- Soru 12 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">12. Bordatella pertussis adlı bakteri tarafından oluşturulan ve özellikle damlacık yoluyla kişiden kişiye bulaşan solunum sistemi hastalığına ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) Su çiçeği</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) Tüberküloz</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) Boğmaca</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) Covid 19</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) Meningokok Menenjiti</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Bordetella pertussis, halk arasında "Boğmaca" olarak bilinen, şiddetli öksürük nöbetleriyle karakterize olan oldukça bulaşıcı bakteriyel solunum yolu hastalığına neden olan ajandır. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 13 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">13. Varisella zoster adı verilen virüsle oluşan ve ciltte içi sıvı dolu kabarcıklarla karakterize olan enfeksiyon hastalığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) Meningokok Menenjiti</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) Boğmaca</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) Suçiçeği</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) Tüberküloz (TBC)</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) HIV/AIDS</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Suçiçeği (Varicella), Varisella zoster virüsünün neden olduğu, solunum yoluyla ve cilt lezyonlarıyla doğrudan temas ile yayılan, kaşıntılı ve sıvı dolu döküntülerle belirginleşen viral bir enfeksiyondur. Doğru cevap C'dir.
+            </div>
+        </div>
+
+        <!-- Soru 14 -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">14. Hayvanlarla direkt temas ya da idrarlarıyla kontamine gıda, su ve toprakla temasın maruziyet kaynağı olduğu; "weil hastalığı", "domuz çobanı hastalığı", "pirinç tarlası hastalığı" veya "bataklık ateşi" olarak da bilinen enfeksiyon hastalığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) Q ateşi</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) Erisepeloid</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) Şistozomazis</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) Leptospiroz</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) Tetanoz</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Leptospiroz hastalığı; kemirgenler, köpekler veya domuzlar gibi enfekte hayvanların idrarlarıyla kirlenmiş suların (bataklık, pirinç tarlası) bütünlüğü bozulmuş cilt veya mukozalara temasıyla geçen bakteriyel bir zoonozdur. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 15 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">15. Mikroorganizmaların insandan insana, tokalaşma, enfekte kişinin kanının teması gibi fiziksel dokunma ile bulaşmasına genel olarak ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) Doğrudan temas</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) Dolaylı temas</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) Ağız yolu ile bulaş</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) Hava yolu ile bulaş</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) Damlacık yolu ile bulaş</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Enfeksiyon zincirinde mikroorganizmaların bir konakçıdan diğerine arada hiçbir cansız obje (fomit) veya vektör olmadan, doğrudan fiziksel dokunma (örn: tokalaşma, kan veya sıvı teması) ile geçmesine Doğrudan Temas adı verilir. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 16 -->
+        <div class="question-card" data-answer="E">
+            <div class="q-text">16. Aşağıdakilerden hangisi insanlara hayvanlardan bulaşan ve etkeni bir "bakteri" olan (Bakteriyel Zoonozlar) hastalıklar arasında yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) Kuduz</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) Hantavirüs</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) Kuş gribi</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) Koronovirüsler</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) Şarbon</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Zoonozlar etkenlerine göre incelendiğinde Kuduz, Hantavirüs, Kuş gribi ve Koronavirüs "Viral (Virüs) Zoonozlar"dır. Şarbon (Anthrax) ise Bacillus anthracis isimli bir "bakterinin" neden olduğu bakteriyel bir zoonozdur. Doğru cevap E.
+            </div>
+        </div>
+
+        <!-- Soru 17 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">17. I. Çıkış portalı<br>II. Rezervuar<br>III. Potansiyel ev sahibi<br>IV. Bulaşma şekli<br>V. Giriş portalı<br><br>Biyolojik etmenlerin hastalık oluşturabilmesi için gereken "iletim zinciri aşamaları" aşağıdakilerin hangisinde sırasıyla ve doğru olarak verilmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) I-II-III-IV-V</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) II-I-IV-V-III</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) III-V-I-IV-II</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) IV-I-II-III-V</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) V-III-I-IV-II</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Enfeksiyon iletim zinciri sırasıyla şöyledir: Öncelikle hastalık etkeninin çoğaldığı bir kaynak "Rezervuar (II)" bulunur. Etken buradan dışarıya "Çıkış Portalı (I)" ile çıkar. Çeşitli yollarla "Bulaşma şekli (IV)" gerçekleşir. Etken yeni vücuda "Giriş portalı (V)" ile girer ve enfeksiyona açık "Potansiyel ev sahibi (III)" enfekte olur. Sıralama: II-I-IV-V-III'tür. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 18 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">18. Aşağıdakilerden hangisi 2019 Aralık ayında ortaya çıkan Çin merkezli bir pandeminin etkenidir ve öncelikli olarak damlacık yoluyla bulaşır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) Kuş gribi</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) Covid 19</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) Su çiçeği</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) Mevsimsel grip</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) Domuz gribi</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> 2019 yılı sonunda Çin'in Wuhan kentinde ortaya çıkarak tüm dünyayı etkileyen ve SARS-CoV-2 virüsünün neden olduğu, damlacık ve solunum yoluyla çok hızlı bulaşan hastalık "Covid-19"dur. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 19 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">19. Kene gibi böcekler veya eklembacaklıların aracı canlı (vektör) olarak hastalık etkenini taşımasıyla insanlara bulaşan enfeksiyon hastalıklarına aşağıdakilerden hangisi bir örnektir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) Tifo</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) Lyme hastalığı</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) Şarbon</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) Boğmaca</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) Erisepeloid</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Vektör yolu ile bulaş; enfeksiyon etkeninin bir aracı canlı (sivrisinek, kene, pire vb.) tarafından taşınarak bulaştırılmasıdır. Kene ısırması sonucu insanlara bulaşan Borrelia bakterisinin neden olduğu "Lyme hastalığı" ile KKKA (Kırım-Kongo Kanamalı Ateşi) kene temasına en iyi örneklerdir. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 20 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">20. Bir enfeksiyöz ajanın (mikroorganizmanın) doğası gereği hastalığa neden olma yeteneği ya da kapasitesine ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) Rezervuar</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) Vektör</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) Patojenite</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) İnokülasyon</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) Fomit</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Biyolojik etmenlerin hastalık yapabilme özellikleri (patojeniteleri) doğası gereği sıcaklık, nem, oksijen ve beslenme ihtiyaçları gibi çeşitli faktörlerin etkisi altındadır. Bir ajanın hastalığa neden olma kapasitesine genel olarak Patojenite denir. (Bunun kantitatif şiddetine ise virülans denir). Doğru cevap C'dir.
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <strong>Hazırlayan: Sıraç Aksan</strong> | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 30 * 60; // 30 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        // Sayacı ve Testi Başlatma Fonksiyonu
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            
+            // Ekran geçişi
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "#1e293b";
+            
+            // Timer döngüsü
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        // Tıklama ile anında kontrol ve buton gösterimi
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return; // Test bitmişse işlem yapma
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return; // Zaten cevaplanmışsa çık
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                // Tüm şıkları kilitle
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                // Seçenekleri renklendir
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct'); // Doğru olanı yeşil yap
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect'); // Yanlış seçildiyse kırmızı yap
+                    }
+                });
+
+                // Sadece Çözüm Butonunu Görünür Yap (Çözümü değil)
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) {
+                    solBtn.style.display = 'inline-flex';
+                }
+            });
+        });
+
+        // Çözüm Butonunu Tıklama Fonksiyonu (Yazı aç/kapat)
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Çözümü Göster';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Çözümü Gizle';
+            }
+        }
+
+        // Testi Bitirme ve Hesaplama
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Süre Doldu / Test Bitti";
+            timerDisplay.style.color = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    // Boş bırakılan soruları kapat ve doğru cevabı göster
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    // Çözüm butonunu görünür yap
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) {
+                        solBtn.style.display = 'inline-flex';
+                    }
+                }
+            });
+
+            // 4 Yanlış 1 Doğruyu Götürür
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

@@ -1,25 +1,465 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 2 - Test 5 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 2 - Test 5: Nihai Zirve (Ultimate) Sınavı</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+        :root {
+            --primary: #2e1065; /* İmparatorluk Moru */
+            --secondary: #4c1d95;
+            --accent: #fbbf24; /* Saf Altın */
+            --accent-hover: #f59e0b;
+            --highlight: #8b5cf6;
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --success: #15803d;
+            --danger: #b91c1c;
+            --text-main: #1e293b;
+            --text-light: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Lora', serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.8; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #000000 100%);
+            color: var(--text-light); padding: 55px 20px 45px; text-align: center;
+            box-shadow: 0 10px 30px rgba(46, 16, 101, 0.6);
+            border-bottom: 5px solid var(--accent); position: relative; overflow: hidden;
+        }
+        header::after { content: '🏛️'; position: absolute; right: 5%; top: 5%; font-size: 10rem; opacity: 0.05; }
+        header h1 { font-family: 'Cinzel', serif; font-size: 2.8rem; font-weight: 900; color: var(--accent); margin-bottom: 12px; letter-spacing: 1px;}
+        header h2 { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 700; color: #e2e8f0; letter-spacing: 2px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05); margin: -25px auto 35px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--primary); background: #f1f5f9; text-decoration: none; font-weight: 700; font-family: 'Cinzel', serif;
+            font-size: 0.95rem; padding: 12px 24px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--primary); color: var(--accent); border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(46, 16, 101, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 40px; border-radius: 16px; border-top: 6px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Cinzel', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-weight: 900;}
+        .analysis-box p { font-size: 1.05rem; color: #475569; text-align: justify; margin-bottom: 15px;}
+        .analysis-box ul { padding-left: 20px; margin-top: 15px;}
+        .analysis-box ul li { margin-bottom: 12px; color: #1e293b; font-weight: 600;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 50px 20px; border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(46, 16, 101, 0.15); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 2px solid var(--primary);
+        }
+        .start-screen h2 { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; font-weight: 900;}
+        .start-screen p { font-size: 1.15rem; color: #475569; margin-bottom: 35px; line-height: 1.8;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: var(--accent); border: none;
+            padding: 22px 60px; font-size: 1.4rem; font-weight: 700; font-family: 'Cinzel', serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(46, 16, 101, 0.4); text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 35px rgba(46, 16, 101, 0.6); color: #ffffff;}
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 25px 35px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.05); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--accent); }
+        .timer-box { font-size: 1.8rem; font-weight: 700; font-family: 'Cinzel', serif; color: var(--primary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: var(--primary); background: #fef3c7; padding: 6px 20px; border-radius: 12px; font-weight: 700; border: 2px solid var(--accent);}
+        .btn-group button { border: none; padding: 14px 30px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Cinzel', serif;}
+        .btn-finish { background: #b91c1c; box-shadow: 0 4px 15px rgba(185, 28, 28, 0.3); }
+        .btn-finish:hover { background: #7f1d1d; transform: scale(1.05);}
+        .btn-pdf { background: var(--secondary); box-shadow: 0 4px 15px rgba(76, 29, 149, 0.3); }
+        .btn-pdf:hover { background: #2e1065; transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 30px; border-radius: 12px; font-size: 1.3rem; font-weight: 700; flex: 1 1 200px; max-width: 250px; text-align: center; border: 1px solid var(--border); background: #f8fafc; font-family: 'Cinzel', serif;}
+        .stat-d { border-bottom: 5px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 5px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 5px solid #64748b; color: #64748b; } 
+        .stat-n { background: var(--primary); color: var(--accent); font-size: 1.7rem; box-shadow: 0 5px 20px rgba(46, 16, 101, 0.4); border:none;}
+
+        /* Soru Kartları - ULTİMATE AKADEMİK ŞIKLAR */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 40px; width: 95%; max-width: 1200px; margin: 0 auto 50px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 45px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid var(--border); border-left: 8px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 15px 50px rgba(0,0,0,0.08); border-left-color: var(--accent);}
+        
+        .q-text { font-weight: 700; font-size: 1.15rem; margin-bottom: 30px; color: var(--text-main); line-height: 1.8; text-align: justify; font-family: 'Lora', serif;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
+        .option-label { display: flex; align-items: flex-start; padding: 22px 28px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 500; transition: all 0.2s ease; color: #334155; line-height: 1.7; text-align: justify;}
+        .option-label:hover { background: #f5f3ff; border-color: var(--highlight); }
+        .option-label input { margin-top: 6px; margin-right: 20px; transform: scale(1.4); accent-color: var(--highlight); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #f0fdf4 !important; border-color: var(--success) !important; color: #166534; font-weight: 700;}
+        .option-label.incorrect { background: #fef2f2 !important; border-color: var(--danger) !important; color: #991b1b; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f1f5f9; color: var(--primary); border: 2px solid var(--primary); padding: 12px 30px; border-radius: 30px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; text-transform: uppercase; font-family: 'Cinzel', serif;}
+        .btn-solution:hover { background: var(--primary); color: var(--accent); box-shadow: 0 4px 15px rgba(46, 16, 101, 0.3);}
+        .solution-box { display: none; margin-top: 20px; padding: 30px; background: #f8fafc; border-left: 6px solid var(--accent); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #334155; animation: slideDown 0.3s ease-out forwards; line-height: 1.8; text-align: justify; box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);}
+        .solution-box strong { color: var(--primary); font-size: 1.2rem; display: block; margin-bottom: 12px; font-family: 'Cinzel', serif; letter-spacing: 0.5px; font-weight: 900;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 50px 20px; background: var(--primary); color: #cbd5e1; margin-top: 60px; font-size: 1.05rem; border-top: 6px solid var(--accent); }
+        .imza-kutu { display: inline-block; padding: 20px 45px; border: 2px solid rgba(251, 191, 36, 0.4); border-radius: 12px; background: #000000; box-shadow: 0 8px 25px rgba(0,0,0,0.5); font-weight: 500; letter-spacing: 1px;}
+        .imza-kutu span { color: var(--accent); font-family: 'Cinzel', serif; font-size: 1.3rem; margin: 0 10px; font-weight: 900;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 30px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 2 - Test 5</h2>
+        <h1>Ünite 2: Saklama, Depolama ve Taşıma</h1>
+        <h2>Test 5: Nihai Zirve (Ultimate) Sınavı</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">📚 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_4.html">⬅️ Test 4 (Önceki)</a>
+        <a href="../Unite_3/konu_anlatimi.html">Ünite 3'e Geç ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>🔬 Sınavın Mimari Yapısı</h3>
+            <p>Ünite 2'nin bu son denemesi, bilgilerinizi yüzeysel okuma yerine "kavramsal analiz" düzeyinde ölçmek için özel olarak dizayn edilmiştir:</p>
+            <ul>
+                <li><strong>Mükemmel Eşit Uzunlukta Şıklar:</strong> Bütün şıklar beynin görsel tarama alışkanlıklarını kırmak amacıyla 35-40 kelimelik ağır akademik cümlelerle yazılmıştır.</li>
+                <li><strong>Derin Mühendislik Kurgusu:</strong> Aseton-asit uyumsuzluklarından, havalandırma emişlerinin konumlandırılmasına kadar saklı detaylar gizlenmiştir.</li>
+                <li><strong>Biyolojik Nakliye Regülasyonları:</strong> IATA kurallarındaki Sınıf 6.2 ayrımları, UPU posta yasakları ve Üst Yön etiketlerinin yerleşimleri sorgulanmaktadır.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>📊 Testin Uygulanış Stratejisi</h3>
+            <p>Bu test, gerçek A Sınıfı İSG Uzmanlık sınavlarındaki "zaman baskısını" ve "uzun paragraf sendromunu" simüle etmektedir:</p>
+            <ul>
+                <li><strong>Akademik Puanlama:</strong> Standart 4 yanlışın 1 doğruyu götürdüğü net usulü (hesaplama algoritması) arka planda devrededir.</li>
+                <li><strong>Tematik Odaklar:</strong> Kriyojenik hücre koruması, "Hasta Örneği" vs "Biyolojik Ürün" tanımları, DNA/RNA eksi sıcaklık farkları.</li>
+                <li><strong>Önerilen Süre:</strong> Tüm metinler yüksek odaklanma gerektirdiği için her bir soruya 2.5 dakika ayrılarak sınav süresi <strong>25 dakika</strong> olarak belirlenmiştir.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>🏛️ 5. Test: Nihai Zirve (Ultimate) Sınavı</h2>
+        <p>2. Ünitenin en ağır, en uzun şıklı ve en profesyonel akademik ölçüm testine hoş geldiniz. Taşıma hukukundan kriyojenik dondurma mühendisliğine kadar tüm konuyu tek seferde bitireceksiniz.<br><br>Sınav süresi <strong>25 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Zirve Sınavını Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">25:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- ZİRVE (ULTİMATE) EŞİT UZUNLUKLU 10 SORU -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="D">
+            <div class="q-text">1. IATA Kategori A kriterlerine giren ve maruz kalındığında ölümcül hastalıklar yaratan bazı spesifik patojenler uluslararası güvenlik protokollerinde "Biyoterörizm Ajanı" olarak adlandırılmaktadır. Bu kavramın İSG ve tıp literatüründeki tam karşılığı (tanımı) aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Bir ülke veya toplum gruplarına karşı savaşma amacıyla kasıtlı olarak kullanılan, tarımsal bitki örtüsünü ve su kaynaklarını doğrudan hedef alarak sadece ağır radyolojik izotoplar yayan kimyasal kitle imha materyallerini tanımlamak için kullanılan resmi bir terimdir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Bir ülke veya toplum gruplarına karşı savaşma amacıyla kasıtlı olarak kullanılan, laboratuvarlarda yanlışlıkla üretilen ve kontrol edilemeyen sentetik ağır metallerin çevresel atmosfere karışmasıyla solunum yollarını felç eden inorganik asfeksiyan maddeleri tanımlamak için kullanılan resmi bir terimdir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Bir ülke veya toplum gruplarına karşı savaşma amacıyla kasıtlı olarak kullanılan, atmosferik oksijenle temas ettiği anda kendiliğinden alev alabilen ve patlayıcı özellik göstererek fiziksel tahribat yaratan piroforik sıvı bombalarını tanımlamak için kullanılan resmi bir terimdir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Bir ülke veya toplum gruplarına karşı savaşma amacıyla kasıtlı olarak kullanılan, çok ciddi patojenik etkilere ve ölümcül salgınlara sahip olan bakteriler, viroidler veya virüsler gibi yüksek riskli biyolojik enfeksiyöz maddeleri tanımlamak için kullanılan resmi bir terimdir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Bir ülke veya toplum gruplarına karşı savaşma amacıyla kasıtlı olarak kullanılan, insan hücresindeki DNA yapısını ani radyasyon ışımalarıyla kalıcı olarak koparan ve karsinojenik mutasyon silsilesini başlatan nükleer reaktör sızıntılarını tanımlamak için kullanılan resmi bir terimdir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Biyoterörizm, adından da anlaşılacağı üzere kimyasal, radyoaktif veya patlayıcı değil; tamamen "biyolojik" bir saldırı türüdür. Şarbon (Bacillus anthracis) gibi ölümcül bakteri veya virüslerin kitle imha amacıyla kasıtlı olarak kullanılması tıp literatüründe <strong>Biyoterörizm Ajanı</strong> olarak tanımlanır. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">2. Tehlikeli maddelerin depolanma mühendisliğinde, maddelerin fizikokimyasal özelliklerine göre farklı havalandırma sistemleri inşa edilir. Buna göre; uçuculuğu yüksek <u>"Alevlenebilir (Yanıcı) Sıvıların"</u> depolandığı odalarda tesis edilmesi gereken endüstriyel havalandırma sisteminin hava emiş menfezleri hangi konuma yerleştirilmelidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Alevlenebilir sıvıların buharları genellikle atmosferik havadan daha hafif oldukları için depo tavanına yükselme eğilimindedir, bu nedenle havalandırma sistemlerinin emiş ızgaraları doğrudan tavana yakın noktalara yerleştirilerek tavanda sinsi gaz birikmesi ve olası patlamalar engellenmelidir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Alevlenebilir sıvıların buharları genellikle atmosferik havadan daha ağır oldukları için depo zeminine çökme eğilimindedir, bu nedenle havalandırma sistemlerinin emiş ızgaraları doğrudan zemine yakın noktalara yerleştirilerek zeminde sinsi gaz birikmesi ve olası patlamalar engellenmelidir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Alevlenebilir sıvıların buharları genellikle atmosferik havayla birebir aynı özkütleye sahip oldukları için depo merkezinde asılı kalma eğilimindedir, bu nedenle havalandırma sistemlerinin emiş ızgaraları doğrudan odanın tam ortasına yerleştirilerek merkezde sinsi gaz birikmesi ve olası patlamalar engellenmelidir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Alevlenebilir sıvıların buharları genellikle atmosferik hava basıncından etkilenmedikleri için depo duvarlarının dış yüzeyinde yoğunlaşma eğilimindedir, bu nedenle havalandırma sistemlerinin emiş ızgaraları doğrudan dış cephe yalıtımlarına yerleştirilerek dışarıda sinsi gaz birikmesi ve olası patlamalar engellenmelidir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Alevlenebilir sıvıların buharları genellikle atmosferik havayı anında oksitleyerek yok ettikleri için depo zeminini vakumlama eğilimindedir, bu nedenle havalandırma sistemlerinin emiş ızgaraları tamamen iptal edilerek odanın içine sürekli saf basınçlı oksijen pompalanması mühendislik açısından zorunludur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Alevlenebilir sıvıların en büyük fiziksel tehlikesi, buharlaştıklarında havadan daha <strong>ağır</strong> olmalarıdır. Bu yüzden buharlar tavana çıkmaz, zemine çöker ve ayak bileği seviyesinde birikir. Bir kıvılcım anında yer yüzeyinden alev almamaları için havalandırma emiş (vakum) ızgaralarının <strong>doğrudan zemine yakın noktalara (yerden emişli)</strong> inşa edilmesi yasal bir mühendislik zorunluluğudur. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">3. "Tehlikeli Maddelerin Taşınmasına İlişkin Birleşmiş Milletler (UN) Model Tüzüğüne" göre; bulaşıcı özellik taşıyan klinik patojenler ve biyolojik örnekler, Birleşmiş Milletler Sınıf 6 "Zehirli ve Bulaşıcı Maddeler" kategorisinin hangi spesifik <u>alt bölümünde</u> resmi olarak numaralandırılarak taşınmaktadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Birleşmiş Milletler regülasyonlarında toksik ajanlar Sınıf 5.1 olarak kodlanırken; insanda veya hayvanlarda hastalığa yol açan tüm bulaşıcı mikroorganizmalar ve klinik patojenler spesifik olarak Bölüm 6.4 altında yüksek izolasyon seviyesi ile sınıflandırılarak uluslararası sınırları geçmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Birleşmiş Milletler regülasyonlarında toksik ajanlar Sınıf 5.2 olarak kodlanırken; insanda veya hayvanlarda hastalığa yol açan tüm bulaşıcı mikroorganizmalar ve klinik patojenler spesifik olarak Bölüm 6.5 altında yüksek izolasyon seviyesi ile sınıflandırılarak uluslararası sınırları geçmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Birleşmiş Milletler regülasyonlarında toksik ajanlar Sınıf 6.8 olarak kodlanırken; insanda veya hayvanlarda hastalığa yol açan tüm bulaşıcı mikroorganizmalar ve klinik patojenler spesifik olarak Bölüm 6.6 altında yüksek izolasyon seviyesi ile sınıflandırılarak uluslararası sınırları geçmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Birleşmiş Milletler regülasyonlarında toksik ajanlar Sınıf 6.4 olarak kodlanırken; insanda veya hayvanlarda hastalığa yol açan tüm bulaşıcı mikroorganizmalar ve klinik patojenler spesifik olarak Bölüm 6.1 altında yüksek izolasyon seviyesi ile sınıflandırılarak uluslararası sınırları geçmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Birleşmiş Milletler regülasyonlarında toksik ajanlar Sınıf 6.1 olarak kodlanırken; insanda veya hayvanlarda hastalığa yol açan tüm bulaşıcı mikroorganizmalar ve klinik patojenler spesifik olarak Bölüm 6.2 altında yüksek izolasyon seviyesi ile sınıflandırılarak uluslararası sınırları geçmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> BM tehlikeli madde kodlamasında Sınıf 6 ikiye ayrılır. Bölüm 6.1 sentetik kimyasal zehirleri (toksik maddeleri) kapsarken; virüsler, bakteriler ve canlı mikroorganizmalar gibi enfeksiyöz (bulaşıcı) biyolojik ajanların tamamı spesifik olarak <strong>Bölüm 6.2</strong> (Class 6.2 Infectious Substances) altında sınıflandırılmaktadır. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">4. İş sağlığı ve güvenliği kapsamında kimyasalların "Etkileşim (Uyumsuzluk) Matrisine" göre, belirli reaktiflerin aynı depoda fiziksel bariyer olmadan yan yana depolanması son derece şiddetli yıkımlara neden olur. Endüstriyel uyumsuzluk kurallarına göre, çok yaygın bir organik çözücü olan <u>"Aseton"</u> maddesinin aşağıdaki kimyasallardan hangisiyle yan yana depolanması ölümcül bir patlama kural ihlalidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) İSG kimyasal depolama matrisinde oldukça reaktif kabul edilen aseton çözücülerinin; inert özellik gösteren ve havayla asla tepkimeye girmeyen saf helyum veya argon gibi soy gaz tüpleri ile fiziksel bariyer olmadan yan yana bulundurulması ölümcül sonuçlar doğurur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) İSG kimyasal depolama matrisinde oldukça reaktif kabul edilen aseton çözücülerinin; basit boğucu etkiye sahip olan ve yanıcılığı sıfıra yakın olduğu bilinen saf azot (nitrojen) gazı ile fiziksel bariyer olmadan yan yana bulundurulması ölümcül sonuçlar doğurur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) İSG kimyasal depolama matrisinde oldukça reaktif kabul edilen aseton çözücülerinin; reaktivitesi son derece düşük olan ve tıp endüstrisinde tamponlayıcı sıvı olarak kullanılan zayıf okzalik asit çözeltileri ile fiziksel bariyer olmadan yan yana bulundurulması ölümcül sonuçlar doğurur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) İSG kimyasal depolama matrisinde oldukça reaktif kabul edilen aseton çözücülerinin; kuvvetli birer oksitleyici ve aşındırıcı olan derişik nitrik asit ve sülfürik asit karışımları ile fiziksel bariyer olmadan yan yana bulundurulması ölümcül sonuçlar doğurur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) İSG kimyasal depolama matrisinde oldukça reaktif kabul edilen aseton çözücülerinin; ağır metal sınıfında yer alan ve fiziksel olarak erime noktası binlerce dereceyi bulan katı kurşun blokları ile fiziksel bariyer olmadan yan yana bulundurulması ölümcül sonuçlar doğurur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasal depolama uyumsuzluk matrisi tablosuna (Tablo: Birbiriyle temas etmemesi gereken kimyasallar) göre Aseton organik bir yakıttır. Asetonun bulunduğu odaya, inanılmaz güçlü birer oksitleyici ve elektron koparıcı olan <strong>Derişik Nitrik Asit ve Sülfürik Asit karışımlarının</strong> konulması, anında termal bir ekzotermik reaksiyon (şiddetli patlama ve alevlenme) yaratır. Kesinlikle yasaktır. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">5. Klinik araştırma laboratuvarlarında insan veya hayvan dokularından izole edilen nükleik asitlerin (genetik materyallerin) çok uzun yıllar boyunca stabilitesini (okunabilir moleküler bütünlüğünü) kaybetmeden muhafaza edilebilmesi hayati önem taşır. Özellikle ortam ısısında çok hızlı bozunarak degrade olan <u>"RNA moleküllerinin"</u> uzun yıllar boyunca sağlıklı saklanabilmesi için kullanılması gereken özel dondurucu evresi hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Moleküler bütünlüğün tam kapasiteyle dondurularak yıllarca korunabilmesi ve özellikle RNA molekülünün enzimatik degradasyona uğramadan uzun vadeli klinik veri tabanlarında arşivlenebilmesi için biyolojik numunelerin mutlaka eksi yarım ile eksi yirmi yedi santigrat derece aralığında standart dolaplarda saklanması gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Moleküler bütünlüğün tam kapasiteyle dondurularak yıllarca korunabilmesi ve özellikle RNA molekülünün enzimatik degradasyona uğramadan uzun vadeli klinik veri tabanlarında arşivlenebilmesi için biyolojik numunelerin mutlaka eksi yirmi yedi ile eksi kırk santigrat derece aralığında standart dolaplarda saklanması gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Moleküler bütünlüğün tam kapasiteyle dondurularak yıllarca korunabilmesi ve özellikle RNA molekülünün enzimatik degradasyona uğramadan uzun vadeli klinik veri tabanlarında arşivlenebilmesi için biyolojik numunelerin mutlaka eksi kırk ile eksi seksen santigrat derece aralığında ultra düşük dondurucularda saklanması gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Moleküler bütünlüğün tam kapasiteyle dondurularak yıllarca korunabilmesi ve özellikle RNA molekülünün enzimatik degradasyona uğramadan uzun vadeli klinik veri tabanlarında arşivlenebilmesi için biyolojik numunelerin mutlaka iki ile beş santigrat derece aralığında kısa süreli laboratuvar soğutucularında saklanması gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Moleküler bütünlüğün tam kapasiteyle dondurularak yıllarca korunabilmesi ve özellikle RNA molekülünün enzimatik degradasyona uğramadan uzun vadeli klinik veri tabanlarında arşivlenebilmesi için biyolojik numunelerin mutlaka on beş ile yirmi yedi santigrat derece aralığında oda sıcaklığındaki fiksatiflerde saklanması gerekmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> "Genel Örnek Saklama Rehberi" tablosuna göre; DNA molekülü daha dirençli olup -27°C'lerde uzun süre dayanabilse de, tek sarmallı olan ve RNaz enzimleri tarafından anında parçalanabilen hassas <strong>RNA moleküllerinin DNA ile birlikte uzun süreli stabilitesi (DNA/RNA Stabilitesi) için numunelerin mutlaka -40 °C ila -80 °C arasındaki ultra düşük derin dondurucularda</strong> muhafaza edilmesi gerekir. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">6. Bulaşıcı laboratuvar numunelerinin IATA Kategori matrisinde uluslararası transferine ilişkin birçok tanım bulunmaktadır. Bu bağlamda, <u>"Biyolojik Ürünler"</u> kategorisinin uluslararası taşıma kurallarındaki resmi yasal ve mikrobiyolojik tanımı aşağıdaki seçeneklerin hangisinde tam ve eksiksiz olarak ifade edilmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Canlı organizmalardan elde edilen, insanların veya hayvanların hastalıklarının önlenmesinde, tedavisinde veya klinik teşhisinde kullanılmak üzere ilgili ulusal makamların yasal sağlık gerekliliklerine uygun bir şekilde büyük laboratuvarlarda üretilerek dağıtılan onaylı lisanslı terapötik maddelerdir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Canlı organizmalardan elde edilmeyen, tamamen inorganik kimyasal sentez yollarıyla fabrikalarda seri olarak üretilen, hastalıkların tedavisinde kullanılmayan ancak tıbbi cihazların dezenfeksiyonunu sağlamak için paketlenerek uluslararası pazara sunulan son derece uçucu lisanslı inorganik asitlerdir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Canlı organizmalardan elde edilen, ancak hiçbir hastalık teşhisi veya tedavisi amacı gütmeyen, sadece tarım sektöründe toprak verimliliğini artırmak için dışkılardan kaba metotlarla izole edilerek hiçbir resmi onaya tabi olmadan dağıtılan kontrolsüz gübrelerdir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Canlı organizmalardan elde edilmeyen, tıp alanında yalnızca kan nakli sırasında hastaların damar yollarını açık tutmak için kullanılan ve içinde hiçbir biyolojik protein veya genetik materyal bulunmayan tamamen sentetik %100 saf sodyum klorür sıvısıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Canlı organizmalardan elde edilen, ancak henüz klinik deney aşamasını geçemediği için insanlar veya hayvanlar üzerinde uygulanması uluslararası sağlık örgütleri tarafından tamamen yasaklanan, yasadışı laboratuvarlarda kopyalanarak taşınan ve imha edilmesi gereken zehirli mutajenlerdir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Hasta örnekleri hastadan doğrudan alınan parçalardır. Ancak <strong>"Biyolojik Ürünler" (Örneğin; Aşılar, ticari antikorlar)</strong>; mikroorganizmalardan veya hücrelerden kontrollü olarak elde edilen, resmi sağlık makamları (Bakanlıklar, WHO) tarafından onaylanmış, hastalıkların tedavisi veya önlenmesi (aşılama) amacıyla özel standartlarda paketlenip dağıtılan yasal terapötik (tedavi edici) maddelerdir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">7. Sıkıştırılmış tehlikeli basınçlı gaz tüplerinin endüstriyel laboratuvarlarda ve tesislerde kullanımı, taşıması ve depolanması özel mekanik güvenlik tedbirleri gerektirir. Basınçlı gaz tüplerinin vana kopmalarına, ani reaksiyonlara ve fiziksel roketleme (patlayarak uçma) etkisine karşı korunması için alınması gereken <u>en hayati yapısal muhafaza prosedürü</u> aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Bütün basınçlı endüstriyel gaz tüplerinin, içerdikleri kimyasal gazın türüne ve zehirlilik derecesine bakılmaksızın kullanım ve saklama esnasında kesinlikle tamamen yatay (yatık) pozisyonda yuvarlanarak istiflenmesi ve sızdırmaz kauçuk ağlara sarılarak duvara asılması zorunludur.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Bütün basınçlı endüstriyel gaz tüplerinin, içerdikleri kimyasal gazın türüne ve zehirlilik derecesine bakılmaksızın kullanım ve saklama esnasında kesinlikle baş aşağı (ters) pozisyonda askıda tutulması ve valflerinin doğrudan tavan vinçlerine kaynaklanması zorunludur.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Bütün basınçlı endüstriyel gaz tüplerinin, içerdikleri kimyasal gazın türüne ve zehirlilik derecesine bakılmaksızın kullanım ve saklama esnasında kesinlikle kırk beş derecelik eğik pozisyonda tutulması ve sadece tekerlekli mobil taşıma arabalarının üzerinde bırakılması zorunludur.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Bütün basınçlı endüstriyel gaz tüplerinin, içerdikleri kimyasal gazın türüne ve zehirlilik derecesine bakılmaksızın kullanım ve saklama esnasında kesinlikle dikey (dik) pozisyonda tutulması ve devrilmelerini engellemek için taşıma alanlarında sağlam zincirlerle duvara sabitlenmesi zorunludur.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Bütün basınçlı endüstriyel gaz tüplerinin, içerdikleri kimyasal gazın türüne ve zehirlilik derecesine bakılmaksızın kullanım ve saklama esnasında kesinlikle iç içe geçmeli yatay raflarda sıkıştırılması ve zincir kullanılmadan birbirlerine sürtünerek manyetik kilitlerle yığılması zorunludur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Basınçlı gaz tüplerinin içinde yüzlerce barlık muazzam bir basınç vardır. Eğer tüp devrilir ve boyun (vana) kısmı kırılırsa, tüp anında bir rokete dönüşerek beton duvarları delebilir. Bu nedenle yönetmelik son derece nettir: "Bütün basınçlı tüpler içeriğine bakılmaksızın daima <strong>dik (dikey) pozisyonda</strong> tutulmalı ve devrilmesini önlemek için mutlaka <strong>zincirle duvara veya sağlam bir bloğa sabitlenmelidir</strong>." Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">8. Bulaşıcı hastalık şüphesi taşıyan yüksek riskli tıbbi numunelerin (Ebola, Şarbon vb. UN 2814 ajanlarının) kıtalararası veya şehirlerarası nakliyesinde iletişim ve gönderim kanalları ciddi şekilde kısıtlanmıştır. Dünya Posta Birliği (UPU) standartlarına göre; aşağıda belirtilen nakliye yollarından hangisinin bu kargolar için kullanılması <u>uluslararası yasalara göre kesinlikle yasaktır</u>?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Kategori A veya Kategori B sınıfındaki ağır tehlikeli ve ölümcül bulaşıcı biyolojik ajanların, bu konuda özel eğitim almış, Biyogüvenlik sertifikasına ve soğuk zincir yetkisine sahip tam donanımlı özel yetkili medikal kurye şirketleri aracılığıyla taşınması kesinlikle yasaktır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Kategori A veya Kategori B sınıfındaki ağır tehlikeli ve ölümcül bulaşıcı biyolojik ajanların, sivil vatandaşların sıklıkla kullandığı ulusal veya uluslararası normal mektup (posta hizmetleri) ağı üzerinden standart sıradan kargo zarfları içerisinde taşınması kesinlikle yasaktır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Kategori A veya Kategori B sınıfındaki ağır tehlikeli ve ölümcül bulaşıcı biyolojik ajanların, İçişleri ve Sağlık Bakanlığından alınan resmi kargo izin belgelerine sahip refakatçiler eşliğinde özel izolasyonlu zırhlı laboratuvar tırları aracılığıyla taşınması kesinlikle yasaktır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Kategori A veya Kategori B sınıfındaki ağır tehlikeli ve ölümcül bulaşıcı biyolojik ajanların, havayolu taşımacılığında IATA (Uluslararası Hava Taşımacılığı Birliği) kurallarına ve Üçlü Paketleme Sistemine harfiyen uyarak deklare edilen lisanslı uçaklarla taşınması kesinlikle yasaktır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Kategori A veya Kategori B sınıfındaki ağır tehlikeli ve ölümcül bulaşıcı biyolojik ajanların, Dünya Sağlık Örgütü yetkilileri kontrolünde hazırlanan, sızıntı yapmaz çelik birincil kaplarda muhafaza edilerek askeri jetler ve kargo uçakları aracılığıyla taşınması kesinlikle yasaktır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> ICAO ve Dünya Posta Birliği (UPU - Universal Postal Union) hükümlerine göre, tehlikeli virüsler, bakteriler ve enfeksiyöz tanı örnekleri (Kategori A veya B) <strong>asla standart sivillerin kullandığı normal mektup veya sıradan zarf yoluyla ulusal/uluslararası posta hizmetleri (Örn: PTT normal gönderi) ile gönderilemez.</strong> Bu taşıma sadece IATA/ADR yetkili özel kurye ağları ile yapılabilir. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">9. Kategori A düzeyindeki enfeksiyöz maddelerin (Örn: UN 2814 - İnsanları Etkileyen Bulaşıcı Madde) hava yoluyla transferini sağlayan "Üçlü Paketleme Sisteminde", en dıştaki katman olan <u>"Üçüncü Kabın (Dış Kap)"</u> yüzeyine yapıştırılması kanunen zorunlu olan spesifik lojistik tehlike etiketleri aşağıdakilerin hangisinde eksiksiz verilmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Gönderen ve alıcı iletişim bilgileri ile birlikte kabın sadece tek bir yüzeyinde bulunması zorunlu olan uluslararası "Radyoaktif Sızıntı Tehlikesi" etiketi ve kargonun sıcaklığını belirten büyük harfli "Kuru Buzla Taşınamaz" ibaresi içeren standart güvenlik etiketidir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Gönderen ve alıcı iletişim bilgileri ile birlikte kabın karşılıklı iki yüzeyinde de bulunması zorunlu olan uluslararası "Sınıf 1 Patlayıcı Madde" etiketi ve kargonun kapağının mühürsüz olduğunu belirten "Gümrükte Açılabilir" ibaresi içeren standart güvenlik etiketidir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Gönderen ve alıcı iletişim bilgileri ile birlikte kabın hiçbir yüzeyinde bulunmasına gerek olmayan ancak kargo faturasında gizli kodla yazılan "Sınıf 8 Korozif Aşındırıcı Madde" etiketi ve "Işıktan Koruyun" ibaresi içeren standart güvenlik etiketidir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Gönderen ve alıcı iletişim bilgileri ile birlikte sızıntıyı önlemek amacıyla kabın karşılıklı iki yüzeyinde de bulunması zorunlu olan "Üst Yön Etiketi" ve spesifik tehlikeyi belirten "Enfeksiyöz Madde, Kategori A" ibaresi içeren standart güvenlik etiketidir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Gönderen ve alıcı iletişim bilgileri ile birlikte kabın alt ve üst tabanlarında bulunması zorunlu olan "Çevre ve Sucul Yaşam İçin Toksik Madde" etiketi ve kargonun sallanmasını destekleyen "Dinamik Titreşimli Taşıma" ibaresi içeren standart güvenlik etiketidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Üçlü sistemin dış kabında (3. Kap) kargonun tehlikesini ve nasıl taşınacağını kuryeye bildiren etiketler yer alır. Sıvı/Katı sızıntısını ve kargonun ters çevrilmesini engellemek için kabın karşılıklı her iki yanına <strong>"Üst Yön Etiketi" (iki ok yukarı bakan sembol)</strong> ve elbette kargonun türünü ifade eden <strong>"Enfeksiyöz Madde, Kategori A (UN2814)"</strong> tehlike sınıflandırma (baklava dilimli Sınıf 6 işareti) etiketi yapıştırılması zorunludur. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">10. Laboratuvar ortamlarında kültürlerin canlılığını onlarca yıl korumak amacıyla başvurulan en etkili yöntem "Kriyojenik Dondurma" tekniğidir. Bu teknikte canlı hücrelerin, <u>eksi yüz doksan altı santigrat derecedeki (-196 °C) sıvı azot (nitrojen) fazında</u> dondurulmadan hemen önce, hücre sitoplazmasındaki suyun buz kristaline dönüşerek hücre zarlarını bıçak gibi parçalamasını (donma hasarını) engellemek adına uygulanan biyokimyasal işlem nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Canlı hücrelerin bu aşırı yıkıcı dondurucu faza girmeden hemen önce, donma sırasındaki hücresel su kristalizasyon hasarından (patlamasından) korunmaları amacıyla hücre içine veya süspansiyon sıvılarına gliserol gibi koruyucu "Kriyoprotektan" moleküllerinin dikkatlice ilave edilmesi biyokimyasal işlemidir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Canlı hücrelerin bu aşırı yıkıcı dondurucu faza girmeden hemen önce, donma sırasındaki hücresel su kristalizasyon hasarından (patlamasından) korunmaları amacıyla hücre içine veya süspansiyon sıvılarına formol gibi doku sertleştirici "Fiksatif" çözücülerinin dikkatlice ilave edilmesi biyokimyasal işlemidir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Canlı hücrelerin bu aşırı yıkıcı dondurucu faza girmeden hemen önce, donma sırasındaki hücresel su kristalizasyon hasarından (patlamasından) korunmaları amacıyla hücre içine veya süspansiyon sıvılarına sodyum hipoklorit gibi ağartıcı "Dezenfektan" ajanlarının dikkatlice ilave edilmesi biyokimyasal işlemidir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Canlı hücrelerin bu aşırı yıkıcı dondurucu faza girmeden hemen önce, donma sırasındaki hücresel su kristalizasyon hasarından (patlamasından) korunmaları amacıyla hücre içine veya süspansiyon sıvılarına etilen oksit gibi zehirli "Asfeksiyan" gazlarının dikkatlice ilave edilmesi biyokimyasal işlemidir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Canlı hücrelerin bu aşırı yıkıcı dondurucu faza girmeden hemen önce, donma sırasındaki hücresel su kristalizasyon hasarından (patlamasından) korunmaları amacıyla hücre içine veya süspansiyon sıvılarına ağır asidik karakterde olan "Karsinojenik" asitlerin dikkatlice ilave edilmesi biyokimyasal işlemidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Sıvı azotta (-196°C) dondurma işlemi hücreyi sonsuza dek yaşatabilir ancak hücre içindeki su aniden buza dönüşüp genleşirse hücre duvarını parçalar. Bunu önlemek için gliserol, DMSO gibi hücreyi dondurma hasarından koruyan ve dondurucu antifriz görevi gören <strong>Kriyoprotektan</strong> adı verilen özel koruyucu moleküller kullanılır. Fiksatifler hücreyi öldürüp sabitler, Kriyoprotektanlar ise canlı tutarak uyutur. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.6; font-family: 'Lora', serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 2 / Test 5 (Nihai Zirve Simülasyonu)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 25 * 60; // 25 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "var(--primary)";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Akademik Analiz';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            timerDisplay.style.borderColor = "white";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // Akademik 4 Yanlış 1 Doğru Net Sistemi
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

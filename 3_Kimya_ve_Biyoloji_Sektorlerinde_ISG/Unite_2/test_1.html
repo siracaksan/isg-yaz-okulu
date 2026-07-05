@@ -1,25 +1,937 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 2 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 2 - Test 1 - Kimya ve Biyoloji Sektörlerinde İSG</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #334155;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            margin-bottom: 25px;
+        }
+
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px;}
+        header h2 { font-size: 1.1rem; font-weight: 400; opacity: 0.9; }
+
+        /* Klasör Haritasına Uygun Gelişmiş Navigasyon */
+        .test-menusu {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin: 0 auto 25px;
+            width: 95%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .test-menusu .link-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .test-menusu a {
+            color: var(--primary);
+            background: #eff6ff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #dbeafe;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .test-menusu a:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .test-menusu hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 15px 0;
+        }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--white);
+            padding: 50px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin: 0 auto 30px;
+            width: 95%;
+            max-width: 800px;
+            text-align: center;
+            border-top: 6px solid var(--primary);
+        }
+
+        .start-screen h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .start-screen p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Üst Panel (Sayaç ve İşlem Butonları) */
+        .top-panel {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+            padding: 15px 25px;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 15px;
+            z-index: 1000;
+            border-left: 6px solid var(--accent);
+        }
+
+        .timer-box {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .timer-box .time {
+            color: var(--danger);
+            background: var(--danger-light);
+            padding: 6px 18px;
+            border-radius: 12px;
+        }
+
+        .btn-group button {
+            font-family: 'Nunito Sans', sans-serif;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 12px;
+            color: var(--white);
+        }
+
+        .btn-finish { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .btn-finish:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4); }
+        
+        .btn-pdf { background: linear-gradient(135deg, #475569, #334155); box-shadow: 0 4px 15px rgba(71, 85, 105, 0.3); }
+        .btn-pdf:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(71, 85, 105, 0.4); }
+
+        /* Sonuç Paneli */
+        #results-board {
+            display: none;
+            background: var(--white);
+            padding: 30px 20px;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            border: 2px solid var(--success);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .stat-box {
+            padding: 15px 25px;
+            border-radius: 14px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            flex: 1 1 200px;
+            max-width: 250px;
+        }
+
+        .stat-d { background: var(--success-light); color: #047857; }
+        .stat-y { background: var(--danger-light); color: #b91c1c; }
+        .stat-b { background: #f1f5f9; color: var(--text-muted); }
+        .stat-n { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; font-size: 1.4rem; box-shadow: 0 5px 15px rgba(37,99,235,0.3);}
+
+        /* Soru Kartları (Sıkışık ve Profesyonel) */
+        .questions-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+            gap: 20px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .question-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+            border-top: 5px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border-color: #cbd5e1;
+        }
+
+        .q-text {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+            margin-bottom: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--light);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            color: var(--text-main);
+        }
+
+        .option-label:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Anında Geri Bildirim Renkleri */
+        .option-label.correct {
+            background: var(--success-light) !important;
+            border-color: var(--success) !important;
+            color: #047857;
+        }
+        .option-label.incorrect {
+            background: var(--danger-light) !important;
+            border-color: var(--danger) !important;
+            color: #b91c1c;
+            text-decoration: line-through;
+        }
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution {
+            display: none; /* Şık işaretlenmeden görünmez */
+            align-self: flex-start;
+            background: #f1f5f9;
+            color: var(--primary);
+            border: 1px solid #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 5px;
+        }
+
+        .btn-solution:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .solution-box {
+            display: none; /* Butona basılmadan görünmez */
+            margin-top: 10px;
+            padding: 16px;
+            background: #f0fdfa;
+            border-left: 4px solid var(--success);
+            border-radius: 0 10px 10px 0;
+            font-size: 0.9rem;
+            color: var(--dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            animation: slideDown 0.3s ease-out forwards;
+        }
+
+        .solution-box strong {
+            color: var(--success);
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 800;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: var(--dark);
+            color: #94a3b8;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+        }
+
+        footer strong { color: var(--white); }
+
+        /* Mobil Uyum */
+        @media (max-width: 768px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .top-panel { flex-direction: column; gap: 15px; text-align: center; position: relative; }
+            .btn-group { display: flex; flex-direction: column; width: 100%; gap: 10px; }
+            .btn-group button { width: 100%; margin: 0; }
+            .timer-box { width: 100%; justify-content: center; }
+            .stat-box { flex: 1 1 100%; max-width: 100%; }
+        }
+
+        /* Yazdırma (PDF) Stilleri */
+        @media print {
+            body { background: white; padding: 0; color: black; }
+            .test-menusu, .top-panel, .start-screen, footer, #results-board, .btn-solution { display: none !important; }
+            .questions-grid { display: block !important; }
+            .question-card { 
+                break-inside: avoid; 
+                border: 1px solid #ccc; 
+                margin-bottom: 12px; 
+                box-shadow: none; 
+                padding: 12px; 
+            }
+            .q-text { font-size: 10pt; margin-bottom: 6px; }
+            .options { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+            .option-label { border: none; background: transparent; padding: 2px; width: 48%; font-size: 9pt; }
+            .solution-box { display: block !important; background: #fff; border: 1px solid #ccc; margin-top: 5px; padding: 8px; font-size: 8pt; }
+            header { background: white; color: black; border-bottom: 2px solid black; padding: 10px 0; margin-bottom: 15px; box-shadow: none; border-radius: 0;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 2 - Test 1</h2>
+        <h1>2026 Anadolu Üniversitesi İSG Yaz Okulu</h1>
+        <h2>3. Kimya ve Biyoloji Sektörlerinde İSG - Ünite 2 / Test 1</h2>
     </header>
-    
-    <main>
-        </main>
-    
-    <footer>
+
+    <!-- Klasör Haritasına Göre Linkler -->
+    <nav class="test-menusu">
+        <div class="link-group">
+            <a href="../../index.html">🏠 Tüm Dersler</a>
+            <a href="../index.html">📚 Kimya ve Biyoloji İSG</a>
+            <a href="konu_anlatimi.html">📖 Ünite 2 Konu Anlatımı</a>
+        </div>
         <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="link-group">
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📜 Çıkmış Sorular</a>
+            <a href="test_2.html">Sonraki Test (Test 2) ➡️</a>
+            <a href="../Unite_3/test_1.html">Sonraki Ünite (Ünite 3) ➡️</a>
+        </div>
+    </nav>
+
+    <!-- Başlangıç Ekranı -->
+    <div id="start-screen" class="start-screen">
+        <h2>Ünite 2 - Test 1</h2>
+        <p>Kimyasal ve Biyolojik Risk Etmenlerinin Saklanması, Depolanması ve Taşınması<br><br>Test süresi <strong>30 dakikadır</strong>. Sayacınız sadece aşağıdaki butona tıkladığınız anda başlayacaktır. Başarılar dileriz.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Testi Başlat</button>
+    </div>
+
+    <!-- Kontrol Paneli -->
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">30:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Testi Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <!-- Sonuç Paneli -->
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net: <span id="res-n">0.00</span></div>
+        </div>
+        <p style="font-size:0.9rem; color:var(--text-muted); font-weight:700; margin-top:10px;">(4 Yanlış 1 Doğruyu Götürmektedir)</p>
+    </div>
+
+    <!-- Sorular Bölümü -->
+    <main class="questions-grid" id="test-container">
+        
+        <!-- Soru 1 (Orijinal) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">1. I. Etiketler net, kolay anlaşılır, okunaklı olmalı, ayrıca belirli büyüklükte ve şekilde olmalı ve olumsuz iklim koşullarına dayanabilmelidir.<br>II. Etiketler üretici firma tarafından verilen bilgiler ve ambalaj rengiyle aynı renkte bir arka plana yerleştirilmelidir.<br>III. İkincil kaplardaki etiketler orijinal numune şişesindeki bilgilerin aynısını içermelidir.<br><br>Yukarıdakilerden hangileri kimyasal risk etmenlerinin etiketlenmesi ile ilgili ideal uygulamalardandır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Yalnız I</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Yalnız III</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) I ve II</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) I ve III</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) II ve III</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Etiketler kolayca fark edilebilmesi için, üretici firma tarafından verilen bilgiler ve ambalaj rengiyle "kontrast (zıt)" oluşturan bir arka plana yerleştirilmelidir. II. öncül yanlıştır, I ve III doğrudur. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 2 (Orijinal) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">2. Olası reaksiyonlara göre bir araya gelmesi durumunda tehlikeli reaksiyon oluşturabilecek madde gruplarını ifade eden matris aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Kimyasal Birleşim Matrisi</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Kimyasal Ayrışım Matrisi</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Kimyasal Reaksiyon Matrisi</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Kimyasal Etkileşim Matrisi</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Kimyasal Olasılık Matrisi</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Kimyasalların birlikte depolanmasında olası etkileşimleri ve hangilerinin yan yana gelmemesi gerektiğini gösteren tabloya "Kimyasal Etkileşim Matrisi" adı verilir. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 3 (Orijinal) -->
+        <div class="question-card" data-answer="E">
+            <div class="q-text">3. Aşağıdakilerden hangisi maruz kaldığında, kalıcı sakatlığa veya yaşamı tehdit eden veya ölümcül hastalığa neden olabilecek bir biçimde taşınan bulaşıcı maddelerden (Kategori A) biri değildir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Bacillus anthracis</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Shigella dysenteriae type 1</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Poliovirus</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Variola virus</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Staphylococcus aureus</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Bacillus anthracis, Shigella dysenteriae, Poliovirus ve Variola virus "Kategori A" tehlikeli biyolojik etmenlerdir. Staphylococcus aureus ise genellikle Kategori B listesinde kabul edilen patojenlerdendir. Doğru cevap E.
+            </div>
+        </div>
+
+        <!-- Soru 4 (Orijinal) -->
+        <div class="question-card" data-answer="E">
+            <div class="q-text">4. Aşağıdakilerden hangisi biyolojik tehlike unsuru bir maddenin uygunsuz paketleme ve gönderiminden kaynaklanan risklerden biri değildir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Enfeksiyöz ajanlara maruziyet riski</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Başarısız ya da gecikmeli paket gönderimi veya gümrükte durdurulma</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Bir kurye/taşıyıcı bulma zorluğu</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Adli takip ve para cezaları</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Enfeksiyöz ajanın mutasyona uğraması riski</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Uygunsuz paketleme taşıyıcıların enfekte olmasına, gönderimin gecikmesine ve yasal cezalara yol açar. Ancak ambalajlama hatasının doğrudan ajanın genetik "mutasyona uğramasına" neden olacağı gibi bir risk faktörü mevzuatta tanımlanmaz. Doğru cevap E.
+            </div>
+        </div>
+
+        <!-- Soru 5 (Orijinal) -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">5. Enfeksiyöz madde sınıflandırmasına göre Kategori A için “uygun gönderi adı” ve “UN numaraları” aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) "Enfeksiyöz Madde, İnsanları Etkiler" - "UN 2814"</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) "Enfeksiyöz Madde, İnsanları Etkilemez" - "UN 2814"</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) "Enfeksiyöz Madde, İnsanları Etkiler" - "UN 2900"</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) "Enfeksiyöz Madde, Sadece Hayvanları Etkiler" - "UN 2814"</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) "Enfeksiyöz Madde, Sadece Hayvanları Etkilemez" - "UN 2814"</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Kategori A enfeksiyöz maddelerden insanları etkileyen ajanlar için uygun isim "Enfeksiyöz Madde, İnsanları Etkileyen" ve UN numarası "UN 2814"tür (Hayvanları etkileyenler için UN 2900 kullanılır). Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 6 (Orijinal) -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">6. Enfeksiyöz madde sınıflandırmasına göre Kategori B için UN numarası aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) "UN 2814"</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) "UN 3373"</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) "UN 2900"</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) "UN 6554"</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) "UN 1484"</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Kategori B maddelerine atanmış olan Birleşmiş Milletler (UN) numarası UN 3373'tür ve uygun sevkiyat adı "Biyolojik Madde, Kategori B" olarak kullanılır. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 7 (Orijinal) -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">7. Aşağıdakilerden hangisinin paketleme ve taşınmasında UN sertifikasına sahip kapların kullanılması gereklidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Kategori A’da yer alan maddelerin paketleme ve taşınmasında</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Kategori A ve Kategori B'de yer alan maddelerin paketleme ve taşınmasında</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Katı maddelerin paketleme ve taşınmasında</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Sıvı maddelerin paketleme ve taşınmasında</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Kokulu maddelerin paketleme ve taşınmasında</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> İlgili mevzuata (PT602 Paketleme Talimatı) göre özellikle Kategori A'da yer alan, yüksek ölümcül riske sahip maddelerin paketlenmesinde ve taşınmasında UN (Birleşmiş Milletler) sertifikasyon testlerinden geçmiş ve onaylı kapların kullanımı kesin ve özel bir zorunluluktur. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 8 (Orijinal) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">8. I. Helyum<br>II. Hidrojen<br>III. Azot<br>IV. Argon<br><br>Yukarıdakilerden hangileri sıvılaştırılmasıyla kriyojenik sıcaklıklar elde edilen gazlardandır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) II ve III</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) III ve IV</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) I, II ve III</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) I, III ve IV</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) I, II, III ve IV</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Endüstride laboratuvar veya dondurucu ortam uygulamalarında kullanılan başlıca kriyojenik sıvılar (sıvılaştırılmış gazlar); sıvı azot, sıvı helyum ve sıvı argondur. Doğru cevap D seçeneğidir.
+            </div>
+        </div>
+
+        <!-- Soru 9 (Orijinal) -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">9. Aşağıdakilerden hangisi çok küçük miktarlarda dahi hava ile temas ettikten sonra beş dakika içerisinde tutuşabilen sıvı madde veya karışımdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Kriyojenik</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Piroforik</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Aldehit</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Toksik</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Korozif</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Piroforik maddeler (katı veya sıvı halde), çok düşük miktarlarda dahi havayla temas ettiklerinde 5 dakika gibi kısa bir süre içinde kendiliğinden tutuşabilme özelliğine sahip oldukça reaktif ve tehlikeli maddelerdir. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 10 (Orijinal) -->
+        <div class="question-card" data-answer="E">
+            <div class="q-text">10. Tehlikeli maddelerin taşınmasına ilişkin belgelerde aşağıdakilerden hangisinin bulunması gerekli değildir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Sevkiyat adı</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Kimyasal maddelerin hangi taşıma sınıfında oldukları</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Madde için Birleşmiş Milletler (BM) numarası (UN Numarası)</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Toplam tehlikeli madde miktarı</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Tehlikeli maddenin parasal değeri</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Nakliye ve taşıma belgelerinde güvenlik ve sınıflandırma kuralları gereği sevkiyatın resmi adı, UN numarası, ambalaj grubu, taşıma sınıfı ve net miktar zorunludur. Ancak ürünün ticari/parasal değeri güvenlik nakliye belgeleri için bir gereklilik değildir. Doğru cevap E.
+            </div>
+        </div>
+
+        <!-- Soru 11 (Yeni Üretilen) -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">11. Türkiye'de yürürlükte olan ilgili yönetmeliğe göre piyasaya arz edilen kimyasal maddelerin etiketleri hangi dilde hazırlanmak zorundadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) Yalnızca İngilizce</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) Hem İngilizce hem Fransızca</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) Türkçe</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) Yalnızca Üretici Ülkenin Kendi Dilinde</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) Latince (Tıbbi / Bilimsel Formda)</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> İlgili Çevre Bakanlığı yönetmeliğine göre Türkiye’de piyasaya arz edilen kimyasal maddelerin etiketleri Türkçe olmalı, yurt dışına ihraç edilen kimyasal maddelerin etiketleri ise o ülkenin resmi dilinde hazırlanmalıdır. Doğru cevap C'dir.
+            </div>
+        </div>
+
+        <!-- Soru 12 (Yeni Üretilen) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">12. Tehlikeli maddelerin uluslararası taşımacılık kurallarını düzenleyen "ADR" sözleşmesi, maddelerin aşağıdaki hangi taşıma yoluyla nakliyesini kapsamaktadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) Deniz yolu</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) Hava yolu</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) Demir yolu</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) Kara yolu</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) Boru hatları</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Ülkemizin de imzaladığı Tehlikeli Maddelerin Taşınmasına ilişkin Uluslararası sözleşmelerden IATA hava yolunu düzenlerken, ADR sözleşmesi tehlikeli maddelerin "kara yolu" ile uluslararası taşımacılığını düzenlemektedir. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 13 (Yeni Üretilen) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">13. Laboratuvarlarda biyolojik örneklerin hiçbir bozulmaya uğramadan, tüm biyolojik aktivitenin askıya alınarak uzun süreli saklanması için en güvenilir yöntem olan "kriyojenik dondurucu depolaması" hangi sıcaklık aralığında yapılmaktadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) 0°C ile -20°C arası</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) -20°C ile -80°C arası</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) 2°C ile 5°C arası</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) -150°C ile -190°C arası</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) -15°C ile 15°C arası</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Kriyojenik dondurucu depolaması, -150°C ila -190°C gibi aşırı düşük sıcaklıklarda yapılır ve sıvı azot gibi materyaller kullanılır. Bu sıcaklıklarda tüm biyolojik aktivite askıya alınır, bu sayede numune bozulmadan uzun yıllar saklanabilir. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 14 (Yeni Üretilen) -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">14. Enfeksiyöz (bulaşıcı) maddelerin nakliyesinde kullanılan "üçlü taşıma sistemi" kurallarına göre, en dışta yer alan "üçüncü taşıma kabı"nın taşıması zorunlu olan özellik aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) Tamamen camdan üretilmiş olması</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) Sadece sıvıları emici bir tabakaya sahip olması</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) İlgili evrakların düşmesini, ıslanmasını ve kaybolmasını engelleyecek dış bir cep/bölme barındırması</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) Şeffaf bir plastikten imal edilmiş olması</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) İçinde soğutucu veya kuru buz bulunmasının yasak olması</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Üçlü taşıma sistemindeki dış kap (üçüncü kap); dayanıklı mukavva vb. malzemeden yapılmalı, dış yüzeyinde ilgili evrak ve dokümanların düşmesini, ıslanmasını veya kaybolmasını engelleyecek şekilde tasarlanmış bir "cep veya bölme" bulundurmalıdır. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 15 (Yeni Üretilen) -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">15. Hücre metabolik aktivitesini azaltmak ve mikroorganizmaları çok uzun süre korumak için donma noktasının altındaki sıcaklıklarda materyallerin "dondurularak kurutulması" tekniğine ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) Otoklavlama</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) Liyofilizasyon</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) Mikrokapsülleme</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) İnokülasyon</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) Santrifüjleme</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Uzun süreli saklama için mikroorganizmalar, donma noktasının altındaki çok düşük sıcaklıklarda dondurularak kurutulur. Bu teknolojik koruma/saklama sürecine Liyofilizasyon adı verilir. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 16 (Yeni Üretilen) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">16. Uluslararası tehlikeli madde taşımacılığı (ADR/IATA) sınıflandırmasına göre "Sınıf 6" aşağıdakilerden hangisini temsil etmektedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) Patlayıcı maddeler</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) Radyoaktif maddeler</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) Aşındırıcı (korozif) maddeler</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) Zehirli ve bulaşıcı maddeler</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) Yanıcı sıvılar</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Klinik laboratuvarlardan sıklıkla gönderilen tehlikeli madde grubu Sınıf 6 ve Sınıf 9'dur. Sınıf 6 maddeler (Bölüm 6.1 ve 6.2); doğrudan "toksik (zehirli) maddeler ve bulaşıcı (enfeksiyöz) maddeler" grubunu temsil eder. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 17 (Yeni Üretilen) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">17. Kategori A'da yer alan, ancak "genetiği değiştirilmiş" olan bir mikroorganizmanın uygun taşıma isminin (etiketinin) yanına hangi özel kısaltmanın eklenmesi mevzuata göre zorunludur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) RNA</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) DNA</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) UN</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) GDM</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) ADR</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Kategori A’daki organizmalardan genetiği değiştirilmiş olanların sevkiyat isminin yanına, genetiği değiştirilmiş mikroorganizma ibaresini temsilen "GDM" kısaltmasının kullanılması kurallara göre zorunludur. Doğru cevap D'dir.
+            </div>
+        </div>
+
+        <!-- Soru 18 (Yeni Üretilen) -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">18. Canlı organizmalardan elde edilerek insan ve hayvanlarda hastalıkların teşhisi, önlenmesi (örn: aşılar) veya tedavisi amacıyla üretilmiş, ulusal ve özel ruhsatlandırma kurallarına tabi ürünlere biyolojik taşıma kurallarında genel olarak ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) Fomit</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) Kriyoprotektan</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) Biyolojik Ürünler</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) Patojenler</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) İnorganik Karışımlar</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> İnsan veya hayvan hastalıklarının önlenmesi veya tedavisinde kullanılan, canlılardan özel kurallarla elde edilmiş aşı vb. klinik ve medikal ürünlere taşıma standartlarında "Biyolojik Ürünler" denir. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 19 (Yeni Üretilen) -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">19. Biyolojik hücrelerin ve dokuların -20°C, -80°C gibi sıcaklıklarda dondurulmasından önce, buz kristallerinin hücre bütünlüğüne zarar vermesini önlemek amacıyla ortama katılan gliserol gibi koruyucu kimyasallara ne isim verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) Kriyoprotektan</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) Patojen</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) İnokülüm</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) Reaktif</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) Çözücü ajan</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Dondurma işlemi hücre içerisindeki suyun kristalleşip hücre zarına hasar vermesine neden olabilir. Bunu önlemek için hücreleri soğuk ortam hasarından koruyan Gliserol benzeri maddelere "Kriyoprotektan" denir. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 20 (Yeni Üretilen) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">20. Kimyasal etkileşim matrislerine ve güvenli depolama kurallarına göre; oldukça yanıcı olan "Aseton" aşağıdaki kimyasallardan hangisiyle kesinlikle aynı ortamda birlikte depolanmamalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) Oksijen</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) Karbondioksit</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) Azot gazı</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) Derişik nitrik ve sülfürik asit karışımları</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) Helyum</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Kimyasal depolama ve etkileşim matrisinde verilen örneklere göre, parlayıcı/yanıcı bir endüstriyel çözücü olan Aseton, güçlü oksitleyici ve tepkimeye girebilen Derişik nitrik asit ve sülfürik asit karışımlarıyla yan yana getirilmemelidir. Doğru cevap D.
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <strong>Hazırlayan: Sıraç Aksan</strong> | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 30 * 60; // 30 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        // Sayacı ve Testi Başlatma Fonksiyonu
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            
+            // Ekran geçişi
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "#1e293b";
+            
+            // Timer döngüsü
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        // Tıklama ile anında kontrol ve buton gösterimi
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return; // Test bitmişse işlem yapma
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return; // Zaten cevaplanmışsa çık
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                // Tüm şıkları kilitle
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                // Seçenekleri renklendir
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct'); // Doğru olanı yeşil yap
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect'); // Yanlış seçildiyse kırmızı yap
+                    }
+                });
+
+                // Sadece Çözüm Butonunu Görünür Yap (Çözümü değil)
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) {
+                    solBtn.style.display = 'inline-flex';
+                }
+            });
+        });
+
+        // Çözüm Butonunu Tıklama Fonksiyonu (Yazı aç/kapat)
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Çözümü Göster';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Çözümü Gizle';
+            }
+        }
+
+        // Testi Bitirme ve Hesaplama
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Süre Doldu / Test Bitti";
+            timerDisplay.style.color = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    // Boş bırakılan soruları kapat ve doğru cevabı göster
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    // Çözüm butonunu görünür yap
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) {
+                        solBtn.style.display = 'inline-flex';
+                    }
+                }
+            });
+
+            // 4 Yanlış 1 Doğruyu Götürür
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

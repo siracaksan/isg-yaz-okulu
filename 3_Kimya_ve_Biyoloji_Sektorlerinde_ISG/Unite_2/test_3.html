@@ -1,25 +1,464 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 2 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 2 - Test 3: İleri Düzey Taşıma ve Muhafaza Simülasyonu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary: #450a0a; /* Koyu Bordo */
+            --secondary: #7f1d1d; 
+            --accent: #94a3b8; /* Titanyum Grisi */
+            --accent-hover: #cbd5e1;
+            --highlight: #b91c1c; /* Kan Kırmızısı */
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --success: #0f766e;
+            --danger: #b91c1c;
+            --text-main: #334155;
+            --text-light: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.7; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2a0404 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(69, 10, 10, 0.4);
+            border-bottom: 5px solid var(--accent); position: relative; overflow: hidden;
+        }
+        header::after { content: '🔬'; position: absolute; right: 5%; top: 5%; font-size: 9rem; opacity: 0.05; }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; color: #fecaca; margin-bottom: 10px; letter-spacing: 0.5px;}
+        header h2 { font-size: 1.25rem; font-weight: 600; color: var(--accent); letter-spacing: 1px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05); margin: -25px auto 30px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--primary); background: #f1f5f9; text-decoration: none; font-weight: 700;
+            font-size: 0.95rem; padding: 12px 22px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--secondary); color: white; border-color: var(--secondary); transform: translateY(-3px); box-shadow: 0 4px 12px rgba(127, 29, 29, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--secondary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 18px; display: flex; align-items: center; gap: 10px;}
+        .analysis-box p { font-size: 1.05rem; color: #475569; text-align: justify; margin-bottom: 15px;}
+        .analysis-box ul { padding-left: 20px; margin-top: 10px;}
+        .analysis-box ul li { margin-bottom: 10px; color: #334155; font-weight: 600;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 50px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 3px solid var(--primary);
+        }
+        .start-screen h2 { font-family: 'Playfair Display', serif; font-size: 2.3rem; color: var(--primary); margin-bottom: 20px; }
+        .start-screen p { font-size: 1.15rem; color: #475569; margin-bottom: 35px; line-height: 1.8;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%); color: white; border: none;
+            padding: 20px 55px; font-size: 1.4rem; font-weight: 700; font-family: 'Inter', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(69, 10, 10, 0.4); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 35px rgba(69, 10, 10, 0.6); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 22px 30px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--secondary); }
+        .timer-box { font-size: 1.7rem; font-weight: 800; font-family: 'Playfair Display', serif; color: var(--primary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--danger); padding: 6px 20px; border-radius: 12px; font-family: 'Inter', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);}
+        .btn-group button { border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Inter', sans-serif;}
+        .btn-finish { background: var(--primary); box-shadow: 0 4px 15px rgba(69, 10, 10, 0.3); }
+        .btn-finish:hover { background: #2a0404; transform: scale(1.05);}
+        .btn-pdf { background: var(--accent); color: var(--primary); box-shadow: 0 4px 15px rgba(148, 163, 184, 0.3); }
+        .btn-pdf:hover { background: #64748b; color: white; transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 25px; border-radius: 12px; font-size: 1.25rem; font-weight: 700; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border); background: #f8fafc;}
+        .stat-d { border-bottom: 5px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 5px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 5px solid #94a3b8; color: #64748b; } 
+        .stat-n { background: var(--primary); color: #fecaca; font-size: 1.6rem; box-shadow: 0 5px 20px rgba(69, 10, 10, 0.4); border:none;}
+
+        /* Soru Kartları - EŞİT UZUNLUKLU 10 SORU FORMU */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 35px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--border); border-left: 8px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 15px 40px rgba(0,0,0,0.07); border-left-color: var(--secondary);}
+        
+        .q-text { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.15rem; margin-bottom: 25px; color: var(--text-main); line-height: 1.7; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; }
+        .option-label { display: flex; align-items: flex-start; padding: 20px 25px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: all 0.2s ease; color: #334155; line-height: 1.6; text-align: justify;}
+        .option-label:hover { background: #f1f5f9; border-color: var(--secondary); }
+        .option-label input { margin-top: 5px; margin-right: 20px; transform: scale(1.4); accent-color: var(--secondary); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: #047857; }
+        .option-label.incorrect { background: #fef2f2 !important; border-color: var(--danger) !important; color: #b91c1c; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f8fafc; color: var(--primary); border: 2px solid var(--primary); padding: 12px 28px; border-radius: 30px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px;}
+        .btn-solution:hover { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(69, 10, 10, 0.3);}
+        .solution-box { display: none; margin-top: 15px; padding: 25px; background: #fef2f2; border-left: 6px solid var(--secondary); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #450a0a; animation: slideDown 0.3s ease-out forwards; line-height: 1.7; text-align: justify;}
+        .solution-box strong { color: var(--secondary); font-size: 1.15rem; display: block; margin-bottom: 12px; font-family: 'Playfair Display', serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 45px 20px; background: var(--primary); color: #cbd5e1; margin-top: 50px; font-size: 1.05rem; border-top: 5px solid var(--accent); }
+        .imza-kutu { display: inline-block; padding: 18px 40px; border: 2px solid rgba(148, 163, 184, 0.4); border-radius: 12px; background: #2a0404; box-shadow: 0 6px 20px rgba(0,0,0,0.5); font-weight: 600; letter-spacing: 0.5px;}
+        .imza-kutu span { color: #fecaca; font-family: 'Playfair Display', serif; font-size: 1.25rem; margin: 0 8px;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 25px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 2 - Test 3</h2>
+        <h1>Ünite 2: Saklama, Depolama ve Taşıma</h1>
+        <h2>Test 3: İleri Düzey Akademik Simülasyon</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">📚 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_2.html">⬅️ Test 2 (Önceki)</a>
+        <a href="test_4.html">Sonraki Test (Test 4) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>🔬 Testin Odak Noktaları</h3>
+            <p>Bu 3. Deneme, Ünite 2'nin derinliklerinde yatan teknik eşiklere odaklanmıştır:</p>
+            <ul>
+                <li><strong>Kimyasal Etkileşimler:</strong> Bakır ve Sodyum gibi inorganik yapıların, Asetilen ve Karbontetraklorür gibi organik/çözücü maddelerle olan ölümcül reaksiyon matrisleri.</li>
+                <li><strong>Biyolojik Muhafaza:</strong> Kısa süreli depolama süreçlerinden (Sürekli Büyüme), Kriyojenik sıvı azot evrelerine kadar uzanan moleküler koruma prosedürleri.</li>
+                <li><strong>Taşıma Hukuku:</strong> Uluslararası Sınıf 7 Radyoaktif madde taşıma regülasyonları ve atık yönetimindeki kritik yasal yükümlülükler.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>📊 Format ve Zorluk Derecesi</h3>
+            <p>Tamamen profesyonel standartlarda, eşit uzunluklu paragraf şıklarından oluşan bu sınav:</p>
+            <ul>
+                <li><strong>Zihinsel Dayanıklılık:</strong> Seçenekler arasındaki sadece birkaç kelimelik teknik farklılıklar (Örn: RNA bozunumu vs DNA stabilitesi), adayın okuduğunu anlama yeteneğini maksimumda zorlar.</li>
+                <li><strong>Net Sistemi (4Y=1D):</strong> Tam donanımlı bir akademik ölçme-değerlendirme altyapısıyla çalışır.</li>
+                <li>Önerilen odaklanma süresi her bir zorlu soru için 2.5 dakikadır. Toplam süre <strong>25 dakikadır</strong>.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>🔬 3. Test: İleri Düzey Akademik Test</h2>
+        <p>Satır aralarında kalmış özel sıcaklık eşik değerleri, yasal izin makamları ve ileri mikrobiyolojik koruma tekniklerinin harmanlandığı eşit şıklı mükemmel bir simülasyon.<br><br>Sınav süresi <strong>25 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 İleri Düzey Testi Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">25:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 10 SORULUK EŞİT UZUNLUKTA AKADEMİK TEST -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="D">
+            <div class="q-text">1. Biyolojik numunelerin ve biyokimyasal reaktiflerin saklama koşulları, malzemenin kullanım amacına ve moleküler bütünlüğüne göre farklı sıcaklık evreleri gerektirir. Uluslararası standartlarda hazırlanan "Genel Örnek Saklama Rehberi"ne göre; tıp merkezlerinden toplanan hastaya ait <u>idrar, kan, plazma ve serum (kan fraksiyonları)</u> gibi spesifik sıvı örneklerinin moleküler stabilite kaybı yaşanmadan en güvenilir biçimde saklanması için önerilen optimal dondurucu sıcaklık aralığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Biyolojik sıvı numunelerinin moleküler bütünlüklerinin laboratuvar ortamında uzun yıllar boyunca hasar görmeden korunabilmesi için uluslararası standartlarda belirlenmiş olan ideal dondurucu sıcaklık aralığı kesinlikle -0.5 °C ile -27 °C arasında tutulmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Biyolojik sıvı numunelerinin moleküler bütünlüklerinin laboratuvar ortamında uzun yıllar boyunca hasar görmeden korunabilmesi için uluslararası standartlarda belirlenmiş olan ideal dondurucu sıcaklık aralığı kesinlikle -27 °C ile -40 °C arasında tutulmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Biyolojik sıvı numunelerinin moleküler bütünlüklerinin laboratuvar ortamında uzun yıllar boyunca hasar görmeden korunabilmesi için uluslararası standartlarda belirlenmiş olan ideal dondurucu sıcaklık aralığı kesinlikle -40 °C ile -80 °C arasında tutulmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Biyolojik sıvı numunelerinin moleküler bütünlüklerinin laboratuvar ortamında uzun yıllar boyunca hasar görmeden korunabilmesi için uluslararası standartlarda belirlenmiş olan ideal dondurucu sıcaklık aralığı kesinlikle -80 °C ile -130 °C arasında tutulmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Biyolojik sıvı numunelerinin moleküler bütünlüklerinin laboratuvar ortamında uzun yıllar boyunca hasar görmeden korunabilmesi için uluslararası standartlarda belirlenmiş olan ideal dondurucu sıcaklık aralığı kesinlikle -130 °C ile -150 °C arasında tutulmalıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> "Genel Örnek Saklama Rehberi (Tablo 2.6)" verilerine göre; -0.5 ile -27 kısa dönem DNA, -40 ile -80 DNA/RNA stabilitesi, -130 altı sıvı azot fazlarıdır. İdrar, tam kan ve plazma/serum gibi hassas medikal sıvıların (kan fraksiyonları) dondurularak saklanması için önerilen aralık <strong>-80 °C ile -130 °C</strong> arasındadır. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">2. IATA Kategori A (UN2814 ve UN2900) listesinde yer alan, taşıma sırasında sızması durumunda toplumda kalıcı sakatlıklara veya ölümcül salgınlara yol açabilecek en yüksek riskli patojenlerin paketlenmesinde kullanılan <u>Paketleme Talimatı 602 (PT 602)</u> kurallarına göre; numunenin sadece "Katı Formda" olduğu durumlarda kullanılacak birincil sızdırmaz cam/plastik numune tüpünün azami kapasite limiti aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Katı formdaki enfeksiyöz maddelerin uluslararası kurallara uygun şekilde paketlenmesinde kullanılan sızdırmaz birincil kap (örnek tüpü), taşıma anındaki tehlikeli sızıntı riskine karşı azami on gram (10g) net katı biyolojik madde barındırma kapasitesine sahip olmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Katı formdaki enfeksiyöz maddelerin uluslararası kurallara uygun şekilde paketlenmesinde kullanılan sızdırmaz birincil kap (örnek tüpü), taşıma anındaki tehlikeli sızıntı riskine karşı azami yirmi gram (20g) net katı biyolojik madde barındırma kapasitesine sahip olmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Katı formdaki enfeksiyöz maddelerin uluslararası kurallara uygun şekilde paketlenmesinde kullanılan sızdırmaz birincil kap (örnek tüpü), taşıma anındaki tehlikeli sızıntı riskine karşı azami otuz gram (30g) net katı biyolojik madde barındırma kapasitesine sahip olmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Katı formdaki enfeksiyöz maddelerin uluslararası kurallara uygun şekilde paketlenmesinde kullanılan sızdırmaz birincil kap (örnek tüpü), taşıma anındaki tehlikeli sızıntı riskine karşı azami kırk gram (40g) net katı biyolojik madde barındırma kapasitesine sahip olmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Katı formdaki enfeksiyöz maddelerin uluslararası kurallara uygun şekilde paketlenmesinde kullanılan sızdırmaz birincil kap (örnek tüpü), taşıma anındaki tehlikeli sızıntı riskine karşı azami elli gram (50g) net katı biyolojik madde barındırma kapasitesine sahip olmalıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> PT 602 paketleme kuralında sıvı numuneler için birincil kap limiti azami 50 mL'dir. Mevzuatın detayında "Katıların paketlenmesinde örnek tüpü azami <strong>50g (elli gram)</strong> katı madde içerebilir" ibaresi yer almaktadır. Her iki fiziksel formda da "50" birimlik bir eşik değer (50 mL veya 50 gram) söz konusudur. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">3. Laboratuvar ortamında çeşitli mikroorganizma, mikrop, mantar ve probiyotik bakteri kültürlerinin genetik değişikliklerden uzak bir şekilde yıllarca canlı tutulabilmesi için geliştirilen koruma metotları biyoteknolojinin temelidir. İlgili mikroorganizmayı içeren sıvı ya da katı partikül damlacıklarının, dış ortam streslerine karşı özel bir "polimer film malzemesi" ile tamamen kaplanarak muhafaza edildiği ve özellikle probiyotik endüstrisinde yeni ve yaygın bir saklama stratejisi olarak kullanılan teknik aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Mikroorganizmaların sıvı veya katı fazdaki partiküllerinin, yüksek koruyuculuk sağlamak amacıyla biyokimyasal bir polimer film tabakası ile fiziksel olarak kaplanması işlemine mikrobiyolojik liyofilizasyon prosesi adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Mikroorganizmaların sıvı veya katı fazdaki partiküllerinin, yüksek koruyuculuk sağlamak amacıyla biyokimyasal bir polimer film tabakası ile fiziksel olarak kaplanması işlemine mikrobiyolojik pastörizasyon prosesi adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Mikroorganizmaların sıvı veya katı fazdaki partiküllerinin, yüksek koruyuculuk sağlamak amacıyla biyokimyasal bir polimer film tabakası ile fiziksel olarak kaplanması işlemine mikrobiyolojik kriyoprezervasyon prosesi adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Mikroorganizmaların sıvı veya katı fazdaki partiküllerinin, yüksek koruyuculuk sağlamak amacıyla biyokimyasal bir polimer film tabakası ile fiziksel olarak kaplanması işlemine mikrobiyolojik inokülasyon prosesi adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Mikroorganizmaların sıvı veya katı fazdaki partiküllerinin, yüksek koruyuculuk sağlamak amacıyla biyokimyasal bir polimer film tabakası ile fiziksel olarak kaplanması işlemine mikrobiyolojik mikrokapsülleme prosesi adı verilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Liyofilizasyon dondurarak kurutma, inokülasyon aşılama, kriyoprezervasyon ise aşırı soğukta dondurmadır. Canlı kültür damlacıklarının (özellikle probiyotiklerin, ilaçların) dış ortamdan korunması amacıyla polimerik bir zar (film) tabakasıyla fiziksel olarak kaplanması ve hapsedilmesi işlemine literatürde <strong>Mikrokapsülleme (Microencapsulation)</strong> denir. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">4. İş sağlığı ve güvenliği kapsamında kimyasalların "Etkileşim (Uyumsuzluk) Matrisine" göre, farklı fizikokimyasal karaktere sahip reaktif maddelerin aynı depoda yan yana, aralarında fiziksel bariyer olmadan bulundurulması ölümcül kimyasal reaksiyonlara neden olur. Aşağıdaki seçeneklerde verilen kimyasal ikililerinden hangisinin aynı depoda yan yana depolanması <u>uyumsuzluk kurallarına göre kesinlikle yasaktır</u> ve yüksek oranda patlama tehlikesi taşır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Güçlü bir toksik etkiye sahip olan amonyum nitrat kristalleri ile aseton gibi saf organik çözücü kimyasalların fiziksel bir izolasyon duvarı kullanılmadan aynı endüstriyel stoklama raflarında tamamen yan yana depolanması durumudur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Güçlü bir toksik etkiye sahip olan derişik sülfürik asit sıvıları ile metan gibi yanıcı hidrokarbon gazlarının fiziksel bir izolasyon duvarı kullanılmadan aynı endüstriyel stoklama raflarında tamamen yan yana depolanması durumudur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Güçlü bir toksik etkiye sahip olan sıvı karbontetraklorür kimyasalları ile sodyum gibi reaktif alkali metallerin fiziksel bir izolasyon duvarı kullanılmadan aynı endüstriyel stoklama raflarında tamamen yan yana depolanması durumudur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Güçlü bir toksik etkiye sahip olan zayıf okzalik asit çözeltileri ile gümüş gibi inert geçiş ağır metallerinin fiziksel bir izolasyon duvarı kullanılmadan aynı endüstriyel stoklama raflarında tamamen yan yana depolanması durumudur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Güçlü bir toksik etkiye sahip olan katı fosfor triklorür tuzları ile hidrojen peroksit gibi inorganik çözücülerin fiziksel bir izolasyon duvarı kullanılmadan aynı endüstriyel stoklama raflarında tamamen yan yana depolanması durumudur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> "Birbiriyle temas etmemesi gereken kimyasallar" depolama matrisine göre; saf su ile bile şiddetli reaksiyona giren alkali Sodyum (Na) metalinin, halojenli bir ağır çözücü olan Karbontetraklorür (CCl4) ile yan yana depolanması tehlikeli patlamalara ve toksik bulut oluşumuna zemin hazırlar. Matriste "<strong>Karbontetraklorür - Sodyum</strong>" yan yana getirilmemesi gereken kritik ikililerden biri olarak özellikle vurgulanmıştır. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">5. "Tehlikeli Maddelerin Taşınmasına İlişkin Birleşmiş Milletler (UN) Tavsiyeleri" ve ilgili uluslararası nakliye regülasyonları kapsamında; kimyasal, biyolojik veya nükleer risk barındıran maddelerin taşıma izinleri, yükün sahip olduğu 1'den 9'a kadarki "Sınıf" numarasına göre farklı resmi devlet makamlarının inisiyatifine bırakılmıştır. Buna göre, "Sınıf 7" kategorisinde yer alan <u>Radyoaktif Maddelerin</u> ülke içindeki karayolu veya havayolu transferi için aşağıdaki makamların hangisinden resmi izin belgesi alınması yasal bir zorunluluktur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Uluslararası Sınıf 7 kategorisindeki radyoaktif tehlikeli yüklerin her türlü sevk ve transit taşıma süreçlerinde, ulusal güvenlik gereği sadece Türkiye Cumhuriyeti İçişleri Bakanlığı yetkili kurullarından resmi izin ve onay alınması gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Uluslararası Sınıf 7 kategorisindeki radyoaktif tehlikeli yüklerin her türlü sevk ve transit taşıma süreçlerinde, ulusal güvenlik gereği sadece Türkiye Cumhuriyeti Çevre ve Şehircilik Bakanlığı yetkili kurullarından resmi izin ve onay alınması gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Uluslararası Sınıf 7 kategorisindeki radyoaktif tehlikeli yüklerin her türlü sevk ve transit taşıma süreçlerinde, ulusal güvenlik gereği sadece Türkiye Cumhuriyeti Sağlık Bakanlığı yetkili kurullarından resmi izin ve onay alınması gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Uluslararası Sınıf 7 kategorisindeki radyoaktif tehlikeli yüklerin her türlü sevk ve transit taşıma süreçlerinde, ulusal güvenlik gereği sadece Türkiye Cumhuriyeti Tarım ve Hayvancılık Bakanlığı yetkili kurullarından resmi izin ve onay alınması gerekmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Uluslararası Sınıf 7 kategorisindeki radyoaktif tehlikeli yüklerin her türlü sevk ve transit taşıma süreçlerinde, ulusal güvenlik gereği sadece Türkiye Cumhuriyeti Enerji ve Tabii Kaynaklar Bakanlığı (TAEK) kurullarından resmi izin ve onay alınması gerekmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Taşıma mevzuatına göre izin veren kurumlar risk sınıfına göre değişir. Patlayıcılar (Sınıf 1) İçişleri Bakanlığı'ndan; Bulaşıcı Ajanlar (Sınıf 6) Sağlık ve Tarım Bakanlıklarından izin alır. Ancak Nükleer Tıp ve Sanayide kullanılan radyoaktif materyaller (Sınıf 7) için taşıma yetkisi ve resmi onay doğrudan <strong>Enerji ve Tabii Kaynaklar Bakanlığına bağlı Türkiye Atom Enerjisi Kurumu (TAEK)</strong> tarafından sağlanır. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">6. Bulaşıcı tehlike taşıyan klinik teşhis numunelerinin ve mikrobiyolojik ajanların güvenli gönderimi için tasarlanmış olan "Üçlü Paketleme Sistemi", dışarıdan gelebilecek veya içeriden sızabilecek sıvı/darbe risklerini tamamen ortadan kaldıracak katmanlardan oluşur. Bu uluslararası sisteme göre, paketlemenin en dış katmanını oluşturan <u>"Üçüncü Kabın (Dış Kap)"</u> sağlamak zorunda olduğu en spesifik fiziksel zorunluluk (tasarım şartı) aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Üçüncü dış taşıma kabının; içerideki biyolojik sıvıyı emmesi amacıyla mutlaka %100 pamuklu absorban malzemeden kaplanmış olması ve havalandırma deliklerine sahip sızdırmaz nitelikte üretilmiş olması lojistik kuralları açısından zorunludur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Üçüncü dış taşıma kabının; sadece kırılmaz şeffaf plastik akrilik materyalden imal edilmiş olması ve doğrudan güneş ışığına karşı iç numuneyi koruyacak koyu renkli biyolojik filtrelere sahip şekilde üretilmiş olması lojistik kuralları açısından zorunludur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Üçüncü dış taşıma kabının; içeride basınç birikmesini önlemek amacıyla üst kısmında valfli bir açık tahliye musluğuna sahip olması ve termal ısıyı tamamen izole eden kauçuk yalıtkanlardan üretilmiş olması lojistik kuralları açısından zorunludur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Üçüncü dış taşıma kabının; dayanıklı malzemeden yapılması ve dış yüzeylerinden birinde, evrakların ıslanmasını, düşmesini veya kaybolmasını tamamen engelleyecek özel tasarım bir doküman cebine/bölmesine sahip olması lojistik kuralları açısından zorunludur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Üçüncü dış taşıma kabının; tamamen geri dönüştürülebilir ince ve hafif mukavvadan yapılması, maliyetleri düşürmek adına dış yüzeyinde hiçbir ekstra bölme veya etiket çıkıntısı barındırmadan pürüzsüz üretilmiş olması lojistik kuralları açısından zorunludur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Üçlü sistemin en dışındaki kap (Üçüncü Kap), fiziksel dayanıklılığın yanı sıra kargo transferi boyunca hastaya/laboratuvara ait konşimento ve analiz raporlarını (evrakları) korumakla görevlidir. İlgili yönetmeliğin 6. maddesi gereği; "Üçüncü kap, dayanıklı malzemeden yapılmış ve yüzeyinde <strong>ilgili evrak ve dokümanların düşmesini, ıslanmasını ve kaybolmasını engelleyecek şekilde tasarlanmış bir cep veya bölme barındırmak zorundadır</strong>". Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">7. Kullanılmış saf veya karışım halindeki bir tehlikeli endüstriyel kimyasal maddenin, laboratuvar veya proses süreci tamamlandıktan sonra güvenli bir şekilde tesisten uzaklaştırılması işlemi "Bertaraf (İmha)" olarak adlandırılır. Ağır kimya sektörlerindeki İSG ve Çevre koruma yönetmelikleri uyarınca, potansiyel kanserojen, aşındırıcı veya toksik özellik taşıyan <u>"Tehlikeli Kimyasal Atıkların"</u> bertaraf edilmesinde uygulanması gereken en doğru ve yasal yöntem aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Kimyasal atıklar kesinlikle kanalizasyon sistemine veya doğaya boşaltılamaz; 'Tehlikeli Atıkların Kontrolü Yönetmeliği'ne uygun olarak özel tanklarda depolanıp sadece devlet onaylı lisanslı bertaraf firmalarına tutanak karşılığında teslim edilmelidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Kimyasal atıklar kesinlikle kanalizasyon sistemine veya doğaya boşaltılamaz; 'Tehlikeli Atıkların Kontrolü Yönetmeliği'ne uygun olarak fabrikanın kendi arazisi içinde hazırlanan açık kazı çukurlarına gömülerek üzerleri sönmemiş kireç ile tamamen kapatılmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Kimyasal atıklar kesinlikle kanalizasyon sistemine veya doğaya boşaltılamaz; 'Tehlikeli Atıkların Kontrolü Yönetmeliği'ne uygun olarak fabrika çatısındaki açık hava bacalarında düşük sıcaklıklarda yavaş yavaş yakılarak karbondioksit gazına dönüştürülmelidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Kimyasal atıklar kesinlikle kanalizasyon sistemine veya doğaya boşaltılamaz; 'Tehlikeli Atıkların Kontrolü Yönetmeliği'ne uygun olarak yüksek hacimli bol su ile defalarca seyreltilerek toksisitesi düşürüldükten sonra doğrudan belediye evsel çöp alanlarına bırakılmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Kimyasal atıklar kesinlikle kanalizasyon sistemine veya doğaya boşaltılamaz; 'Tehlikeli Atıkların Kontrolü Yönetmeliği'ne uygun olarak katı evsel atıklar ile karıştırılıp homojenize edildikten sonra açık arazide doğal buharlaşmaya ve güneş ısısına terk edilmelidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Tehlikeli Kimyasal Atıklar; hiçbir suretle doğrudan havaya (baca), toprağa veya kanalizasyona verilemez, düşük sıcaklıklarda yakılamaz ve evsel atıklarla (çöplerle) karıştırılamazlar. Mevzuattaki tek yasal yöntem; bu atıkların kimyasal reaksiyonlarına göre ayrı ayrı sınıflandırılarak <strong>"Tehlikeli Atıkların Kontrolü Yönetmeliği"ne göre toplanması ve sadece Çevre Bakanlığı'ndan resmi onay almış 'Lisanslı Bertaraf Firmalarına'</strong> teslim edilmesidir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">8. Biyolojik numunelerin ve mikrobiyal kültürlerin saklama süreçleri, hedeflenen süreye bağlı olarak farklı dondurucu ve soğutucu ekipman donanımlarına ihtiyaç duyar. Temel mikrobiyoloji laboratuvarlarında, bakteri veya mantar gibi mikroorganizmaların rutin deneylerde düzenli olarak kullanıldığı, hücrelerin metabolik olarak yavaşlasa da tamamen durmadığı ve kültürlerin laboratuvar buzdolaplarında (4 °C) bir yıla kadar saklanarak taze agar plaklarına düzenli aralıklarla aktarıldığı metoda ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Mikroorganizmaların metabolik döngülerinin tamamen askıya alınmadığı ve rutin analizler için taze agar besiyerlerine belirli periyotlarla sürekli olarak aktarıldığı bu dinamik soğutucu saklama metoduna klinik mikrobiyolojide Liyofilizasyon yöntemi denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Mikroorganizmaların metabolik döngülerinin tamamen askıya alınmadığı ve rutin analizler için taze agar besiyerlerine belirli periyotlarla sürekli olarak aktarıldığı bu dinamik soğutucu saklama metoduna klinik mikrobiyolojide Kısa Süreli (Sürekli Büyüme) denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Mikroorganizmaların metabolik döngülerinin tamamen askıya alınmadığı ve rutin analizler için taze agar besiyerlerine belirli periyotlarla sürekli olarak aktarıldığı bu dinamik soğutucu saklama metoduna klinik mikrobiyolojide Kriyoprezervasyon yöntemi denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Mikroorganizmaların metabolik döngülerinin tamamen askıya alınmadığı ve rutin analizler için taze agar besiyerlerine belirli periyotlarla sürekli olarak aktarıldığı bu dinamik soğutucu saklama metoduna klinik mikrobiyolojide Mikrokapsülleme (Kaplama) denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Mikroorganizmaların metabolik döngülerinin tamamen askıya alınmadığı ve rutin analizler için taze agar besiyerlerine belirli periyotlarla sürekli olarak aktarıldığı bu dinamik soğutucu saklama metoduna klinik mikrobiyolojide Oda Sıcaklığı Fiksasyon yöntemi denilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Dondurarak tamamen inaktif etmenin (-80 °C veya -196 °C) aksine, mikroorganizmaları sadece 4 °C'lik normal laboratuvar buzdolaplarında bekleterek ve metabolizmanın yavaşlayarak devam ettiği, besin bittikçe yeni agar plağına inoküle (transfer) edildiği rutin yönteme <strong>Kısa Süreli Depolama (Sürekli Büyüme)</strong> adı verilir. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">9. Uluslararası Hava Taşımacılığı Birliği (IATA) tehlikeli maddeler nakliye yönetmeliğinde, gönderilen biyolojik örneğin "bulaşıcı hastalık şüphesi barındırıp barındırmadığına" göre keskin yasal muafiyet sınırları çizilmiştir. Aşağıdaki tıbbi veya adli örnek türlerinden hangisi, resmi IATA tehlikeli bulaşıcı madde (Kategori A veya Kategori B) sınıflandırmalarına ve katı paketleme kurallarına <u>kesinlikle tabi tutulmaz ve "istisna (muafiyet)" grubunda değerlendirilir</u>?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Hastanelerden veya klinik araştırma merkezlerinden, genetik yapısı laboratuvar ortamında sentetik olarak doğrudan değiştirilmiş ve yeni bir karakter kazanmış canlı hücre kültürleri ve modifiye edilmiş patojen mikroorganizma tüpleri.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Hastanelerden veya klinik araştırma merkezlerinden, şüpheli hastaların kanından santrifüj yöntemi ile ayrıştırılmış olan ve içerisinde hala yüksek oranda potansiyel hepatit C (HCV) barındırma şüphesi bulunan enfeksiyöz kan fraksiyonları.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Hastanelerden veya klinik araştırma merkezlerinden, henüz tam olarak tanı konulamamış olan ancak şiddetli ateş, kanama ve solunum yetmezliği şikayetiyle acil servise başvuran ağır hastalardan alınmış olan diagnostik (tanı) sürüntüleri.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Hastanelerden veya klinik araştırma merkezlerinden, enfeksiyonsuz hastalıkların araştırılması amacıyla rutin kalp, böbrek fonksiyon testleri, uyuşturucu analizleri, sigorta işlemleri veya sadece gebelik testi tespiti için alınan kan ve idrar örnekleri.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Hastanelerden veya klinik araştırma merkezlerinden, laboratuvar enfeksiyon testlerinde kullanılmak üzere sentetik protein kılıflarıyla üretilmiş ve bulaşıcı özelliğini tamamen kaybetmemiş olan aktif laboratuvar kaynaklı viroid test solüsyonları.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> IATA yönetmeliklerinde, hastalarda herhangi bir bulaşıcı enfeksiyon (virüs, bakteri) şüphesi yokken, sadece hastanın rutin organ fonksiyonlarını (karaciğer, böbrek enzimleri vb.) izlemek, gebelik testi yapmak, uyuşturucu veya kan şekeri kontrolü yapmak amacıyla alınan kargolar, tehlikeli madde kurallarından (UN 2814 veya UN 3373) tamamen <strong>muaftır (istisnadır)</strong>. Sadece "Klinik Örnek" yazılarak gönderilirler. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">10. Biyolojik malzemelerin ve alınan patolojik doku örneklerinin "Oda Sıcaklığında (15-27 °C)" fiksatif sıvılar içerisinde saklanması, genetik ve moleküler bütünlük açısından farklı sonuçlar doğurur. Bouin sıvıları, alkol veya formalin gibi spesifik bir doku koruyucusuna gömülerek laboratuvar raflarında günlerce ortam sıcaklığında muhafaza edilen biyolojik numunelerin nükleik asit (genetik materyal) kararlılıkları incelendiğinde, ortaya çıkan <u>en temel biyokimyasal ayrım</u> aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Formalin gibi güçlü fiksatiflerle oda sıcaklığında saklanan dokularda, DNA molekülünün moleküler bütünlüğü genellikle çok uzun süre korunabilirken, RNA molekülleri ortam ısısının etkisiyle son derece hızlı bir biçimde bozunarak kolayca izole edilemez hale gelir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Formalin gibi güçlü fiksatiflerle oda sıcaklığında saklanan dokularda, RNA molekülünün moleküler bütünlüğü genellikle çok uzun süre korunabilirken, DNA molekülleri ortam ısısının etkisiyle son derece hızlı bir biçimde bozunarak kolayca izole edilemez hale gelir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Formalin gibi güçlü fiksatiflerle oda sıcaklığında saklanan dokularda, hem DNA hem de RNA molekülünün moleküler bütünlüğü hiçbir enzimatik deformasyona uğramadan genellikle çok uzun yıllar boyunca hasarsız olarak korunarak kolayca izole edilebilir hale gelir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Formalin gibi güçlü fiksatiflerle oda sıcaklığında saklanan dokularda, genetik yapı taşları olan pürin ve pirimidin molekülleri fiksatif sıvı tarafından anında parçalandığı için ne DNA ne de RNA molekülü izolasyon amacıyla kesinlikle kullanılamaz hale gelir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Formalin gibi güçlü fiksatiflerle oda sıcaklığında saklanan dokularda, nükleik asitlerin stabilizasyonundan ziyade sadece hücre duvarındaki karbonhidratlar ile lipit yapıları dondurulduğu için nükleik asit sekansları tamamen kristalize olarak polimerleşir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Doku fiksasyonunda (15-27 °C oda sıcaklığında formalin/alkol içinde saklama); dokudaki <strong>DNA</strong> yapısı genellikle korunur ve dizi analizlerinde okunabilir halde kalır. Ancak tek sarmallı ve daha reaktif olan <strong>RNA</strong>, oda sıcaklığında son derece hızlı bozunur (degrade olur) ve bu dokulardan genellikle RNA izole edilemez. RNA analizleri için mutlaka ultra düşük dondurucu şartları (-80 °C) gereklidir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.6; font-family: 'Inter', sans-serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 2 / Test 3 (İleri Düzey Akademik Simülasyon)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 25 * 60; // 25 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Akademik Analiz';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // Akademik 4 Yanlış 1 Doğru Net Sistemi
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

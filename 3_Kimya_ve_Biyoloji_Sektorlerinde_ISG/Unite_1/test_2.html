@@ -1,25 +1,528 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 1 - Test 2 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 1 - Test 2: Profesör Seviyesi İSG Sınavı</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --primary: #0f172a; /* Derin Safir / Koyu Arduvaz */
+            --secondary: #1e293b;
+            --accent: #ca8a04; /* Akademik Altın */
+            --accent-hover: #a16207;
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --success: #059669;
+            --danger: #dc2626;
+            --text-main: #334155;
+            --text-light: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.7; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, #020617 0%, var(--primary) 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.3);
+            border-bottom: 4px solid var(--accent); position: relative; overflow: hidden;
+        }
+        header::after { content: '🎓'; position: absolute; right: 5%; top: 10%; font-size: 8rem; opacity: 0.05; }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--accent); margin-bottom: 10px; letter-spacing: 0.5px;}
+        header h2 { font-size: 1.2rem; font-weight: 400; color: #cbd5e1; letter-spacing: 1px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 15px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin: -20px auto 30px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--primary); background: #f1f5f9; text-decoration: none; font-weight: 600;
+            font-size: 0.95rem; padding: 10px 20px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--primary); color: var(--accent); border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+        .analysis-box h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;}
+        .analysis-box p { font-size: 1rem; color: #475569; text-align: justify; margin-bottom: 12px;}
+        .analysis-box ul { padding-left: 20px; margin-top: 10px;}
+        .analysis-box ul li { margin-bottom: 8px; color: #475569; font-weight: 600;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--primary); padding: 40px 20px; border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.4); margin: 0 auto 40px;
+            width: 95%; max-width: 800px; text-align: center; color: white;
+        }
+        .start-screen h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--accent); margin-bottom: 15px; }
+        .start-screen p { font-size: 1.1rem; color: #cbd5e1; margin-bottom: 30px;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--accent) 0%, #b45309 100%); color: white; border: none;
+            padding: 18px 50px; font-size: 1.3rem; font-weight: 800; font-family: 'Inter', sans-serif;
+            border-radius: 40px; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 20px rgba(202, 138, 4, 0.4); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 25px rgba(202, 138, 4, 0.6); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 20px 30px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 6px solid var(--accent); }
+        .timer-box { font-size: 1.6rem; font-weight: 800; font-family: 'Playfair Display', serif; color: var(--primary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: var(--danger); background: #fee2e2; padding: 6px 18px; border-radius: 10px; font-family: 'Inter', sans-serif;}
+        .btn-group button { border: none; padding: 12px 26px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 10px; color: white; }
+        .btn-finish { background: var(--danger); box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3); }
+        .btn-finish:hover { background: #b91c1c; }
+        .btn-pdf { background: var(--primary); box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3); }
+        .btn-pdf:hover { background: #020617; }
+        
+        .result-stats { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .stat-box { padding: 18px 25px; border-radius: 12px; font-size: 1.2rem; font-weight: 800; flex: 1 1 200px; max-width: 250px; text-align: center; border: 1px solid var(--border);}
+        .stat-d { background: #ecfdf5; color: var(--success); border-color: #a7f3d0;} 
+        .stat-y { background: #fef2f2; color: var(--danger); border-color: #fecaca;}
+        .stat-b { background: #f8fafc; color: #64748b; } 
+        .stat-n { background: var(--primary); color: var(--accent); font-size: 1.5rem; box-shadow: 0 5px 15px rgba(15,23,42,0.3); border:none;}
+
+        /* Soru Kartları - AKADEMİK DİZAYN */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 30px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 35px; box-shadow: 0 8px 25px rgba(0,0,0,0.03); border: 1px solid var(--border); border-left: 8px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 12px 35px rgba(0,0,0,0.06); border-left-color: var(--accent);}
+        
+        .q-text { font-weight: 700; font-size: 1.15rem; margin-bottom: 25px; color: var(--primary); line-height: 1.6; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+        .option-label { display: flex; align-items: flex-start; padding: 18px 22px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: all 0.2s ease; color: #334155; line-height: 1.5; text-align: justify;}
+        .option-label:hover { background: #f1f5f9; border-color: var(--accent); }
+        .option-label input { margin-top: 5px; margin-right: 18px; transform: scale(1.3); accent-color: var(--accent); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: #047857; }
+        .option-label.incorrect { background: #fef2f2 !important; border-color: var(--danger) !important; color: #b91c1c; opacity: 0.8;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f1f5f9; color: var(--primary); border: 1px solid #cbd5e1; padding: 10px 24px; border-radius: 30px; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px;}
+        .btn-solution:hover { background: var(--primary); color: var(--accent); border-color: var(--primary);}
+        .solution-box { display: none; margin-top: 15px; padding: 25px; background: #fffbeb; border-left: 5px solid var(--accent); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #451a03; animation: slideDown 0.3s ease-out forwards; line-height: 1.6; text-align: justify;}
+        .solution-box strong { color: #92400e; font-size: 1.15rem; display: block; margin-bottom: 10px; font-family: 'Playfair Display', serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 40px 20px; background: var(--primary); color: #cbd5e1; margin-top: 50px; font-size: 1rem; border-top: 4px solid var(--accent); }
+        .imza-kutu { display: inline-block; padding: 15px 35px; border: 2px solid rgba(202, 138, 4, 0.5); border-radius: 50px; background: rgba(0,0,0,0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-weight: 600; letter-spacing: 0.5px;}
+        .imza-kutu span { color: var(--accent); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin: 0 8px;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 20px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 10px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 1 - Test 2</h2>
+        <h1>Ünite 1: Sınıflandırma ve Risk Etmenleri</h1>
+        <h2>Profesör Seviyesi Deneme Testi 2</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">📚 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_1.html">⬅️ Test 1 (Önceki)</a>
+        <a href="test_3.html">Sonraki Test (Test 3) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>🔬 Detaylı Konu Analizi</h3>
+            <p>Ünite 1, Kimya ve Biyoloji sektörlerindeki İSG uygulamalarının bilimsel temelini oluşturur. Bu ünitede öne çıkan kavramsal sütunlar şunlardır:</p>
+            <ul>
+                <li><strong>Fiziksel vs. Fizyolojik Sınıflandırma:</strong> Kimyasalların katı, sıvı, gaz formu fiziksel; sistemik, tahriş edici, boğucu veya mutajenik olmaları fizyolojik etkilerine göre sınıflandırılır.</li>
+                <li><strong>Biyolojik Risk Grupları:</strong> Prokaryotlar ve ökaryotlar arasındaki asellüler yapılar (virüs, prion). Topluma yayılma ve tedavi imkânlarına göre şekillenen Grup 1 ile Grup 4 arası (örn: Ebola) sınıflandırma farkları.</li>
+                <li><strong>Fiziksel Risk Limitleri:</strong> Titreşim eylem ve sınır değerleri arasındaki milimetrik farklılıklar (Tüm vücut: 0.5 ve 1.15 m/s²). İşitilebilir ses frekansı aralıkları (20 Hz - 20 kHz).</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>📊 Çıkmış Soru Analizi (2021-2025)</h3>
+            <p>Geçmiş yılların havuzu incelendiğinde, ÖSYM formatının direkt bilgi sormak yerine kavramlar arası ilişki kurmayı talep ettiği görülmektedir:</p>
+            <ul>
+                <li><strong>Sık Sorulan Zehirlenmeler:</strong> Anilin ve Karbonmonoksit gazlarının yarattığı <em>"Anemik Anoksemi"</em> istisnasız 3 farklı yılda test edilmiştir.</li>
+                <li><strong>Toksikolojik Eşikler:</strong> LD50 (Lethal Doz) ve LC50 (Lethal Konsantrasyon) arasındaki doz/soluma farkı sıklıkla çeldirici olarak kullanılmıştır.</li>
+                <li><strong>Organik Tozlar ve Taşıma:</strong> IATA Kategori A/B farklılıkları ve tekstil işçilerinde görülen organik toz hastalığı Bisinozis sınavın vazgeçilmez kök sorularıdır.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>🔥 2. Test: Akademik Zorluk Seviyesi</h2>
+        <p>Eşit uzunlukta çeldiriciler, 4 yanlışın 1 doğruyu götürdüğü net sistemi ve satır aralarından seçilmiş profesyonel senaryolar.<br><br>Sınav süresi <strong>35 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Profesör Testini Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">35:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- PROFESÖR SEVİYESİ SORU HAVUZU -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="B">
+            <div class="q-text">1. Toksikolojide "LD50" (Lethal Doz 50) kavramının uluslararası mevzuattaki ve bilimsel literatürdeki en doğru, eksiksiz ve profesyonel tanımı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Havadaki konsantrasyonu solunduğunda, maruz kalan test popülasyonunun tam olarak yarısını öldüren gaz miktarıdır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Tek bir doz olarak yutulduğunda veya cilde uygulandığında, test hayvanlarının yüzde ellisini öldüren madde miktarıdır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Çalışanların haftada kırk saatlik çalışma süresi boyunca maruz kalabileceği, sağlığa zarar vermeyen maksimum sınırdır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Kimyasal bir maddenin, on beş dakikalık kısa süreli maruziyet durumunda kesinlikle aşılmaması gereken yasal üst sınır değeridir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Biyolojik veya kimyasal bir ajanın, ortamda patlama veya parlama yaratması için ulaşması gereken alt tehlike eşik derişimidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Seçenek (A) havadaki 'konsantrasyonu' belirttiği için LC50'nin (Lethal Concentration) tanımıdır. Seçenek (C) TWA (Zaman Ağırlıklı Ortalama), Seçenek (D) ise STEL (Kısa Süreli Maruziyet) sınırıdır. Seçenek (B) ise gram/kilogram cinsinden cilde uygulanan veya yutulan "Doz" (Lethal Dose - LD50) kavramının tam ve bilimsel karşılığıdır. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">2. Biyolojik risk etmenlerinin sınıflandırılmasında, "İnsanda ağır hastalıklara neden olan, çalışanlar için ciddi tehlike oluşturan, topluma yayılma riski yüksek olan ancak genellikle etkili korunma veya tedavi imkânı bulunmayan" etmenler hangi risk grubunu oluşturur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) İnsanda hastalığa yol açma ihtimali bulunmayan, topluma yayılma riski olmayan ve laboratuvarda en düşük güvenlik gerektiren Grup 1 etmenleridir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) İnsanda hastalığa neden olabilen, çalışanlara zarar verebilecek ancak topluma yayılma olasılığı genellikle bulunmayan Grup 2 etmenleridir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) İnsanda ağır hastalıklara neden olan, topluma yayılma riski bulunabilen ancak günümüzde etkili korunma/tedavi imkânı olan Grup 3 etmenleridir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) İnsanda ağır hastalıklara neden olan, topluma yayılma riski yüksek olan ve klinik olarak etkili korunma/tedavi imkânı bulunmayan Grup 4 etmenleridir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Genetik olarak laboratuvar ortamında değiştirilmiş, rekombinant DNA teknolojisi ile üretilmiş özel ve son derece tehlikeli Grup 5 etmenleridir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Biyolojik risk etmenleri (bakteriler, virüsler vb.) 4 ana gruba ayrılır. İnsanda ağır hastalık yapan, topluma yayılma riski yüksek olan ve <u>tedavisi/aşısı bulunmayan</u> (Ebola, Marburg gibi) ölümcül ajanlar "Grup 4" biyogüvenlik seviyesindedir. İSG mevzuatında Grup 5 diye bir tanımlama yoktur. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">3. Çalışma ortamında karşılaşılan gazların vücuttaki oksijenlenmeyi bozma (boğucu) etkileri "Basit Boğucular" ve "Kimyasal (Anemik) Boğucular" olarak ikiye ayrılır. Buna göre, doğrudan kana karışarak hemoglobinin yapısını bozan ve tıp literatüründe "Anemik Anoksemi"ye neden olan kimyasal boğucu gazlar hangi seçenekte doğru verilmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Kimyasal tepkimeye girmeyip yalnızca ortamdaki oksijenin yerini alarak asfiksi yaratan Metan ve Helyum gazlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Kanda herhangi bir reaksiyona girmeyen, tamamen inert özellik taşıyarak ortamı havasız bırakan Azot ve Argon gazlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Hemoglobine oksijenden çok daha hızlı ve güçlü bağlanarak dokuları hücresel düzeyde oksijensiz bırakan Anilin ve Karbonmonoksit gazlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Sadece üst solunum yollarını ve akciğer zarlarını kimyasal yanıkla tahriş ederek boğulma hissi veren Amonyak ve Klor gazlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Boğucu özelliği olmayan, solunduğunda sadece merkezi sinir sisteminde narkotik (uyuşturucu) etki gösteren Trikloroetilen buharlarıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Basit boğucular (Metan, Helyum, Azot vb.) kana bağlanmaz, sadece havadaki oksijen oranını düşürürler. Ancak Karbonmonoksit, Hidrojen Sülfür ve Anilin gibi gazlar doğrudan kana karışıp hemoglobini kilitlerler. Bu kimyasal mekanizmanın yarattığı doku boğulmasına "Anemik Anoksemi" adı verilir ve geçmiş sınavlarda sürekli sorulmuştur. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">4. Kimyasal maddelere maruziyet durumlarında, kimyasalın "fizyolojik (sağlık) etkisine" göre yapılan sınıflandırmalar İSG açısından büyük önem taşır. "Plasentadan geçerek fetüsün (anne karnındaki bebeğin) gelişimine doğrudan olumsuz etki eden ve fiziksel anomali doğurma riski taşıyan" maddelere akademik dilde ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) İnsan vücudundaki hücrelerde birikerek kalıtımsal düzeyde genetik zincir hasarı (mutasyon) oluşumunu tetikleyen Mutajenik maddeler.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Vücuda alındığında doğrudan kanser hücrelerinin oluşumunu başlatan veya mevcut yayılımını hızlandıran Karsinojenik maddeler.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Gebelik sürecinde plasenta bariyerini aşarak doğrudan anne karnındaki bebeğin fizyolojik gelişimine zarar veren Teratojenik maddeler.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Hem erkek hem de dişilerin hormonal dengesini bozarak üreme kapasitesini (fertiliteyi) ve sperm kalitesini azaltan Reprotoksik maddeler.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Canlı doku ile temas ettiği anda dokunun protein ve yağ yapısını parçalayarak ağır fizyolojik tahribata yol açan Korozif maddeler.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Çeldiricileri çok yüksek bir sorudur. "Reprotoksik" maddeler ebeveynin üreme/doğurganlık yeteneğini (fertiliteyi) azaltırken; spesifik olarak anne karnındaki embriyonun (fetüsün) gelişimini bozan, uzuv eksikliği vb. anomalilere yol açan kimyasallara tıp ve İSG dilinde "Teratojenik (Teratojen)" maddeler adı verilir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">5. Titreşim (vibrasyon), maden, inşaat ve ağır sanayi sektörlerindeki en tehlikeli fiziksel risk etmenlerinden biridir. "Çalışanların Titreşimle İlgili Risklerden Korunmalarına Dair Yönetmelik" kapsamında, el-kol sistemi ile tüm vücut titreşimi için belirlenmiş "sekiz saatlik çalışma süresi bazındaki maruziyet <u>SINIR değerleri</u>" sırasıyla hangi seçenekte tam ve doğru olarak verilmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) El-kol titreşimi için kesin aşılmaması gereken 2,5 m/s² ve Tüm vücut titreşimi için kritik üst değer olan 0,5 m/s² sınır değerleridir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) El-kol titreşimi için kesin aşılmaması gereken 5,0 m/s² ve Tüm vücut titreşimi için kritik üst değer olan 1,15 m/s² sınır değerleridir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) El-kol titreşimi için kesin aşılmaması gereken 1,15 m/s² ve Tüm vücut titreşimi için kritik üst değer olan 5,0 m/s² sınır değerleridir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) El-kol titreşimi için kesin aşılmaması gereken 0,5 m/s² ve Tüm vücut titreşimi için kritik üst değer olan 2,5 m/s² sınır değerleridir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) El-kol titreşimi için kesin aşılmaması gereken 5,0 m/s² ve Tüm vücut titreşimi için kritik üst değer olan 2,5 m/s² sınır değerleridir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Mevzuatta iki kavram vardır: Eylem Değeri ve Sınır Değer. El-kol titreşimi için eylem değeri 2.5 m/s², <u>Sınır Değeri 5.0 m/s²</u>'dir. Tüm vücut titreşimi için eylem değeri 0.5 m/s², <u>Sınır Değeri 1.15 m/s²</u>'dir. Soru spesifik olarak "Sınır Değerleri" sorduğu için cevap B seçeneğidir. 2021 ve 2022'de çıkmış eleyici sayısal bir sorudur.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">6. Endüstriyel faaliyetler sırasında ortaya çıkan tozlar, solunum yoluyla akciğerlerde çeşitli meslek hastalıklarına (pnömokonyoz vb.) yol açarlar. Özellikle pamuk, keten ve kenevir gibi "organik bitkisel tozlara" uzun süreli maruziyet sonucunda ortaya çıkan, nefes darlığı ve göğüste sıkışma ile karakterize edilen mesleki solunum yolu hastalığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Gemi söküm ve izolasyon sektöründe Asbest liflerinin solunmasıyla ortaya çıkan ve akciğer zarını (plevra) kanserleştiren Asbestozis hastalığıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Madencilikte Silika ve cam tozlarının uzun süre solunması sonucu akciğerde nodüler fibrozis ve skar dokusu bırakan Silikozis hastalığıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Kaynak işlemlerinde Demir ve demir oksit duman/tozlarının akciğerde patolojik birikmesiyle karakterize edilen Siderozis hastalığıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Talk imalatı yapan çalışanlarda mika ve silika türevlerinin solunum yollarında birikmesi sonucu oluşan Siyah Akciğer (Kömür) hastalığıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Tekstil sektöründe pamuk, keten ve kenevir gibi organik bitkisel tozların sürekli solunmasıyla tetiklenen ve solunumu kısıtlayan Bisinozis hastalığıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Asbestozis, silikozis ve siderozis "inorganik" maden/metal tozu hastalıklarıdır. Ancak kitabın Bölüm 4'ünde net bir şekilde belirtildiği üzere; tarım ve tekstil işçilerinin maruz kaldığı pamuk, keten ve kenevir kaynaklı "organik" akciğer hastalığının tıp litaratüründeki spesifik adı <strong>Bisinozis (Bissinozis)</strong>'tir. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">7. Patoloji, histoloji ve biyokimya laboratuvarlarında doku takibi için yaygın olarak kullanılan bir endüstriyel çözücü, koruyucu donanım (iş gözlüğü) kullanılmadan çalışıldığında "göze kaçması durumunda doğrudan kalıcı körlüğe (görme kaybına)" neden olabilmektedir. Ders kitabında ve uluslararası kaynaklarda özellikle vurgulanan bu tehlikeli organik çözücü aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Kadavraların korunmasında kullanılan, güçlü bir dezenfektan ve kanserojen olan ancak körlükle doğrudan ve tek başına ilişkilendirilmeyen Formaldehit maddesidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Laboratuvarlarda doku takibinde şeffaflaştırıcı olarak sıkça kullanılan ve mikroskobik göze teması anında kornea körlüğüyle sonuçlanabilen Ksilen maddesidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Hastanelerde soğuk sterilizasyon işlemlerinde gaz halinde kullanılan, solunum sistemini tahriş eden ve son derece genotoksik olan Etilen oksit maddesidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Tıbbi biyoloji laboratuvarlarında soğutucu ve dondurucu hücresel işlemlerinde kullanılan, fiziksel donma yanıkları yaratan sıvılaştırılmış Kriyojenik azot maddesidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Tarım ve böcek ilacı üretim tesislerinde kullanılan, asetilkolinesteraz enzimini inhibe ederek sistemik nörotoksik etki gösteren Organofosfat maddesidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Kitabın (Sayfa 114) "Sağlık Kurumlarında Kimyasal Risk Etmenleri" başlığında doğrudan ifade edilmektedir: <em>"Patoloji laboratuvarlarında kullanılan <strong>Ksilen</strong> tipi maddelerin göze kaçtığı durumlarda körlüğe neden olabildiği bildirilmiştir."</em> Bu son derece spesifik, laboratuvar sahası uzmanlık bilgisidir. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">8. Fiziksel risk etmenlerinden olan çevresel ve endüstriyel gürültü, çalışma ortamlarında ciddi işitme kaybı ve psikolojik strese neden olur. İnsan kulağının fizyolojik algılama kapasitesi göz önüne alındığında, sağlıklı bir insan kulağının duyabildiği "işitilebilir ses frekansı aralığı" bilimsel olarak hangi değerler arasındadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) 1 Hertz ile 1 kiloHertz arasındaki, genellikle sismik hareketler ve devasa endüstriyel motorlardan yayılan oldukça düşük frekanslı ses dalgalarıdır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) 10 Hertz ile 10 kiloHertz arasındaki, dar bantlı cihazlardan ve hafif titreşimli el aletlerinden yayılan düşük rezonanslı ses dalgalarıdır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) 20 Hertz ile 20 kiloHertz arasındaki, insan anatomisinin algılayabileceği doğal konuşma, çevre ve endüstriyel işitilebilir ses dalgalarıdır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) 50 Hertz ile 50 kiloHertz arasındaki, insan kulağının algı sınırlarını aşarak ultrasonik seviyeye yaklaşan yüksek rezonanslı ses dalgalarıdır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) 100 Hertz ile 100 kiloHertz arasındaki, ağır sanayi ve metal pres makineleri kaynaklı, kulak zarına doğrudan zarar veren ultrasonik ses dalgalarıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> İSG akustik standartlarına ve kitabın Fiziksel Etmenler (Gürültü) bölümüne göre; insanlar tarafından duyulabilen, odyometrik ölçümlere konu olan ses frekansı aralığı <strong>20 Hz ile 20.000 Hz (20 kHz)</strong> aralığındadır. 2025 yılı deneme sınavı havuzunda da bizzat yer alan bir temel teknik bilgidir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">9. Biyolojik etmenlerin hücre yapılarına göre sınıflandırılmasında, hücresel özellik göstermeyen asellüler ajanlar, tek hücreli prokaryotlar veya ökaryotlar bulunur. Aşağıdaki biyolojik risk etmenlerinden hangisi laboratuvar ve doğa çalışmalarında karşılaşılan "Çok Hücreli" biyolojik etmenler grubunun (paraziter yapılara) temsilcilerindendir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Hücresel ve genetik yapısı dahi bulunmayan, deli dana hastalığına yol açan ve sadece enfekte edici patolojik protein diziliminden oluşan Prionlar.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Kendi başlarına hiçbir hücresel metabolizmaya sahip olmayan, çoğalmak için zorunlu hücre içi paraziti olarak nitelendirilen Virüsler.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Genetik materyali belirli bir hücre çekirdeği zarı ile sınırlandırılmamış, doğadaki en yaygın tek hücreli organizmalar olan Prokaryotikler.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Keneler, pireler, bitler ve çeşitli parazitleri kapsayan, enfeksiyonu zoonotik yolla taşıyabilen karmaşık çok hücreli yapıya sahip Artropodlar.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Sadece kısa, tek sarmallı dairesel ribonükleik asit (RNA) moleküllerinden oluşan ve hücresel zarı bulunmayan asellüler yapılı Viroidler.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Virüs, viroid ve prionlar "hücresel olmayan (asellüler)" yapılardır. Bakteriler (Prokaryotlar) "tek hücreli" organizmalardır. Kene, pire gibi hastalık taşıyıcı vektör böcekleri ve helmintleri barındıran <strong>Artropodlar (Eklembacaklılar)</strong> ise "Çok Hücreli" biyolojik etmenlerdir. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">10. Uluslararası Hava Taşımacılığı Birliği (IATA) ve ilgili taşıma regülasyonları uyarınca; "maruz kalındığında kalıcı sakatlığa veya yaşamı doğrudan tehdit eden, ölümcül hastalığa neden olabilecek bir biçimde taşınan" son derece tehlikeli bulaşıcı maddelerin (Örn: Ebola, Şarbon kültürü) resmi taşıma terminolojisindeki tam sınıflandırma karşılığı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Herhangi bir bulaş riski barındırmayan ve standart posta kargo şirketleri ile muafiyetli olarak taşınabilen genel "Klinik Örnekler" sınıfıdır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) İnsanları etkilemeyen, sadece hayvanlar arasında tarımsal salgına yol açma riski taşıyan ve Tarım Bakanlığı izni gerektiren "Kategori C Zoonotik Ajanlar" sınıfıdır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Ölümcül ve kalıcı hasar bırakan yüksek riskli patojenleri kapsayan, UN2814 ve UN2900 kodlarıyla çok sıkı denetlenen "Kategori A Bulaşıcı Madde" sınıfıdır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Laboratuvar çalışanları veya insanlar üzerinde sadece hafif enfeksiyonlara yol açabilen ve paketleme kodlaması UN3373 olan "Kategori B Bulaşıcı Madde" sınıfıdır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Genetik olarak laboratuvarda tehlikesizleştirilmiş ve tamamen aşı/tedavi amaçlı ticari formata getirilmiş olan "Biyolojik Ürünler" sınıfıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Soru doğrudan IATA'nın en tehlikeli ajan tanımını sormaktadır. Yaşamı tehdit eden, ölümcül, kalıcı hasar bırakan ve taşınması aşırı tehlikeli olan biyolojik ajan kültürleri (Ebola, Şarbon vb.) IATA ve ADR sisteminde her zaman en üst seviye olan <strong>"Kategori A Bulaşıcı Madde" (UN2814/UN2900)</strong> olarak sınıflandırılır. Kan/idrar tahlilleri ise Kategori B'dir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">11. İnsanların çalışma ortamındaki kimyasal etmenlere maruziyetinde en yaygın ve riskli vücuda giriş yolu solunumdur. Ancak bazı kimyasalların "fiziksel formu" zehirlenme olasılığını büyük ölçüde düşürür. Diğer çevre koşulları (sıcaklık, basınç) sabit kabul edildiğinde, kimyasal zehirlenmeye yol açma ihtimali <u>EN DÜŞÜK</u> olan fiziksel form aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) Havadaki partikül boyutları nanometre seviyesinde olduğu için kolayca solunarak akciğer alveollerine kadar inebilen ince endüstriyel Dumanlar.</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) Uçuculukları (buhar basınçları) yüksek olduğu için döküldüklerinde ortam havasına çok hızlı bir şekilde karışan ve solunan Sıvı çözücüler.</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) Moleküller arası bağları çok zayıf olduğu için ortamda hiçbir fiziksel engele takılmadan serbestçe her yere yayılan ve kolayca solunan Gazlar.</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) Molekül yapısı son derece stabil (kararlı) olan, uçuculuğu sıfıra yakın olduğu için havaya karışma ve solunma riski minimum seviyedeki Katılar.</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) Yüksek basınç altında hem gaz hem de sıvı özellikleri eşzamanlı göstererek canlı dokulara hücre zarından çok hızlı nüfuz eden Süperkritik akışkanlar.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Kimyasallar fiziksel olarak katı, sıvı ve gaz halinde bulunurlar. Gazlar, buharlar, dumanlar ve sıvılar (buharlaşarak) kolayca solundukları için çok büyük zehirlenme riski taşırlar. Ancak <strong>"Katı"</strong> haldeki kimyasallar havaya serbestçe karışıp uçucu olmadıkları için, eğer fiziksel olarak ufalanıp toza dönüşmezlerse, zehirlenmeye yol açma ihtimali en düşük olan maddedir. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">12. Biyolojik etmenlerin bulaş mekanizmaları incelendiğinde, bazı hastalıkların doğrudan hayvanlardan insanlara (zoonoz) bulaştığı görülür. Aşağıdakilerden hangisi; enfekte hayvanlarla direkt temas veya hayvanların idrarlarıyla kontamine olmuş gıda, su ve toprakla temas yoluyla insanlara geçen, çiftçilerde sık görülen ve "Weil hastalığı (Bataklık ateşi)" olarak da bilinen mesleki enfeksiyon hastalığıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) Sığır, koyun gibi otçul hayvanların yünlerinden, derilerinden veya az pişmiş etlerinden veterinerlere ve kasaplara bulaşabilen bakteriyel Şarbon (Antraks) hastalığı.</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) Fare veya domuz gibi kemirgen/hayvan dışkı ve idrarıyla kontamine olmuş durgun sularla (bataklık, pirinç tarlası) temas sonucu ortaya çıkan Leptospiroz hastalığı.</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) Enfekte olmuş kenelerin ısırmasıyla veya doğadaki yabani tavşan etinin uygunsuz şartlarda işlenip tüketilmesiyle karakterize edilen Tularemi (Avcı hastalığı).</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) Özellikle enfekte kedi dışkısıyla temas veya kist barındıran iyi pişmemiş koyun/sığır etlerinin yenmesiyle gebe kadınlara dahi geçen Toksoplazma enfeksiyonu.</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) Kümes hayvanları, güvercin ve papağan gibi kanatlı canlıların enfekte kurumuş dışkılarından solunum (inhalasyon) yoluyla havadan bulaşan Psittakoz hastalığı.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Weil hastalığı, domuz çobanı hastalığı veya bataklık ateşi isimleriyle anılan; temel etkeni "hayvan idrarıyla" kontamine olan su/çamur olan spesifik zoonotik hastalık tıp literatüründe <strong>Leptospiroz</strong>'dur. 2022 ve 2025 yılı sınav havuzunda nokta atışı olarak sorulmuştur. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">13. Bir kimyasalın "Fiziksel Durumuna" ve "Fizyolojik Etkisine" göre sınıflandırılması İSG risk değerlendirmelerinde tamamen farklı mühendislik sonuçları doğurur. Aşağıdaki kimyasal etmen gruplarından hangisi, maddenin doğadaki fiziksel fazından (katı, sıvı, gaz) ziyade "canlı organizma üzerindeki tıbbi ve fizyolojik hasar mekanizmasına" göre yapılmış bir sınıflandırma türüdür?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) Kırma, delme veya öğütme gibi mekanik işlemler sırasında oluşan ve havada uzun süre asılı kalabilen mikroskobik katı parçacıklar olan inorganik Tozlar.</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) Solunum, sindirim veya deri yoluyla kana karışarak spesifik iç organları (karaciğer, böbrek, beyin) hücresel düzeyde tahrip eden Sistemik Zehirler.</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) Kaynama noktası son derece düşük olan, ortam oda sıcaklığında bile hızla buharlaşabilen ve ortam havasına karışan uçucu Organik Çözücüler.</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) Sıvı kimyasalların spreyleme veya mekanik sıçrama işlemleri sonucu havaya dağılmasıyla oluşan ve çıplak gözle görülebilen damlacıkları içeren Sisler.</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) Katı metallerin veya plastiklerin çok yüksek ısıda eriyip buharlaşması ve havada aniden soğuyarak yeniden mikroskobik yoğunlaşmasıyla oluşan Dumanlar.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Toz, sis, duman ve organik çözücüler maddenin doğadaki "fiziksel" durumlarına göre yapılan sınıflandırmalardır. Ancak bir kimyasalın "Sistemik zehir", "Tahriş edici", "Boğucu" veya "Kanserojen" olarak adlandırılması, maddenin bedendeki hedef organa verdiği zararı anlattığı için "Fizyolojik etkiye göre" yapılan sınıflandırmadır. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">14. İş yerlerinde kullanılan tehlikeli kimyasalların özelliklerine göre uygun ve güvenli şekilde depolanması hayati önem taşır. "Oksitleyici (Yükseltgen)" bir kimyasal madde ile "Alevlenir (Yanıcı)" bir kimyasal maddenin depo planında <u>kesinlikle yan yana yerleştirilmemesinin</u> ve etkileşim matrisinde son derece uyumsuz kabul edilmesinin temel bilimsel nedeni aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) İki kimyasalın ortam sıcaklığında aniden buharlaşarak, birbirlerinin genotoksik (kanserojen) etkisini on katına çıkaran ağır ve görünmez bir gaz bulutu oluşturmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) Yan yana geldiklerinde havadaki nemi kimyasal olarak tamamen emerek, depodaki diğer stabil kimyasalların kuruyup patlayıcı kristaller oluşturmasına yol açmalarıdır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) Oksitleyici maddenin olası bir reaksiyonda dışarıya çok yoğun oksijen vererek, yanıcı maddenin devasa bir şiddetle ve söndürülemez biçimde patlamasına sebep olmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) İki zıt kimyasalın herhangi bir sızıntıda birleşmesi sonucunda, çevredeki her şeyi eriten korozif özellikte yüksek konsantrasyonlu süper asit damlacıklarının ortaya çıkmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) Birbirlerinin buharlarına temas ettikleri anda anında donarak katılaşmaları ve deponun tavan havalandırma ile acil tahliye sistemlerini tıkayıp kullanılmaz hale getirmeleridir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Yanma reaksiyonunun temel şartı oksijendir. Alevlenir (Yanıcı) maddeler ateşle buluştuğunda yanarlar; ancak çevrelerinde bir Oksitleyici (Yükseltgen - Oksijen veren) madde varsa, oksitleyici madde ortama sürekli saf oksijen pompalayacağı için küçük bir yanma reaksiyonu anında yıkıcı bir patlamaya ve devasa yangına dönüşür. Bu nedenle İSG matrisinde bu iki grup asla yan yana depolanamaz. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">15. İş sağlığı ve güvenliği kapsamında ergonomik ve fiziksel ortam koşullarının (aydınlatma, nem, sıcaklık vb.) standartlara uygun olması şarttır. Aydınlatma türleri arasında, "çalışma süreci içinde cisimlerin şeklini, rengini ve üzerindeki ince ayrıntıları gözü yormadan çok rahat ve hızlı bir şekilde görebilmeyi sağlayan, iş verimini artıran ideal aydınlatma şekline" İSG terminolojisinde akademik olarak ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) Çalışanların yoğun stresini azaltmak ve psikolojik olarak rahatlamasını sağlamak amacıyla özel tasarlanmış, genellikle sarı ışıklı Dekoratif aydınlatma şekli.</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) Yalnızca elektrik kesintisi veya tehlike anlarında jeneratörle devreye giren ve asgari bir görüş açısı ile tahliye sağlayan Acil durum aydınlatma şekli.</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) Fiziksel göz yorgunluğunu önleyerek, üretim parçasının şekil, renk ve ince detaylarının en mükemmel şekilde algılanmasını sağlayan Fizyolojik aydınlatma şekli.</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) Tavan ışıklarını kapatarak, sadece kişinin kendi çalışma tezgahının veya mikroskobunun üzerini odaklayan Lokal (bölgesel odaklı) aydınlatma şekli.</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) Gözde kamaşma yaratmamak adına ışık kaynağının yüzeye doğrudan değil, tavan veya duvarlardan yansıtılarak yumuşatıldığı Endirekt aydınlatma şekli.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Endüstride göz sağlığını koruyan, iş parçasının üzerindeki detayların ve renklerin en kusursuz ve gözü yormadan algılandığı ideal, fonksiyonel aydınlatma türüne kitapta ve standartlarda <strong>"Fizyolojik Aydınlatma"</strong> adı verilir. Sadece göze yeterli gelen değil, iş sürecine hız katan doğru lümen ayarıdır. Doğru cevap C.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.6; font-family: 'Inter', sans-serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 1 / Test 2 Profesör Simülasyonu</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 35 * 60; // 35 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "var(--primary)";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Profesör Çözümü';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Çözümü Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // 4 Yanlış 1 Doğruyu Götürür Algoritması
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

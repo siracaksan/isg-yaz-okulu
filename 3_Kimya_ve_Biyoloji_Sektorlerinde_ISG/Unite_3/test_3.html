@@ -1,25 +1,464 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 3 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 3 - Test 3: Zoonotik ve Çevresel Enfeksiyonlar Simülasyonu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap');
+
+        :root {
+            --primary: #4a0404; /* Koyu Vişne Çürüğü */
+            --secondary: #7f1d1d;
+            --accent: #64748b; /* Titanyum Grisi */
+            --accent-hover: #94a3b8;
+            --highlight: #b91c1c; 
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --success: #059669;
+            --danger: #dc2626;
+            --text-main: #334155;
+            --text-light: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Roboto', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.7; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2a0404 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(74, 4, 4, 0.4);
+            border-bottom: 5px solid var(--accent); position: relative; overflow: hidden;
+        }
+        header::after { content: '🧫'; position: absolute; right: 5%; top: 5%; font-size: 9rem; opacity: 0.05; }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; color: #fecaca; margin-bottom: 12px; letter-spacing: 0.5px;}
+        header h2 { font-size: 1.25rem; font-weight: 500; color: var(--accent); letter-spacing: 2px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06); margin: -25px auto 35px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--primary); background: #f1f5f9; text-decoration: none; font-weight: 700;
+            font-size: 0.95rem; padding: 12px 24px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--secondary); color: white; border-color: var(--secondary); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(127, 29, 29, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--secondary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; font-weight: 700;}
+        .analysis-box p { font-size: 1.05rem; color: #475569; text-align: justify; margin-bottom: 15px;}
+        .analysis-box ul { padding-left: 20px; margin-top: 10px;}
+        .analysis-box ul li { margin-bottom: 10px; color: #1e293b; font-weight: 600;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 50px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 3px solid var(--primary);
+        }
+        .start-screen h2 { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--primary); margin-bottom: 20px; font-weight: 900; }
+        .start-screen p { font-size: 1.15rem; color: #475569; margin-bottom: 35px; line-height: 1.8;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%); color: white; border: none;
+            padding: 20px 55px; font-size: 1.4rem; font-weight: 700; font-family: 'Roboto', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(74, 4, 4, 0.4); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 35px rgba(74, 4, 4, 0.6); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 22px 30px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.05); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--secondary); }
+        .timer-box { font-size: 1.7rem; font-weight: 800; font-family: 'Playfair Display', serif; color: var(--primary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--danger); padding: 6px 20px; border-radius: 12px; font-family: 'Roboto', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);}
+        .btn-group button { border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Roboto', sans-serif;}
+        .btn-finish { background: var(--primary); box-shadow: 0 4px 15px rgba(74, 4, 4, 0.3); }
+        .btn-finish:hover { background: #2a0404; transform: scale(1.05);}
+        .btn-pdf { background: var(--accent); box-shadow: 0 4px 15px rgba(100, 116, 139, 0.3); color: var(--primary); }
+        .btn-pdf:hover { background: #475569; color: white; transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 25px; border-radius: 12px; font-size: 1.25rem; font-weight: 700; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border); background: #f8fafc;}
+        .stat-d { border-bottom: 5px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 5px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 5px solid #94a3b8; color: #64748b; } 
+        .stat-n { background: var(--primary); color: #fecaca; font-size: 1.6rem; box-shadow: 0 5px 20px rgba(74, 4, 4, 0.4); border:none;}
+
+        /* Soru Kartları - EŞİT UZUNLUKLU FORMU */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 35px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--border); border-left: 8px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 15px 40px rgba(0,0,0,0.08); border-left-color: var(--secondary);}
+        
+        .q-text { font-family: 'Roboto', sans-serif; font-weight: 700; font-size: 1.15rem; margin-bottom: 25px; color: var(--text-main); line-height: 1.7; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; }
+        .option-label { display: flex; align-items: flex-start; padding: 20px 25px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 500; transition: all 0.2s ease; color: #334155; line-height: 1.6; text-align: justify;}
+        .option-label:hover { background: #fef2f2; border-color: var(--secondary); }
+        .option-label input { margin-top: 5px; margin-right: 20px; transform: scale(1.4); accent-color: var(--secondary); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: #065f46; font-weight: 700;}
+        .option-label.incorrect { background: #fef2f2 !important; border-color: var(--danger) !important; color: #991b1b; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f8fafc; color: var(--primary); border: 2px solid var(--primary); padding: 12px 28px; border-radius: 30px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px;}
+        .btn-solution:hover { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(74, 4, 4, 0.3);}
+        .solution-box { display: none; margin-top: 15px; padding: 25px; background: #fef2f2; border-left: 6px solid var(--secondary); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #4a0404; animation: slideDown 0.3s ease-out forwards; line-height: 1.7; text-align: justify;}
+        .solution-box strong { color: var(--secondary); font-size: 1.15rem; display: block; margin-bottom: 12px; font-family: 'Playfair Display', serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 45px 20px; background: var(--primary); color: #cbd5e1; margin-top: 50px; font-size: 1.05rem; border-top: 5px solid var(--accent); }
+        .imza-kutu { display: inline-block; padding: 18px 40px; border: 2px solid rgba(148, 163, 184, 0.3); border-radius: 12px; background: #2a0404; box-shadow: 0 6px 20px rgba(0,0,0,0.5); font-weight: 500; letter-spacing: 0.5px;}
+        .imza-kutu span { color: #fecaca; font-family: 'Playfair Display', serif; font-size: 1.25rem; margin: 0 8px; font-weight: 700;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 25px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 3 - Test 3</h2>
+        <h1>Ünite 3: Biyolojik Risk Etmenleri ve Hastalıklar</h1>
+        <h2>Test 3: Zoonotik ve Çevresel Enfeksiyonlar</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">📚 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_2.html">⬅️ Test 2 (Önceki)</a>
+        <a href="test_4.html">Sonraki Test (Test 4) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>🧫 Odaklanılan Tıbbi Ajanlar</h3>
+            <p>Bu test; çalışma yaşamında sıkça karşılaşılan, ezberlenmesi ve ayırt edilmesi zor spesifik bakteriyel ve paraziter zoonozlara odaklanmıştır:</p>
+            <ul>
+                <li><strong>Sıra Dışı Zoonozlar:</strong> Q Humması (Toz/Toprak), Psittakoz (Kuş Dışkısı) ve Erisipeloid (Balıkçılık).</li>
+                <li><strong>Çevresel Bulaşlar:</strong> Lejyoner hastalığı (Klima/Soğutma Kuleleri) ve Tetanoz (Toprak/Yara kontaminasyonu).</li>
+                <li><strong>Özel Ajanlar:</strong> Brusella türlerinin (Melitensis, abortus) ayrımı, Tifo'nun sadece insana özgü olması ve Toxoplasma gondii formları.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>📊 Eşit Uzunluk Formatı ve Kurallar</h3>
+            <p>Seçeneklerinizi optik yanılsamaya mahal vermeden okumanız için son derece katı bir kelime kısıtlaması uygulanmıştır:</p>
+            <ul>
+                <li><strong>%100 Eşit Paragraflar:</strong> Tüm şıklar kusursuz bir simetri ile tam olarak <strong>29-31 kelimeden</strong> oluşturulmuştur.</li>
+                <li><strong>Sınav Algoritması:</strong> Standart net uygulaması (4 Yanlış = 1 Doğru) mevcuttur.</li>
+                <li>Önerilen konsantrasyon süresi <strong>25 dakikadır</strong>. Şıkların ilk ve son kelimelerindeki ince detaylara dikkat ediniz.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>🧫 3. Test: İleri Zoonozlar ve Çevresel Patoloji</h2>
+        <p>Erisipeloidden Psittakoza, Lejyonella bakterilerinden toksoplazma kistlerine kadar 3. Ünitenin en zor patojenik ajanları eşit uzunluklu mükemmel paragraflarla karşınızda.<br><br>Sınav süresi <strong>25 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Sınavı Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">25:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- KUSURSUZ EŞİT UZUNLUKTA (29-31 KELİME) 10 SORU -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="A">
+            <div class="q-text">1. Brusella enfeksiyonlarına neden olan bakteri türleri arasında insanlarda en sık hastalığa yol açan ve genellikle koyun ile keçilerden bulaşarak genel olguların yaklaşık %70'ini oluşturan spesifik serotip (tür) hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Brusella enfeksiyonlarına neden olan bakteri türleri arasında insanlarda en sık hastalığa yol açan ve genellikle koyun ile keçilerden bulaşarak olguların yüzde yetmişini oluşturan spesifik serotip Brucella melitensis olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Brusella enfeksiyonlarına neden olan bakteri türleri arasında insanlarda en sık hastalığa yol açan ve genellikle sığır ile mandalardan bulaşarak olguların yüzde yetmişini oluşturan spesifik serotip Brucella abortus olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Brusella enfeksiyonlarına neden olan bakteri türleri arasında insanlarda en sık hastalığa yol açan ve genellikle domuz ile kurtlardan bulaşarak olguların yüzde yetmişini oluşturan spesifik serotip Brucella suis olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Brusella enfeksiyonlarına neden olan bakteri türleri arasında insanlarda en sık hastalığa yol açan ve genellikle tavuk ile kuşlardan bulaşarak olguların yüzde yetmişini oluşturan spesifik serotip Brucella psittaci olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Brusella enfeksiyonlarına neden olan bakteri türleri arasında insanlarda en sık hastalığa yol açan ve genellikle vahşi kemirgenlerden bulaşarak olguların yüzde yetmişini oluşturan spesifik serotip Brucella tularensis olarak adlandırılmaktadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Brusella enfeksiyonunda bilinen 9 serotip vardır. Bunlardan sığırlardan bulaşan Brucella abortus olguların %25'ini, domuzlardan bulaşan Brucella suis ise %5'ini oluşturur. Koyun ve keçilerden bulaşarak insanlarda <strong>en çok hastalık yapan tür (%70 oranında) Brucella melitensis</strong> serotipidir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">2. Veteriner hekimler, et ve yün işleyicileri ile sığır/koyun çiftçilerinde sık gözlenen; Coxiella burnetii adlı mikrobun neden olduğu ve toz/toprak içinde yıllarca canlı kalabilen spesifik zoonotik enfeksiyon aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Hayvanlardan insanlara bulaşan ve Coxiella burnetii adlı mikrobun neden olduğu, toz veya toprakta yıllarca yaşayabilen, nadiren kalp zarı iltihabı ve hepatit geliştirebilen bu tehlikeli meslek hastalığı Q Hummasıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Hayvanlardan insanlara bulaşan ve Bacillus anthracis adlı mikrobun neden olduğu, toz veya toprakta yıllarca yaşayabilen, nadiren kalp zarı iltihabı ve hepatit geliştirebilen bu tehlikeli meslek hastalığı Şarbon Enfeksiyonudur.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Hayvanlardan insanlara bulaşan ve Francisella tularensis adlı mikrobun neden olduğu, toz veya toprakta yıllarca yaşayabilen, nadiren kalp zarı iltihabı ve hepatit geliştirebilen bu tehlikeli meslek hastalığı Tularemi Hastalığıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Hayvanlardan insanlara bulaşan ve Leptospira interrogans adlı mikrobun neden olduğu, toz veya toprakta yıllarca yaşayabilen, nadiren kalp zarı iltihabı ve hepatit geliştirebilen bu tehlikeli meslek hastalığı Weil Hastalığıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Hayvanlardan insanlara bulaşan ve Borrelia burgdorferi adlı mikrobun neden olduğu, toz veya toprakta yıllarca yaşayabilen, nadiren kalp zarı iltihabı ve hepatit geliştirebilen bu tehlikeli meslek hastalığı Lyme Hastalığıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> "Coxiella burnetii" mikrobunun neden olduğu, grip vakasına benzeyen ancak ilerlediğinde kalp boşluğu zarının iltihaplanması olan "endokardit" ve karaciğer büyümesi olan "hepatite" kadar ilerleyebilen spesifik zoonoz hastalık <strong>Q Humması (Q Ateşi)</strong> olarak adlandırılır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">3. Tarla bitkilerinin ekimi, farelerle istila edilen ahırların temizlenmesi ve süpürülmesi gibi iş kollarında çalışan personelde, solunum yolu ile aniden bulaşarak çok yüksek ölüm oranına (%40) ulaşabilen viral hastalık hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Kemirgenlerin dışkıları ve idrarları ile kirlenmiş tahılların kullanılması veya ahırların süpürülmesi sırasında havaya karışan enfekte tozların solunmasıyla bulaşan, ani tansiyon düşüklüğü ve akciğer ödemiyle seyreden hastalık Hantavirüs sendromudur.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Kemirgenlerin dışkıları ve idrarları ile kirlenmiş tahılların kullanılması veya ahırların süpürülmesi sırasında havaya karışan enfekte tozların solunmasıyla bulaşan, ani tansiyon düşüklüğü ve akciğer ödemiyle seyreden hastalık Toksoplazmozis sendromudur.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Kemirgenlerin dışkıları ve idrarları ile kirlenmiş tahılların kullanılması veya ahırların süpürülmesi sırasında havaya karışan enfekte tozların solunmasıyla bulaşan, ani tansiyon düşüklüğü ve akciğer ödemiyle seyreden hastalık Lejyoner hastalığıdır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Kemirgenlerin dışkıları ve idrarları ile kirlenmiş tahılların kullanılması veya ahırların süpürülmesi sırasında havaya karışan enfekte tozların solunmasıyla bulaşan, ani tansiyon düşüklüğü ve akciğer ödemiyle seyreden hastalık Psittakoz hastalığıdır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Kemirgenlerin dışkıları ve idrarları ile kirlenmiş tahılların kullanılması veya ahırların süpürülmesi sırasında havaya karışan enfekte tozların solunmasıyla bulaşan, ani tansiyon düşüklüğü ve akciğer ödemiyle seyreden hastalık Tifo enfeksiyonudur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kemirgenlerin (fare, sıçan) idrarı veya dışkısı ile kirlenmiş ahırların süpürülmesi esnasında havalanan partiküllerin solunması (aerosol) ile doğrudan akciğerlere yerleşen ve hızlı böbrek/akciğer yetmezliğiyle %40 oranında ölüme yol açabilen hastalık <strong>Hantavirüs</strong> enfeksiyonudur. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">4. Zoonoz (hayvanlardan bulaşan) özellik taşımayan, sadece ve sadece insandan insana bulaşan ve hastanın taşıyıcı olarak çıkartılarıyla (idrar ve dışkısıyla) mikrobu ağız yolundan yaymasına sebep olan enfeksiyon hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Salmonella typhimurium bakterisinin neden olduğu, yalnızca insanlarda hastalık oluşturan ve hayvanlarda görülmeyen, dışkı ve idrar ile atılan etkenin ağız yoluyla vücuda alınmasıyla bulaşan klinik tablo Tifo hastalığı olarak adlandırılır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Salmonella typhimurium bakterisinin neden olduğu, yalnızca insanlarda hastalık oluşturan ve hayvanlarda görülmeyen, dışkı ve idrar ile atılan etkenin ağız yoluyla vücuda alınmasıyla bulaşan klinik tablo Kuduz hastalığı olarak adlandırılır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Salmonella typhimurium bakterisinin neden olduğu, yalnızca insanlarda hastalık oluşturan ve hayvanlarda görülmeyen, dışkı ve idrar ile atılan etkenin ağız yoluyla vücuda alınmasıyla bulaşan klinik tablo Şarbon hastalığı olarak adlandırılır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Salmonella typhimurium bakterisinin neden olduğu, yalnızca insanlarda hastalık oluşturan ve hayvanlarda görülmeyen, dışkı ve idrar ile atılan etkenin ağız yoluyla vücuda alınmasıyla bulaşan klinik tablo Tetanoz hastalığı olarak adlandırılır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Salmonella typhimurium bakterisinin neden olduğu, yalnızca insanlarda hastalık oluşturan ve hayvanlarda görülmeyen, dışkı ve idrar ile atılan etkenin ağız yoluyla vücuda alınmasıyla bulaşan klinik tablo Bruselloz hastalığı olarak adlandırılır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Salmonella typhimurium (typhi) bakterisi, Şarbon veya Kuduz gibi hayvanlarda hastalık yapmaz (Zoonoz DEĞİLDİR). Sadece insanlarda hastalık oluşturur ve taşıyıcı kişilerin dışkı veya idrarının sulara/gıdalara karışıp başkasının ağzından girmesi (fekal-oral) ile yayılan <strong>Tifo</strong> hastalığına sebep olur. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">5. Etki açısından sıtmadan sonraki en yıkıcı paraziter hastalık olarak kabul edilen, doğrudan cilt bütünlüğünü delip geçerek portal ve üriner sisteme yerleşen yassı solucanların oluşturduğu mesleki rahatsızlık hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Bilharziasis adıyla da bilinen, enfekte sularla temas halindeyken parazit larvalarının doğrudan ciltten geçerek portal veya üriner sistemde lezyonlar oluşturduğu ve çiftçilerde sıklıkla görülen hastalık Şistozomiyazis olarak tanımlanmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Bilharziasis adıyla da bilinen, enfekte sularla temas halindeyken parazit larvalarının doğrudan ciltten geçerek portal veya üriner sistemde lezyonlar oluşturduğu ve çiftçilerde sıklıkla görülen hastalık Leptospirozis olarak tanımlanmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Bilharziasis adıyla da bilinen, enfekte sularla temas halindeyken parazit larvalarının doğrudan ciltten geçerek portal veya üriner sistemde lezyonlar oluşturduğu ve çiftçilerde sıklıkla görülen hastalık Kist Hidatik olarak tanımlanmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Bilharziasis adıyla da bilinen, enfekte sularla temas halindeyken parazit larvalarının doğrudan ciltten geçerek portal veya üriner sistemde lezyonlar oluşturduğu ve çiftçilerde sıklıkla görülen hastalık Toksoplazmozis olarak tanımlanmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Bilharziasis adıyla da bilinen, enfekte sularla temas halindeyken parazit larvalarının doğrudan ciltten geçerek portal veya üriner sistemde lezyonlar oluşturduğu ve çiftçilerde sıklıkla görülen hastalık Leishmania olarak tanımlanmaktadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> "Bilharziasis" olarak da adlandırılan, tatlı sularda (örneğin pirinç tarlalarında) çalışan çiftçilerin cildinden (derisinden) delerek giren yassı solucanların yol açtığı enfeksiyon <strong>Şistozomiyazis</strong> enfeksiyonudur. Leptospirozis fare idrarından geçer, Toksoplazma ise kedi dışkısındandır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">6. Balıkçılık, mezbaha veya kümes hayvancılığı sektörlerinde faaliyet gösteren işçilerde sık karşılaşılan; Erysipelothrix rhusiopathiae bakterisinin parmaklarda ve ellerde morumsu şişliklere yol açtığı spesifik deri enfeksiyonu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Doğada yaygın bulunan Erysipelothrix rhusiopathiae bakterisinin sebep olduğu, parmaklarda ve el sırtında morumsu kızarıklıkla seyreden, özellikle balıkçılık ve kümes hayvancılığı sektörlerindeki çalışanlarda sıkça gözlenen lokalize deri enfeksiyonu Erisipeloid tablosudur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Doğada yaygın bulunan Erysipelothrix rhusiopathiae bakterisinin sebep olduğu, parmaklarda ve el sırtında morumsu kızarıklıkla seyreden, özellikle balıkçılık ve kümes hayvancılığı sektörlerindeki çalışanlarda sıkça gözlenen lokalize deri enfeksiyonu Dermatofitoz tablosudur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Doğada yaygın bulunan Erysipelothrix rhusiopathiae bakterisinin sebep olduğu, parmaklarda ve el sırtında morumsu kızarıklıkla seyreden, özellikle balıkçılık ve kümes hayvancılığı sektörlerindeki çalışanlarda sıkça gözlenen lokalize deri enfeksiyonu Klorakne tablosudur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Doğada yaygın bulunan Erysipelothrix rhusiopathiae bakterisinin sebep olduğu, parmaklarda ve el sırtında morumsu kızarıklıkla seyreden, özellikle balıkçılık ve kümes hayvancılığı sektörlerindeki çalışanlarda sıkça gözlenen lokalize deri enfeksiyonu Şarbon ülseridir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Doğada yaygın bulunan Erysipelothrix rhusiopathiae bakterisinin sebep olduğu, parmaklarda ve el sırtında morumsu kızarıklıkla seyreden, özellikle balıkçılık ve kümes hayvancılığı sektörlerindeki çalışanlarda sıkça gözlenen lokalize deri enfeksiyonu Varisella zosterdir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Doğada (özellikle balık pullarında, domuzlarda ve kümes hayvanlarında) bulunan bu bakterinin eldeki küçük çiziklerden girerek ellerde morumsu/kızıl renkli şişliklere (döküntülere) yol açtığı spesifik mesleki deri hastalığı <strong>Erisipeloid</strong> olarak tanımlanır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">7. İnsanlardan ya da hayvanlardan geçmeyen (zoonoz olmayan), sadece çevresel etmenler üzerinden özellikle sanayi klimaları ve otel su soğutma kulelerinde üreyen bakterilerin solunması ile bulaşan ölümcül solunum enfeksiyonu hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Legionella pneumophila adlı spesifik bakterinin neden olduğu, havalandırma klima sistemlerinde ve su soğutma kulelerinde üreyerek buralarda görevli işçileri enfekte eden ve ağır zatürre tablosu oluşturan hastalık Lejyoner enfeksiyonudur.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Legionella pneumophila adlı spesifik bakterinin neden olduğu, havalandırma klima sistemlerinde ve su soğutma kulelerinde üreyerek buralarda görevli işçileri enfekte eden ve ağır zatürre tablosu oluşturan hastalık Tüberküloz enfeksiyonudur.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Legionella pneumophila adlı spesifik bakterinin neden olduğu, havalandırma klima sistemlerinde ve su soğutma kulelerinde üreyerek buralarda görevli işçileri enfekte eden ve ağır zatürre tablosu oluşturan hastalık Hantavirüs enfeksiyonudur.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Legionella pneumophila adlı spesifik bakterinin neden olduğu, havalandırma klima sistemlerinde ve su soğutma kulelerinde üreyerek buralarda görevli işçileri enfekte eden ve ağır zatürre tablosu oluşturan hastalık Asbestozis enfeksiyonudur.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Legionella pneumophila adlı spesifik bakterinin neden olduğu, havalandırma klima sistemlerinde ve su soğutma kulelerinde üreyerek buralarda görevli işçileri enfekte eden ve ağır zatürre tablosu oluşturan hastalık Silikozis enfeksiyonudur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> İnsandan insana geçmeyen ve zoonoz olmayan istisnai bir bakteriyel enfeksiyondur. Legionella bakterisi durgun tatlı sularda, sanayi boyu büyük su soğutma kulelerinde ve otel/hastane havalandırma sistemlerinde üreyerek ortama hava (aerosol) yoluyla saçılır. Buna <strong>Lejyoner Hastalığı</strong> denir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">8. Takizoit ve bradizoit gibi doku kistleri halinde farklı hücre içi gelişim evreleri bulunan, özellikle kedilerin yaygın rezervuar olduğu ve genelde çiğ etlerin tüketilmesiyle insana bulaşan mesleki paraziter hastalık nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Kedilerin en yaygın kaynak olduğu, çiğ veya az pişmiş etlerin tüketilmesiyle bulaşan ve takizoit, bradizoit, sporozoit olmak üzere üç farklı yaşam formu bulunan paraziter meslek hastalığı Toksoplazmozis olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Kedilerin en yaygın kaynak olduğu, çiğ veya az pişmiş etlerin tüketilmesiyle bulaşan ve takizoit, bradizoit, sporozoit olmak üzere üç farklı yaşam formu bulunan paraziter meslek hastalığı Leptospirozis olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Kedilerin en yaygın kaynak olduğu, çiğ veya az pişmiş etlerin tüketilmesiyle bulaşan ve takizoit, bradizoit, sporozoit olmak üzere üç farklı yaşam formu bulunan paraziter meslek hastalığı Şistozomiyazis olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Kedilerin en yaygın kaynak olduğu, çiğ veya az pişmiş etlerin tüketilmesiyle bulaşan ve takizoit, bradizoit, sporozoit olmak üzere üç farklı yaşam formu bulunan paraziter meslek hastalığı Psittakozis olarak adlandırılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Kedilerin en yaygın kaynak olduğu, çiğ veya az pişmiş etlerin tüketilmesiyle bulaşan ve takizoit, bradizoit, sporozoit olmak üzere üç farklı yaşam formu bulunan paraziter meslek hastalığı Bruselloz olarak adlandırılmaktadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Çiğ veya az pişmiş et tüketimiyle ya da kedi dışkısıyla kirlenmiş kumların temizlenmesi (mesleki risk: veterinerler, bahçıvanlar) sonucu bulaşan Toxoplasma gondii paraziti <strong>Toksoplazmozis</strong> hastalığına yol açar. Gebelerde düşüklere veya bebek anomalilerine neden olmasıyla son derece kritik bir hastalıktır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">9. Doğada toprak veya toz içerisinde dirençli "spor" formuyla yıllarca bekleyebilen, bütünlüğü bozulmuş ciltten veya derin delici yaralardan girerek felç edici toksinler salgılayan tehlikeli sinir sistemi hastalığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Clostridium tetani isimli bakterinin bütünlüğü bozulmuş cilt aracılığıyla vücuda girdikten sonra vejetatif forma dönüşüp salgıladığı tetanospazmin toksiniyle sinir ve kas plağını felç ettiği hastalık tablosuna Tetanoz adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Clostridium tetani isimli bakterinin bütünlüğü bozulmuş cilt aracılığıyla vücuda girdikten sonra vejetatif forma dönüşüp salgıladığı tetanospazmin toksiniyle sinir ve kas plağını felç ettiği hastalık tablosuna Botulizm adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Clostridium tetani isimli bakterinin bütünlüğü bozulmuş cilt aracılığıyla vücuda girdikten sonra vejetatif forma dönüşüp salgıladığı tetanospazmin toksiniyle sinir ve kas plağını felç ettiği hastalık tablosuna Şarbon adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Clostridium tetani isimli bakterinin bütünlüğü bozulmuş cilt aracılığıyla vücuda girdikten sonra vejetatif forma dönüşüp salgıladığı tetanospazmin toksiniyle sinir ve kas plağını felç ettiği hastalık tablosuna Kuduz adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Clostridium tetani isimli bakterinin bütünlüğü bozulmuş cilt aracılığıyla vücuda girdikten sonra vejetatif forma dönüşüp salgıladığı tetanospazmin toksiniyle sinir ve kas plağını felç ettiği hastalık tablosuna Lyme adı verilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> İnşaat, peyzaj ve tarım çalışanlarında sıklıkla görülen, çevresel toz/toprak ortamlarında dirençli sporlar halinde bekleyen Clostridium tetani isimli bakterinin açık yaralardan girerek salgıladığı zehir (tetanospazmin) ile kasılma nöbetleri yaptığı ölümcül tabloya <strong>Tetanoz</strong> adı verilir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">10. Özellikle kuş evcil hayvan dükkanı çalışanları, teşhis laboratuvarı personeli ve kümes hayvanı üretim işçileri için mesleki sağlık tehlikesi yaratan "Papağan Hastalığı" olarak da bilinen solunum yolu zoonozu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Chlamydia psittaci adlı bakterinin neden olduğu, enfekte kuşların idrar, solunum sekresyonu veya kurumuş dışkısının solunması ile bulaşan ve tıp dünyasında Papağan hastalığı olarak da isimlendirilen meslek hastalığı Psittakoz tablosudur.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Chlamydia psittaci adlı bakterinin neden olduğu, enfekte kuşların idrar, solunum sekresyonu veya kurumuş dışkısının solunması ile bulaşan ve tıp dünyasında Papağan hastalığı olarak da isimlendirilen meslek hastalığı Tularemi tablosudur.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Chlamydia psittaci adlı bakterinin neden olduğu, enfekte kuşların idrar, solunum sekresyonu veya kurumuş dışkısının solunması ile bulaşan ve tıp dünyasında Papağan hastalığı olarak da isimlendirilen meslek hastalığı Kuş Gribi tablosudur.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Chlamydia psittaci adlı bakterinin neden olduğu, enfekte kuşların idrar, solunum sekresyonu veya kurumuş dışkısının solunması ile bulaşan ve tıp dünyasında Papağan hastalığı olarak da isimlendirilen meslek hastalığı Lejyoner tablosudur.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Chlamydia psittaci adlı bakterinin neden olduğu, enfekte kuşların idrar, solunum sekresyonu veya kurumuş dışkısının solunması ile bulaşan ve tıp dünyasında Papağan hastalığı olarak da isimlendirilen meslek hastalığı Bruselloz tablosudur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kuş tüyleri veya kuş sekresyonlarıyla mesleki teması olan kişilerde gelişebilen bu spesifik solunum sistemi hastalığı literatürde "Ornitoz" veya "Papağan Hastalığı" olarak geçer. Tıbbi tanısı Chlamydia psittaci bakterisinin yol açtığı <strong>Psittakoz</strong> hastalığıdır. Kuş gribi ise bir virüstür. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.6; font-family: 'Roboto', sans-serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 3 / Test 3 (Zoonozlar ve Bulaş Yolları)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 25 * 60; // 25 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Akademik Analiz';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // 4 Yanlış 1 Doğru Net Sistemi
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

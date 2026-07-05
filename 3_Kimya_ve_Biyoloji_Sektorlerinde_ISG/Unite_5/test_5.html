@@ -1,25 +1,464 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 5 - Test 5 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 5 - Test 5: Büyük Final (Kızıl Yakut) Sınavı</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Lato:wght@300;400;700;900&display=swap');
+
+        :root {
+            --primary: #7f1d1d; /* Kızıl Yakut */
+            --secondary: #0f172a; /* Derin Obsidyen */
+            --accent: #ef4444; /* Parlak Yakut */
+            --accent-hover: #b91c1c;
+            --highlight: #fca5a5; 
+            --bg-body: #fef2f2;
+            --card-bg: #ffffff;
+            --success: #15803d;
+            --danger: #b91c1c;
+            --text-main: #1e293b;
+            --text-light: #fef2f2;
+            --border: #fecaca;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Lato', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.8; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            color: var(--text-light); padding: 55px 20px 45px; text-align: center;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.5);
+            border-bottom: 6px solid var(--accent); position: relative; overflow: hidden;
+        }
+        header::after { content: '💎'; position: absolute; right: 5%; top: 5%; font-size: 10rem; opacity: 0.08; color: var(--highlight);}
+        header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: #fee2e2; margin-bottom: 12px; letter-spacing: 1px;}
+        header h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--highlight); letter-spacing: 2px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); margin: -25px auto 35px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--primary); background: #fef2f2; text-decoration: none; font-weight: 700; font-family: 'Playfair Display', serif;
+            font-size: 1.05rem; padding: 12px 24px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(127, 29, 29, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 40px; border-radius: 16px; border-top: 6px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-weight: 900;}
+        .analysis-box p { font-size: 1.05rem; color: #475569; text-align: justify; margin-bottom: 15px;}
+        .analysis-box ul { padding-left: 20px; margin-top: 15px;}
+        .analysis-box ul li { margin-bottom: 12px; color: #1e293b; font-weight: 700;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 50px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 3px solid var(--accent);
+        }
+        .start-screen h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; font-weight: 900; }
+        .start-screen p { font-size: 1.15rem; color: #475569; margin-bottom: 35px; line-height: 1.8;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); color: white; border: none;
+            padding: 22px 60px; font-size: 1.4rem; font-weight: 900; font-family: 'Playfair Display', serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 35px rgba(239, 68, 68, 0.6); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 25px 35px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.05); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--primary); }
+        .timer-box { font-size: 1.8rem; font-weight: 900; font-family: 'Playfair Display', serif; color: var(--secondary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--danger); padding: 6px 20px; border-radius: 12px; font-family: 'Lato', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);}
+        .btn-group button { border: none; padding: 14px 30px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Playfair Display', serif;}
+        .btn-finish { background: var(--secondary); box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3); }
+        .btn-finish:hover { background: #000000; transform: scale(1.05);}
+        .btn-pdf { background: var(--primary); box-shadow: 0 4px 15px rgba(127, 29, 29, 0.3); }
+        .btn-pdf:hover { background: #450a0a; transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 30px; border-radius: 12px; font-size: 1.3rem; font-weight: 900; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border); background: #fef2f2; font-family: 'Playfair Display', serif;}
+        .stat-d { border-bottom: 5px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 5px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 5px solid #94a3b8; color: #64748b; } 
+        .stat-n { background: var(--primary); color: var(--highlight); font-size: 1.7rem; box-shadow: 0 5px 20px rgba(127, 29, 29, 0.4); border:none;}
+
+        /* Soru Kartları - EŞİT UZUNLUKLU FORMU (30 Kelime) */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 40px; width: 95%; max-width: 1200px; margin: 0 auto 50px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 45px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid var(--border); border-left: 8px solid var(--accent); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 15px 50px rgba(0,0,0,0.08); border-left-color: var(--primary);}
+        
+        .q-text { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 1.15rem; margin-bottom: 30px; color: var(--text-main); line-height: 1.8; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
+        .option-label { display: flex; align-items: flex-start; padding: 22px 28px; border-radius: 12px; background: #fafaf9; border: 2px solid #e5e5e5; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: all 0.2s ease; color: #334155; line-height: 1.7; text-align: justify;}
+        .option-label:hover { background: #fef2f2; border-color: var(--accent); }
+        .option-label input { margin-top: 6px; margin-right: 20px; transform: scale(1.4); accent-color: var(--accent); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: #065f46; font-weight: 700;}
+        .option-label.incorrect { background: #fef2f2 !important; border-color: var(--danger) !important; color: #991b1b; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #fef2f2; color: var(--primary); border: 2px solid var(--primary); padding: 12px 30px; border-radius: 30px; font-weight: 900; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; font-family: 'Playfair Display', serif;}
+        .btn-solution:hover { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(127, 29, 29, 0.3);}
+        .solution-box { display: none; margin-top: 20px; padding: 30px; background: #fef2f2; border-left: 6px solid var(--accent); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #991b1b; animation: slideDown 0.3s ease-out forwards; line-height: 1.8; text-align: justify; box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);}
+        .solution-box strong { color: var(--primary); font-size: 1.2rem; display: block; margin-bottom: 12px; font-family: 'Playfair Display', serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 50px 20px; background: var(--secondary); color: #cbd5e1; margin-top: 60px; font-size: 1.05rem; border-top: 6px solid var(--accent); }
+        .imza-kutu { display: inline-block; padding: 20px 45px; border: 2px solid rgba(239, 68, 68, 0.4); border-radius: 12px; background: #000000; box-shadow: 0 8px 25px rgba(0,0,0,0.5); font-weight: 600; letter-spacing: 1px;}
+        .imza-kutu span { color: var(--highlight); font-family: 'Playfair Display', serif; font-size: 1.3rem; margin: 0 10px; font-weight: 900;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 30px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 5 - Test 5</h2>
+        <h1>Ünite 5: Etmenlerin Risk Değerlendirmeleri</h1>
+        <h2>Test 5: Büyük Final (Kızıl Yakut) Sınavı</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">💎 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_4.html">⬅️ Test 4 (Önceki)</a>
+        <a href="../Unite_6/konu_anlatimi.html">Ünite 6'ya Geç ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>💎 Final Sınavı Kapsamı</h3>
+            <p>5. Ünitenin bu son testi, öğrenilenleri zirve seviyede ölçmek amacıyla aşağıdaki en ağır kavramları içerir:</p>
+            <ul>
+                <li><strong>Oluşma Olasılıkları ve Ciddiyet:</strong> Biyolojik risklerde yer alan "Minör, Orta, Kritik, Felaket" ile "Nadir, Muhtemel" kavramlarının akademik ayrımları.</li>
+                <li><strong>Değerlendirme Yöntemleri:</strong> HAZOP, Hata Ağacı ve ayrıntılı değerlendirme gibi kalitatif ve yasal zorunlu yaklaşımların ince detayları.</li>
+                <li><strong>Gözden Geçirme Periyotları:</strong> Mevzuata dayalı idari süreler ve risk karakterizasyon aşamaları.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>⚖️ Kusursuz Simetri Algoritması</h3>
+            <p>Test çözme taktiklerini (örneğin "en uzun şık doğrudur") işlevsiz kılmak için özel olarak tasarlanmıştır:</p>
+            <ul>
+                <li><strong>Mutlak 30 Kelime Kuralı:</strong> Bu testte yer alan 50 şıkkın tamamı <strong>tam olarak 30 kelimelik</strong> mükemmel eşit paragraflardan oluşturulmuştur.</li>
+                <li><strong>Saf Bilgi Ölçümü:</strong> Zihinsel okuma yorgunluğuna karşı dikkatinizi korumanız ölçülmektedir.</li>
+                <li><strong>Ağır Zaman Baskısı:</strong> Çok uzun ve eşit şıklar nedeniyle odaklanma gücünüzü korumanız için süre <strong>25 dakika</strong>dır.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>💎 5. Ünite Final: Yakut Sınavı</h2>
+        <p>Biyolojik risk faktörlerinden kantitatif risk denklemlerine, kontrol hiyerarşilerinden kalitatif HAZOP modellerine kadar ünitenin tüm kritik köşeleriyle yüzleşmeye hazırlanın.<br><br>Sınav süresi <strong>25 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Final Sınavını Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ KALAN SÜRE:</span>
+            <span class="time" id="timer-display">25:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ DOĞRU: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ YANLIŞ: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ BOŞ: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 NET (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 10 SORU - KUSURSUZ EŞİTLİK (30 KELİME) -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="A">
+            <div class="q-text">1. Biyolojik risk değerlendirme matrislerinde, tehlikeli bir durumun gerçekleşme olasılığı hesaplanırken; riskin gerçekleşme ihtimalinin çok düşük olduğu ve "muhtemelen asla olmayacak" şeklinde tanımlanan en alt olasılık derecesi hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Biyolojik risk değerlendirme matrisleri oluşturulurken tehlikeli bir durumun gerçekleşme ihtimali hesaplandığında, riskin ortaya çıkma ihtimalinin son derece düşük olduğu ve muhtemelen asla olmayacak biçimde bilimsel olarak ifade edilen derece nadirdir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Biyolojik risk değerlendirme matrisleri oluşturulurken tehlikeli bir durumun gerçekleşme ihtimali hesaplandığında, riskin ortaya çıkma ihtimalinin son derece düşük olduğu ve muhtemelen asla olmayacak biçimde bilimsel olarak ifade edilen derece muhtemeldir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Biyolojik risk değerlendirme matrisleri oluşturulurken tehlikeli bir durumun gerçekleşme ihtimali hesaplandığında, riskin ortaya çıkma ihtimalinin son derece düşük olduğu ve muhtemelen asla olmayacak biçimde bilimsel olarak ifade edilen derece mümkündür.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Biyolojik risk değerlendirme matrisleri oluşturulurken tehlikeli bir durumun gerçekleşme ihtimali hesaplandığında, riskin ortaya çıkma ihtimalinin son derece düşük olduğu ve muhtemelen asla olmayacak biçimde bilimsel olarak ifade edilen derece belirsizdir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Biyolojik risk değerlendirme matrisleri oluşturulurken tehlikeli bir durumun gerçekleşme ihtimali hesaplandığında, riskin ortaya çıkma ihtimalinin son derece düşük olduğu ve muhtemelen asla olmayacak biçimde bilimsel olarak ifade edilen derece tehlikelidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Açıklama</button>
+            <div class="solution-box"><strong>Analiz:</strong> Biyolojik risk matrisinde oluşma olasılıkları; Nadir, Olası değil, Mümkün, Muhtemelen ve Neredeyse Kesin olarak sıralanır. Gerçekleşmesi "muhtemelen asla olmayacak" seviyesine işaret eden en alt olasılık derecesi <strong>Nadir</strong>'dir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">2. Kimyasalların insan sağlığı risk değerlendirmesi sürecinde; maruziyet değerlendirmesinden elde edilen doz ile doz-cevap değerlendirmesinden gelen sonuçların karşılaştırıldığı sürecin dördüncü ve son adımına ne ad verilmektedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Kimyasal risk etmenlerinin insan sağlığına yönelik değerlendirilmesi sürecinde; maruz kalınan doz ile tepki oranlarının bilimsel düzeyde karşılaştırıldığı ve analiz döngüsünün kesin olarak sonlandığı dördüncü nihai işlem aşaması kesinlikle tehlike tanımlamasıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Kimyasal risk etmenlerinin insan sağlığına yönelik değerlendirilmesi sürecinde; maruz kalınan doz ile tepki oranlarının bilimsel düzeyde karşılaştırıldığı ve analiz döngüsünün kesin olarak sonlandığı dördüncü nihai işlem aşaması kesinlikle maruziyet değerlendirmesidir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Kimyasal risk etmenlerinin insan sağlığına yönelik değerlendirilmesi sürecinde; maruz kalınan doz ile tepki oranlarının bilimsel düzeyde karşılaştırıldığı ve analiz döngüsünün kesin olarak sonlandığı dördüncü nihai işlem aşaması kesinlikle risk karakterizasyonudur.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Kimyasal risk etmenlerinin insan sağlığına yönelik değerlendirilmesi sürecinde; maruz kalınan doz ile tepki oranlarının bilimsel düzeyde karşılaştırıldığı ve analiz döngüsünün kesin olarak sonlandığı dördüncü nihai işlem aşaması kesinlikle doz ölçümüdür.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Kimyasal risk etmenlerinin insan sağlığına yönelik değerlendirilmesi sürecinde; maruz kalınan doz ile tepki oranlarının bilimsel düzeyde karşılaştırıldığı ve analiz döngüsünün kesin olarak sonlandığı dördüncü nihai işlem aşaması kesinlikle genel değerlendirmedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Açıklama</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasal risk değerlendirmesi 4 adımdan oluşur: 1-Tehlike tanımlama, 2-Tehlike karakterizasyonu, 3-Maruziyet değerlendirmesi, 4-Risk Karakterizasyonu. Maruziyet dozunun toksikolojik doz-cevap verisi ile birleştirilip karşılaştırıldığı o son aşama <strong>Risk Karakterizasyonu</strong>'dur. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">3. Kimyasal süreç endüstrilerinde proses tehlikelerini tespit etmek için oluşturulan, "Tehlike ve İşletilebilirlik Analizi" anlamına gelen uzman sezgilerine dayalı kalitatif risk değerlendirme yönteminin kısa (İngilizce) adı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Endüstriyel tesislerdeki potansiyel tehlikelerin belirlenmesi amacıyla geliştirilmiş olan ve tamamen uzmanların analitik sezgilerine dayanan niteliksel tabanlı tehlike ve işletilebilirlik risk değerlendirme yönteminin evrensel literatürdeki kısa ingilizce kısaltması kesinlikle HAZOP yöntemidir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Endüstriyel tesislerdeki potansiyel tehlikelerin belirlenmesi amacıyla geliştirilmiş olan ve tamamen uzmanların analitik sezgilerine dayanan niteliksel tabanlı tehlike ve işletilebilirlik risk değerlendirme yönteminin evrensel literatürdeki kısa ingilizce kısaltması kesinlikle FMEA yöntemidir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Endüstriyel tesislerdeki potansiyel tehlikelerin belirlenmesi amacıyla geliştirilmiş olan ve tamamen uzmanların analitik sezgilerine dayanan niteliksel tabanlı tehlike ve işletilebilirlik risk değerlendirme yönteminin evrensel literatürdeki kısa ingilizce kısaltması kesinlikle SQRA yöntemidir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Endüstriyel tesislerdeki potansiyel tehlikelerin belirlenmesi amacıyla geliştirilmiş olan ve tamamen uzmanların analitik sezgilerine dayanan niteliksel tabanlı tehlike ve işletilebilirlik risk değerlendirme yönteminin evrensel literatürdeki kısa ingilizce kısaltması kesinlikle COSHH yöntemidir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Endüstriyel tesislerdeki potansiyel tehlikelerin belirlenmesi amacıyla geliştirilmiş olan ve tamamen uzmanların analitik sezgilerine dayanan niteliksel tabanlı tehlike ve işletilebilirlik risk değerlendirme yönteminin evrensel literatürdeki kısa ingilizce kısaltması kesinlikle CEI yöntemidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Açıklama</button>
+            <div class="solution-box"><strong>Analiz:</strong> Sayısal veri gerektirmeyen (kalitatif), kimya sanayisinde "Tehlike ve İşletilebilirlik Analizi" (Hazard and Operability Study) kelimelerinin kısaltmasından doğan meşhur uzman analiz tekniğinin literatürdeki adı <strong>HAZOP</strong>'tur. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">4. Fizikokimyasal tehlikelerin değerlendirilmesinde büyük önem taşıyan ateşleme kaynaklarından; "fırınlar, radyatörler, sıcak yüzeyler ve araç motorları" gibi enerjiyi yayan faktörler hangi spesifik tehlike kategorisi altında gruplandırılmaktadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Fizikokimyasal tehlikelerin endüstriyel düzeyde değerlendirilmesinde muazzam bir önem taşıyan ateşleme kaynakları sınıflandırıldığında; fırınlar, radyatörler, sıcak yüzeyler ve araç motorları gibi potansiyel tehlikeler spesifik olarak yalnızca alevler kategorisi altında gruplandırılarak incelenmektedir.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Fizikokimyasal tehlikelerin endüstriyel düzeyde değerlendirilmesinde muazzam bir önem taşıyan ateşleme kaynakları sınıflandırıldığında; fırınlar, radyatörler, sıcak yüzeyler ve araç motorları gibi potansiyel tehlikeler spesifik olarak yalnızca kıvılcımlar kategorisi altında gruplandırılarak incelenmektedir.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Fizikokimyasal tehlikelerin endüstriyel düzeyde değerlendirilmesinde muazzam bir önem taşıyan ateşleme kaynakları sınıflandırıldığında; fırınlar, radyatörler, sıcak yüzeyler ve araç motorları gibi potansiyel tehlikeler spesifik olarak yalnızca ısı kategorisi altında gruplandırılarak incelenmektedir.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Fizikokimyasal tehlikelerin endüstriyel düzeyde değerlendirilmesinde muazzam bir önem taşıyan ateşleme kaynakları sınıflandırıldığında; fırınlar, radyatörler, sıcak yüzeyler ve araç motorları gibi potansiyel tehlikeler spesifik olarak yalnızca sürtünme kategorisi altında gruplandırılarak incelenmektedir.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Fizikokimyasal tehlikelerin endüstriyel düzeyde değerlendirilmesinde muazzam bir önem taşıyan ateşleme kaynakları sınıflandırıldığında; fırınlar, radyatörler, sıcak yüzeyler ve araç motorları gibi potansiyel tehlikeler spesifik olarak yalnızca statik kategorisi altında gruplandırılarak incelenmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Açıklama</button>
+            <div class="solution-box"><strong>Analiz:</strong> Ateşleme (tutuşma) kaynakları 3'e ayrılır: Alevler (kaynak alevi), Kıvılcımlar (statik, elektrik motoru, priz) ve <strong>Isı (Araç egzozu, motor, radyatör, fırın, sıcak yüzeyler)</strong>. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">5. Risklerin kontrol altına alınmasında kullanılan denetim hiyerarşisinde; "insanların çalışma şekillerini değiştirmek" prensibine dayanan ve hiyerarşide dördüncü sırada (aşağıdan ikinci) yer alan kontrol basamağı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Risklerin güvenli bir biçimde kontrol altına alınmasında kullanılan hiyerarşik yönetim piramidine göre; çalışan personelin operasyonel çalışma şekillerini tamamen değiştirmeyi temel hedef alan spesifik koruma stratejisi kesinlikle idari kontroller olarak isimlendirilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Risklerin güvenli bir biçimde kontrol altına alınmasında kullanılan hiyerarşik yönetim piramidine göre; çalışan personelin operasyonel çalışma şekillerini tamamen değiştirmeyi temel hedef alan spesifik koruma stratejisi kesinlikle mühendislik kontrolleri olarak isimlendirilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Risklerin güvenli bir biçimde kontrol altına alınmasında kullanılan hiyerarşik yönetim piramidine göre; çalışan personelin operasyonel çalışma şekillerini tamamen değiştirmeyi temel hedef alan spesifik koruma stratejisi kesinlikle kişisel donanımlar olarak isimlendirilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Risklerin güvenli bir biçimde kontrol altına alınmasında kullanılan hiyerarşik yönetim piramidine göre; çalışan personelin operasyonel çalışma şekillerini tamamen değiştirmeyi temel hedef alan spesifik koruma stratejisi kesinlikle fiziksel bertaraf olarak isimlendirilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Risklerin güvenli bir biçimde kontrol altına alınmasında kullanılan hiyerarşik yönetim piramidine göre; çalışan personelin operasyonel çalışma şekillerini tamamen değiştirmeyi temel hedef alan spesifik koruma stratejisi kesinlikle tehlike ikamesi olarak isimlendirilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Açıklama</button>
+            <div class="solution-box"><strong>Analiz:</strong> Denetim Hiyerarşisi (Şekil 5.3): 1. Bertaraf (tehlikeyi kaldırmak), 2. Yer Değiştirme (ikame), 3. Mühendislik Kontrolleri (izole etmek), 4. <strong>İdari Kontroller (İnsanların çalışma şekillerini/vardiyalarını değiştirmek)</strong>, 5. KKD. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">6. Biyolojik risk değerlendirmesinin bilgi toplama adımında incelenen faktörlerden; "stres, yorgunluk, zihinsel durum ve prosedürleri takip etmeme" gibi insani özellikleri kapsayan değerlendirme başlığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Biyolojik risk etmenleriyle yürütülen laboratuvar çalışmalarında değerlendirme adımları gerçekleştirilirken; personelin sahip olduğu stres, kronik yorgunluk ve zihinsel tükenmişlik gibi özellikler doğrudan doğruya spesifik bir şekilde yalnızca davranışsal faktörler kapsamında incelenmektedir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Biyolojik risk etmenleriyle yürütülen laboratuvar çalışmalarında değerlendirme adımları gerçekleştirilirken; personelin sahip olduğu stres, kronik yorgunluk ve zihinsel tükenmişlik gibi özellikler doğrudan doğruya spesifik bir şekilde yalnızca bağışıklık faktörleri kapsamında incelenmektedir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Biyolojik risk etmenleriyle yürütülen laboratuvar çalışmalarında değerlendirme adımları gerçekleştirilirken; personelin sahip olduğu stres, kronik yorgunluk ve zihinsel tükenmişlik gibi özellikler doğrudan doğruya spesifik bir şekilde yalnızca çevresel faktörler kapsamında incelenmektedir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Biyolojik risk etmenleriyle yürütülen laboratuvar çalışmalarında değerlendirme adımları gerçekleştirilirken; personelin sahip olduğu stres, kronik yorgunluk ve zihinsel tükenmişlik gibi özellikler doğrudan doğruya spesifik bir şekilde yalnızca genetik faktörler kapsamında incelenmektedir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Biyolojik risk etmenleriyle yürütülen laboratuvar çalışmalarında değerlendirme adımları gerçekleştirilirken; personelin sahip olduğu stres, kronik yorgunluk ve zihinsel tükenmişlik gibi özellikler doğrudan doğruya spesifik bir şekilde yalnızca patojenik faktörler kapsamında incelenmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Açıklama</button>
+            <div class="solution-box"><strong>Analiz:</strong> Bilgi toplama aşamasında: Aşı ve diyet "Bağışıklık" faktörüdür. Laboratuvar cihazları ve biyogüvenlik kabini "Çevresel (Yer)" faktörüdür. Personelin stresi, yorgunluğu, eğitimi ve kurallara uyma (kısayol seçme) durumu ise doğrudan <strong>Davranışsal Faktörler</strong> başlığında incelenir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">7. Sağlık açısından önemli bir risk olduğunda ve sağlığa zararlı kanserojenler, mutajenler veya üreme için toksik (reprotoksik) maddeler gibi çok yüksek riskli kimyasallar için zorunlu olan değerlendirme türü hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Kimyasal risklerin analiz edildiği endüstriyel tesislerde; çalışanların sağlığına zararlı kanserojenler, mutajenler veya üreme sistemini bozan son derece yüksek riskli maddeler için kullanılması mutlak suretle zorunlu tutulan yöntem ayrıntılı değerlendirme yaklaşımıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Kimyasal risklerin analiz edildiği endüstriyel tesislerde; çalışanların sağlığına zararlı kanserojenler, mutajenler veya üreme sistemini bozan son derece yüksek riskli maddeler için kullanılması mutlak suretle zorunlu tutulan yöntem genel değerlendirme yaklaşımıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Kimyasal risklerin analiz edildiği endüstriyel tesislerde; çalışanların sağlığına zararlı kanserojenler, mutajenler veya üreme sistemini bozan son derece yüksek riskli maddeler için kullanılması mutlak suretle zorunlu tutulan yöntem basit değerlendirme yaklaşımıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Kimyasal risklerin analiz edildiği endüstriyel tesislerde; çalışanların sağlığına zararlı kanserojenler, mutajenler veya üreme sistemini bozan son derece yüksek riskli maddeler için kullanılması mutlak suretle zorunlu tutulan yöntem kantitatif değerlendirme yaklaşımıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Kimyasal risklerin analiz edildiği endüstriyel tesislerde; çalışanların sağlığına zararlı kanserojenler, mutajenler veya üreme sistemini bozan son derece yüksek riskli maddeler için kullanılması mutlak suretle zorunlu tutulan yöntem yüzeysel değerlendirme yaklaşımıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Açıklama</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasal risk değerlendirmesi 3 çeşittir: Basit, Genel ve Ayrıntılı. Genel değerlendirmeler "kanserojenler gibi çok yüksek riskli kimyasallar için uygun değildir". Kanserojen, mutajen ve reprotoksik gibi son derece riskli ajanlar için <strong>Ayrıntılı Değerlendirme</strong> yapılmak zorundadır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">8. Matematiksel formüllerle ifade edilen kantitatif risk değerlendirmesinin temel eşitliğine göre; bir riskin skorunu bulmak için "Olayın Meydana Gelme İhtimali" ile hangi faktörün birbiriyle çarpılması gerekmektedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Matematiksel hesaplamalara dayalı olan kantitatif risk analiz metotlarının temel akademik eşitliğine göre; bir riskin sayısal büyüklüğünü bulmak amacıyla olayın meydana gelme ihtimaliyle matematiksel olarak mutlaka çarpılması gereken unsur tehlikenin etkisidir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Matematiksel hesaplamalara dayalı olan kantitatif risk analiz metotlarının temel akademik eşitliğine göre; bir riskin sayısal büyüklüğünü bulmak amacıyla olayın meydana gelme ihtimaliyle matematiksel olarak mutlaka çarpılması gereken unsur ortamın basıncıdır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Matematiksel hesaplamalara dayalı olan kantitatif risk analiz metotlarının temel akademik eşitliğine göre; bir riskin sayısal büyüklüğünü bulmak amacıyla olayın meydana gelme ihtimaliyle matematiksel olarak mutlaka çarpılması gereken unsur tesisin sıcaklığıdır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Matematiksel hesaplamalara dayalı olan kantitatif risk analiz metotlarının temel akademik eşitliğine göre; bir riskin sayısal büyüklüğünü bulmak amacıyla olayın meydana gelme ihtimaliyle matematiksel olarak mutlaka çarpılması gereken unsur ürünün maliyetidir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Matematiksel hesaplamalara dayalı olan kantitatif risk analiz metotlarının temel akademik eşitliğine göre; bir riskin sayısal büyüklüğünü bulmak amacıyla olayın meydana gelme ihtimaliyle matematiksel olarak mutlaka çarpılması gereken unsur işçinin maaşıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Açıklama</button>
+            <div class="solution-box"><strong>Analiz:</strong> Tüm dünyada kantitatif (sayısal) risk analizinin en temel eşitliği şu şekildedir: <strong>RİSK = Olayın Meydana Gelme İhtimali (Olasılık) x Tehlikenin Etkisi (Şiddet)</strong>. Bu nedenle çarpılması gereken unsur "tehlikenin etkisidir". Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">9. Biyolojik risk değerlendirmesinde "Maruziyetin Sonucu (Ciddiyeti)" incelenirken; enfeksiyonun hastalık düzeyine ulaşmadığı, tıbbi müdahale gerektirmeyen ve "Asemptomatik kolonizasyon" olarak tanımlanan en alt (en hafif) seviye hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Biyolojik etmenlerin analiz edildiği değerlendirme tablolarında maruziyet sonucunun ciddiyeti incelenirken; enfeksiyonun hastalık boyutuna ulaşmadığı ve literatürde asemptomatik kolonizasyon şeklinde sınıflandırılan en hafif klinik tablo seviyesi tıp dünyasında kesinlikle minör kategorisindedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Biyolojik etmenlerin analiz edildiği değerlendirme tablolarında maruziyet sonucunun ciddiyeti incelenirken; enfeksiyonun hastalık boyutuna ulaşmadığı ve literatürde asemptomatik kolonizasyon şeklinde sınıflandırılan en hafif klinik tablo seviyesi tıp dünyasında kesinlikle orta kategorisindedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Biyolojik etmenlerin analiz edildiği değerlendirme tablolarında maruziyet sonucunun ciddiyeti incelenirken; enfeksiyonun hastalık boyutuna ulaşmadığı ve literatürde asemptomatik kolonizasyon şeklinde sınıflandırılan en hafif klinik tablo seviyesi tıp dünyasında kesinlikle büyük kategorisindedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Biyolojik etmenlerin analiz edildiği değerlendirme tablolarında maruziyet sonucunun ciddiyeti incelenirken; enfeksiyonun hastalık boyutuna ulaşmadığı ve literatürde asemptomatik kolonizasyon şeklinde sınıflandırılan en hafif klinik tablo seviyesi tıp dünyasında kesinlikle kritik kategorisindedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Biyolojik etmenlerin analiz edildiği değerlendirme tablolarında maruziyet sonucunun ciddiyeti incelenirken; enfeksiyonun hastalık boyutuna ulaşmadığı ve literatürde asemptomatik kolonizasyon şeklinde sınıflandırılan en hafif klinik tablo seviyesi tıp dünyasında kesinlikle felaket kategorisindedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Açıklama</button>
+            <div class="solution-box"><strong>Analiz:</strong> Maruziyet ciddiyeti seviyeleri şöyledir: <strong>Minör (asemptomatik kolonizasyon)</strong>, Orta (tıbbi tedavi / ilk yardım), Büyük (enfeksiyon), Kritik (hastalık ve patolojik değişim), Felaket (ölüm). Belirti göstermeyen (asemptomatik) kolonizasyonlar Minör olarak derecelendirilir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">10. Mevzuat ve güvenlik kuralları gereğince; biyolojik etmenlerin yer aldığı laboratuvarlarda yapılan risk değerlendirmeleri herhangi bir değişiklik veya olumsuzluk yaşanmasa dahi en az hangi periyotla (sıklıkla) gözden geçirilmek zorundadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Mevzuat ve güvenlik prosedürleri gereğince; biyolojik risk etmenleriyle faaliyetlerin yürütüldüğü endüstriyel tesislerde hazırlanan risk değerlendirme raporlarının kaza yaşanmasa dahi periyodik olarak mecburi şekilde gözden geçirilme yasal süresi yılda bir kezdir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Mevzuat ve güvenlik prosedürleri gereğince; biyolojik risk etmenleriyle faaliyetlerin yürütüldüğü endüstriyel tesislerde hazırlanan risk değerlendirme raporlarının kaza yaşanmasa dahi periyodik olarak mecburi şekilde gözden geçirilme yasal süresi ayda bir kezdir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Mevzuat ve güvenlik prosedürleri gereğince; biyolojik risk etmenleriyle faaliyetlerin yürütüldüğü endüstriyel tesislerde hazırlanan risk değerlendirme raporlarının kaza yaşanmasa dahi periyodik olarak mecburi şekilde gözden geçirilme yasal süresi haftada bir kezdir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Mevzuat ve güvenlik prosedürleri gereğince; biyolojik risk etmenleriyle faaliyetlerin yürütüldüğü endüstriyel tesislerde hazırlanan risk değerlendirme raporlarının kaza yaşanmasa dahi periyodik olarak mecburi şekilde gözden geçirilme yasal süresi günde bir kezdir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Mevzuat ve güvenlik prosedürleri gereğince; biyolojik risk etmenleriyle faaliyetlerin yürütüldüğü endüstriyel tesislerde hazırlanan risk değerlendirme raporlarının kaza yaşanmasa dahi periyodik olarak mecburi şekilde gözden geçirilme yasal süresi on yılda birdir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Açıklama</button>
+            <div class="solution-box"><strong>Analiz:</strong> İlgili kitaptaki mevzuat başlıklarına (Risk Değerlendirme Adım 5: Kontrollerin Etkinliğini Gözden Geçirmek) göre: "Biyolojik etmenlerin risk değerlendirmeleri herhangi bir kaza ya da değişim yaşanmasa bile her durumda en az <strong>yılda bir kez</strong> periyodik olarak gözden geçirilmelidir." Doğru cevap A seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.6; font-family: 'Lato', sans-serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 5 / Test 5 (Büyük Final Sınavı)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 25 * 60; 
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Akademik Açıklama';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            timerDisplay.style.borderColor = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

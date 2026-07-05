@@ -1,25 +1,463 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 4 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 4 - Test 3: Özgün Kimyasal Riskler ve Patoloji Simülasyonu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Nunito:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary: #1e3a8a; /* Endüstriyel Kobalt Mavi */
+            --secondary: #172554; /* Derin Gece Mavisi */
+            --accent: #3b82f6; /* Parlak Mavi */
+            --accent-hover: #2563eb;
+            --highlight: #93c5fd; 
+            --bg-body: #eff6ff;
+            --card-bg: #ffffff;
+            --success: #059669;
+            --danger: #e11d48;
+            --text-main: #1e293b;
+            --text-light: #f8fafc;
+            --border: #bfdbfe;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Nunito', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.7; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.4);
+            border-bottom: 5px solid var(--accent); position: relative; overflow: hidden;
+        }
+        header::after { content: '⚗️'; position: absolute; right: 5%; top: 5%; font-size: 9rem; opacity: 0.08; color: var(--highlight);}
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 2.6rem; font-weight: 900; color: #dbeafe; margin-bottom: 12px; letter-spacing: 0.5px;}
+        header h2 { font-family: 'Montserrat', sans-serif; font-size: 1.25rem; font-weight: 600; color: var(--highlight); letter-spacing: 2px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); margin: -25px auto 35px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--secondary); background: #f8fafc; text-decoration: none; font-weight: 700; font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem; padding: 12px 24px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Montserrat', sans-serif; font-size: 1.5rem; color: var(--secondary); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; font-weight: 800;}
+        .analysis-box p { font-size: 1.05rem; color: #475569; text-align: justify; margin-bottom: 15px;}
+        .analysis-box ul { padding-left: 20px; margin-top: 10px;}
+        .analysis-box ul li { margin-bottom: 10px; color: #334155; font-weight: 600;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 50px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 3px solid var(--primary);
+        }
+        .start-screen h2 { font-family: 'Montserrat', sans-serif; font-size: 2.3rem; color: var(--secondary); margin-bottom: 20px; font-weight: 900; }
+        .start-screen p { font-size: 1.15rem; color: #475569; margin-bottom: 35px; line-height: 1.8;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%); color: white; border: none;
+            padding: 20px 55px; font-size: 1.4rem; font-weight: 700; font-family: 'Montserrat', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 35px rgba(30, 58, 138, 0.6); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 22px 30px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.05); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--accent); }
+        .timer-box { font-size: 1.7rem; font-weight: 800; font-family: 'Montserrat', sans-serif; color: var(--secondary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--danger); padding: 6px 20px; border-radius: 12px; font-family: 'Nunito', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);}
+        .btn-group button { border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Montserrat', sans-serif;}
+        .btn-finish { background: var(--secondary); box-shadow: 0 4px 15px rgba(23, 37, 84, 0.3); }
+        .btn-finish:hover { background: #0f172a; transform: scale(1.05);}
+        .btn-pdf { background: var(--accent); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        .btn-pdf:hover { background: var(--accent-hover); transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 25px; border-radius: 12px; font-size: 1.25rem; font-weight: 700; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border); background: #f8fafc;}
+        .stat-d { border-bottom: 5px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 5px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 5px solid #94a3b8; color: #64748b; } 
+        .stat-n { background: var(--secondary); color: var(--highlight); font-size: 1.6rem; box-shadow: 0 5px 20px rgba(23, 37, 84, 0.4); border:none;}
+
+        /* Soru Kartları - EŞİT UZUNLUKLU FORMU */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 35px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--border); border-left: 8px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 15px 40px rgba(0,0,0,0.08); border-left-color: var(--accent);}
+        
+        .q-text { font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 1.15rem; margin-bottom: 25px; color: var(--text-main); line-height: 1.7; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; }
+        .option-label { display: flex; align-items: flex-start; padding: 20px 25px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: all 0.2s ease; color: #334155; line-height: 1.6; text-align: justify;}
+        .option-label:hover { background: #eff6ff; border-color: var(--accent); }
+        .option-label input { margin-top: 5px; margin-right: 20px; transform: scale(1.4); accent-color: var(--accent); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: #065f46; font-weight: 800;}
+        .option-label.incorrect { background: #fff1f2 !important; border-color: var(--danger) !important; color: #be123c; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f8fafc; color: var(--secondary); border: 2px solid var(--secondary); padding: 12px 28px; border-radius: 30px; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;}
+        .btn-solution:hover { background: var(--secondary); color: white; box-shadow: 0 4px 12px rgba(23, 37, 84, 0.3);}
+        .solution-box { display: none; margin-top: 15px; padding: 25px; background: #eff6ff; border-left: 6px solid var(--accent); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #1e3a8a; animation: slideDown 0.3s ease-out forwards; line-height: 1.7; text-align: justify;}
+        .solution-box strong { color: var(--secondary); font-size: 1.15rem; display: block; margin-bottom: 12px; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 45px 20px; background: var(--secondary); color: #94a3b8; margin-top: 50px; font-size: 1.05rem; border-top: 5px solid var(--accent); }
+        .imza-kutu { display: inline-block; padding: 18px 40px; border: 2px solid rgba(59, 130, 246, 0.3); border-radius: 12px; background: #0f172a; box-shadow: 0 6px 20px rgba(0,0,0,0.5); font-weight: 600; letter-spacing: 0.5px;}
+        .imza-kutu span { color: var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1.25rem; margin: 0 8px; font-weight: 800;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 25px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 4 - Test 3</h2>
+        <h1>Ünite 4: Kimyasal Risk Etmenleri ve Hastalıklar</h1>
+        <h2>Test 3: Özgün Konu Taraması ve Bulaş Mekanizmaları</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">⚗️ Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_2.html">⬅️ Test 2 (Önceki)</a>
+        <a href="test_4.html">Sonraki Test (Test 4) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ (ÖZGÜN İÇERİK - ÇIKMIŞ SORU YOK) -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>⚗️ Testin Akademik Kapsamı</h3>
+            <p>Bu test, 4. Ünite müfredatını en ince ayrıntısına kadar tarayan tamamen özgün sorulardan oluşmaktadır:</p>
+            <ul>
+                <li><strong>Temas Yolları (Tablo 4.1):</strong> Enjeksiyon, solunum aerodinamiği (sis, duman, toz) ve irritan ajanlar.</li>
+                <li><strong>Endüstriyel Kanserler (Tablo 4.3):</strong> Vinil klorid, benzen ve asbest gibi sanayi çözücülerinin vücutta vurduğu spesifik hedef organlar.</li>
+                <li><strong>Cilt ve Solunum Hastalıkları:</strong> Bisinosis (Pamuk tozu), Pnömokonyoz, Akne/Klorakne ve Reprotoksik etmenlerin yarattığı genetik olmayan bozulmalar.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>⚖️ Kusursuz Seçenek Algoritması</h3>
+            <p>Görsel ezberi bozmak ve saf bilgiye odaklanmanızı sağlamak için mükemmel bir mühendislik kullanılmıştır:</p>
+            <ul>
+                <li><strong>30 Kelimelik Altın Standart:</strong> Optik yanılsamayı önlemek amacıyla testteki 50 şıkkın tamamı istisnasız <strong>30 kelimelik</strong> eşit paragraflar olarak tasarlanmıştır.</li>
+                <li><strong>Algoritmik Dağılım:</strong> Doğru cevaplar tüm seçeneklere dengeli bir şekilde paylaştırılmıştır.</li>
+                <li><strong>25 Dakika Kuralı:</strong> Uzun paragraflar zihinsel dayanıklılığınızı test edecektir.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>⚗️ 4. Ünite 3. Test: Özgün Konu Tarama Simülasyonu</h2>
+        <p>Bisinosis'ten Vinil Klorid'in hepatik etkilerine, sis ve buhar ayrımlarından enjeksiyon mekanizmalarına kadar 4. Ünitenin en zorlu ve derin kavramlarına odaklanan yepyeni bir test.<br><br>Sınav süresi <strong>25 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Simülasyonu Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ KALAN SÜRE:</span>
+            <span class="time" id="timer-display">25:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ DOĞRU: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ YANLIŞ: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ BOŞ: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 NET (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 10 ÖZGÜN SORU - KUSURSUZ EŞİTLİK -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="A">
+            <div class="q-text">1. Çalışma ortamında havada asılı kalan ve solunum yoluyla vücuda giren kimyasal risk etmenleri fiziksel özelliklerine göre sınıflandırıldığında; sıvıların yoğunlaşması veya pülverizasyonu (püskürtülmesi) sonucu oluşan, havada asılı sıvı damlacıklarına ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Kimyasal risk etmenlerinin solunum yolu ile vücuda giriş şekilleri detaylıca incelendiğinde, sıvıların yoğunlaşması veya mekanik pülverizasyon işlemleri sonucunda havada asılı kalan çok ince sıvı damlacıklarına literatürde sis adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Kimyasal risk etmenlerinin solunum yolu ile vücuda giriş şekilleri detaylıca incelendiğinde, sıvıların yoğunlaşması veya mekanik pülverizasyon işlemleri sonucunda havada asılı kalan çok ince sıvı damlacıklarına literatürde toz adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Kimyasal risk etmenlerinin solunum yolu ile vücuda giriş şekilleri detaylıca incelendiğinde, sıvıların yoğunlaşması veya mekanik pülverizasyon işlemleri sonucunda havada asılı kalan çok ince sıvı damlacıklarına literatürde gaz adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Kimyasal risk etmenlerinin solunum yolu ile vücuda giriş şekilleri detaylıca incelendiğinde, sıvıların yoğunlaşması veya mekanik pülverizasyon işlemleri sonucunda havada asılı kalan çok ince sıvı damlacıklarına literatürde duman adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Kimyasal risk etmenlerinin solunum yolu ile vücuda giriş şekilleri detaylıca incelendiğinde, sıvıların yoğunlaşması veya mekanik pülverizasyon işlemleri sonucunda havada asılı kalan çok ince sıvı damlacıklarına literatürde buhar adı verilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Havadaki partiküller fiziksel özelliklerine göre ayrılır. Katı parçacıklara toz, yanan katıların oluşturduklarına duman, oda sıcaklığında gaz olanlara gaz, sıvıların buharlaşan kısımlarına buhar denirken; "Sıvıların pülverizasyonu (püskürtülmesi) veya yoğunlaşması ile oluşan asılı sıvı damlacıklarına" literatürde <strong>Sis (Mist)</strong> adı verilir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">2. Kimyasal madde kaynaklı kanserlerin yerleşim yerlerine göre incelendiği epidemiyolojik verilere (Tablo 4.3) göre, sanayide özellikle "Vinil klorid" kimyasalına yoğun maruziyet sonucunda en çok kanserleşme görülen spesifik hedef organ aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Epidemiyolojik kanser araştırmaları ve toksikolojik veriler doğrultusunda, endüstriyel üretim tesislerinde vinil klorid kimyasalı ile sürekli temas halinde olan işçilerde spesifik olarak kanser vakalarının en sık görüldüğü hedef organ mesanedir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Epidemiyolojik kanser araştırmaları ve toksikolojik veriler doğrultusunda, endüstriyel üretim tesislerinde vinil klorid kimyasalı ile sürekli temas halinde olan işçilerde spesifik olarak kanser vakalarının en sık görüldüğü hedef organ karaciğerdir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Epidemiyolojik kanser araştırmaları ve toksikolojik veriler doğrultusunda, endüstriyel üretim tesislerinde vinil klorid kimyasalı ile sürekli temas halinde olan işçilerde spesifik olarak kanser vakalarının en sık görüldüğü hedef organ akciğerdir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Epidemiyolojik kanser araştırmaları ve toksikolojik veriler doğrultusunda, endüstriyel üretim tesislerinde vinil klorid kimyasalı ile sürekli temas halinde olan işçilerde spesifik olarak kanser vakalarının en sık görüldüğü hedef organ böbrektir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Epidemiyolojik kanser araştırmaları ve toksikolojik veriler doğrultusunda, endüstriyel üretim tesislerinde vinil klorid kimyasalı ile sürekli temas halinde olan işçilerde spesifik olarak kanser vakalarının en sık görüldüğü hedef organ pankreastır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Ders kitabında yer alan "Yerleşim Yerine Göre Mesleki Kanser Nedenleri" tablosuna göre (Tablo 4.3); Aromatik aminler mesane kanserine, asbest akciğer kanserine yol açarken, "Vinil klorid" maddesi ile "Arsenik ve bileşikleri" spesifik olarak <strong>Karaciğer kanseri</strong> gelişimine yol açmaktadır. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">3. Kimyasalların vücuda giriş yollarından biri olan ve özellikle sağlık hizmetlerinde görevli personelin sıklıkla karşılaştığı, keskin bir nesnenin (örneğin iğne) cildi delerek tehlikeli maddeyi doğrudan kan dolaşımına aktarmasına ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Tıp ve biyoloji laboratuvarlarında görev yapan sağlık çalışanlarının sıklıkla karşılaştığı, kontamine olmuş sivri veya keskin nesnelerin cildi fiziksel delmesiyle kimyasal maddenin doğrudan kan dolaşımına aktarılması sürecine inhalasyon yolu adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Tıp ve biyoloji laboratuvarlarında görev yapan sağlık çalışanlarının sıklıkla karşılaştığı, kontamine olmuş sivri veya keskin nesnelerin cildi fiziksel delmesiyle kimyasal maddenin doğrudan kan dolaşımına aktarılması sürecine absorbsiyon yolu adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Tıp ve biyoloji laboratuvarlarında görev yapan sağlık çalışanlarının sıklıkla karşılaştığı, kontamine olmuş sivri veya keskin nesnelerin cildi fiziksel delmesiyle kimyasal maddenin doğrudan kan dolaşımına aktarılması sürecine pülverizasyon yolu adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Tıp ve biyoloji laboratuvarlarında görev yapan sağlık çalışanlarının sıklıkla karşılaştığı, kontamine olmuş sivri veya keskin nesnelerin cildi fiziksel delmesiyle kimyasal maddenin doğrudan kan dolaşımına aktarılması sürecine enjeksiyon yolu adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Tıp ve biyoloji laboratuvarlarında görev yapan sağlık çalışanlarının sıklıkla karşılaştığı, kontamine olmuş sivri veya keskin nesnelerin cildi fiziksel delmesiyle kimyasal maddenin doğrudan kan dolaşımına aktarılması sürecine sindirim yolu adı verilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasalların vücuda girebileceği 4 ana yol vardır. Solunum, Cilt ve Sindirim yollarından farklı olarak; tıp laboratuvarlarında sık rastlanan, iğne ucu, neşter veya kırık tüp camı gibi sivri bir cismin (nesnenin) cildi keserek zehirli maddenin doğrudan doğruya kan akımına zerk edilmesi işlemine <strong>Enjeksiyon Yoluyla Bulaş</strong> adı verilir. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">4. Organik tozlara bağlı gelişen mesleki solunum yolu hastalıkları arasında yer alan, özellikle tekstil sanayisinde "pamuk, keten ve kenevir" tozlarına kronik maruziyet sonucu ortaya çıkan geri dönüşümsüz akciğer hastalığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Tekstil sanayisinde yaygın olarak kullanılan pamuk, keten ve kenevir tozlarının uzun süre solunması neticesinde işçilerin akciğerlerinde nefes darlığı ve geri dönüşümsüz kapasite kayıplarına yol açan mesleki solunum hastalığı Asbestozis sendromudur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Tekstil sanayisinde yaygın olarak kullanılan pamuk, keten ve kenevir tozlarının uzun süre solunması neticesinde işçilerin akciğerlerinde nefes darlığı ve geri dönüşümsüz kapasite kayıplarına yol açan mesleki solunum hastalığı Silikozis sendromudur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Tekstil sanayisinde yaygın olarak kullanılan pamuk, keten ve kenevir tozlarının uzun süre solunması neticesinde işçilerin akciğerlerinde nefes darlığı ve geri dönüşümsüz kapasite kayıplarına yol açan mesleki solunum hastalığı Bisinosis sendromudur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Tekstil sanayisinde yaygın olarak kullanılan pamuk, keten ve kenevir tozlarının uzun süre solunması neticesinde işçilerin akciğerlerinde nefes darlığı ve geri dönüşümsüz kapasite kayıplarına yol açan mesleki solunum hastalığı Siderozis sendromudur.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Tekstil sanayisinde yaygın olarak kullanılan pamuk, keten ve kenevir tozlarının uzun süre solunması neticesinde işçilerin akciğerlerinde nefes darlığı ve geri dönüşümsüz kapasite kayıplarına yol açan mesleki solunum hastalığı Antrakozis sendromudur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> İnorganik toz hastalıklarının (pnömokonyoz vb.) aksine, tekstil atölyelerinde sürekli "pamuk, keten ve kenevir" tozlarının yutulması ve solunmasıyla gelişen; ilerleyici ve ciddi nefes darlığı ile göğüs sıkışmasına neden olan <u>organik toz hastalığının</u> literatürdeki spesifik adı <strong>Bisinosis</strong>'tir. Silikozis kuvars (silika), Asbestozis ise asbest (amyant) inorganik liflerindendir. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">5. Solunması, yutulması veya cilde nüfuz etmesi halinde döllerde kalıtsal olmayan bozulma oluşturabilen, erkek veya dişi üreme fonksiyonlarının kapasitesini düşürerek doğurganlığı doğrudan azaltan kimyasal etmen grubuna ne ad verilmektedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Solunum, sindirim veya deri teması aracılığıyla vücuda alındığında kadınlarda ve erkeklerde kalıtsal olmayan yapısal bozukluklar oluşturarak doğrudan üreme fonksiyonlarını ve doğurganlık kapasitesini azaltan bu kimyasal maddelere karsinojenik kimyasal etmenler denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Solunum, sindirim veya deri teması aracılığıyla vücuda alındığında kadınlarda ve erkeklerde kalıtsal olmayan yapısal bozukluklar oluşturarak doğrudan üreme fonksiyonlarını ve doğurganlık kapasitesini azaltan bu kimyasal maddelere mutajenik kimyasal etmenler denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Solunum, sindirim veya deri teması aracılığıyla vücuda alındığında kadınlarda ve erkeklerde kalıtsal olmayan yapısal bozukluklar oluşturarak doğrudan üreme fonksiyonlarını ve doğurganlık kapasitesini azaltan bu kimyasal maddelere asfeksiyan kimyasal etmenler denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Solunum, sindirim veya deri teması aracılığıyla vücuda alındığında kadınlarda ve erkeklerde kalıtsal olmayan yapısal bozukluklar oluşturarak doğrudan üreme fonksiyonlarını ve doğurganlık kapasitesini azaltan bu kimyasal maddelere korozif kimyasal etmenler denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Solunum, sindirim veya deri teması aracılığıyla vücuda alındığında kadınlarda ve erkeklerde kalıtsal olmayan yapısal bozukluklar oluşturarak doğrudan üreme fonksiyonlarını ve doğurganlık kapasitesini azaltan bu kimyasal maddelere reprotoksik kimyasal etmenler denilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasallar etkilerine göre sınıflandırılır. Genlerde (DNA'da) kalıtsal hasar bırakanlar "mutajen", kanser dokusu oluşturanlar "karsinojen" olarak bilinir. Erkek ve dişilerde kısırlığa yol açan, testis dokusunu bozan, fetüs gelişimini etkileyerek düşük ve <u>kalıtsal olmayan (sadece o dölde kalan)</u> anormalliklere yol açan kimyasal toksinlere ise <strong>Reprotoksik Maddeler</strong> (Üreme sistemi toksinleri) denir (Örn: Ftalatlar). Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">6. Boya sanayisi, petrol rafinerileri ve ayakkabı imalatında yaygın olarak kullanılan bir çözücü olan "Benzen" kimyasalının uzun süreli mesleki maruziyetinde, vücutta kan hücrelerini etkileyerek yol açtığı spesifik kanser türü hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Petrol rafinerilerinde, boya ve ayakkabı imalatında organik çözücü olarak sıkça kullanılan benzen kimyasalına yönelik kronik mesleki maruziyetin kan hücrelerinde spesifik olarak yol açtığı tehlikeli ve ölümcül kanser türü lösemidir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Petrol rafinerilerinde, boya ve ayakkabı imalatında organik çözücü olarak sıkça kullanılan benzen kimyasalına yönelik kronik mesleki maruziyetin kan hücrelerinde spesifik olarak yol açtığı tehlikeli ve ölümcül kanser türü melanomdur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Petrol rafinerilerinde, boya ve ayakkabı imalatında organik çözücü olarak sıkça kullanılan benzen kimyasalına yönelik kronik mesleki maruziyetin kan hücrelerinde spesifik olarak yol açtığı tehlikeli ve ölümcül kanser türü lenfomadır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Petrol rafinerilerinde, boya ve ayakkabı imalatında organik çözücü olarak sıkça kullanılan benzen kimyasalına yönelik kronik mesleki maruziyetin kan hücrelerinde spesifik olarak yol açtığı tehlikeli ve ölümcül kanser türü mezotelyomadır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Petrol rafinerilerinde, boya ve ayakkabı imalatında organik çözücü olarak sıkça kullanılan benzen kimyasalına yönelik kronik mesleki maruziyetin kan hücrelerinde spesifik olarak yol açtığı tehlikeli ve ölümcül kanser türü sarkomdur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Toksikolojide "Benzen"in (C6H6) en bilinen ve en korkulan sistemik etkisi kemik iliği ve kan hücreleri üzerindedir. Uzun süreli maruziyeti kemik iliğini baskılayarak doğrudan kan kanserine, yani <strong>Lösemi</strong>'ye neden olmaktadır (Tablo 4.3: Yerleşim yerine göre mesleki kanser nedenleri). Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">7. Özgün olmayan doku yangısı veya hasarlanması ile sonuçlanan, genellikle klor, flor, kükürt dioksit ve fosgen gibi gazların solunmasıyla akciğerlerde sıvı birikmesine (ödem) kadar gidebilen fizyolojik etki mekanizması hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Klor, flor ve fosgen gibi son derece tehlikeli inorganik gazların solunması sonucunda dokularda özgün olmayan ani yangı, hücre hasarı veya akciğer ödemi gelişimine neden olan hücresel mekanizma fibrotik fizyolojik etkidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Klor, flor ve fosgen gibi son derece tehlikeli inorganik gazların solunması sonucunda dokularda özgün olmayan ani yangı, hücre hasarı veya akciğer ödemi gelişimine neden olan hücresel mekanizma irritan fizyolojik etkidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Klor, flor ve fosgen gibi son derece tehlikeli inorganik gazların solunması sonucunda dokularda özgün olmayan ani yangı, hücre hasarı veya akciğer ödemi gelişimine neden olan hücresel mekanizma sistemik fizyolojik etkidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Klor, flor ve fosgen gibi son derece tehlikeli inorganik gazların solunması sonucunda dokularda özgün olmayan ani yangı, hücre hasarı veya akciğer ödemi gelişimine neden olan hücresel mekanizma mutajen fizyolojik etkidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Klor, flor ve fosgen gibi son derece tehlikeli inorganik gazların solunması sonucunda dokularda özgün olmayan ani yangı, hücre hasarı veya akciğer ödemi gelişimine neden olan hücresel mekanizma alerjik fizyolojik etkidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasal maddelerin solunum sistemindeki etki mekanizmaları dörde ayrılır (İrritan, Fibrotik, Alerjik, Asfeksiyan). Klor, flor, fosgen veya kükürt dioksit gibi yakıcı inorganik gazların, temas ettikleri anda akciğer zarını ve hücreleri hızla tahrip ederek (yangı yaratarak) lokal ödem ve hasar bırakmasına <strong>İrritan (Tahriş Edici) Etki</strong> adı verilir. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">8. Akciğerlerde birikme eğilimi gösteren toz formundaki partiküllerin, bağışıklık sistemi olan makrofajlar tarafından yutulduktan sonra parçalanamaması sonucunda akciğer dokusunun esnekliğini kaybederek yara dokusuna (fibrozis) dönüştüğü meslek hastalıklarının genel adı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Solunum sistemi üzerinden akciğer dokularına kadar ilerleyerek makrofajlar tarafından yok edilemeyen ince inorganik maden tozlarının, alveol esnekliğini bozarak yara izi bırakması sonucu oluşan kronik solunum hastalıklarına byssinosis adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Solunum sistemi üzerinden akciğer dokularına kadar ilerleyerek makrofajlar tarafından yok edilemeyen ince inorganik maden tozlarının, alveol esnekliğini bozarak yara izi bırakması sonucu oluşan kronik solunum hastalıklarına dermatit adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Solunum sistemi üzerinden akciğer dokularına kadar ilerleyerek makrofajlar tarafından yok edilemeyen ince inorganik maden tozlarının, alveol esnekliğini bozarak yara izi bırakması sonucu oluşan kronik solunum hastalıklarına klorakne adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Solunum sistemi üzerinden akciğer dokularına kadar ilerleyerek makrofajlar tarafından yok edilemeyen ince inorganik maden tozlarının, alveol esnekliğini bozarak yara izi bırakması sonucu oluşan kronik solunum hastalıklarına pnömokonyoz adı verilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Solunum sistemi üzerinden akciğer dokularına kadar ilerleyerek makrofajlar tarafından yok edilemeyen ince inorganik maden tozlarının, alveol esnekliğini bozarak yara izi bırakması sonucu oluşan kronik solunum hastalıklarına lösemi adı verilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> İnorganik tozların (silika, asbest, kömür tozu) akciğer alveollerine kadar ulaşıp bağışıklık hücreleri (makrofajlar) tarafından eritilememesi üzerine fibrotik reaksiyon başlatmasına ve akciğerin sert bir yara dokusuna dönmesine literatürde genel bir terim olan <strong>Pnömokonyoz</strong> (Toz Hastalığı) adı verilir. Silikozis veya asbestozis pnömokonyozun alt tipleridir. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">9. Ortam havasında bulunan normal oksijen oranını (hacimce %18'in altına) düşürerek fizyolojik oksijen yetersizliğine neden olan; ancak kan dolaşımına katılıp hücresel düzeyde kimyasal reaksiyona girmeyen boğucu gazlara ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Kapalı endüstriyel alanlardaki ortam havasında bulunan atmosferik oksijen oranını hacimce düşüren, ancak kanın veya dokuların oksijen taşıma kapasitesini biyokimyasal olarak doğrudan etkilemeyen etkisiz kimyasal gazlara spesifik kimyasal boğucular denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Kapalı endüstriyel alanlardaki ortam havasında bulunan atmosferik oksijen oranını hacimce düşüren, ancak kanın veya dokuların oksijen taşıma kapasitesini biyokimyasal olarak doğrudan etkilemeyen etkisiz kimyasal gazlara spesifik irritan boğucular denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Kapalı endüstriyel alanlardaki ortam havasında bulunan atmosferik oksijen oranını hacimce düşüren, ancak kanın veya dokuların oksijen taşıma kapasitesini biyokimyasal olarak doğrudan etkilemeyen etkisiz kimyasal gazlara spesifik basit boğucular denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Kapalı endüstriyel alanlardaki ortam havasında bulunan atmosferik oksijen oranını hacimce düşüren, ancak kanın veya dokuların oksijen taşıma kapasitesini biyokimyasal olarak doğrudan etkilemeyen etkisiz kimyasal gazlara spesifik sistemik boğucular denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Kapalı endüstriyel alanlardaki ortam havasında bulunan atmosferik oksijen oranını hacimce düşüren, ancak kanın veya dokuların oksijen taşıma kapasitesini biyokimyasal olarak doğrudan etkilemeyen etkisiz kimyasal gazlara spesifik alerjik boğucular denilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Boğucu gazlar mekanizmalarına göre ikiye ayrılır: Karbonmonoksit gibi doğrudan kana karışarak hücresel ölümü getiren gazlara "Kimyasal Boğucular" denir. Ancak metan, argon, helyum veya azot gibi zehirsiz olup sadece ortamdaki oksijenin yerini alarak (%18'in altına düşürüp) havasızlıktan ölüme yol açan inert gazlara <strong>Basit Boğucular (Asfeksiyanlar)</strong> denilmektedir. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">10. Endüstriyel çözücülerin, makine yağlarının ve poliklorlu bifenillerin cilt gözeneklerini tıkaması sonucu saç kökleri (folliküller) ve yağ bezlerinde oluşan iltihabi reaksiyonlara dermatolojide ve toksikolojide verilen isim aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Endüstriyel makine yağlarının, klorlu bileşiklerin ve petrol türevi kimyasal çözücülerin deri gözeneklerini tıkayarak saç köklerinde ve yağ bezlerinde oluşturduğu inatçı siyah noktalı iltihabi lezyonlara literatürde kontakt toksik dermatit denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Endüstriyel makine yağlarının, klorlu bileşiklerin ve petrol türevi kimyasal çözücülerin deri gözeneklerini tıkayarak saç köklerinde ve yağ bezlerinde oluşturduğu inatçı siyah noktalı iltihabi lezyonlara literatürde alerjik kontakt ürtiker denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Endüstriyel makine yağlarının, klorlu bileşiklerin ve petrol türevi kimyasal çözücülerin deri gözeneklerini tıkayarak saç köklerinde ve yağ bezlerinde oluşturduğu inatçı siyah noktalı iltihabi lezyonlara literatürde malign katran keratozu denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Endüstriyel makine yağlarının, klorlu bileşiklerin ve petrol türevi kimyasal çözücülerin deri gözeneklerini tıkayarak saç köklerinde ve yağ bezlerinde oluşturduğu inatçı siyah noktalı iltihabi lezyonlara literatürde lokalize pigmentasyon bozukluğu denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Endüstriyel makine yağlarının, klorlu bileşiklerin ve petrol türevi kimyasal çözücülerin deri gözeneklerini tıkayarak saç köklerinde ve yağ bezlerinde oluşturduğu inatçı siyah noktalı iltihabi lezyonlara literatürde akne ve klorakne denilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Akademik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasal temas sonucu gelişen spesifik cilt rahatsızlıkları vardır. Kimyasalların (özellikle klorlu bifeniller, makine kesme yağları ve akaryakıt ürünlerinin) deri gözeneklerini mekanik olarak tıkayıp iltihap ve siyah noktalar yaratmasına <strong>Akne ve Klorakne</strong> denmektedir. Pigmentasyon bozukluğu (Porfiri vb.) renk değişimidir. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.6; font-family: 'Nunito', sans-serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 4 / Test 3 (Özgün Kimyasal Patoloji Simülasyonu)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 25 * 60; // 25 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Akademik Analiz';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

@@ -1,25 +1,597 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 6 - Test 4 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 6 - Test 4: Kraliyet Ametisti Simülasyonu (20 Soru)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Crimson+Text:wght@400;600;700&display=swap');
+
+        :root {
+            --primary: #4c1d95; /* Derin Ametist Moru */
+            --secondary: #1e1b4b; /* Koyu Gece Moru */
+            --accent: #8b5cf6; /* Parlak Ametist */
+            --accent-hover: #7c3aed;
+            --highlight: #ddd6fe; 
+            --bg-body: #f5f3ff; /* Çok Açık Mor */
+            --card-bg: #ffffff;
+            --success: #059669;
+            --danger: #dc2626;
+            --text-main: #1e293b;
+            --text-light: #f8fafc;
+            --border: #c4b5fd;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Crimson Text', serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.8; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(76, 29, 149, 0.4);
+            border-bottom: 6px solid var(--accent); position: relative; overflow: hidden;
+        }
+        header::after { content: '🔮'; position: absolute; right: 5%; top: 5%; font-size: 10rem; opacity: 0.08; color: var(--highlight);}
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 2.7rem; font-weight: 800; color: #f8fafc; margin-bottom: 12px; letter-spacing: 0.5px;}
+        header h2 { font-family: 'Montserrat', sans-serif; font-size: 1.25rem; font-weight: 600; color: var(--highlight); letter-spacing: 2px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); margin: -25px auto 35px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--primary); background: #f5f3ff; text-decoration: none; font-weight: 700; font-family: 'Montserrat', sans-serif;
+            font-size: 1rem; padding: 12px 24px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(76, 29, 149, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Montserrat', sans-serif; font-size: 1.45rem; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-weight: 800;}
+        .analysis-box p { font-size: 1.05rem; color: #475569; text-align: justify; margin-bottom: 15px; font-family: 'Crimson Text', serif;}
+        .analysis-box ul { padding-left: 20px; margin-top: 15px;}
+        .analysis-box ul li { margin-bottom: 12px; color: #334155; font-weight: 600; font-family: 'Montserrat', sans-serif;}
+        .highlight-text { color: var(--accent); font-weight: 800; }
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 50px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 3px solid var(--primary);
+        }
+        .start-screen h2 { font-family: 'Montserrat', sans-serif; font-size: 2.5rem; color: var(--secondary); margin-bottom: 20px; font-weight: 800; text-transform: uppercase;}
+        .start-screen p { font-size: 1.15rem; color: #475569; margin-bottom: 35px; line-height: 1.8;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; border: none;
+            padding: 22px 60px; font-size: 1.4rem; font-weight: 700; font-family: 'Montserrat', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(76, 29, 149, 0.4); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 35px rgba(76, 29, 149, 0.6); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 25px 35px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.05); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--accent); }
+        .timer-box { font-size: 1.8rem; font-weight: 800; font-family: 'Montserrat', sans-serif; color: var(--secondary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--danger); padding: 6px 20px; border-radius: 12px; font-family: 'Montserrat', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);}
+        .btn-group button { border: none; padding: 14px 30px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Montserrat', sans-serif;}
+        .btn-finish { background: var(--secondary); box-shadow: 0 4px 15px rgba(30, 27, 75, 0.3); }
+        .btn-finish:hover { background: #000000; transform: scale(1.05);}
+        .btn-pdf { background: var(--primary); box-shadow: 0 4px 15px rgba(76, 29, 149, 0.3); }
+        .btn-pdf:hover { background: var(--accent); transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 30px; border-radius: 12px; font-size: 1.3rem; font-weight: 700; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border); background: #f5f3ff; font-family: 'Montserrat', sans-serif;}
+        .stat-d { border-bottom: 5px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 5px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 5px solid #94a3b8; color: #64748b; } 
+        .stat-n { background: var(--secondary); color: var(--highlight); font-size: 1.7rem; box-shadow: 0 5px 20px rgba(30, 27, 75, 0.4); border:none;}
+
+        /* Soru Kartları - KUSURSUZ 30 KELİME DİZİLİMİ */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 40px; width: 95%; max-width: 1200px; margin: 0 auto 50px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 45px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid var(--border); border-left: 8px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 15px 50px rgba(0,0,0,0.08); border-left-color: var(--accent);}
+        
+        .q-text { font-family: 'Crimson Text', serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 30px; color: var(--text-main); line-height: 1.8; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
+        .option-label { display: flex; align-items: flex-start; padding: 22px 28px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: all 0.2s ease; color: #334155; line-height: 1.7; text-align: justify; font-family: 'Crimson Text', serif;}
+        .option-label:hover { background: #f5f3ff; border-color: var(--accent); }
+        .option-label input { margin-top: 6px; margin-right: 20px; transform: scale(1.4); accent-color: var(--accent); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #d1fae5 !important; border-color: var(--success) !important; color: #065f46; font-weight: 700;}
+        .option-label.incorrect { background: #ffe4e6 !important; border-color: var(--danger) !important; color: #9f1239; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f5f3ff; color: var(--primary); border: 2px solid var(--primary); padding: 12px 30px; border-radius: 30px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;}
+        .btn-solution:hover { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(76, 29, 149, 0.3);}
+        .solution-box { display: none; margin-top: 20px; padding: 30px; background: #f5f3ff; border-left: 6px solid var(--accent); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #4c1d95; animation: slideDown 0.3s ease-out forwards; line-height: 1.8; text-align: justify; box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);}
+        .solution-box strong { color: var(--secondary); font-size: 1.2rem; display: block; margin-bottom: 12px; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 50px 20px; background: var(--secondary); color: #cbd5e1; margin-top: 60px; font-size: 1.05rem; border-top: 6px solid var(--accent); }
+        .imza-kutu { display: inline-block; padding: 20px 45px; border: 2px solid rgba(139, 92, 246, 0.4); border-radius: 12px; background: #000000; box-shadow: 0 8px 25px rgba(0,0,0,0.5); font-weight: 600; letter-spacing: 1px;}
+        .imza-kutu span { color: var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1.3rem; margin: 0 10px; font-weight: 800;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 30px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 6 - Test 4</h2>
+        <h1>Ünite 6: Sorumluluk ve Yükümlülükler</h1>
+        <h2>Test 4: Kraliyet Ametisti Simülasyonu (20 Soru)</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">🔮 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_3.html">⬅️ Test 3 (Önceki)</a>
+        <a href="test_5.html">Sonraki Test (Test 5) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>🔮 2020-2025 Sınav Veri Madenciliği</h3>
+            <p>Ünite 6'nın en sık sorulan ve en tehlikeli mevzuat tuzaklarını barındıran noktaları bu simülasyona aktarıldı:</p>
+            <ul>
+                <li><span class="highlight-text">İSG Kurulları (2022-2023):</span> 50 çalışan kuralı ve kapanan işyerlerinin kayıtlarının "SGK'ya" devredilmesi süreci.</li>
+                <li><span class="highlight-text">Eğitim Saatleri:</span> Tehlike sınıflarına göre (8-12-16) eğitim zorunlulukları ve bağımsız olarak verilen "2 Saatlik" İşe Başlangıç eğitimi.</li>
+                <li><span class="highlight-text">Biyolojik Koruma Seviyeleri:</span> Seviye 3'te sadece çıkan havaya, Seviye 4'te ise (Maksimum Tecrit) hem giren hem çıkan havaya HEPA filtre zorunluluğu.</li>
+                <li><span class="highlight-text">Yasaklı Kimyasallar:</span> Kanserojen özellikli 2-naftilamin ve benzidin gibi maddeler için yasal sınırın %0.1 (binde bir) olması.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>⚖️ Kusursuz Simetri 4.0 Algoritması</h3>
+            <p>Testteki tüm şıklar "Kelime Sayımı" mühendisliği ile tek bir şablon etrafında kodlanmıştır:</p>
+            <ul>
+                <li><strong>Mükemmel 30 Kelime Eşitliği:</strong> Bu testteki 100 seçeneğin tamamı istisnasız 30 kelime uzunluğundadır. Kısa ya da uzun şıkkı arama refleksiniz çalışmayacaktır.</li>
+                <li><strong>Matematiksel Şablon:</strong> Her bir seçenek; 10 kelime giriş, 5 kelime konu, 5 kelime anahtar cevap ve 10 kelime çıkış argümanından oluşturulmuştur.</li>
+                <li><strong>Akademik Baskı:</strong> Uzun paragraflar nedeniyle zihinsel kondisyonunuzu artırmak için sınav süresi <strong>45 dakika</strong> olarak kurgulanmıştır.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>🔮 6. Ünite 4. Test: Ametist Sınavı</h2>
+        <p>İşverenin yükümlülüklerinden HEPA filtre standartlarına, yasal limitlerden ulusal acil numaralara kadar ünitenin en ağır konularıyla yüzleşmeye hazırlanın.<br><br>Sınav süresi <strong>45 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Ametist Simülasyonunu Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ KALAN SÜRE:</span>
+            <span class="time" id="timer-display">45:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ DOĞRU: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ YANLIŞ: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ BOŞ: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 NET (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 20 SORU - KUSURSUZ 30 KELİME ŞABLONU -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="E">
+            <div class="q-text">1. Çok tehlikeli sınıfta yer alan işyerlerinde, işe alım ve işin sürekliliği aşamalarında çalışanlara verilmesi gereken "temel periyodik İSG eğitiminin" yasal asgari süresi ne kadardır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; çok tehlikeli sınıftaki kurumlarda personellere eğitim süresi tam 4 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; çok tehlikeli sınıftaki kurumlarda personellere eğitim süresi tam 8 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; çok tehlikeli sınıftaki kurumlarda personellere eğitim süresi tam 10 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; çok tehlikeli sınıftaki kurumlarda personellere eğitim süresi tam 12 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; çok tehlikeli sınıftaki kurumlarda personellere eğitim süresi tam 16 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Eğitim süreleri tehlike sınıfına göre belirlenir. Az Tehlikeli: 8 Saat, Tehlikeli: 12 Saat, <strong>Çok Tehlikeli: 16 Saat.</strong> Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">2. Tehlikeli (Orta Riskli) sınıfta faaliyet gösteren endüstriyel işletmelerde, çalışanlara belirli aralıklarla verilmesi emredilen "temel periyodik iş güvenliği eğitiminin" asgari kanuni süresi ne kadardır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tehlikeli sınıfta yer alan işletmelerde eğitim süresi tam 4 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tehlikeli sınıfta yer alan işletmelerde eğitim süresi tam 8 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tehlikeli sınıfta yer alan işletmelerde eğitim süresi tam 10 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tehlikeli sınıfta yer alan işletmelerde eğitim süresi tam 12 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tehlikeli sınıfta yer alan işletmelerde eğitim süresi tam 16 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Tehlikeli sınıftaki kurumlarda periyodik eğitimlerin süresi yasalarca asgari <strong>12 Saat</strong> olarak sabitlenmiştir. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">3. Az tehlikeli sınıfta (Düşük Riskli) yer alan ofis veya kurumlarda, personellere işe alım ve işin sürekliliği esnasında verilmesi zorunlu "temel eğitimlerin" süresi asgari ne kadardır? (2025 Yılı Çıkmış Soru)</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; az tehlikeli faaliyet gösteren kurumlarda eğitim süresi tam 4 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; az tehlikeli faaliyet gösteren kurumlarda eğitim süresi tam 8 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; az tehlikeli faaliyet gösteren kurumlarda eğitim süresi tam 10 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; az tehlikeli faaliyet gösteren kurumlarda eğitim süresi tam 12 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; az tehlikeli faaliyet gösteren kurumlarda eğitim süresi tam 16 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2025 yılı final sınav sorusudur. Az tehlikeli işyerlerinde İSG temel eğitimi en az <strong>8 Saat</strong> uygulanır. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">4. Tehlike sınıfı (Az tehlikeli, Tehlikeli, Çok tehlikeli) fark etmeksizin; işletmede çalışmaya ilk defa başlayacak tüm çalışanlara çalışma alanını tanıtmak amacıyla verilen "İşe Başlangıç Eğitiminin" standart asgari süresi nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işe yeni başlayan tüm personellere başlangıç eğitimi tam 2 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işe yeni başlayan tüm personellere başlangıç eğitimi tam 4 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işe yeni başlayan tüm personellere başlangıç eğitimi tam 6 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işe yeni başlayan tüm personellere başlangıç eğitimi tam 8 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işe yeni başlayan tüm personellere başlangıç eğitimi tam 10 saattir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> "İşe Başlangıç Eğitimi", tehlike sınıfından bağımsız olarak işe ilk girişte oryantasyon amacıyla verilir ve temel eğitim sürelerinden sayılmaz. Süresi <strong>En az 2 Saat</strong> olarak kanunlaşmıştır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">5. Herhangi bir kimyasal kaza, dökülme veya personelin zehirlenmesi durumunda, olayın boyutlarının büyümesini önlemek ve hızlı medikal destek almak amacıyla derhal aranması gereken "Ulusal Zehir Danışma Hattı"nın numarası nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; kimyasal zehirlenme durumunda derhal aranacak ulusal zehir danışma hattı 110'dur durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; kimyasal zehirlenme durumunda derhal aranacak ulusal zehir danışma hattı 112'dir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; kimyasal zehirlenme durumunda derhal aranacak ulusal zehir danışma hattı 114'tür durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; kimyasal zehirlenme durumunda derhal aranacak ulusal zehir danışma hattı 155'tir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; kimyasal zehirlenme durumunda derhal aranacak ulusal zehir danışma hattı 156'dır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2022 Yılı sınavında çıkmıştır. Ulusal Zehir Danışma Merkezi'nin (UZEM) acil çağrı numarası <strong>114</strong>'tür. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">6. 6331 sayılı İSG yasasına göre; işletmede işleyişin denetlenmesi ve resmi toplantıların yapılabilmesi için bir "İş Sağlığı ve Güvenliği Kurulu" kurulmasını zorunlu kılan asgari personel sayısı koşulu kaçtır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; şirketlerde iş sağlığı kurulu kurabilmek için asgari 20 personel aranması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; şirketlerde iş sağlığı kurulu kurabilmek için asgari 30 personel aranması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; şirketlerde iş sağlığı kurulu kurabilmek için asgari 40 personel aranması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; şirketlerde iş sağlığı kurulu kurabilmek için asgari 50 personel aranması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; şirketlerde iş sağlığı kurulu kurabilmek için asgari 60 personel aranması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Bir işletmede kurul kurulabilmesi için personelin sayısı <strong>50 ve daha fazla</strong> olmak zorundadır. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">7. Tehlikeli kimyasallarla işlem yapan bir şirketin kapanması (faaliyetinin tamamen bitmesi) durumunda; personellere ait olan tıbbi izleme dosyaları ve maruz kalma kayıtları zorunlu olarak hangi kuruma teslim edilmelidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işletmenin ticari faaliyeti tamamen sonlandığında tüm dosyalar bölge valiliği makamınadır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işletmenin ticari faaliyeti tamamen sonlandığında tüm dosyalar merkez hıfzıssıhha kurulunadır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işletmenin ticari faaliyeti tamamen sonlandığında tüm dosyalar sosyal güvenlik kurumunadır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işletmenin ticari faaliyeti tamamen sonlandığında tüm dosyalar sağlık bakanlığı arşivinedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işletmenin ticari faaliyeti tamamen sonlandığında tüm dosyalar çalışma iş kurumunadır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> İşletmenin faaliyeti bittiğinde veya kapandığında çalışanların sağlık kayıtları ve mesleki dosyaları devlete, yani <strong>SGK (Sosyal Güvenlik Kurumu) İl Müdürlüğüne</strong> teslim edilir. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">8. Grup 2, Grup 3 veya Grup 4 kategorisindeki tehlikeli biyolojik etmenler, üretimde "ilk kez" kullanılmaya başlanacaksa, işverenin faaliyetten önce onay/bildirim için başvurması gereken resmi makam hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tehlikeli biyolojik etmenler kullanılmadan önce onay için bölge valiliğine başvurulması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tehlikeli biyolojik etmenler kullanılmadan önce onay için sosyal güvenliğe başvurulması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tehlikeli biyolojik etmenler kullanılmadan önce onay için sağlık bakanlığına başvurulması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tehlikeli biyolojik etmenler kullanılmadan önce onay için il hıfzıssıhhaya başvurulması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tehlikeli biyolojik etmenler kullanılmadan önce onay için çalışma işkuruna başvurulması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Biyolojik etmenler üretimde ilk defa kullanılacaksa, bu tehlike faaliyet başlamadan önce <strong>Çalışma ve İş Kurumu (İŞKUR) İl Müdürlüğüne</strong> bildirilmek zorundadır. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">9. Kimyasal laboratuvarlarda ve endüstride görev alan çalışanların kişisel sağlık durumlarının değerlendirilip "tıbbi mesleki öz geçmişlerinin" ve maruziyet dosyalarının oluşturularak arşive kaydedilmesinden sorumlu olan asıl yapı kimdir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; çalışanların mesleki tıbbi öz geçmişlerini düzenli kayıt altına alan işverendir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; çalışanların mesleki tıbbi öz geçmişlerini düzenli kayıt altına alan sendikadır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; çalışanların mesleki tıbbi öz geçmişlerini düzenli kayıt altına alan personellerdir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; çalışanların mesleki tıbbi öz geçmişlerini düzenli kayıt altına alan hekimliktir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; çalışanların mesleki tıbbi öz geçmişlerini düzenli kayıt altına alan bakanlıktır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Bir şirketteki çalışanların maruz kaldığı etkileri incelemek, muayeneleri gerçekleştirmek ve bunları tıbbi özgeçmiş olarak dosyalamak yetkisi <strong>İş Yeri Hekimliğinin</strong> görevidir. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">10. "Kesin olarak teşhis edilip değerlendirilemeyen" ancak insanda ciddi hastalık yapma potansiyeli olan meçhul (gizemli) biyolojik etmenlerin bulunduğu riskli çalışma ortamlarında uyulması gereken asgari (minimum) koruma seviyesi hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tam bilinemeyen gizemli biyolojik etmenlerde asgari düzeyde 1. koruma seviyesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tam bilinemeyen gizemli biyolojik etmenlerde asgari düzeyde 2. koruma seviyesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tam bilinemeyen gizemli biyolojik etmenlerde asgari düzeyde 3. koruma seviyesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tam bilinemeyen gizemli biyolojik etmenlerde asgari düzeyde 4. koruma seviyesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; tam bilinemeyen gizemli biyolojik etmenlerde asgari düzeyde 5. koruma seviyesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Tanımı yapılamayan, henüz kesin değerlendirilemeyen fakat ciddi tehlike ihtimali bulunan ajanlara karşı kanun gereği laboratuvarlarda <strong>En Az Seviye 3</strong> tedbirleri derhal uygulanmalıdır. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">11. Yüksek risk barındıran biyolojik laboratuvarlarda; tesise "hem giren hem de dışarı çıkan havanın" yüksek performanslı HEPA filtreler aracılığıyla %99.97 oranında temizlenmesini zorunlu kılan en üst düzey koruma seviyesi hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; hem giren hem çıkan havanın hepa filtreyle temizlenmesi 1. seviyedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; hem giren hem çıkan havanın hepa filtreyle temizlenmesi 2. seviyedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; hem giren hem çıkan havanın hepa filtreyle temizlenmesi 3. seviyedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; hem giren hem çıkan havanın hepa filtreyle temizlenmesi 4. seviyedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; hem giren hem çıkan havanın hepa filtreyle temizlenmesi 5. seviyedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Biyogüvenlik standartlarında, sadece çıkan havayı değil, tesise "giren taze havayı da" HEPA filtreden geçirerek tam steril bir atmosfer (maksimum tecrit) sağlayan sınıf <strong>Seviye 4</strong>'tür. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">12. Biyolojik risk seviyeleriyle korunan tesislerde (Tablo 6.2); temiz hava girişine müdahale edilmeyip "yalnızca dışarı atılan (çıkan) egzoz havanın" filtre edilmesinin mecburi tutulduğu koruma seviyesi aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; yalnızca dışarı çıkan egzoz havanın hepa filtreyle temizlenmesi 1. seviyedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; yalnızca dışarı çıkan egzoz havanın hepa filtreyle temizlenmesi 2. seviyedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; yalnızca dışarı çıkan egzoz havanın hepa filtreyle temizlenmesi 3. seviyedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; yalnızca dışarı çıkan egzoz havanın hepa filtreyle temizlenmesi 4. seviyedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; yalnızca dışarı çıkan egzoz havanın hepa filtreyle temizlenmesi 5. seviyedir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Bir önceki sorunun ayrımıdır. Eğer kanun sadece dışarı "çıkan" havanın temizlenmesini emrediyorsa, bu <strong>Seviye 3</strong> prosedürüdür. Seviye 4'te ikisi birden süzülür. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">13. Ölümcül patojenlerin (Ebola, Marburg vb.) çalışıldığı Grup 4 "Maksimum Tecrit" laboratuvarlarında (Seviye 4), içeri giren personelin kıyafetleri ile ilgili uyması gereken yasal biyolojik kural nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; maksimum tecrit olan 4. seviyede kıyafetlerin sadece kirlendiğinde basitçe yıkanması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; maksimum tecrit olan 4. seviyede kıyafetlerin giriş ve çıkışta değiştirilmesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; maksimum tecrit olan 4. seviyede kıyafetlerin yalnızca belirli günlerde yenilenmesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; maksimum tecrit olan 4. seviyede kıyafetlerin üzerine sadece önlük giyilmesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; maksimum tecrit olan 4. seviyede kıyafetlerin tamamen evden sivil getirilmesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Tablo 6.3 Endüstriyel İşlemlerde Alınacak Tedbirler kuralına göre, Koruma Seviyesi 4'te (Maksimum Tecrit), personelin tesise giriş ve çıkışlarında sivil giysilerini çıkarıp koruyucu tulumlara geçmesi (<strong>kıyafetlerin tamamen değiştirilmesi</strong>) kanunen zorunludur. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">14. 2021 ve 2024 yılları final sınavlarında aynen sorulan "Acil durumlarda çalışanların yükümlülükleri" kuralına göre; fabrikada yangın, sızıntı veya kriz çıktığında personelin kendi başına kahramanlık yapmadan atması gereken yasal ilk adım hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; beklenmedik acil bir kriz anında tek başına yangına müdahale etmek durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; beklenmedik acil bir kriz anında değerli evrakları hızla dışarı çıkarmak durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; beklenmedik acil bir kriz anında hemen yetkili amirle temasa geçmek durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; beklenmedik acil bir kriz anında kurul başkanına detaylı rapor yazmak durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; beklenmedik acil bir kriz anında kurtarma ekiplerine doğrudan emir vermek durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Çalışanlar kriz anında, hayatlarını tehlikeye atmadan derhal <strong>"en yakın amirle veya acil durumdan sorumlu kişi ile temasa geçmekle"</strong> yükümlüdür. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">15. Endüstriyel alanda, ağır meslek hastalıklarına yol açan spesifik kanserojen maddelerin (2-naftilamin, 4-aminodifenil, benzidin vb.) üretim tesislerinde var olmasına izin verilen ancak "asla aşılamayacak olan" maksimum ağırlıkça oran yüzdesi kaçtır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; üretimde kullanılması tamamen yasaklanmış olan kanserojenlerde maksimum oran binde ikidir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; üretimde kullanılması tamamen yasaklanmış olan kanserojenlerde maksimum oran binde birdir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; üretimde kullanılması tamamen yasaklanmış olan kanserojenlerde maksimum oran binde beştir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; üretimde kullanılması tamamen yasaklanmış olan kanserojenlerde maksimum oran yüzde birdir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; üretimde kullanılması tamamen yasaklanmış olan kanserojenlerde maksimum oran yüzde beştir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasal Maddelerle Çalışmalarda Sağlık Yönetmeliği'ne göre (Tablo 6.1) kanserojenlerin (2-naftilamin, benzidin vb.) bulunabileceği tolerans limiti ağırlıkça <strong>%0,1'dir (Binde Bir).</strong> Bu oranın üstündeki üretim tamamen yasaktır. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">16. Bir personelin işyerinde sağlığını riske sokacak "yakın ve ciddi bir tehlike" bulunduğunda, devreye giren "Çalışmaktan Kaçınma Hakkı"nı kullanırken yapacağı hangi idari eylem yasal olarak geçersiz (yanlış) sayılmaktadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; ciddi tehlikelerde çalışmaktan kaçınma hakkı kullanılırken iş sağlığı kuruluna başvurulması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; ciddi tehlikelerde çalışmaktan kaçınma hakkı kullanılırken durumun derhal işverene bildirilmesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; ciddi tehlikelerde çalışmaktan kaçınma hakkı kullanılırken tehlike bitene dek beklenilmesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; ciddi tehlikelerde çalışmaktan kaçınma hakkı kullanılırken prosedüre uymadan tesisin terkedilmesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; ciddi tehlikelerde çalışmaktan kaçınma hakkı kullanılırken gerektiğinde iş sözleşmesinin feshedilmesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2022 yılı final sınavı sorusudur. "Çalışmaktan kaçınma hakkı", çalışanın kimseye haber vermeden, yasal prosedüre uymadan binayı <strong>terk edip gitmesi (tesisten kaçması)</strong> anlamına gelmez. Kurula veya amire başvurmalı ve tehlike geçene dek güvenli bölgede beklemelidir. Yanlış eylem D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">17. 6331 sayılı İş Sağlığı ve Güvenliği yasalarına göre; iş yeri sınırları içerisinde kazalara ve bilinç kaybına sebep olan "bağımlılık yapan maddelerle" ilgili personelin uyması gereken katı hukuk kuralı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; personelin fabrikada bağımlılık yapan maddelere karşı mesai çıkışında içki serbesttir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; personelin fabrikada bağımlılık yapan maddelere karşı hafif dozlarda alkol serbesttir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; personelin fabrikada bağımlılık yapan maddelere karşı uyuşturucuyla makine kullanımı serbesttir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; personelin fabrikada bağımlılık yapan maddelere karşı yorgunluk haplarına onay verilmiştir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; personelin fabrikada bağımlılık yapan maddelere karşı tesise sarhoş gelmek yasaktır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Yasalarca personelin en temel yükümlülüklerinden biri; zihinsel bulanıklık yaratacak olan alkol (sarhoşluk) veya uyuşturucu maddeler alarak işe gelmemek ve <strong>bunları işyeri içerisinde tüketmemektir.</strong> Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">18. Kazaların kök nedenlerini ortadan kaldırmak için "İş Yeri Organizasyonunu Oluşturma" prensipleri (Şekil 6.4) kapsamında; işverenin tehlikelere karşı bütçe ayırarak yerine getirmesi gereken asli güvenlik yükümlülüğü hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; kaza risklerini kaynağında yok edebilmek adına yalnızca kazadan sonra raporlanması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; kaza risklerini kaynağında yok edebilmek adına risk analizi sürecinin durdurulması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; kaza risklerini kaynağında yok edebilmek adına çalışan maaşından kesinti yapılması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; kaza risklerini kaynağında yok edebilmek adına profesyonel risk değerlendirmesi yaptırılması durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; kaza risklerini kaynağında yok edebilmek adına güvenlik planlarının hiç güncellenmemesi durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> İşverenin işletmedeki tehlikeleri kaynağında çözebilmesi için yapması gereken en temel organizasyon eylemi periyodik ve sistematik olarak uzmanlara <strong>Risk Değerlendirmesi Yaptırmak</strong> ve sonuçlara göre tesisi güncellemektir. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">19. 2024 yılı final sınavında "İşverenin yükümlülüklerinden biri olmayan eylem" şeklinde karşımıza çıkan; denetimler sonucunda işverenin tespit edilen eksiklikler sebebiyle personeli üzerinde uygulaması "kanunen yasak olan" hatalı davranış hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; denetimlerde işverenin tehlikelere karşı personeline uygulaması yasak olan eylem cezalandırmaktır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; denetimlerde işverenin tehlikelere karşı personeline uygulaması zorunlu olan eylem eğitmektir durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; denetimlerde işverenin tehlikelere karşı personeline uygulaması zorunlu olan eylem tatbikattır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; denetimlerde işverenin tehlikelere karşı personeline uygulaması zorunlu olan eylem donatmaktır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; denetimlerde işverenin tehlikelere karşı personeline uygulaması zorunlu olan eylem korumaktır durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2024 Finali Soru 17. İSG denetimlerinin amacı fabrikayı güvenli hale getirmek, eksiklikleri gidermektir. Tespit edilen iş güvenliği açıkları sebebiyle <strong>işverenin personele ceza kesmesi (idari veya para cezası yaptırımı)</strong> kanunen iş güvenliği yönetiminin bir parçası olamaz. Yanlış ve yasak eylem A'dır.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">20. Çalışanlara verilen standart İSG müfredatında; "iş güvenliği kuralları, meslek hastalıkları, ilk yardım ve acil tahliye" bulunur. Ancak işverenin bu eğitimlere dâhil etmemesi gereken "konu dışı" madde hangisidir? (2021 Sınavı)</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işverenin vermekle yükümlü olduğu genel eğitim konularında yangından korunma bulunur durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işverenin vermekle yükümlü olduğu genel eğitim konularında yasal haklar bulunur durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işverenin vermekle yükümlü olduğu genel eğitim konularında meslek hastalıkları bulunur durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işverenin vermekle yükümlü olduğu genel eğitim konularında ilk yardım bulunur durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) İş sağlığı ve güvenliği temel mevzuat hükümleri kapsamında detaylıca değerlendirildiğinde; işverenin vermekle yükümlü olduğu genel eğitim konularında finansal pazarlama bulunmaz durumu akademik literatürde ve endüstriyel standartlarda kesin olarak açıkça belirlenmiştir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2021 Yılı sınav sorusu. İSG eğitimlerinde iş kazaları, yasal haklar, tehlikeli maddeler ve ilk yardım anlatılır. Ancak şirketin kar büyümesi, borsa veya <strong>finansal pazarlama stratejileri</strong> iş güvenliğinin konusu dışındadır. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.6; font-family: 'Crimson Text', serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 6 / Test 4 (Kraliyet Ametisti - Kusursuz Simetri 4.0 Algoritması)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 45 * 60; // 45 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Sınav Analizi';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            timerDisplay.style.borderColor = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // 4 Yanlış 1 Doğru Akademik Net Sistemi
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

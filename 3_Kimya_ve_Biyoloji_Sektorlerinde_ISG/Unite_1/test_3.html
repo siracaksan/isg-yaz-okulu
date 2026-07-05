@@ -1,25 +1,463 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 1 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 1 - Test 3: Klinik ve İleri Toksikoloji Sınavı</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Open+Sans:wght@400;600;700;800&display=swap');
+
+        :root {
+            --primary: #0f172a; /* Derin Safir Siyahı */
+            --secondary: #1e293b;
+            --accent: #e11d48; /* Medikal Kırmızı / Bordo */
+            --accent-hover: #be123c;
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --success: #059669;
+            --danger: #dc2626;
+            --text-main: #334155;
+            --text-light: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.7; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e1b4b 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.4);
+            border-bottom: 5px solid var(--accent); position: relative; overflow: hidden;
+        }
+        header::after { content: '⚕️'; position: absolute; right: 5%; top: 5%; font-size: 9rem; opacity: 0.05; }
+        header h1 { font-family: 'Merriweather', serif; font-size: 2.6rem; font-weight: 900; color: #fda4af; margin-bottom: 10px; letter-spacing: 0.5px;}
+        header h2 { font-size: 1.25rem; font-weight: 600; color: #cbd5e1; letter-spacing: 1px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04); margin: -25px auto 30px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--primary); background: #f1f5f9; text-decoration: none; font-weight: 700;
+            font-size: 0.95rem; padding: 12px 22px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Merriweather', serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 18px; display: flex; align-items: center; gap: 10px;}
+        .analysis-box p { font-size: 1rem; color: #475569; text-align: justify; margin-bottom: 15px;}
+        .analysis-box ul { padding-left: 20px; margin-top: 10px;}
+        .analysis-box ul li { margin-bottom: 10px; color: #334155; font-weight: 600;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--primary); padding: 50px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.5); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; color: white; border: 2px solid var(--accent);
+        }
+        .start-screen h2 { font-family: 'Merriweather', serif; font-size: 2.3rem; color: #fda4af; margin-bottom: 20px; }
+        .start-screen p { font-size: 1.15rem; color: #cbd5e1; margin-bottom: 35px; line-height: 1.8;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--accent) 0%, #9f1239 100%); color: white; border: 2px solid #fda4af;
+            padding: 20px 55px; font-size: 1.4rem; font-weight: 800; font-family: 'Open Sans', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 35px rgba(225, 29, 72, 0.6); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 22px 30px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.06); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--accent); }
+        .timer-box { font-size: 1.7rem; font-weight: 800; font-family: 'Merriweather', serif; color: var(--primary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--accent); padding: 6px 20px; border-radius: 12px; font-family: 'Open Sans', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);}
+        .btn-group button { border: none; padding: 14px 28px; border-radius: 30px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase;}
+        .btn-finish { background: var(--danger); box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3); }
+        .btn-finish:hover { background: #b91c1c; transform: scale(1.05);}
+        .btn-pdf { background: var(--secondary); box-shadow: 0 4px 15px rgba(30, 41, 59, 0.3); }
+        .btn-pdf:hover { background: black; transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 25px; border-radius: 12px; font-size: 1.25rem; font-weight: 800; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border);}
+        .stat-d { background: #ecfdf5; color: var(--success); border-color: #34d399;} 
+        .stat-y { background: #fff1f2; color: var(--accent); border-color: #fb7185;}
+        .stat-b { background: #f8fafc; color: #64748b; } 
+        .stat-n { background: var(--primary); color: #fda4af; font-size: 1.6rem; box-shadow: 0 5px 20px rgba(15,23,42,0.4); border:none;}
+
+        /* Soru Kartları - EŞİT UZUNLUKLU KLİNİK ŞIKLAR */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 35px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border); border-left: 8px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 15px 40px rgba(0,0,0,0.08); border-left-color: var(--accent);}
+        
+        .q-text { font-weight: 800; font-size: 1.15rem; margin-bottom: 25px; color: var(--primary); line-height: 1.7; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; }
+        .option-label { display: flex; align-items: flex-start; padding: 20px 25px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: all 0.2s ease; color: #334155; line-height: 1.6; text-align: justify;}
+        .option-label:hover { background: #f1f5f9; border-color: var(--accent); }
+        .option-label input { margin-top: 5px; margin-right: 20px; transform: scale(1.4); accent-color: var(--accent); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: #047857; }
+        .option-label.incorrect { background: #fff1f2 !important; border-color: var(--accent) !important; color: #be123c; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: var(--primary); color: white; border: none; padding: 12px 28px; border-radius: 30px; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px;}
+        .btn-solution:hover { background: var(--accent); box-shadow: 0 4px 12px rgba(225,29,72,0.3);}
+        .solution-box { display: none; margin-top: 15px; padding: 25px; background: #fdf2f8; border-left: 6px solid var(--accent); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #881337; animation: slideDown 0.3s ease-out forwards; line-height: 1.7; text-align: justify;}
+        .solution-box strong { color: var(--accent-hover); font-size: 1.15rem; display: block; margin-bottom: 12px; font-family: 'Merriweather', serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 45px 20px; background: var(--primary); color: #cbd5e1; margin-top: 50px; font-size: 1.05rem; border-top: 5px solid var(--accent); }
+        .imza-kutu { display: inline-block; padding: 18px 40px; border: 2px solid rgba(253, 164, 175, 0.4); border-radius: 12px; background: #0f172a; box-shadow: 0 6px 20px rgba(0,0,0,0.5); font-weight: 700; letter-spacing: 0.5px;}
+        .imza-kutu span { color: #fda4af; font-family: 'Merriweather', serif; font-size: 1.25rem; margin: 0 8px;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 25px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 1 - Test 3</h2>
+        <h1>Ünite 1: Sınıflandırma ve Risk Etmenleri</h1>
+        <h2>Test 3: Klinik ve İleri Toksikoloji Sınavı (Zor Seviye)</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">📚 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_2.html">⬅️ Test 2 (Önceki)</a>
+        <a href="test_4.html">Sonraki Test (Test 4) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>🔬 Klinik Format ve Strateji Analizi</h3>
+            <p>Bu 3. Deneme, İSG standartlarındaki risk etmenlerini yüzeysel bir tanımla değil, tıp, patoloji ve toksikoloji alt yapısıyla sorgular. <strong>Tüm şıklar kavramsal kargaşa yaratmak amacıyla eşit uzunlukta ve ağır akademik dille</strong> tasarlanmıştır.</p>
+            <ul>
+                <li><strong>Hücresel Mekanizmalar:</strong> Mutajenik (genetik hasar), Teratojenik (fetüs/embriyo hasarı) ve Reprotoksik (doğurganlık hasarı) tanımlarının tıbbi ayrımları.</li>
+                <li><strong>Alt ve Üst Solunum Yolları:</strong> Gazların sudaki çözünürlüğüne bağlı olarak mukozalarda (üst) veya doğrudan alveollerde (alt) yarattıkları ödem/asfiksi farkları.</li>
+                <li><strong>Patolojik Formlar:</strong> Bakterilerin vejetatif üreme durumları ile savunma (endospor) durumları ve hücresiz (asellüler) hastalık ajanları (viroid/prion/virüs).</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>📊 ÖSYM ve Seçici Soru Algoritması</h3>
+            <p>Son yıllardaki çıkmış soru havuzu incelendiğinde; adayların doğrusal bilgi ezberlemek yerine, hastalık-etken mekanizmasını kurabilmeleri hedeflenmektedir:</p>
+            <ul>
+                <li><strong>Zehirlenme Mekanizmaları:</strong> Kokusuz karbonmonoksitin ve anilinin kanda yarattığı spesifik "Anemik Anoksemi" tablosu (ÖSYM 2021-2022 nokta atışı).</li>
+                <li><strong>İnce Mevzuat Rakamları:</strong> Titreşim sınır değerlerinde (0.5 - 1.15 ile 2.5 - 5.0) arasındaki kesin ayrımların bilinmesi şarttır.</li>
+                <li><strong>Mesleki Kanserler:</strong> Asbestozis, silikozis ve özellikle tekstil sektörünün organik tozu olan Bisinozis gibi hastalıkların klinik tablolarının tam eşleştirilmesi.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>⚕️ 3. Test: Klinik Ağırlaştırılmış Deneme</h2>
+        <p>Uzun ve kafa karıştırıcı eşit uzunluktaki şıklar, hücre/doku bazlı klinik soru kurguları ve 4 yanlışın 1 doğruyu götürdüğü tam profesyonel akademik ölçüm algoritması.<br><br>Sınav süresi <strong>35 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Klinik Testi Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">35:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- KLİNİK VE ZOR SEVİYE EŞİT UZUNLUKTA ŞIKLI SORULAR -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="A">
+            <div class="q-text">1. Biyokimyasal ve klinik incelemelerde, bir kimyasal maddenin hamilelik evresinde plasenta bariyerini aşarak doğrudan embriyonun veya fetüsün gelişim evrelerinde hücresel düzeyde fiziksel anomali ve kusurlu oluşuma (malformasyon) neden olduğu tespit edilmiştir. Bu spesifik klinik ve fizyolojik etki mekanizmasına sahip maddeler literatürde hangi isimle sınıflandırılmaktadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Gebelik sürecinde plasenta bariyerini geçerek anne karnındaki embriyonun veya fetüsün doğrudan gelişimini bozan ve yapısal malformasyonlara neden olan teratojenik etkili maddelerdir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) İnsan vücudundaki hücrelerde zamanla birikerek kalıtımsal düzeyde genetik zincir hasarı oluşturan ve ağır mutasyon oluşumunu tetikleyen spesifik mutajenik etkili kimyasal maddelerdir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Vücuda alındığında doğrudan kanser hücrelerinin oluşumunu başlatan veya mevcut kötü huylu tümörlerin yayılımını hücresel düzeyde şiddetle hızlandıran karsinojenik etkili tehlikeli maddelerdir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Hem erkek hem de dişilerin hormonal dengesini doğrudan bozarak üreme kapasitesini (fertiliteyi) ve hücresel üreme kalitesini kalıcı olarak azaltan reprotoksik (üreme toksik) etkili maddelerdir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) İnsan vücudunda protein kompleksleriyle birleşerek antijen-antikor reaksiyonlarına yol açan ve klinik düzeyde ağır astım krizleri tetikleyen hassaslaştırıcı (sensitizör) özelliğe sahip olan maddelerdir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Klinik Analiz</button>
+            <div class="solution-box"><strong>Klinik Çözüm ve Analiz:</strong> Bütün şıklar eşit uzunlukta tasarlanarak ilgili risk etmenlerinin tam bilimsel tanımları verilmiştir. "Reprotoksik" maddeler anne-babanın üreme/doğurganlık yeteneğini azaltırken; soruda açıkça belirtildiği gibi "plasentayı geçip doğrudan anne karnındaki bebeğin (fetüsün) gelişimini bozan ve fiziksel anomali (sakatlık/malformasyon) yaratan" maddelere tıp dilinde <strong>Teratojenik</strong> maddeler denir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">2. İleri düzey bir klinik laboratuvarında, insanda çok ağır ve ölümcül hastalıklara neden olan, çalışanlar için son derece ciddi tehlike oluşturan, toplumda geniş çaplı salgın (pandemi) yaratma riski taşıyan ancak tıbbi açıdan <u>etkili bir korunma ve tedavi yöntemi (aşısı/ilacı) kesinlikle bulunmayan</u> viral bir patojen (örneğin Marburg veya Ebola virüsü) incelenmektedir. Bu ajan hangi biyogüvenlik risk grubuna dâhildir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) İnsanda hastalık yapma ihtimali biyolojik olarak bulunmayan ve doğal laboratuvar ortamında ekstra güvenlik gerektirmeden çalışılabilen Grup 1 biyogüvenlik düzeyine sahip olan serbest etmenlerdir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) İnsanda hastalığa neden olabilen, çalışanlara zarar verebilecek ancak topluma hızlı yayılma riski taşımayan ve bilinen tıbbi tedavisi kliniklerde mevcut olan Grup 2 düzeyindeki patojenik etmenlerdir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) İnsanda ağır hastalıklara neden olan, topluma yayılma ve salgın tehlikesi barındıran ancak klinik olarak etkili korunma ve tıbbi tedavi imkânı çoğu zaman bulunabilen Grup 3 standartlı etmenlerdir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) İnsanda ağır hastalık ve ölüm riski barındıran, topluma yayılma hızı biyolojik olarak çok yüksek olan ve hiçbir etkili korunma/tedavi yöntemi tıp dünyasında bulunmayan Grup 4 tehlikeli etmenlerdir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Doğal ekosistemde bulunmayan, sadece uluslararası araştırma laboratuvarlarında genetik mühendislik (rekombinant DNA) yöntemleriyle sentezlenmiş yapay hastalık yapıcı Grup 5 biyolojik etmenlerdir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Klinik Analiz</button>
+            <div class="solution-box"><strong>Klinik Çözüm ve Analiz:</strong> Biyolojik risk etmenleri (virüsler, bakteriler vb.) yayılım ve tedavi kriterlerine göre 4 ana gruba ayrılır. İnsanda çok ağır hastalık yapan, topluma yüksek yayılma potansiyeli taşıyan ve <u>henüz aşısı veya kanıtlanmış etkili bir tıbbi tedavisi bulunmayan</u> ajanlar (Marburg, Kırım-Kongo, Ebola vb.) en ölümcül kategori olan <strong>Grup 4</strong> biyogüvenlik seviyesindedir. (İSG sisteminde Grup 5 diye bir tanımlama yoktur). Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">3. İş hekimliği ve acil klinik toksikoloji kayıtlarına göre; çalışma ortamında maruz kalınan bazı tehlikeli gazlar, solunum sistemi mukozalarında herhangi bir fiziksel veya kimyasal tahriş yaratmamalarına rağmen doğrudan kana karışıp hemoglobin molekülüne çok güçlü bağlanarak dokuların oksijensiz kalmasına ve "Anemik Anoksemi" adı verilen ağır hücresel boğulma tablosuna yol açarlar. Aşağıdakilerden hangisi bu klinik tabloyu yaratan kimyasal boğucuların tipik bir örneğidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Havadaki serbest oksijenin yerini alarak ortamın oksijen derişimini kritik seviyenin altına düşüren ve kana doğrudan hiçbir kimyasal veya biyolojik müdahalesi bulunmayan Metan ve Helyum gazlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Kana karışmadan sadece üst solunum yolları ve akciğer mukozasını korozyonla ciddi şekilde tahriş ederek kimyasal yanıklara bağlı ani refleks boğulma ve spazm hissi yaratan Amonyak ve Klor gazlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Kana hızla karışıp hemoglobine oksijenden katbekat daha hızlı bir afiniteyle bağlanarak kanın dokulara oksijen taşıma kapasitesini iptal eden ve hücresel asfiksiye neden olan Anilin ve Karbonmonoksit gazlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Akciğerlerin en uç noktası olan hava keseciklerine (alveollere) kadar inerek bu bölgelerde uzun yıllar süren fibrotik skar dokusu oluşumuna ve kalıcı solunum yetmezliğine yol açan Asbest ve Silika tozlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Vücutta hiçbir biyokimyasal boğucu özelliği bulunmayan, solunduğunda ağırlıklı olarak beyin ve merkezi sinir sistemi üzerinde çok güçlü bir uyuşturucu (narkotik) ve baskılayıcı etki sergileyen Trikloroetilen buharlarıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Klinik Analiz</button>
+            <div class="solution-box"><strong>Klinik Çözüm ve Analiz:</strong> Gazlar boğma mekanizmalarına göre ayrılır. Azot, metan, helyum gibi gazlar sadece oksijeni seyreltir (Basit boğucular). Ancak <strong>Anilin, Hidrojen Sülfür ve Karbonmonoksit</strong> gibi gazlar doğrudan kana hücum eder ve kandaki hemoglobinin oksijenle birleşmesini engelleyerek dokuları içten içe oksijensiz bırakır. Bu yıkıcı kimyasal mekanizmanın tıbbi adı "Anemik (Kimyasal) Anoksemi"dir ve ÖSYM havuzunun vazgeçilmez sorusudur. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">4. İrritan (tahriş edici) gazların solunum sistemindeki dokusal ve klinik hasar bölgesi, gazın moleküler olarak sudaki çözünürlüğüne bağlı olarak değişmektedir. Endüstride yaygın kullanılan ve sudaki çözünürlüğü nispeten düşük olduğu için üst solunum yollarını büyük bir hasar vermeden hızla geçerek doğrudan alt solunum yollarına ve hava keseciklerine (alveollere) ulaşan, burada sinsi bir şekilde bekleyerek saatler sonra klinik akciğer ödemine (kimyasal pnömoni) yol açan en tehlikeli gaz grubu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Suda aşırı çözündükleri için üst solunum yollarında, burun ve gırtlak mukozasında anında şiddetli yanma hissi yaratan ve alveollere inmeden öksürük refleksiyle dışarı atılmaya çalışılan asetaldehit ve amonyak gazlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Kanın bütün dokulara temiz oksijen taşıma mekanizmasını tamamen felç eden, ancak solunum yolunun hiçbir mukozasında hücresel tahriş belirtisi veya kimyasal yanık tablosu oluşturmayan kokusuz karbonmonoksit gazıdır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Özellikle göz mukozasında ve burun boşluklarındaki ıslak alanlarda anında asidik reaksiyona girerek sıvı kaybına neden olan, yüzeyel dokularda ağır hücresel korozyon (erime) başlatan sülfürik asit ve hidrojen florür buharlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Suda zor çözündükleri için üst solunum yollarında başlangıçta çok hafif tahriş yapan ancak asıl yıkıcı doku parçalayıcı etkisini hava keseciklerinde (alveollerde) saatler süren gizli bir süreçte ölümcül akciğer ödemiyle gösteren fosgen ve azot dioksit gazlarıdır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Yalnızca havalandırma sisteminin yetersiz olduğu maden ocaklarında birikerek ortamdaki oksijen seviyesini asgari %18'in altına düşüren, hücresel düzeyde hiçbir kimyasal tahribat yapmayan boğucu metan ve propan gazlarıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Klinik Analiz</button>
+            <div class="solution-box"><strong>Klinik Çözüm ve Analiz:</strong> Amonyak gibi suda çok hızlı çözünen gazlar burunda anında yanma yapar ve vücut refleks olarak gazın aşağı inmesini engeller. Ancak <strong>Fosgen ve Azot Dioksit</strong> gibi gazlar suda zor çözündükleri için üst solunum yollarında alarm vermeden geçer, doğrudan akciğer hava keseciklerine (alveollere) iner ve orada sinsice sıvı biriktirerek (akciğer ödemi/pulmoner ödem) kişiyi kendi sıvısında boğar. Bu özellik onları en tehlikeli irritanlar yapar. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">5. Klinik toksikoloji laboratuvarlarında ve kimyasal risk değerlendirme raporlarında (MGBF) sıkça karşılaşılan toksisite dozaj birimlerinin doğru yorumlanması tıbbi müdahale için hayatidir. Buna göre, "deney hayvanı popülasyonunun tam olarak %50'sini öldürecek düzeyde olduğu laboratuvar testleriyle kanıtlanmış olan, ancak deney canlısının içine enjekte edilen bir dozu değil; <u>sadece solunum yoluyla alınan bir gazın, dumanın veya buharın havadaki 'konsantrasyonunu' (derişimini)</u> ifade eden" toksikolojik ölümcül parametre aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Tek bir seferde deri yoluyla doğrudan uygulandığında veya ağız yoluyla yutulduğunda iç organlarda zehirlenmeye ve ölüme neden olan mg/kg cinsinden saf madde miktarı yani LD50 (Lethal Doz 50) toksikoloji birimidir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) İş yerinde standart bir mesaide, haftada kırk saatlik belirlenmiş çalışma süresi boyunca herhangi bir hastalık yaratmadan maruz kalınmasına yasal olarak izin verilen Zaman Ağırlıklı Ortalama yani TWA (Time Weighted Average) birimidir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Sağlıklı çalışanların iş esnasında herhangi bir zehirlenme veya solunum güçlüğü belirtisi göstermeden en fazla on beş dakika boyunca aralıksız olarak maruz kalabileceği kısa süreli yasal üst sınır yani STEL (Kısa Süreli Maruziyet Sınırı) birimidir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Sadece havadaki uçucu gaz, zehirli buhar veya partikül toz formundaki maddelerin solunması (inhalasyonu) neticesinde, söz konusu test popülasyonunun tam yarısını öldüren atmosferik derişim yani LC50 (Lethal Konsantrasyon 50) birimidir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Herhangi bir bulaşıcı biyolojik risk etmeninin insan vücuduna açık yaralardan veya mukozadan girdikten sonra şiddetli klinik belirtiler vererek enfeksiyon oluşturması için kan akımında gereken asgari patojenik hücre sayısı yani IC50 birimidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Klinik Analiz</button>
+            <div class="solution-box"><strong>Klinik Çözüm ve Analiz:</strong> Toksikolojide yutulan veya deriye sürülen öldürücü ağırlık miktarına LD50 (Lethal Dose / Ölümcül Doz) denir. Ancak soru kökünde açıkça belirtildiği üzere; maddenin solunum yoluyla alınan havadaki yoğunluğunu ve atmosferik derişimini ifade eden ve solunduğunda test grubunun yarısını öldüren kavrama "C" harfinden (Concentration) gelen <strong>LC50 (Lethal Konsantrasyon 50)</strong> adı verilir. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">6. Mikrobiyoloji ve klinik laboratuvarlarında biyolojik risk etmenlerine karşı enfeksiyon ve sterilizasyon standartları belirlenirken, etken organizmaların hücresel dayanıklılık formları dikkate alınır. Normal üreme koşullarında çoğalan (vejetatif) bakterilerin aksine, ortamın dış şartları (aşırı sıcaklık, kuraklık, besinsizlik, kimyasal dezenfektanlar) hücre yaşamını tehdit edecek derecede bozulduğunda, bazı bakteri türlerinin genetik materyallerini koruyarak hayatta kalabilmek için oluşturdukları ve rutin sterilizasyon işlemlerine karşı olağanüstü hücresel direnç gösteren uyku formuna ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Bakterilerin sıvı eksikliği gibi elverişsiz hava şartlarında kendi hücresel sitoplazmik sıvılarını dışarı atarak oluşturdukları, hastalık yapma yeteneklerini ve virülanslarını kalıcı olarak kaybeden inaktif ve zayıf kist formudur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Aşırı fiziksel veya kimyasal stres altında hücresel metabolizmalarını neredeyse tamamen durdurarak yıllarca inaktif kalabilen, kalın bir duvarla korunan ve yüksek ısı dâhil her türlü dış sterilizasyon etkenine aşırı dirençli olan endospor formudur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Yalnızca hücre içi paraziter virüslerin kendilerine uygun bir konakçı organizma bulamadıkları zaman protein kılıflarını aşırı kalınlaştırarak dış ortamda kristalize oldukları ve enfeksiyon döngüsünü askıya aldıkları özel prion formudur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Çok hücreli gelişmiş protistaların veya bazı amiplerin uzun süren kurak iklim şartlarında etraflarına kalın bir kalsiyum duvarı örerek yaşamlarını sürdürdükleri ve sadece sıvıya temas ettiklerinde açılan hücre dışı amip polimer formudur.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Klinik deneylerde bakterilerin aşırı yüksek ısı veya ultraviyole radyasyon dalgalarına maruz kaldıklarında genetik nükleotid dizilimlerini (DNA) kalıcı olarak değiştirip yepyeni bir alt patojenik türe evrimleştikleri kalıtsal hücresel mutasyon formudur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Klinik Analiz</button>
+            <div class="solution-box"><strong>Klinik Çözüm ve Analiz:</strong> Biyolojik risk etmenlerinden bakteriler, normal şartlarda (vejetatif) hızla çoğalırlar. Ancak susuzluk, aşırı sıcaklık, dezenfektan ve radyasyon gibi hayatı tehdit eden stres şartlarına girdiklerinde, DNA'larını çok kalın ve aşılması zor bir duvarın içine hapsederler ve metabolizmayı durdururlar. Bu ölümcül dayanıklılık formuna <strong>Endospor (Spor)</strong> formu denir. Sterilizasyonda asıl amaç, vejetatif bakteriyi değil, saatlerce kaynatsanız bile ölmeyen bu endosporları yok edebilmektir. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">7. Endüstriyel toz maruziyetine bağlı gelişen mesleki akciğer hastalıkları (pnömokonyozlar), solunan tozun inorganik mineral veya organik bitkisel doğasına göre tamamen farklı radyolojik ve klinik tablolar sergilemektedir. Buna göre; genel maden işçilerinin aksine, daha çok tekstil, pamuk işleme ve tarım sektörlerinde sıkça rastlanan, pamuk, keten veya kenevir gibi organik bitkisel liflerin ve tozların kronik inhalasyonu (solunması) sonucunda akciğerlerde havayolu daralması ve geri dönüşümsüz göğüs sıkışması (pazartesi ateşi) sendromu ile karakterize edilen klinik solunum yolu hastalığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Özellikle gemi söküm, çatı kaplama veya eski bina izolasyon sektörlerinde serbest kalan asbest liflerinin akciğer plevra zarına saplanması sonucu oluşan ve ağır mezotelyoma (akciğer zarı kanseri) riski barındıran ilerleyici asbestozis kliniğidir.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Kömür, maden ve tünel kazı işçilerinde serbest kristalize silika parçacıklarının alveollerde birikmesiyle makrofaj fagositoz sürecini tamamen bozduğu, ağır nodüler yapılar ve yaygın skar dokusu (fibrozis) ile ilerleyen ölümcül silikozis tablosudur.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Kaynak dumanlarının kapalı alanda yoğun olduğu atölyelerde veya demir çelik sanayisinde çalışan işçilerde demir oksit tozlarının akciğerde sadece lekelenme şeklinde depolanmasıyla beliren ve nispeten iyi huylu olan inorganik siderozis rahatsızlığıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Tarım veya yoğun tekstil işçilerinde ortamda uçuşan pamuk, keten ve kenevir gibi spesifik organik tozların yıllarca solunmasıyla ortaya çıkan, akciğer hava yollarında histamin deşarjına bağlı ciddi ve kronik tıkanıklıklar yaratan bisinozis hastalığıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Ağır cam, ayna veya seramik üretimi sanayisinde kullanılan mikroskobik talk ve mika tozlarının uzun yıllar boyunca solunması sonucunda üst solunum yollarında ağır bir mekanik tahribata yol açan kronik hava yolu enflamasyonu (Siyah akciğer) kliniğidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Klinik Analiz</button>
+            <div class="solution-box"><strong>Klinik Çözüm ve Analiz:</strong> Pnömokonyozlar toza bağlı hastalıklardır. Asbestozis (asbestten), silikozis (cam ve silikadan), siderozis (demirden) meydana gelen inorganik (metal/mineral) tozu hastalıklarıdır. Soru kökünde sorulan pamuk, keten ve kenevir gibi bitkisel ipliklerin tozlarından kaynaklanan tekstil işçisi meslek hastalığı ise tıp dilinde <strong>Bisinozis (Bissinozis)</strong> olarak sınıflandırılır ve organik bir toz kliniğidir. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">8. Meslek hastalıkları kliniklerinde bel, boyun ve omurga rahatsızlıkları şikayetiyle başvuran ağır sanayi, forklift ve dev iş makinesi operatörlerinin iskelet sistemi grafiğinde "Tüm Vücut Titreşimi"ne bağlı dejenerasyon teşhisi konulmaktadır. Titreşim Yönetmeliğine göre, günlük 8 saatlik standart çalışma süresi (TWA) boyunca çalışanların kemik ve kas sisteminde kalıcı klinik hasarların engellenmesi için "Tüm Vücut Titreşimi"nde <u>işin mutlaka durdurulmasını veya maruziyetin kesilmesini emreden</u> ve kesinlikle aşılmaması gereken yasal "Maruziyet Sınır Değeri" hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Daha çok elde tutulan ve avuç içine uygulanan titreşim (el-kol titreşimi) için belirlenen eylem sınırına denk gelen ve iş yerinde önleyici idari tedbirlerin planlanmasını zorunlu kılan 2,5 m/s² değerindeki günlük standart maruziyet sınırıdır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Tüm vücut titreşimi sisteminde, idari koruyucu tedbirlerin, mühendislik makine bakımlarının ve çalışanlara yönelik tıbbi gözetim süreçlerinin derhal başlatılmasını şart koşan 0,5 m/s² değerindeki düşük seviyeli günlük maruziyet eylem sınırıdır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Tüm vücut titreşimine maruz kalan çalışanlar için, işverenin ilgili ağır faaliyeti acilen durdurmasını veya çalışma süresini drastik şekilde azaltmasını emreden, yasal olarak hiçbir koşulda aşılmaması gereken 1,15 m/s² değerindeki nihai sınır değerdir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Sadece el-kol titreşimi için mevzuatta üst limit olarak belirtilen ve aşıldığında kalıcı ve geri dönülemez kas-iskelet sistemi dolaşım hastalıklarına (örneğin beyaz parmak sendromu) yol açan 5,0 m/s² değerindeki yüksek şiddetli günlük maruziyet sınırıdır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Yalnızca şiddetli zemin kırıcıların kullanıldığı ağır maden ve yeraltı tünel sektörü çalışanları için özel istisna olarak tanımlanan ve devasa yüksek rezonanslı iş makinelerinde dahi aşılması yasaklanan 10,5 m/s² değerindeki maksimum yasal üst tolerans sınırıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Klinik Analiz</button>
+            <div class="solution-box"><strong>Klinik Çözüm ve Analiz:</strong> İSG alanında titreşim (vibrasyon) sınırları çok kritik bir bilgi ezberidir. Titreşim yönetmeliği kesin hatlarla ayrılmıştır: El-Kol Titreşimi için Eylem Değeri 2.5 iken Sınır Değer 5.0'dır. Soruda bizden istenen <strong>Tüm Vücut Titreşimi</strong> için ise idari Eylem Değeri 0.5 iken, yasal olarak işin kesilmesini gerektiren Maruziyet Sınır Değeri <strong>1,15 m/s²</strong>'dir. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">9. Mesleki kanserlerin teşhisi, takibi ve önlenmesinde IARC (Uluslararası Kanser Araştırma Ajansı) gibi uluslararası kurumların hazırladığı epidemiyolojik sınıflandırmalar klinik olarak oldukça bağlayıcıdır. Kimyasal risk değerlendirmesi sürecinde bir laboratuvar maddesinin "1. Kategori Karsinojen (Kanserojen)" olarak tıbbi literatürde ve İSG yönetmeliklerinde kesin olarak sınıflandırılabilmesi için gereken en temel klinik ve istatistiksel şart aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Yapılan in vivo laboratuvar deneylerinde yalnızca fare, sıçan ve tavşan gibi omurgalı deney hayvanı modelleri üzerinde belirli iç organlarda tümör oluşumunu hızlandırdığına dair zayıf ve teorik kanıtların bulunduğu, tıbben sadece şüpheli kanserojen maddeler statüsünde olmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) İnsan popülasyonları üzerinde hücresel DNA mutasyonuna veya habis tümör oluşumuna doğrudan yol açtığına dair çok net ve yeterli epidemiyolojik kanıtın bulunduğu, insan maruziyeti ile kanser arasında kesin bir neden-sonuç (illiyet) bağının kurulabilmesidir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Sentetik maddenin formül yapısında bulunan bazı kimyasal aromatik fonksiyonel grupların, geçmiş yıllarda kansere yol açtığı ispatlanmış olan diğer bazı agresif kimyasallara yapısal (sterik) olarak benzemesi ancak insan üzerinde bugüne kadar kesin olarak hiçbir şekilde kanıtlanamamış olmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Sadece gebelik süresince anne karnındaki fetüsün gelişim ve hücresel büyüme süreçlerine toksik etki ederek uzuv eksikliği ve organ anomalisine yol açtığı bilinen ancak doğmuş bebeklerde veya yetişkin dokularda herhangi bir hücresel kanserleşme (karsinom) emaresi yaratmayan mutajenik maddeler olmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Muhtemel kimyasal ve genetik kanserojenik yan etkileri nedeniyle modern tıp dünyasında çok büyük ve ciddi endişelere neden olan ancak laboratuvar, saha ve klinik epidemiyoloji düzeyinde bu açıdan tatmin edici bir bilimsel değerlendirme yapabilmek için hiçbir anlamlı istatistiki verinin mevcut olmamasıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Klinik Analiz</button>
+            <div class="solution-box"><strong>Klinik Çözüm ve Analiz:</strong> Kanserojen etmenler 3 kategoriye ayrılır. 3. Kategori verinin yetersiz olup sadece şüphe duyulanları, 2. Kategori insanlarda kanserojenik etkisi varmış "gibi" kabul edilenleri kapsar. Ancak bir maddenin doğrudan <strong>1. Kategori Kanserojen</strong> olabilmesi için; asbest veya benzen gibi, <u>insanlar üzerinde net bir epidemiyolojik çalışma ile doğrudan kanıtlanmış ve kanserle arasında açık bir neden-sonuç (illiyet) bağı kurulmuş</u> olması şarttır. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">10. Klinik tanı merkezlerinde, enfeksiyon etkenleri sınıflandırılırken organizmaların hücre anatomileri ve genetik nükleik asit yapıları dikkate alınır. Bu çerçevede tıbbi mikrobiyoloji literatürüne göre; "Hücresel düzeyde hiçbir nükleik asitleri (DNA veya RNA'sı) bulunmayan, yalnızca hatalı katlanmış olan ve enfeksiyon yeteneği kazanmış patolojik protein moleküllerinden oluşan, özellikle canlıların merkezi sinir sistemine kalıcı olarak yerleşerek 'Deli Dana (BSE)' gibi tedavisi olmayan ağır nörodejeneratif ölümcül hastalıklara yol açan asellüler (hücresel olmayan) enfeksiyöz" ajanlara ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Yalnızca çok kısa, tek sarmallı ve kovalent dairesel formda bağlanmış küçük bir ribonükleik asit (RNA) molekülünden oluşan, kendi dış protein kılıfı dahi bulunmayan ve çoğunlukla sadece zirai tarım bitki patolojisinde majör rol oynayan son derece ilkel hücresiz viroidlerdir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) İnsanlarda her türlü ağır sistemik klinik enfeksiyona yol açabilen, sitoplazmik genetik materyalleri (DNA) belirli bir nükleer çekirdek zarı ile asla sınırlandırılmamış, kalın hücre duvarı yapısına sahip ve dünya doğasındaki en yaygın tek hücreli otonom organizmalar olan prokaryotik mikroskobik bakterilerdir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Yapısal olarak yaklaşık 250 dizilimli aminoasitten oluşan, virüslerin en küçük biyolojik formlarından bile çok daha ufak bir yapıya sahip olan, nükleik asidi olmadığı hâlde tamamen kendi kendine çoğalabilen ve sadece patolojik inaktif protein dizilimi içeren asellüler özellikli tehlikeli prionlardır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Kendi başlarına hiçbir hücresel ve bağımsız kimyasal enerji metabolizmasına veya genetik çoğalma mekanizmasına sahip olmayan, doğada yaşamak, beslenmek ve mutasyonla kopyalanmak için zorunlu olarak başka bir canlı ökaryotik hücrenin (konakçı) içine girmesi gereken RNA/DNA odaklı virüslerdir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Keneler, sivrisinekler, pireler veya tatarcıklar gibi dış iskelete sahip omurgasız canlıların vücutlarında genetik olarak barınan, sıtma, Kırım-Kongo Kanamalı Ateşi veya Lyme gibi çok tehlikeli zoonotik paraziter hastalıkları memeli canlılara kan yoluyla transfer eden çok hücreli aktif taşıyıcı (vektör) artropodlardır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Klinik Analiz</button>
+            <div class="solution-box"><strong>Klinik Çözüm ve Analiz:</strong> Biyolojik risk ajanları hücre yapısına göre sınıflandırılır (Prokaryotlar, Ökaryotlar vb.). Bakterilerin DNA'sı, virüslerin DNA veya RNA'sı vardır. Ancak tıp tarihinde çok özel bir yeri olan; içinde genetik materyal (DNA/RNA) taşımayan, sadece ve sadece "hatalı katlanmış enfeksiyöz bir proteinden ibaret" olan ve sinir sistemini süngerimsi hale getirerek Deli Dana (BSE) gibi hastalıklara yol açan ajanlara <strong>Prion (Prionlar)</strong> adı verilir. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 18px; font-size: 0.95rem; opacity: 0.7; font-family: 'Open Sans', sans-serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 1 / Test 3 (Klinik ve İleri Toksikoloji) Simülasyonu</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 35 * 60; // 35 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Klinik Analiz';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // Tam Akademik 4 Yanlış 1 Doğruyu Götürür Algoritması
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

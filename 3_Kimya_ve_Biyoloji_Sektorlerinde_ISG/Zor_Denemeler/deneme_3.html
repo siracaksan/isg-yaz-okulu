@@ -1,25 +1,597 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zor Seviye Deneme 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Zor Deneme 3 (Profesör Seviyesi) - Kimya ve Biyoloji Sektörlerinde İSG</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+        :root {
+            --primary: #0f172a; /* Uzman Seviyesi: Prestijli Koyu Arduvaz / Siyah Tema */
+            --secondary: #1e293b;
+            --accent: #d97706; /* Altın Sarısı Vurgular */
+            --accent-hover: #b45309;
+            --dark: #020617;
+            --light: #f8fafc;
+            --success: #059669;
+            --success-light: #d1fae5;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --white: #ffffff;
+            --border: #cbd5e1;
+            --text-main: #334155;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Nunito Sans', sans-serif; background-color: #f1f5f9; color: var(--text-main); line-height: 1.6; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+            color: var(--white); padding: 40px 20px; text-align: center;
+            box-shadow: 0 6px 25px rgba(15, 23, 42, 0.4);
+            border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; margin-bottom: 25px;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; color: var(--accent);}
+        header h2 { font-size: 1.15rem; font-weight: 400; opacity: 0.95; color: #e2e8f0;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--white); padding: 20px; border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin: 0 auto 25px; width: 95%; max-width: 1200px; text-align: center;
+        }
+
+        .test-menusu .link-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 12px; }
+
+        .test-menusu a {
+            color: var(--primary); background: #f1f5f9; text-decoration: none; font-weight: 700;
+            font-size: 0.9rem; padding: 10px 20px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 6px;
+        }
+
+        .test-menusu a:hover {
+            background: var(--primary); color: var(--accent); transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(15, 23, 42, 0.2); border-color: var(--primary);
+        }
+
+        .test-menusu hr { border: none; height: 1px; background: #e2e8f0; margin: 15px 0; }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--white); padding: 40px 20px; border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin: 0 auto 30px;
+            width: 95%; max-width: 800px; text-align: center; border-top: 6px solid var(--accent);
+        }
+
+        .start-screen h2 { font-family: 'Montserrat', sans-serif; color: var(--dark); margin-bottom: 10px; font-size: 2.2rem; font-weight: 800; }
+        .start-screen p.desc { color: var(--text-muted); margin-bottom: 20px; font-size: 1.1rem; }
+
+        /* Sınav Analizi Kutusu */
+        .exam-analysis-box {
+            background: linear-gradient(to right, #f8fafc, #f1f5f9);
+            border-left: 6px solid var(--accent); padding: 25px; margin: 0 auto 30px;
+            width: 100%; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); text-align: left;
+        }
+
+        .exam-analysis-box h3 { color: var(--primary); margin-bottom: 12px; font-family: 'Montserrat', sans-serif; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; font-weight: 800;}
+        .exam-analysis-box p, .exam-analysis-box ul li { color: var(--text-main); font-size: 0.95rem; line-height: 1.6; margin-bottom: 10px; }
+        .exam-analysis-box ul { list-style-type: none; padding-left: 0; }
+        .exam-analysis-box ul li { position: relative; padding-left: 28px; }
+        .exam-analysis-box ul li::before { content: '🎓'; position: absolute; left: 0; top: 0px; font-size: 1.1rem; }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); color: white; border: none;
+            padding: 18px 45px; font-size: 1.3rem; font-weight: 800; font-family: 'Montserrat', sans-serif;
+            border-radius: 40px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(217, 119, 6, 0.3);
+        }
+        .btn-start:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 35px rgba(217, 119, 6, 0.4); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--white); padding: 15px 25px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 6px solid var(--accent); }
+        .timer-box { font-size: 1.5rem; font-weight: 800; font-family: 'Montserrat', sans-serif; color: var(--dark); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: var(--danger); background: var(--danger-light); padding: 6px 18px; border-radius: 12px; }
+        .btn-group button { border: none; padding: 12px 24px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: var(--white); }
+        .btn-finish { background: linear-gradient(135deg, var(--danger), #b91c1c); box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3); }
+        .btn-pdf { background: linear-gradient(135deg, var(--secondary), var(--primary)); box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3); }
+        
+        .result-stats { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .stat-box { padding: 15px 25px; border-radius: 14px; font-size: 1.2rem; font-weight: 800; font-family: 'Montserrat', sans-serif; flex: 1 1 200px; max-width: 250px; text-align: center;}
+        .stat-d { background: var(--success-light); color: var(--success); } .stat-y { background: var(--danger-light); color: var(--danger); }
+        .stat-b { background: #f1f5f9; color: var(--text-muted); } .stat-n { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--accent); font-size: 1.4rem; box-shadow: 0 5px 15px rgba(15,23,42,0.3);}
+
+        /* Soru Kartları */
+        .questions-grid { display: none; grid-template-columns: repeat(auto-fit, minmax(48%, 1fr)); gap: 20px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--white); border-radius: 16px; padding: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; border-top: 5px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .q-text { font-weight: 700; font-size: 1.05rem; margin-bottom: 16px; color: var(--dark); }
+        .options { display: flex; flex-direction: column; gap: 10px; flex-grow: 1; margin-bottom: 12px; }
+        
+        .option-label { display: flex; align-items: center; padding: 12px 14px; border-radius: 10px; background: #f8fafc; border: 1px solid #cbd5e1; cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: all 0.2s ease; color: var(--text-main);}
+        .option-label:hover { background: #f1f5f9; border-color: var(--accent); }
+        .option-label input { margin-right: 12px; transform: scale(1.2); accent-color: var(--accent); cursor: pointer; }
+        .option-label.correct { background: var(--success-light) !important; border-color: var(--success) !important; color: #047857; }
+        .option-label.incorrect { background: var(--danger-light) !important; border-color: var(--danger) !important; color: #b91c1c; text-decoration: line-through; }
+
+        /* ÖZEL CSS GÖRSEL KODLAMALARI (PİKTOGRAMLAR) */
+        .visual-flex { display: flex; align-items: center; gap: 15px; width: 100%;}
+        .ghs-box { position: relative; width: 50px; height: 50px; display: inline-flex; justify-content: center; align-items: center; margin: 5px 0;}
+        .ghs-diamond { position: absolute; width: 36px; height: 36px; background: white; border: 4px solid #ef4444; border-radius: 2px; transform: rotate(45deg); }
+        .ghs-symbol { position: relative; z-index: 1; font-size: 1.8rem; font-weight: 900; color: black; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; margin-top:-2px;}
+        .ghs-box-large { width: 80px; height: 80px; margin: 15px auto;}
+        .ghs-box-large .ghs-diamond { width: 56px; height: 56px; border-width: 6px;}
+        .ghs-box-large .ghs-symbol { font-size: 3rem;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: var(--primary); color: var(--accent); border: 1px solid var(--primary); padding: 8px 18px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; letter-spacing: 0.5px;}
+        .btn-solution:hover { background: var(--accent); color: white; border-color: var(--accent); }
+        .solution-box { display: none; margin-top: 10px; padding: 16px; background: #fffbeb; border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; font-size: 0.9rem; color: var(--dark); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); animation: slideDown 0.3s ease-out forwards; }
+        .solution-box strong { color: var(--accent-hover); font-size: 1rem; display: block; margin-bottom: 6px; font-weight: 800; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        footer { text-align: center; padding: 30px; background: var(--dark); color: #94a3b8; margin-top: 40px; font-size: 0.9rem; border-top-left-radius: 24px; border-top-right-radius: 24px; }
+        @media print { body { background: white; padding: 0; color: black; } .test-menusu, .top-panel, .start-screen, footer, #results-board, .btn-solution { display: none !important; } .questions-grid { display: block !important; } .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 12px; box-shadow: none; padding: 12px; } }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Zor Seviye Deneme 3</h2>
+        <h1>Profesör / Uzman Seviyesi İSG Testleri</h1>
+        <h2>Kimya ve Biyoloji Sektörlerinde İSG - ZOR DENEME 3</h2>
     </header>
-    
-    <main>
-        </main>
-    
-    <footer>
+
+    <nav class="test-menusu">
+        <div class="link-group">
+            <a href="../../index.html">🏠 Tüm Dersler</a>
+            <a href="../index.html">📚 Kimya ve Biyoloji İSG</a>
+            <a href="deneme_2.html">⬅️ Deneme 2 (Önceki)</a>
+        </div>
         <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="link-group">
+            <a href="deneme_4.html">Sonraki Deneme (Deneme 4) ➡️</a>
+            <a href="deneme_5.html">Deneme 5</a>
+        </div>
+    </nav>
+
+    <div id="start-screen" class="start-screen">
+        <h2>🎓 3. Seviye (Profesör Düzeyi) Deneme</h2>
+        <p class="desc">Aşırı İleri Düzey Mevzuat, Toksikoloji ve Kriz Yönetimi<br><br>Test süresi <strong>30 dakikadır</strong>.</p>
+        
+        <div class="exam-analysis-box">
+            <h3>📈 Profesör Düzeyi Sınav Stratejisi</h3>
+            <p>Bu denemede, standart İSG uzmanı bilgisinin ötesine geçerek tamamen "Kitabın Satır Araları", "Limit ve Eylem Değerleri Arasındaki Tuzaklar" ve "Özel Hastalık/Doz Tanımları"na odaklanılmıştır:</p>
+            <ul>
+                <li><strong>Hücre ve Dozaj Tuzakları:</strong> Biyolojik numunelerde (Örn: Brucella spp.) minimum enfeksiyon dozları ve toksikoloji terimleri (LD50 tanımı).</li>
+                <li><strong>Spesifik Hastalık ve Semptomlar:</strong> Hekzaklorobenzen'in yol açtığı nadir "Porfiri" sendromu ve Anilin gazının yarattığı "Anemik Anoksemi" gibi çok özel eşleştirmeler.</li>
+                <li><strong>ADR ve IATA Detayları:</strong> Kategori B maddeler ve içerik türü tam bilinmeyen numuneler (UN3373) ile sadece klinik araştırma amaçlı olanların (PT650) keskin ayrımı.</li>
+                <li><strong>İleri İlk Yardım (Rentek & Turnike):</strong> Turnikelerde 10-15 dk gevşetme kuralı ve bebeklerde nabız ölçüm spesifikasyonları (Brakiyal/Dirsek üstü).</li>
+                <li><strong>Mevzuatın İnce Çizgileri:</strong> SQRA risk metodunun mucidi olan Singapur Çalışma Bakanlığı ve 6 aylık işten uzaklaşmalarda "İşe Dönüş Eğitim Zorunluluğu" süreleri.</li>
+            </ul>
+        </div>
+
+        <button class="btn-start" onclick="startTest()">🚀 Profesör Denemesini Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">30:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Denemeyi Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net: <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- ZOR DENEME 3 SORULARI -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="D">
+            <div class="q-text">1. Kimyasal risk etmenlerinin fizyolojik etkileri incelendiğinde; teması halinde cildin renginin koyulaşmasıyla kendini gösteren <strong>"Porfiri (akkiz kazanılmış porfiria kutanea tarda)"</strong> hastalığına yol açan spesifik kimyasal madde aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Trikloroetilen</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Sodyum Hidroksit</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Asbest</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Hekzaklorobenzen</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Fosfor Triklorür</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kitabın (Bölüm 4) cilt hastalıkları alt başlığında spesifik olarak vurgulandığı üzere; hekzaklorobenzen ile temas, cilt renginin koyulaşmasına yol açan "Porfiri (akkiz kazanılmış porfiria kutanea tarda)" hastalığına neden olur. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">2. GHS sınıflandırmasına göre; <strong>0°C’den düşük parlama noktası</strong> ve aynı zamanda <strong>35°C’den düşük kaynama noktasına</strong> sahip olan sıvı haldeki maddeler, mevzuatta tam olarak hangi risk sınıfında adlandırılırlar?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Kolay Alevlenir Madde</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Çok Kolay Alevlenir Madde</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Alevlenir Madde</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Kendiliğinden Yanıcı Madde</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Organik Peroksit</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Teknik tanımlamalarda ince bir ayrım vardır: "Kolay alevlenir" madde ile "Çok kolay alevlenir" madde farklıdır. Parlama noktası 0°C'nin altında ve kaynama noktası 35°C'nin altında olan maddeler en yüksek risk sınıfı olan <strong>"Çok Kolay Alevlenir Madde"</strong> olarak tanımlanır. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">3. Biyolojik numunelerin hava/kara yoluyla gönderiminde; eğer gönderilen paket içerisinde sadece organ fonksiyon testleri, hormon veya biyokimyasal testler olan ve enfeksiyon barındırmayan (enfeksiyöz olmayan) hasta kan/idrar örnekleri varsa, bu paketin ADR/IATA kapsamındaki paketleme muafiyet kodu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) UN 3373</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) PT 904</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) PT 650</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) UN 2814</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) PT 602</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Enfeksiyon şüphesi taşımayan saf klinik laboratuvar örnekleri "Biyolojik Madde, Klinik Örnek" muafiyeti ile gönderilir ve bunlar için UN kodu kullanılmaz. Paketleme talimatı doğrudan <strong>PT 650</strong>'dir. (UN 3373 Kategori B içindir, UN 2814 Kategori A içindir). Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">4. Aşağıda CSS koduyla çizimi yapılmış olan GHS piktogramı hangi tehlike sınıfına aittir?<br>
+                <div style="display:flex; justify-content:center; align-items:center; margin-top: 15px;">
+                    <div class="ghs-box ghs-box-large">
+                        <div class="ghs-diamond"></div>
+                        <span class="ghs-symbol">☠️</span>
+                    </div>
+                </div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Toksik / Çok Toksik Madde</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Kanserojen (Hedef Organ Toksisitesi)</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Biyolojik Tehlike (Biohazard)</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Çevre İçin Tehlikeli</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Korozif (Aşındırıcı) Madde</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kırmızı eşkenar dörtgen içerisinde "Kafatası ve çapraz kemikler" (Skull and crossbones) işareti uluslararası GHS etiketlemesinde akut zehirlenme riski taşıyan <strong>"Toksik ve Çok Toksik Maddeler"</strong> için kullanılır. Kanserojen etki için insan silüeti (yıldız parçalanması) kullanılır. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">5. Toksikolojide "Aynı anda tek bir doz olarak verilen ve uygulandığı bir grup test hayvanının (popülasyonun) tam olarak yarısının (%50'sinin) ölümüne neden olan ölümcül (lethal) madde miktarına" ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) IC50 (Yarı Maksimal İnhibe Edici Konsantrasyon)</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) LC50 (Ölümcül Konsantrasyon)</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) TWA (Zaman Ağırlıklı Ortalama)</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) LD50 (Lethal Doz 50)</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) STEL (Kısa Süreli Maruziyet Limiti)</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Havadaki "konsantrasyon" öldürüyorsa LC50, doğrudan alınan "Doz" (mg/kg olarak) test canlılarının %50'sini öldürüyorsa buna <strong>LD50 (Lethal Doz 50)</strong> adı verilir. Kitapta tanımlanan spesifik bir toksikolojik ölçü birimidir. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">6. Aşağıdaki seçeneklerden hangisi, toksik ve zararlı maddelerin bir alt dalı olan <strong>"Reprotoksik" (Üreme sistemine zehirli)</strong> maddelere verilebilecek en klasik endüstriyel kimyasal örnektir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Di-(2-etilheksil) ftalat</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Karpit (Kalsiyum karbür)</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Zirkonyum</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Sülfürik asit</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Fosgen gazı</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Reprotoksik maddeler (Teratojenler), sperm/yumurta kalitesini düşüren, doğurganlığı azaltan maddelerdir. Plastikleştirici olarak endüstride yoğun kullanılan <strong>Ftalatlar (özellikle Di-(2-etilheksil) ftalat)</strong>, hormon taklidi yaparak reprotoksik etki yaratan maddelerin başında gelir. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">7. İlk yardımın dolaşım (nabız) kontrolü aşamasında, hasta/yaralının yaş grubuna göre ölçüm yapılan arter (atardamar) bölgeleri değişmektedir. Temel Yaşam Desteği (TYD) standartlarına göre <strong>0-12 ay arası bir bebekte</strong> nabız kontrolü, ilk yardımcı tarafından vücudun neresinden yapılmalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Boyun (Karotis) atardamarından - 3 parmakla</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Boyun (Karotis) atardamarından - 2 parmakla</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Ayak tabanından - el ayasıyla</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) El bileğinden (Radyal arter) - 2 parmakla</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Dirsek üstü kol (Brakiyal) atardamarından - 3 parmakla</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Yetişkin ve çocuklarda nabız, boyun bölgesindeki şah damarından (karotis) alınır. Ancak bebeklerin boyun kasları kısa ve boğumlu olduğu için karotisten nabız almak çok zordur; bu yüzden bebeklerde nabız ölçümü daima <strong>dirsek üstü kol atardamarından (brakiyal arterden)</strong> yapılır. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">8. Biyolojik laboratuvarlarda çalışılan patojenin risk düzeyine bağlı olarak laboratuvarın fiziki ve idari gereklilikleri (BGD seviyeleri) belirlenmiştir. Buna göre <strong>"Çalışmaların pozitif basınçlı özel astronot kıyafetlerle biyogüvenlik kabinlerinde gerçekleştirilmesi, laboratuvara hava kilitli özel giriş, duşlu sistemle çıkış ve atıklar için izole edilmiş özel atık sisteminin bulunması"</strong> zorunlulukları hangi Biyogüvenlik Düzeyine aittir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Biyogüvenlik Düzeyi 1 (BGD-1)</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Biyogüvenlik Düzeyi 2 (BGD-2)</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Biyogüvenlik Düzeyi 3 (BGD-3)</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Endüstriyel Tecrit Düzeyi</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Maksimum Tecrit Biyogüvenlik Düzeyi 4 (BGD-4)</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Bahsedilen çok ağır güvenlik önlemleri (pozitif basınçlı astronot suit, hava kilitli giriş, duşlu tam dekontaminasyon çıkışı); Ebola ve Marburg gibi tedavisi olmayan ölümcül virüslerin çalışıldığı dünyanın en üst düzey koruma standardı olan <strong>BGD-4 (Maksimum Tecrit)</strong> laboratuvarlarına aittir. BGD-3'te tek yönlü hava akımı vardır ancak astronot kıyafet ve hava kilidi yoktur. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">9. "Çalışanların Titreşimle İlgili Risklerden Korunmalarına Dair Yönetmelik" kapsamında, el-kol sisteminde mesleki beyaz parmak gibi kalıcı hasarlara yol açabilen <strong>"el-kol titreşimi"</strong> için yasal olarak aşılmaması gereken günlük 8 saatlik <u>maruziyet Sınır Değeri</u> kaç m/s² olarak belirlenmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) 0,5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) 1,15 m/s²</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) 2,5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) 5,0 m/s²</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) 10,5 m/s²</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Mevzuatta çok karıştırılan bir tuzaktır. Tüm vücut titreşimi için eylem değeri 0,5 ve sınır değer 1,15'tir. El-kol titreşimi için ise idari önlemlerin alınmasını gerektiren eylem değeri 2,5 m/s² iken, kesinlikle aşılmaması gereken yasal <strong>Sınır Değer 5,0 m/s²</strong>'dir. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">10. 6331 sayılı İSG mevzuatı ve İSG Eğitimleri Yönetmeliğine göre; herhangi bir sebeple (ücretsiz izin, uzun süreli hastalık, kaza vs.) sahadan belli bir sürenin üzerinde ayrı kalan çalışanlar, iş başı yapmadan önce güvenlik prosedürlerini hatırlaması amacıyla zorunlu "işe dönüş (yenileme) eğitimine" tabi tutulmalıdır. Bu zorunluluğu doğuran yasal uzak kalma süresi asgari olarak ne kadardır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) 3 aydan fazla</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) 6 aydan fazla</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) 1 yıldan fazla</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) 2 yıldan fazla</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) 3 yıldan fazla</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İSG mevzuatında net bir şekilde; "Herhangi bir sebeple <strong>6 aydan fazla</strong> süreyle işten uzak kalanlara, tekrar işe başlatılmadan önce bilgi tazeleme ve yeni riskleri öğrenme amacıyla ilave yenileme İSG eğitimi verilir." ibaresi yer almaktadır. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">11. Aşağıda verilen çok hücreli / tek hücreli sınıflandırmalarından hangisi çalışma ortamında karşılaşılan biyolojik risk etmenlerinden <strong>"Çok Hücreli"</strong> olan gruba (paraziter yapılara) örnek olarak verilebilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) Prionlar</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) Bakteriler (Prokaryotlar)</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) Artropodlar (Eklembacaklılar / Vektörler)</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) Viroidler</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) Virüsler</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Virüs, viroid ve prionlar hücresel yapıda bile değildir (asellülerdir). Bakteriler ise tek hücreli prokaryotlardır. Mesleki biyolojik tehlikeler arasında kene, pire gibi paraziter hastalık taşıyıcılarını (vektörleri) barındıran <strong>Artropodlar (Eklembacaklılar)</strong> ve helmintler çok hücreli biyolojik etmenlerdir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">12. Biyolojik etmenlerin laboratuvarlarda araştırılması sürecinde, enfeksiyonu başlatmak için gerekli olan "minimum enfektif doz" ajanın patojenitesine göre değişir. Oldukça küçük bir dozaj olan <strong>sadece 10 ile 100 hücrenin</strong> aerosol veya deri altı yolla vücuda girmesiyle dahi çok ağır bir zoonotik enfeksiyona yol açabilen (ve Grup 3 şartlarında çalışılması gereken) etmen aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) Brucella spp. (Brusella)</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) Salmonella typhi</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) Escherichia coli (Patojen olmayan suş)</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) Candida albicans</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) Clostridium tetani</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kitapta (Bölüm 5) maruziyet dozu bölümünde detaylandırıldığı üzere; Salmonella enfeksiyonu için 100-1000 hücre gerekirken, hayvancılık/süt sektöründe meslek hastalığı olan <strong>Brucella spp. (Bruselloz)</strong> için çok daha düşük, yalnızca 10-100 hücrelik bir dozaj laboratuvar çalışanını enfekte etmeye yeterlidir. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">13. Uzuv kopması, ezilme sendromu (crush) veya çok sayıda yaralının olduğu kriz anlarında ilk yardımcının kanamayı durdurmak için başvurduğu <strong>Turnike (Boğucu Sargı)</strong> uygulamasında, kangren (doku ölümü) oluşmasını engellemek amacıyla turnikenin belirli bir sürede bir 5-10 saniye gevşetilerek bölgeye kan (oksijen) gönderilmesi zorunludur. Bu maksimum gevşetme süresi aralığı tıp literatüründe ne kadardır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) 10-15 dakikada bir</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) 3-5 dakikada bir</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) 30-45 dakikada bir</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) 60 dakikada bir</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) Asla gevşetilmemelidir</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Turnike arteriyel akımı tamamen kestiği için doku oksijensiz kalır (iskemi/nekroz başlar). Uzvun kaybedilmemesi için kural olarak 112 gelene kadar her <strong>10 ile 15 dakikada bir</strong> mutlaka turnike musluğu 5-10 saniyeliğine gevşetilir ve alttaki dokuların kanlanması (oksijenlenmesi) sağlanır. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">14. İlk yardım uygulamaları esnasında bilinç kontrolü sonrası hasta ya da yaralıya belirli kriz pozisyonları verilir. Buna göre; kalbe giden kan akımını artırmak amacıyla kişinin sırtüstü yatırıldığı, <strong>ayaklarının 30 cm havaya kaldırıldığı</strong> ve ısı kaybını önlemek için üzerinin örtüldüğü pozisyon aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) Yarı Oturur Pozisyon</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) Rentek Pozisyonu</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) Koma (Yarı yan yatar) Pozisyonu</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) Şok Pozisyonu</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) Heimlich Manevrası</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Bedenin renginin solması, aşırı kan kaybı veya bayılma belirtilerinde beyne ve hayati organlara giden kanı artırmak için yerçekiminden faydalanılarak ayakların 30 cm yükseltildiği özel pozisyona ilk yardımda <strong>Şok Pozisyonu</strong> adı verilir. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">15. "Olası reaksiyonlara göre bir araya gelmesi veya depolanması durumunda tehlikeli ekzotermik veya zehirli reaksiyon oluşturabilecek madde gruplarının tespitini (örn: Asitler ile Siyanürlerin yan yana duramayacağı) görsel ve eşleştirmeli olarak ifade eden güvenlik yönetim sistemine ne ad verilir?"</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) Kimyasal Ayrışım Matrisi</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) Kimyasal Olasılık Matrisi</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) Kimyasal Etkileşim Matrisi</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) Risk-Tehlike Değerlendirme Çizelgesi</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) HAZOP Reaksiyon Şeması</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kimya endüstrisinde depo alanlarında uyumsuz kimyasalların (incompatibles) bir araya gelmesini (örn: Oksitleyiciler ile Parlayıcıların) engellemek için kullanılan kesişim tablolarına bilimsel ve hukuki dilde <strong>Kimyasal Etkileşim Matrisi</strong> (Chemical Interaction Matrix) denir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">16. İlk yardımda "Koma Pozisyonu (Yarı Yan Yatar Pozisyon)" verilirken kişinin kollarının ve bacaklarının konumlandırılması büyük önem taşır. Bu prosedürde, yaralının ilk yardımcıya (size) <u>yakın olan kolu</u> hangi konuma getirilmelidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) Dirsekten bükülerek hastanın kendi karşı yanağına konulur.</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) Omuzdan baş bölgesine doğru geriye (yukarıya) dümdüz uzatılır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) Hastanın gövdesine paralel (aşağıya doğru) sıkıca yapıştırılır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) Yaralının belinin altına sıkıştırılarak destek yapılır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) İlk yardımcı tarafından tutulup çekme (kaldıraç) kolu olarak kullanılır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Koma pozisyonu kurallarına göre; hastanın size "yakın olan kolu" vücuttan yukarıya, omuzdan baş bölgesine doğru geriye uzatılır (hasta döndüğünde bu kol altta yastık vazifesi görecektir). Size "uzak olan kolu" ise bükülerek hastanın kendi karşı yanağına (size yakın yanağa) destek olarak konulur. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">17. Yalnızca kimyasal maruziyet hesaplamaları için geliştirilen, kimyasal tehlikelerin belirlenerek ölçümlendiği, deneysel formüllerle çalışan ve <strong>Singapur Çalışma Bakanlığı</strong> tarafından literatüre kazandırılmış olan Spesifik Risk Değerlendirme Yöntemi aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) Dow Chemical Exposure Index (CEI)</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) Stoffenmanager Yöntemi</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) Potansiyel Risk Hiyerarşi (INRS) Yöntemi</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) HAZOP Analizi</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) Semi-Quantitative Risk Assessment (SQRA)</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kitapta (Bölüm 5) kantitatif ve kimyasal özel metotlar sıralanırken, "Singapur Çalışma Bakanlığı tarafından geliştirilen, formüllerle deneysel maruziyet hesaplayan metodun adının" <strong>Semi-Quantitative Risk Assessment (SQRA)</strong> olduğu özellikle vurgulanmıştır. Diğerleri farklı ülkelere/firmalara (INRS-Fransa, CEI-Dow Chem) aittir. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">18. Zehirlenme mekanizmalarında, dokuların oksijensiz kalarak "Anemik (Kimyasal) Anoksemi" yaşamasına neden olan bazı gazlar vardır. Bu gazların başında gelen ve hemoglobinin yapısına oksijenden <strong>200 kat daha hızlı ve sıkı</strong> bir kimyasal afinite ile bağlanarak ölümcül sonuç doğuran gaz hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) Fosgen (COCl2)</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) Hidrojen Sülfür (H2S)</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) Karbondioksit (CO2)</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) Karbonmonoksit (CO)</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) Amonyak (NH3)</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Sessiz katil olarak bilinen <strong>Karbonmonoksit (CO)</strong> gazı renksiz ve kokusuzdur. Hemoglobine oksijene kıyasla 200 kat daha güçlü/hızlı bağlanarak "Karboksihemoglobin" oluşturur ve hücresel asfiksiye (anemik anoksemi) neden olur. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">19. Gönderimi yapılan bulaşıcı maddelerin (Enfeksiyöz Ajanların) paketlenmesi ve etiketlenmesi ADR ve IATA kuralları gereği son derece katıdır. Buna göre, şayet bir gönderinin içerisindeki <strong>enfeksiyöz maddenin türü (hangi ajanı barındırdığı) bilinmiyorsa</strong> paketin üzerine zorunlu olarak basılması gereken "Genel (Kategori B)" kod numarası aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) UN 2814</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) UN 2900</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) UN 3373</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) PT 602</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) PT 904</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Mevzuatta net olarak belirtilmiştir: Etken kesin biliniyor ve insanı etkiliyorsa UN 2814 (Kategori A); sadece hayvanı etkiliyorsa UN 2900 kullanılır. Ancak içerdiği hastalık etkeni net olarak *bilinmiyorsa* (şüpheli numuneyse), paket doğrudan Kategori B standartlarında <strong>UN 3373</strong> kod numarası ile mühürlenir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">20. Olay yeri ve hasta değerlendirmesi (İlk Yardım) uygulamalarında kazazedenin veya hastanın durumu incelenirken bedenin genel anatomisi dikkate alınır. Deri tabakalarına inen yanık vakalarında; hastada sadece ağrı, çok hafif ödem, şiddetli sızı ve <strong>deri kızarıklığı</strong> varsa (içi su dolu kabarcık yani bül YOkSA) bu vaka ilk yardım terminolojisinde ne olarak derecelendirilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) Birinci Derece Yanık</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) İkinci Derece Yanık</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) Üçüncü Derece Yanık</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) Dördüncü Derece (Korozif) Yanık</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) Termal Kangren</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Profesör Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Sadece epidermis (en üst deri) tabakasının etkilendiği, içi su dolu kabarcıkların (büllerin) görülmediği, klasik "güneş yanığı" tarzındaki kızarık, sızılı yanık türüne <strong>Birinci Derece Yanık</strong> denir ve 1 hafta içinde iz bırakmadan kendiliğinden iyileşir. Bül varsa 2. derece olur. Doğru cevap A.</div>
+        </div>
+
+    </main>
+
+    <footer>
+        <strong>Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com</strong>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 30 * 60; // 30 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.querySelector('.start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "var(--dark)";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Profesör Çözümü';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Çözümü Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Süre Doldu / Deneme Bitti";
+            timerDisplay.style.color = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // Yanlışlar doğruyu götürmez mantığıyla / Formül düzeltimi: 4 yanlış 1 doğru hesaplaması.
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

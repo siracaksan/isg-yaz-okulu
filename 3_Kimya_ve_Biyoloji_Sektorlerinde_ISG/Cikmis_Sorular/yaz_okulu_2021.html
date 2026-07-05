@@ -1,25 +1,583 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2021 Yaz Okulu Soruları - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>2021 Yaz Okulu Çıkmış Sorular - Kimya ve Biyoloji Sektörlerinde İSG</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+        :root {
+            --primary: #0ea5e9; /* Çıkmış sorulara özel farklı bir mavi tonu */
+            --secondary: #0284c7;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #334155;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Nunito Sans', sans-serif; background-color: #f1f5f9; color: var(--text-main); line-height: 1.6; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+            color: var(--white); padding: 35px 20px; text-align: center;
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.2);
+            border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; margin-bottom: 25px;
+        }
+
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px;}
+        header h2 { font-size: 1.1rem; font-weight: 400; opacity: 0.9; color: #e0f2fe;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--white); padding: 20px; border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin: 0 auto 25px; width: 95%; max-width: 1200px; text-align: center;
+        }
+
+        .test-menusu .link-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 12px; }
+
+        .test-menusu a {
+            color: var(--primary); background: #e0f2fe; text-decoration: none; font-weight: 700;
+            font-size: 0.9rem; padding: 10px 20px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid #bae6fd; display: inline-flex; align-items: center; gap: 6px;
+        }
+
+        .test-menusu a:hover {
+            background: var(--primary); color: var(--white); transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(14, 165, 233, 0.2);
+        }
+
+        .test-menusu hr { border: none; height: 1px; background: var(--border); margin: 15px 0; }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--white); padding: 40px 20px; border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin: 0 auto 30px;
+            width: 95%; max-width: 800px; text-align: center; border-top: 6px solid var(--accent);
+        }
+
+        .start-screen h2 { font-family: 'Montserrat', sans-serif; color: var(--dark); margin-bottom: 10px; font-size: 2rem; font-weight: 800; }
+        .start-screen p.desc { color: var(--text-muted); margin-bottom: 20px; font-size: 1.1rem; }
+
+        /* Sınav Analizi Kutusu */
+        .exam-analysis-box {
+            background: linear-gradient(to right, #fffbeb, #fef3c7);
+            border-left: 6px solid var(--accent); padding: 20px 25px; margin: 0 auto 30px;
+            width: 100%; border-radius: 12px; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.1); text-align: left;
+        }
+
+        .exam-analysis-box h3 { color: #b45309; margin-bottom: 12px; font-family: 'Montserrat', sans-serif; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
+        .exam-analysis-box p, .exam-analysis-box ul li { color: var(--dark); font-size: 0.95rem; line-height: 1.5; margin-bottom: 10px; }
+        .exam-analysis-box ul { list-style-type: none; padding-left: 0; }
+        .exam-analysis-box ul li { position: relative; padding-left: 28px; }
+        .exam-analysis-box ul li::before { content: '💡'; position: absolute; left: 0; top: 0px; font-size: 1.1rem; }
+
+        .btn-start {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none;
+            padding: 18px 45px; font-size: 1.3rem; font-weight: 800; font-family: 'Montserrat', sans-serif;
+            border-radius: 40px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+        .btn-start:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 35px rgba(245, 158, 11, 0.4); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--white); padding: 15px 25px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 6px solid var(--primary); }
+        .timer-box { font-size: 1.5rem; font-weight: 800; font-family: 'Montserrat', sans-serif; color: var(--dark); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: var(--danger); background: var(--danger-light); padding: 6px 18px; border-radius: 12px; }
+        .btn-group button { border: none; padding: 12px 24px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: var(--white); }
+        .btn-finish { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .btn-pdf { background: linear-gradient(135deg, #475569, #334155); box-shadow: 0 4px 15px rgba(71, 85, 105, 0.3); }
+        
+        .result-stats { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .stat-box { padding: 15px 25px; border-radius: 14px; font-size: 1.2rem; font-weight: 800; font-family: 'Montserrat', sans-serif; flex: 1 1 200px; max-width: 250px; text-align: center;}
+        .stat-d { background: var(--success-light); color: #047857; } .stat-y { background: var(--danger-light); color: #b91c1c; }
+        .stat-b { background: #f1f5f9; color: var(--text-muted); } .stat-n { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; font-size: 1.4rem; box-shadow: 0 5px 15px rgba(14,165,233,0.3);}
+
+        /* Soru Kartları */
+        .questions-grid { display: none; grid-template-columns: repeat(auto-fit, minmax(48%, 1fr)); gap: 20px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--white); border-radius: 16px; padding: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid var(--border); border-top: 5px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .q-text { font-weight: 700; font-size: 1.05rem; margin-bottom: 16px; color: var(--dark); }
+        .options { display: flex; flex-direction: column; gap: 10px; flex-grow: 1; margin-bottom: 12px; }
+        
+        .option-label { display: flex; align-items: center; padding: 12px 14px; border-radius: 10px; background: var(--light); border: 1px solid var(--border); cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: all 0.2s ease; color: var(--text-main);}
+        .option-label:hover { background: #e2e8f0; border-color: #cbd5e1; }
+        .option-label input { margin-right: 12px; transform: scale(1.2); accent-color: var(--primary); cursor: pointer; }
+        .option-label.correct { background: var(--success-light) !important; border-color: var(--success) !important; color: #047857; }
+        .option-label.incorrect { background: var(--danger-light) !important; border-color: var(--danger) !important; color: #b91c1c; text-decoration: line-through; }
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f1f5f9; color: var(--primary); border: 1px solid #cbd5e1; padding: 8px 18px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; }
+        .btn-solution:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .solution-box { display: none; margin-top: 10px; padding: 16px; background: #f0fdfa; border-left: 4px solid var(--success); border-radius: 0 10px 10px 0; font-size: 0.9rem; color: var(--dark); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); animation: slideDown 0.3s ease-out forwards; }
+        .solution-box strong { color: var(--success); font-size: 1rem; display: block; margin-bottom: 6px; font-weight: 800; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        footer { text-align: center; padding: 30px; background: var(--dark); color: #94a3b8; margin-top: 40px; font-size: 0.9rem; border-top-left-radius: 24px; border-top-right-radius: 24px; }
+        @media print { body { background: white; padding: 0; color: black; } .test-menusu, .top-panel, .start-screen, footer, #results-board, .btn-solution { display: none !important; } .questions-grid { display: block !important; } .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 12px; box-shadow: none; padding: 12px; } }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>2021 Yaz Okulu Soruları</h2>
+        <h1>2026 Anadolu Üniversitesi İSG Yaz Okulu</h1>
+        <h2>3. Kimya ve Biyoloji Sektörlerinde İSG - 2021 Çıkmış Sorular</h2>
     </header>
-    
-    <main>
-        </main>
-    
-    <footer>
+
+    <nav class="test-menusu">
+        <div class="link-group">
+            <a href="../../index.html">🏠 Tüm Dersler</a>
+            <a href="../index.html">📚 Kimya ve Biyoloji İSG</a>
+            <a href="yaz_okulu_2022.html">Sonraki Yıl (2022) ➡️</a>
+        </div>
         <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="link-group">
+            <a href="../Unite_1/test_1.html">Ünite 1</a>
+            <a href="../Unite_2/test_1.html">Ünite 2</a>
+            <a href="../Unite_3/test_1.html">Ünite 3</a>
+            <a href="../Unite_4/test_1.html">Ünite 4</a>
+            <a href="../Unite_5/test_1.html">Ünite 5</a>
+            <a href="../Unite_6/test_1.html">Ünite 6</a>
+            <a href="../Unite_7/test_1.html">Ünite 7</a>
+            <a href="../Unite_8/test_1.html">Ünite 8</a>
+        </div>
+    </nav>
+
+    <div id="start-screen" class="start-screen">
+        <h2>2021 Yaz Okulu Sınavı</h2>
+        <p class="desc">Açıköğretim Sistemi Orijinal Çıkmış Sorular<br><br>Test süresi <strong>30 dakikadır</strong>.</p>
+        
+        <div class="exam-analysis-box">
+            <h3>📊 2021 Sınav Analizi ve Çıkarımlar</h3>
+            <p>2021 yılı yaz okulu sınavı incelendiğinde öne çıkan konu başlıkları şunlardır:</p>
+            <ul>
+                <li><strong>Risk Değerlendirme Adımları ve Yöntemleri:</strong> Sınavda özellikle risk değerlendirme sürecinin basamakları (örneğin son adımın ne olduğu) ve <i>Kjemi Risk Yöntemi</i> gibi spesifik yöntemlerin kimler tarafından geliştirildiği (Norveçli yağ endüstrisi) sorulmuştur.</li>
+                <li><strong>Çalışan ve İşveren Yükümlülükleri (Eğitim):</strong> Çalışanlara verilmesi gereken "Genel Eğitim" ve "Sağlık/Teknik Eğitim" ayrımları sorulmuştur. <i>Yasal hak ve sorumlulukların genel bir eğitim konusu</i> olduğuna dikkat edilmelidir. Eğitim süreleri (Çok tehlikeli = 16 saat) yine banko çıkmıştır.</li>
+                <li><strong>Biyolojik Tehlikelerin İletim Zinciri:</strong> Biyolojik etmenlerin rezervuardan başlayıp potansiyel ev sahibine ulaşana kadar geçirdiği 5 aşamalı iletim zinciri sıralaması sorulmuştur.</li>
+                <li><strong>Güncel Gelişmeler:</strong> Sınav yapıldığı yılın gündemine uygun olarak, Aralık 2019'da ortaya çıkan Çin merkezli pandemi (Covid-19) bir genel kültür/biyolojik ajan sorusu olarak yer almıştır.</li>
+            </ul>
+        </div>
+
+        <button class="btn-start" onclick="startTest()">🚀 Sınavı Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">30:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Testi Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net: <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 2021 Çıkmış Sorular -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="C">
+            <div class="q-text">1. Uluslararası Hava Taşımacılığı Birliği (IATA) tarafından, maruz kalındığında, kalıcı sakatlığa veya yaşamı tehdit eden veya ölümcül hastalığa neden olabilecek bir biçimde taşınan bulaşıcı bir madde olarak tanımlanan kavram aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Brucella abortus</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Kategori B bulaşıcı madde</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Kategori A bulaşıcı madde</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Shigella dysenteriae type 1</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Clostridium botulinum</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kategori A bulaşıcı maddeler, IATA tarafından maruz kalındığında insanlar veya hayvanlar için kalıcı sakatlık veya ölümcül hastalıklara yol açabilen oldukça tehlikeli formda taşınan maddelerdir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">2. Aşağıdakilerden hangisi kimyasal zehirlenmeye yol açma ihtimali en düşük olan maddedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Sıvı</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Katı</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Hem gaz, hem sıvı içeren karışım</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Gaz</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Süperkritik akışkan</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kimyasal etmenlerin fiziksel durumları incelendiğinde, havaya karışma (solunma) ve cilde nüfuz etme yeteneği gaz ve sıvılara kıyasla en zor olan "Katı" haldeki maddelerin zehirlenmeye yol açma ihtimali daha düşüktür. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">3. I. Bina türü<br>II. Bina kat sayısı<br>III. Aydınlatma türü<br>IV. Depolama kapları etiketlenmesi<br>V. Yangın çıkışlarının sayısı<br><br>Yukarıdakilerden hangileri tehlikeli maddelerin depolanma biçimini düzenlemek amacıyla oluşturulmuş yönetmeliklere göre iş yerlerinin uyması gereken kurallar arasında yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) I ve II</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) II ve III</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) I, II ve III</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) I, II, IV ve V</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) II, III, IV ve V</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Tehlikeli kimyasal depolama alanları yönetmeliklerine göre bina türü, kat sayısı, yangın çıkış sayısı ve etiketlemeler doğrudan yasal kurallara tabidir. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">4. Vücudun farklı bölgelerinde oluşabilen iyi veya kötü huylu, içi sıvı, yarı katı veya hava dolu kese benzeri oluşumlara ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Kist</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Spor</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Protist</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Mantar</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Heterotrof</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İçi sıvı, hava veya yarı katı materyalle dolu olan, vücudun herhangi bir yerinde gelişebilen kese formundaki oluşumların tıp dilindeki karşılığı "Kist"tir. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">5. Kimyasal depolama alanlarını yönetmek için hazırlanması gereken kimyasal envanterin içeriğinde aşağıdakilerden hangisi yer almaz?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Miktarları</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Saklama yerleri</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Tehlike bilgileri</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Kimyasal isimleri</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Sızıntı durumu</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kimyasal envanterler depo miktarları, kimyasal isimleri ve saklama lokasyonları gibi somut liste bilgilerini barındırır. "Tehlike bilgileri" ise envanterin değil, Malzeme Güvenlik Bilgi Formlarının (MGBF/SDS) konusudur. (Çıkmış soru orijinal metnine göre C kabul edilmektedir).</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">6. I. Patlayıcı<br>II. Oksitleyici<br>III. Renklendirici<br>IV. Zehirli<br>V. Aşındırıcı<br><br>Yukarıdakilerden hangileri Uluslararası Çalışma Örgütü'nün sınıflandırmasına göre kimyasal etmenlerin ayrıldığı gruplar arasında yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) I ve III</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) II ve III</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) II, III ve V</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) I, II, III ve IV</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) I, II, IV ve V</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> ILO sınıflandırmasına göre kimyasal riskler patlayıcı, oksitleyici, zehirli, aşındırıcı ve tahriş ediciler olarak gruplandırılır. "Renklendirici" bir sağlık riski sınıflandırması değildir. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">7. Aşağıdaki kimyasallardan hangisinin vücuda temas yolu sadece cilt teması, göz teması ve yutma yoludur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Fosforik asit</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Karbondioksit</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Karbonmonoksit</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Metan</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Etilenoksit</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Karbondioksit, karbonmonoksit, metan ve etilenoksit gibi maddeler GAZ formundadır ve asıl vücuda giriş yolları 'solunum'dur. Fosforik asit ise korozif bir SIVIDIR; oda sıcaklığında gaz formunda bulunmadığı için doğrudan sıçrama/temas ve yutma yoluyla vücuda etki eder. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">8. Aşağıdakilerden hangisi 2019 Aralık ayında ortaya çıkan Çin merkezli bir pandeminin etkenidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Kuş gribi</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Covid 19</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Su çiçeği</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Mevsimsel grip</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Domuz gribi</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> 2019 yılının Aralık ayında Çin'in Wuhan kentinde ortaya çıkıp tüm dünyayı etkisi altına alan pandemiye SARS-CoV-2 virüsünün sebep olduğu "Covid-19" adı verilmiştir. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">9. I. A tipi<br>II. B tipi<br>III. D tipi<br>IV. E tipi<br>V. F tipi<br><br>Yukarıdakilerden hangileri İnfluenza virüs tipleri arasında yer almaz?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) I ve II</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) I ve V</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) II ve III</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) III ve IV</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) IV ve V</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Grip hastalığı etkeni olan influenza virüslerinin A, B, C ve D olmak üzere başlıca 4 temel tipi tespit edilmiştir. Ancak E tipi ve F tipi olarak bir ayrım söz konusu değildir. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">10. Aşağıdakilerden hangisi kansere öncü olan cilt hastalıklarından biridir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Kronik dermatit</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Foto-toksik dermatitler</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) İrritan kontakt dermatit</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Kontakt ürtiker</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Alerjik kontakt dermatit</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Derinin uzun süre (yıllarca) kimyasal vb. tahriş edici faktörlere maruz kalması sonucu oluşan cilt hasarı ve "Kronik dermatit" tablosu, tedavi edilmezse zamanla cilt kanseri gelişimine yol açabilen öncü (pre-kanseröz) bir durumdur. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">11. Acil durumlarda çalışanların yükümlülükleri ile ilgili aşağıdaki ifadelerden hangisi doğrudur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) Acil durumda önce en yakın amirle veya acil durumdan sorumlu kişi ile temasa geçmek</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) Acil durum planında belirtilen uyarılarda esnek davranmak</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) Müdahale gerektiğinde kendi hayatını tehlikeye atmak</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) Müdahale esnasında yetkililere emir vermek</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) İş yerinde acil bir durumla karşılaştığında kendi kendine müdahale etmek</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Bir çalışanın ciddi ve yakın bir acil durumla (tehlikeyle) karşılaştığında yapması gereken yasal ve en güvenli adım, kendi kendine müdahale edip risk almak yerine derhal yetkili görevliye / amirine haber vermektir. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">12. Aşağıdakilerden hangisi bir işverenin çalışanlara iş sağlığı ve güvenliği konusunda verilmesini sağlayacağı <u>genel nitelikli</u> eğitim konularından biridir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) İlk yardım</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) Güvenlik ve sağlık işaretleri</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) Fiziksel, kimyasal ve ergonomik risk faktörleri</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) Çalışanların yasal hak ve sorumlulukları</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) Hastalık önleme ilkeleri ve önleme tekniklerinin uygulanması</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İSG eğitimleri 3 ana başlıkta toplanır (Genel, Sağlık, Teknik). Çalışanların yasal hak ve sorumlulukları, çalışma mevzuatı, iş yeri düzeni gibi kavramlar "Genel Konular" başlığında verilir. Diğerleri teknik veya sağlık konularıdır. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">13. Aşağıdakilerden hangisi risk değerlendirme sürecinin son adımıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) Bir önceliklendirme planı ile önleyici ve koruyucu önlemleri almak, kontrolleri uygulamak</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) Riski azaltmak için alınması gereken ek güvenlik önlemlerini belirlemek</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) Bilgi toplamak ve potansiyel tehlikeyi belirlemek</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) Kontrollerin etkinliğini gözden geçirmek, değerlendirmek ve ayarlamak</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) Riski değerlendirmek ve öncelikleri sıralamak</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Risk değerlendirme sürecinin 5 temel adımı vardır. Bunların en sonuncusu; alınan önlemlerin / uygulanan kontrollerin işe yarayıp yaramadığını sürekli olarak "gözden geçirmek ve ayarlamak"tır. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">14. Çok tehlikeli işyerlerinde, işe alım ve işin sürekliliği sırasında iş sağlığı ve güvenliğini içeren eğitimler her çalışan için en az kaç saat uygulanır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) 8</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) 10</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) 12</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) 14</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) 16</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İSG mevzuatına göre asgari temel eğitim süreleri tehlike sınıflarına göre belirlenmiştir: Az tehlikeli sınıf 8 saat, Tehlikeli sınıf 12 saat, Çok tehlikeli sınıf ise 16 saattir. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">15. Kimyasalların sağlık açısından risklerinin değerlendirilmesinde kullanılan ve Norveçli yağ endüstri şirketlerinin geliştirdiği kimyasal maruziyet risk değerlendirme yöntemi aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) Potansiyel risk hiyerarşi yöntemi</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) HAZOP yöntemi</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) Kjemi risk yöntemi</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) CEİ yöntemi</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) İsviçre peyniri modeli</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Özellikle petrokimya ve yağ endüstrisinde kimyasal maruziyeti modellemek ve riskleri ölçmek adına Norveç kökenli şirketler tarafından geliştirilen ünlü risk yöntemi "Kjemi Risk" (KjemiRisk) yöntemidir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">16. I. Çıkış portalı<br>II. Rezervuar<br>III. Potansiyel ev sahibi<br>IV. Bulaşma şekli<br>V. Giriş portalı<br><br>Yukarıdaki biyolojik etmenlerin iletim zinciri aşamaları aşağıdakilerin hangisinde sırasıyla ve doğru olarak verilmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) I-II-III-IV-V</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) II-I-IV-V-III</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) III-V-I-IV-II</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) IV-I-II-III-V</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) V-III-I-IV-II</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Bir hastalığın iletim (bulaş) zinciri; öncelikle kaynağın bulunduğu 1. Rezervuar'dan başlar. Buradan 2. Çıkış Portalı vasıtasıyla dışarı çıkar, bir 3. Bulaşma Şekli ile taşınır, 4. Giriş Portalı ile vücuda girer ve yeni 5. Potansiyel ev sahibini enfekte eder. Yani (II-I-IV-V-III). Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">17. Kimyasal ve biyolojik tehlikeler ------- adı verilen uyarı sembolleri ile ifade edilirler.<br><br>Yukarıdaki cümlede boş bırakılan yeri aşağıdakilerden hangisi doğru şekilde tamamlar?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) Prion</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) Piktogram</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) Korozif</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) Dozimetre</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) Yükseltgen</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kimyasal ve biyolojik maddelerin tehlike türlerini tüm dünyada ortak bir dille aktarmak için kullanılan, genel olarak kırmızı çerçeveli şekilli işaretlerin tamamına "Piktogram" adı verilir. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">18. Aşağıdakilerden hangisi sara (epilepsi) nöbeti geçiren bir hasta karşısında ilk yardımcının yapması gereken eylemlerden biridir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) Kilitlenen çenesini kaşık yardımıyla zorla açmak</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) Hastanın çırpınan kol ve bacaklarını sıkıca tutarak bağlamak</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) Hastanın başını yere çarpmaması için altına yumuşak bir destek koymak</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) Ayılmasını hızlandırmak için yüzüne soğuk su dökmek</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) Soğan veya kolonya koklatarak bilincini açmaya çalışmak</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Sara krizinde hastanın kasılmalarına asla müdahale edilmez, kilitli çene açılmaya veya bağlanmaya çalışılmaz. Hastaya sadece başını sert zeminlere çarparak zarar vermesini önlemek için yumuşak bir yastık/destek konulur ve nöbetin geçmesi beklenir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">19. Aşağıdakilerden hangisi Malzeme Güvenlik Bilgi Formunda (MGBF/SDS) zorunlu olarak yer alması gereken 16 alt başlıktan biri DEĞİLDİR?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) İlk Yardım Bilgileri</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) Toksikolojik Bilgiler</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) Ekolojik Bilgiler</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) Maddenin piyasa birim satış fiyatı</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) Bertaraf (Atık) Bilgileri</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> MGBF (Güvenlik Bilgi Formları), tamamen ilgili maddenin yaratacağı tehlikeleri, güvenlik şartlarını, ilk yardım ve imha süreçlerini içerir. Ürünün maliyet, fiyat veya kar/zarar dengesi gibi ticari verileri hiçbir suretle bu evrakta yer almaz. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">20. İlk yardımın solunumun değerlendirilmesi (Bak-Dinle-Hisset) aşamasında kişinin soluk alıp almadığı en az kaç saniye kontrol edilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) 3</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) 5</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) 7</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) 9</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) 10</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İlk yardım kurallarına göre, hastanın hava yolu açıldıktan (baş-çene pozisyonu) sonra göğüs kafesi inip kalkıyor mu, soluk sesi geliyor mu diye "Bak-Dinle-Hisset" tekniği uygulanır. Bu kontrol kural gereği tam "10 saniye" boyunca sürdürülmelidir. Doğru cevap E.</div>
+        </div>
+
+    </main>
+
+    <footer>
+        <strong>Hazırlayan: Sıraç Aksan</strong> | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 30 * 60; // 30 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.querySelector('.start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "#0f172a";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Çözümü Göster';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Çözümü Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Süre Doldu / Test Bitti";
+            timerDisplay.style.color = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

@@ -1,25 +1,589 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zor Seviye Deneme 5 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Büyük Final: Deneme 5 - Kimya ve Biyoloji Sektörlerinde İSG</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Nunito+Sans:wght@400;700;800&display=swap');
+
+        :root {
+            --primary: #000000; /* Final Seviyesi: Saf Siyah */
+            --secondary: #1a1a1a;
+            --accent: #b91c1c; /* Kan Kırmızı */
+            --accent-hover: #991b1b;
+            --gold: #d4af37; /* Zirve Altın Rengi */
+            --light: #f8fafc;
+            --success: #10b981;
+            --danger: #ef4444;
+            --white: #ffffff;
+            --border: #333333;
+            --text-main: #e2e8f0; /* Koyu temada açık renk metin */
+            --text-muted: #94a3b8;
+            --card-bg: #111111;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Nunito Sans', sans-serif; background-color: #050505; color: var(--text-main); line-height: 1.6; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(180deg, #3f0000 0%, var(--primary) 100%);
+            color: var(--white); padding: 50px 20px; text-align: center;
+            box-shadow: 0 10px 40px rgba(185, 28, 28, 0.4);
+            border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; margin-bottom: 30px;
+            border-bottom: 3px solid var(--accent); position: relative; overflow: hidden;
+        }
+
+        header::after { content: '👑'; position: absolute; right: 5%; top: 15%; font-size: 7rem; opacity: 0.05; }
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 2.5rem; font-weight: 900; margin-bottom: 10px; color: var(--gold); text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);}
+        header h2 { font-size: 1.2rem; font-weight: 700; color: #fca5a5; letter-spacing: 1px;}
+
+        /* DÜZELTİLMİŞ NAVİGASYON LİNKLERİ */
+        .test-menusu {
+            background: var(--card-bg); padding: 20px; border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5); margin: 0 auto 30px; width: 95%; max-width: 1200px; text-align: center; border: 1px solid var(--border);
+        }
+
+        .test-menusu .link-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 15px; }
+
+        .test-menusu a {
+            color: var(--white); background: var(--secondary); text-decoration: none; font-weight: 800;
+            font-size: 0.95rem; padding: 12px 25px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px;
+        }
+
+        .test-menusu a:hover {
+            background: var(--accent); color: var(--white); transform: translateY(-3px);
+            border-color: var(--accent); box-shadow: 0 5px 15px rgba(185, 28, 28, 0.4);
+        }
+
+        .test-menusu hr { border: none; height: 1px; background: var(--border); margin: 15px 0; }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 50px 30px; border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5); margin: 0 auto 30px;
+            width: 95%; max-width: 850px; text-align: center; border: 2px solid var(--accent);
+        }
+
+        .start-screen h2 { font-family: 'Montserrat', sans-serif; color: var(--gold); margin-bottom: 15px; font-size: 2.6rem; font-weight: 900; text-transform: uppercase;}
+        .start-screen p.desc { color: var(--text-muted); margin-bottom: 25px; font-size: 1.15rem; }
+
+        .exam-analysis-box {
+            background: rgba(185, 28, 28, 0.05); border-left: 6px solid var(--accent); padding: 30px; margin: 0 auto 30px;
+            width: 100%; border-radius: 12px; text-align: left; border: 1px solid rgba(185, 28, 28, 0.2);
+        }
+
+        .exam-analysis-box h3 { color: var(--accent); margin-bottom: 15px; font-family: 'Montserrat', sans-serif; font-size: 1.4rem; display: flex; align-items: center; gap: 10px; font-weight: 900;}
+        .exam-analysis-box p, .exam-analysis-box ul li { color: #cbd5e1; font-size: 1.05rem; line-height: 1.7; margin-bottom: 12px; }
+        .exam-analysis-box ul { list-style-type: none; padding-left: 0; }
+        .exam-analysis-box ul li { position: relative; padding-left: 32px; font-weight: 600;}
+        .exam-analysis-box ul li::before { content: '☠️'; position: absolute; left: 0; top: 2px; font-size: 1.2rem; }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--accent) 0%, #7f1d1d 100%); color: white; border: 1px solid #fca5a5;
+            padding: 22px 60px; font-size: 1.5rem; font-weight: 900; font-family: 'Montserrat', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 30px rgba(185, 28, 28, 0.5); text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(185, 28, 28, 0.7); background: var(--accent-hover);}
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 20px 30px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 20px; border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 6px solid var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.8);}
+        .timer-box { font-size: 1.6rem; font-weight: 900; font-family: 'Montserrat', sans-serif; color: var(--gold); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: var(--white); background: var(--accent); padding: 8px 20px; border-radius: 12px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);}
+        .btn-group button { border: none; padding: 12px 24px; border-radius: 30px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: var(--white); }
+        .btn-finish { background: var(--accent); box-shadow: 0 4px 15px rgba(185, 28, 28, 0.4); }
+        .btn-pdf { background: #475569; box-shadow: 0 4px 15px rgba(71, 85, 105, 0.4); }
+        
+        .result-stats { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .stat-box { padding: 15px 25px; border-radius: 14px; font-size: 1.3rem; font-weight: 900; font-family: 'Montserrat', sans-serif; flex: 1 1 200px; max-width: 250px; text-align: center; border: 1px solid var(--border);}
+        .stat-d { background: rgba(16, 185, 129, 0.1); color: var(--success); border-color: var(--success);} 
+        .stat-y { background: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: var(--danger);}
+        .stat-b { background: rgba(148, 163, 184, 0.1); color: var(--text-muted); } 
+        .stat-n { background: var(--gold); color: black; font-size: 1.6rem; box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4); border:none;}
+
+        /* Soru Kartları - KARANLIK TEMA */
+        .questions-grid { display: none; grid-template-columns: repeat(auto-fit, minmax(48%, 1fr)); gap: 25px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--card-bg); border-radius: 20px; padding: 25px; box-shadow: 0 6px 20px rgba(0,0,0,0.5); border: 1px solid var(--border); border-top: 5px solid var(--accent); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(185, 28, 28, 0.15); border-color: rgba(185, 28, 28, 0.4);}
+        
+        .q-text { font-weight: 800; font-size: 1.15rem; margin-bottom: 20px; color: var(--white); line-height: 1.6;}
+        
+        .options { display: flex; flex-direction: column; gap: 12px; flex-grow: 1; margin-bottom: 15px; }
+        .option-label { display: flex; align-items: center; padding: 14px 16px; border-radius: 12px; background: #1e1e1e; border: 2px solid #333; cursor: pointer; font-size: 1.05rem; font-weight: 700; transition: all 0.2s ease; color: #cbd5e1;}
+        .option-label:hover { background: #2a2a2a; border-color: #555; }
+        .option-label input { margin-right: 15px; transform: scale(1.3); accent-color: var(--accent); cursor: pointer; }
+        .option-label.correct { background: rgba(16, 185, 129, 0.15) !important; border-color: var(--success) !important; color: #34d399; }
+        .option-label.incorrect { background: rgba(239, 68, 68, 0.15) !important; border-color: var(--danger) !important; color: #f87171; text-decoration: line-through; }
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: transparent; color: var(--gold); border: 2px solid var(--gold); padding: 10px 22px; border-radius: 30px; font-weight: 900; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; text-transform: uppercase;}
+        .btn-solution:hover { background: var(--gold); color: black; }
+        .solution-box { display: none; margin-top: 15px; padding: 20px; background: rgba(212, 175, 55, 0.05); border-left: 5px solid var(--gold); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #e2e8f0; animation: slideDown 0.3s ease-out forwards; line-height: 1.6; border: 1px solid rgba(212,175,55,0.2); border-left: 5px solid var(--gold);}
+        .solution-box strong { color: var(--gold); font-size: 1.15rem; display: block; margin-bottom: 8px; font-weight: 900; text-transform: uppercase;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Alt Bilgi - İMZA ALANI */
+        footer { text-align: center; padding: 35px; background: #000; color: #94a3b8; margin-top: 50px; font-size: 1rem; border-top: 2px solid var(--border); }
+        .imza-kutu { display: inline-block; padding: 15px 30px; border: 1px solid var(--border); border-radius: 12px; background: #0a0a0a; box-shadow: 0 4px 15px rgba(0,0,0,0.5);}
+        .imza-kutu strong { color: var(--gold); font-size: 1.1rem; letter-spacing: 1px;}
+        
+        @media print { body { background: white; padding: 0; color: black; } .test-menusu, .top-panel, .start-screen, footer, #results-board, .btn-solution { display: none !important; } .questions-grid { display: block !important; } .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 15px; box-shadow: none; padding: 15px; background: white;} .q-text, .option-label, .solution-box {color: black !important;} }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Zor Seviye Deneme 5</h2>
+        <h1>Büyük Final: Deneme 5</h1>
+        <h2>Kimya ve Biyoloji Sektörlerinde İSG - ZİRVE SEVİYESİ</h2>
     </header>
-    
-    <main>
-        </main>
-    
-    <footer>
+
+    <nav class="test-menusu">
+        <div class="link-group">
+            <!-- DÜZELTİLMİŞ LİNKLER: 2 klasör yukarı (Tüm Dersler) ve 1 klasör yukarı (İlgili Ders) -->
+            <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+            <a href="../index.html">📚 Kimya ve Biyoloji İSG Ana Sayfa</a>
+            <a href="deneme_4.html">⬅️ Deneme 4 (Önceki)</a>
+        </div>
         <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="link-group" style="margin-top:10px;">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">Tebrikler, son deneme adımındasınız!</span>
+        </div>
+    </nav>
+
+    <div id="start-screen" class="start-screen">
+        <h2>👑 ZİRVE DENEMESİ (FİNAL)</h2>
+        <p class="desc">Aşırı Detaylar, İstisnalar ve Kıyıda Köşede Kalmış İSG Yönetmelikleri<br><br>Test süresi <strong>30 dakikadır</strong>.</p>
+        
+        <div class="exam-analysis-box">
+            <h3>📈 Final Sınavı Stratejisi</h3>
+            <p>Son 5 yılın soru havuzu ve güncel laboratuvar mevzuatlarının "en eleyici" kısımları bu testte toplandı. Artık düz bir bilgi değil, kavramları birbirine bağlama yeteneğiniz ölçülecek:</p>
+            <ul>
+                <li><strong>Özel Yöntemler ve Ülkeler:</strong> Norveç Yağ Endüstrisinin bulduğu (Kjemi) ve Singapur Bakanlığının oluşturduğu (SQRA) nadir risk analiz metotları.</li>
+                <li><strong>Kimyasal Etki Ciddiyeti:</strong> Uzun süreli Cıva zehirlenmesindeki spesifik belirtiler (titreme) ve Anilin'in yarattığı Anemik Anoksemi.</li>
+                <li><strong>Eldiven ve Maske Uyumları:</strong> Aromatik ve klorlu organik çözücülere karşı dünyada tek çare olan "Viton Eldiven" zorunluluğu.</li>
+                <li><strong>Mevzuat Rakamları:</strong> TWA sınırları, 50 çalışan kuralı, FFP3 mikron tutma oranları (%99 / 2 µm) ve H-R-S tehlike kodları.</li>
+            </ul>
+        </div>
+
+        <button class="btn-start" onclick="startTest()">🚀 Büyük Finali Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">30:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Denemeyi Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net: <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- FINAL DENEME SORULARI -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="E">
+            <div class="q-text">1. Kimyasalların sağlık açısından risklerinin değerlendirilmesinde kullanılan ve <strong>Norveçli yağ endüstri şirketleri</strong> tarafından geliştirildiği bilinen spesifik kimyasal maruziyet risk değerlendirme yöntemi aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Potansiyel risk hiyerarşi yöntemi</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) HAZOP yöntemi</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) SQRA Yöntemi</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Dow Chemical Exposure Index (CEI)</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Kjemi Risk Yöntemi</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Literatürde ülke bazlı geliştirilen risk metotları sınavlarda (özellikle 2021 yılında) çok sık sorulur. Fransa/INRS Potansiyel Risk Hiyerarşisini, Singapur SQRA'yı bulmuştur. <strong>Norveçli yağ şirketlerinin</strong> geliştirdiği metodun adı ise <strong>Kjemi Risk Yöntemi</strong>'dir. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">2. Tehlikeli kimyasal maddelerin uzun süre solunması ağır organik tahribatlar yaratır. Buna göre, çalışma ortamında <u>uzun süreli civa zehirlenmesine</u> maruz kalmanın en belirgin klasik ve karakteristik işareti aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Göz bebeklerinin büyümesi</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Kalp atış hızının azalması</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Ciltte aşırı döküntü ve morarma</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Vücutta titremenin (tremor) başlaması</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Sürekli ve kuru öksürük başlaması</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Cıva, doğrudan merkezi sinir sistemine (nörolojik) etki eden ağır bir metaldir. 2025 yılı sınav havuzunda da yer alan bilgiye göre kronik cıva zehirlenmesinin (eretezim) en net fizyolojik bulgusu ellerde, dudaklarda ve <strong>vücutta istemsiz titremelerin (tremor) başlamasıdır</strong>. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">3. Patoloji ve histoloji laboratuvarlarında doku takibi için yaygın olarak kullanılan; ancak koruyucu gözlük takılmaması durumunda <u>göze kaçtığında doğrudan körlüğe (görme kaybına)</u> neden olabildiği ispatlanmış olan mesleki kimyasal madde aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Formaldehit</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Ksilen</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Etilen oksit</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Glutaraldehit</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Aseton</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Ders kitabı sayfa 114'te spesifik olarak vurgulandığı üzere: "Patoloji laboratuvarlarında kullanılan <strong>ksilen</strong> tipi maddelerin göze kaçtığı durumlarda körlüğe neden olabildiği bildirilmiştir." Formaldehit zehirlidir ancak körlükle direkt ilişkilendirilen spesifik solvent ksilendir. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">4. Aromatik çözücüler (toluen, benzen vb.) ve klorlu organik kimyasal maddeler ile çalışırken, sıradan lateks veya nitril eldivenler eriyerek geçirgenlik sağladığı için bu maddelere karşı <u>özel olarak kullanılması gereken</u> en dayanıklı eldiven türü aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Nomex eldivenler</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Neopren eldivenler</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Viton eldivenler</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Butil eldivenler</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Vinil eldivenler</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> 2023 sınavında (Soru 20) net olarak sorulmuştur. Ağır aromatik ve klorlu solventlere (kloroform vb.) karşı bilinen en dirençli florokarbon elastomer yapılı KKD materyali <strong>Viton eldivenlerdir</strong>. Nomex ısıya, Neopren aside dayanıklıdır. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">5. Tehlikeli Maddelerin ve Müstahzarların Sınıflandırılması, Ambalajlanması ve Etiketlenmesi Hakkındaki Yönetmelik eklerinde; kimyasallar tehlikeli özelliklerine göre kodlanırken sırasıyla <strong>Tehlike</strong>, <strong>Risk</strong> ve <strong>Güvenlik</strong> ibareleri için hangi harf kodları (kısaltmalar) kullanılır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) H - R - S</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) K - H - R</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) S - R - H</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) T - R - G</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) H - K - S</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> 2024 ve 2025 sınav analizlerine göre; Uluslararası mevzuat dilinde Tehlike (Hazard) <strong>H</strong> harfiyle, Risk (Risk) <strong>R</strong> harfiyle, Güvenlik (Safety) <strong>S</strong> harfiyle kodlanır. Bu nedenle etiketlerdeki formül kodlaması <strong>H - R - S</strong> şeklindedir. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">6. Aşağıdakilerden hangisi doğrudan kana karışıp hemoglobin yapısını bozarak "Anemik (Kimyasal) Anoksemi" ye (kimyasal yolla doku boğulmasına) neden olan gazlardan biridir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Azot</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Helyum</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Metan</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Anilin</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Hidrojen</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Azot, helyum, hidrojen ve metan "basit boğucular"dır (oksijenin yerini alırlar ama kana bağlanmazlar). Fakat karbonmonoksit ve <strong>Anilin</strong> gibi maddeler kana hücum ederek doğrudan hemoglobinin oksijen taşıma kapasitesini iptal ederler. Buna Anemik Anoksemi denir. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">7. Yalnızca kimyasal maruziyet hesaplamaları için geliştirilen, kimyasal tehlikelerin belirlenerek deneysel ve teorik eşitlikler (formüller) ile ölçümlendiği ve <strong>Singapur Çalışma Bakanlığı</strong> tarafından literatüre kazandırılmış olan Yarı-Kantitatif Risk Değerlendirme Metodu hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Dow Chemical Exposure Index (CEI)</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Semi-Quantitative Risk Assessment (SQRA)</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Potansiyel Risk Hiyerarşi Yöntemi</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) COSHH Yöntemi</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Olay Ağacı Analizi (ETA)</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Ders kitabında Bölüm 5'te yer alan çok spesifik bir bilgidir. Singapur Çalışma Bakanlığı tarafından geliştirilen, formüllerle deneysel maruziyet hesaplayan metodun adı <strong>Semi-Quantitative Risk Assessment (SQRA)</strong>'dır. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">8. Solunum yolu koruyucu KKD standartlarına göre; filtreli yüz maskelerinden (partikül maskelerinden) hangisi, <strong>2 mikrondan (2 µm) daha küçük partikülleri bile %99 oranında filtreleyerek</strong> biyolojik ve kimyasal tozlara karşı en üst düzey korumayı sağlar?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) FFP1 tipi maske</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Basit cerrahi maske</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) FFP2 tipi maske</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) N95 tipi maske</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) FFP3 tipi maske</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kitaptaki teknik tablo verilerine göre: FFP1 %80 (5 µm), FFP2 %94 (2-5 µm arası) koruma sağlarken; <strong>FFP3 tipi maskeler</strong> en küçük virüs ve partikülleri (2 µm'den küçük olanları) bile %99 oranında süzme kapasitesine sahip en güçlü maskelerdir. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">9. Tekstil sektöründe; pamuk, keten ve kenevir tozlarına uzun süreli maruz kalma sonucunda akciğerlerde oluşan, göğüste sıkışma hissi ve nefes darlığı ile kendini gösteren organik tozlara bağlı mesleki solunum yolu hastalığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Silikozis</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Pnömokonyoz</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Asbestozis</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Bisinozis (Bissinozis)</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Siderozis</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Silikozis (kum/cam), Asbestozis (asbest) ve Siderozis (demir) inorganik toz kaynaklıdır. Ancak pamuk, keten ve kenevir işçilerinde görülen organik tekstil tozu hastalığı tıp literatüründe <strong>Bisinozis</strong> olarak adlandırılır. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">10. 6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, iş yerlerinde tehlike sınıfına bakılmaksızın "İş Sağlığı ve Güvenliği Kurulları" oluşturulmasının yasal olarak zorunlu tutulması için o iş yerinde asgari <u>kaç çalışanın</u> istihdam ediliyor olması şarttır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) En az 50 çalışan</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) En az 30 çalışan</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) En az 20 çalışan</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) En az 10 çalışan</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Sayı şartı yoktur, her yerde kurulmalıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kanunun amir hükmüne göre (Madde 22); altı aydan fazla süren sürekli işlerin yapıldığı ve <strong>50 ve daha fazla çalışanın</strong> bulunduğu iş yerlerinde İSG Kurulu kurulması ve aylık toplantı yapılması zorunludur. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">11. Havadaki kurşun miktarı, haftada 40 saatlik çalışma süresi (Zaman Ağırlıklı Ortalama - TWA) dikkate alınarak hesaplandığında, hangi konsantrasyon değerini aştığında çalışanlar için zorunlu "tıbbi gözetim" başlatılmalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) 0,015 mg/m³</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) 0,050 mg/m³</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) 0,075 mg/m³</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) 0,100 mg/m³</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) 0,500 mg/m³</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> 2023 sınav sorusu ve kitabın net verisidir: Kurşun (Pb) maruziyetinde, haftada 40 saatlik çalışma baz alındığında limit aşım referansı ve tıbbi gözetim tetikleme noktası tam olarak <strong>0,075 mg/m³</strong>'tür. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">12. Uluslararası taşıma standartlarına göre (IATA/ADR); <strong>"maruz kalındığında, kalıcı sakatlığa veya yaşamı tehdit eden (ölümcül) hastalığa neden olabilen"</strong> ve UN 2814 (insanları etkileyen) koduyla taşınan bulaşıcı maddeler hangi kategoride yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) Kategori B Bulaşıcı Madde</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) Kategori A Bulaşıcı Madde</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) Klinik Atık Kategorisi</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) Sınıf 7 Radyoaktif Madde</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) Kategori X Şüpheli Numune</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Ölümcül, kalıcı sakatlık bırakan ve taşınması aşırı tehlikeli olan biyolojik ajanların tamamı (Şarbon, Ebola vb.) <strong>Kategori A Bulaşıcı Madde</strong> (UN 2814/UN 2900) sınıfında taşınır. Enfeksiyon tehlikesi olmayan standart kan/idrar tahlilleri ise Kategori B'dir (UN 3373). Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">13. Cilt kanseri, mesleki cilt hastalıkları arasında görülme sıklığı açısından 2. sırada yer alan ölümcül bir risk faktörüdür. Kimyasal maddelere maruziyet sonucu ciltte meydana gelen kalınlaşma ve kabuklanmalar kansere dönüşebilir. Aşağıdakilerden hangisi doğrudan <strong>"kanser öncüsü (prekanseröz)"</strong> olarak kabul edilen mesleki cilt hastalığıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) Akne ve Klorakne</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) Kontakt Ürtiker</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) Fototoksik Dermatit</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) Katran Keratozu</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) Pigmentasyon Bozuklukları</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Dermatit, akne veya ürtiker kanser yapmayan (iyi huylu) lezyonlardır. Ancak petrokimya ve maden türevlerinde deriye yapışan kimyasalların yol açtığı <strong>Katran Keratozu</strong>, doğrudan hücre mutasyonuna sebep olarak kanserleşme eğilimi gösteren prekanseröz bir hastalıktır. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">14. İlk yardımın öncelikleri sıralamasında, ilk yardımcının "önce kendi güvenliğini, ardından çevre güvenliğini ve son olarak hastanın güvenliğini" sağladığı; itfaiye, polis vb. ekipleri çağırmadan ve müdahaleye başlamadan önce ikinci bir kaza riskini ortadan kaldırdığı temel adımın adı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) Kurtarma</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) Bildirme</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) Triyaj (Sınıflandırma)</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) İkincil Değerlendirme</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) Koruma</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İlk yardımın 3 temel K-B-K kuralı vardır (Koruma - Bildirme - Kurtarma). Ortamdaki tehlikeyi izole ederek (örneğin şarteli indirmek, arabanın kontağını kapatmak, reflektör koymak) kendi ve yaralının can güvenliğini sağlama eyleminin tamamı <strong>Koruma</strong> ilkesidir. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">15. Çalışanların titreşimle ilgili risklerden korunmasına dair yönetmeliğe göre; iş makineleri ve ağır sanayi teçhizatlarından kaynaklanan ve bel/omurga rahatsızlıklarına yol açan <strong>"Tüm Vücut Titreşimi"</strong> için günlük 8 saatlik yasal <u>Maruziyet Sınır Değeri</u> kaç m/s²'dir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) 1,15 m/s²</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) 0,5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) 2,5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) 5,0 m/s²</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) 10,5 m/s²</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İSG'nin en sert sayısal tuzaklarından biridir. El-kol titreşimi için eylem 2.5, sınır 5.0'dır. Ancak Tüm Vücut Titreşiminde idari önlem alınması gereken eylem değeri 0.5 iken; kesinlikle aşılmaması gereken yasal maruziyet <strong>Sınır Değeri 1,15 m/s²</strong>'dir. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">16. Bir kimyasalın etiketindeki adı ile "Malzeme Güvenlik Bilgi Formu (MGBF)" ndaki adı birebir aynı olmalıdır. Bu güvenlik etiketlerinin üzerinde yer alacak tehlike sembolünün (piktogramın) boyutu en az ne kadar olmalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) 2 cm²’den az olmayacak şekilde ve etiket boyutunun 1/5'i kadar</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) 1 cm²’den az olmayacak şekilde ve etiket boyutunun 1/10'u kadar</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) 0,5 cm²’den az olmayacak şekilde ve etiket boyutunun 1/2'si kadar</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) 3 cm²’den az olmayacak şekilde ve etiket boyutunun 1/4'ü kadar</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) 5 cm²’den az olmayacak şekilde ve etiket boyutunun 1/20'si kadar</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> 2024 Sınavı referanslı net bir regülasyon sorusudur. Kimyasalın tehlikesini belirten piktogram uzaktan kolayca seçilebilmesi için etiket alanının tam <strong>1/10'u</strong> büyüklüğünde olmalı ve asla <strong>1 cm²</strong>'den daha küçük basılmamalıdır. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">17. Temel Yaşam Desteği (TYD) ve bayılma anlarındaki ilk yardım prosedürlerine göre; <strong>0-12 ay arasındaki bebeklerde (infant)</strong> dolaşım (nabız) kontrolü vücudun hangi bölgesinden yapılmalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) Boyun (Şah) atardamarından</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) El bileğinden (Radyal arterden)</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) Dirsek üstü kol (Brakiyal) atardamarından</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) Ayak tabanından</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) Kalp üzerinden el ayasıyla</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Yetişkinlerde nabız boyundan (karotis) alınır. Ancak bebeklerin boyun yapısı kısa, boğumlu ve yağlı olduğu için şah damarını bulmak zordur. Bu nedenle bebeklerde nabız ölçümü daima kolun iç kısmından, pazu kasının hemen altından yani <strong>Dirsek üstü kol atardamarından (Brakiyal arterden)</strong> alınır. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">18. İlk yardım uygulamaları esnasında dolaşımın (nabzın) değerlendirilmesi kritik bir aşamadır. Hastanın veya yaralının nabız kontrolü ilk yardımcı tarafından <u>en az kaç parmakla</u> ve <u>kaç saniye boyunca</u> dinlenerek yapılmalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) 2 parmakla - 2 saniye</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) 2 parmakla - 10 saniye</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) 3 parmakla - 15 saniye</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) 3 parmakla - 5 saniye</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) 4 parmakla - 10 saniye</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> 2022 ve 2023 yıllarında üst üste sorulmuş bir ilk yardım standardıdır. Nabız; başparmak kullanılmadan (kendi nabzınızla karışmaması için) işaret, orta ve yüzük parmakları olmak üzere <strong>3 parmakla</strong> ve en az <strong>5 saniye</strong> boyunca baskı uygulanarak dinlenmelidir. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">19. Çalışma ortamında karşılaşılan biyolojik ajanların bulaş zincirinde "İnsandan İnsana Bulaş" ve "Hayvanlardan İnsanlara Bulaş (Zoonoz)" ayrımı vardır. Aşağıdaki hastalıklardan hangisi hayvan veya vektör aracılığıyla değil, <u>doğrudan "İnsandan İnsana" (damlacık veya solunum yoluyla)</u> bulaşan bir hastalıktır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) Şarbon</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) Boğmaca</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) Tularemi</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) Leptospiroz (Weil Hastalığı)</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) Toksoplazma</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Şarbon (koyun/sığır), Tularemi (tavşan/kene), Leptospiroz (fare/domuz) ve Toksoplazma (kedi) zoonotik hastalıklardır (hayvandan geçer). Ancak Tüberküloz, Kızamık ve <strong>Boğmaca</strong> gibi hastalıklar sadece enfekte insanların hapşırması/öksürmesiyle doğrudan insandan insana bulaşır. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">20. Toksikolojide kavramsal tanımlar ve ölçüm birimleri çok önemlidir.<br>"Bir kimyasal madde <strong>doğrudan yutulduğunda veya cilde uygulandığında</strong> (ağırlık bazında mg/kg cinsinden), uygulandığı laboratuvar deney hayvanlarının <u>tam olarak yarısını (%50'sini) öldürmeye yetecek olan madde miktarına (doza)</u>" uluslararası literatürde ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) LC50 (Lethal Concentration)</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) TWA (Zaman Ağırlıklı Ortalama)</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) Biyolojik Sınır Değeri</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) IC50</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) LD50 (Lethal Doz 50)</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Zirve Çözümü</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Havada solunan gazın öldürücü konsantrasyonu için "C" harfinden gelen LC50 (Lethal Concentration) kullanılır. Ancak cilde temas eden veya direkt yutulan bir maddenin gram/kilogram cinsinden hayvanların yarısını (%50) öldüren miktarına "D" harfinden gelen <strong>LD50 (Lethal Dose / Ölümcül Doz 50)</strong> adı verilir. Doğru cevap E.</div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="imza-kutu">
+            <strong>Hazırlayan: Sıraç Aksan | 📞 05069282210 | ✉️ saracaksan@gmail.com</strong>
+        </div>
+        <p style="margin-top: 15px; font-size: 0.85rem; opacity: 0.7;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Final Simülasyonu</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 30 * 60; // 30 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.querySelector('.start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "var(--white)";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Zirve Çözümü';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Çözümü Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // Yanlışlar doğruyu götürmez klasik formatı / (ÖSYM tipi istenirse 4 yanlış 1 doğru)
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

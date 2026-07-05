@@ -1,25 +1,612 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2024 Yaz Okulu Soruları - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>2024 Yaz Okulu Çıkmış Sorular - Kimya ve Biyoloji Sektörlerinde İSG</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+        :root {
+            --primary: #e11d48; /* 2024 Yılına Özel Kırmızı/Gül Kurusu Tema */
+            --secondary: #be123c;
+            --accent: #f59e0b;
+            --dark: #1c1917;
+            --light: #fff1f2;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --white: #ffffff;
+            --border: #fecdd3;
+            --text-main: #334155;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Nunito Sans', sans-serif; background-color: #f8fafc; color: var(--text-main); line-height: 1.6; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+            color: var(--white); padding: 35px 20px; text-align: center;
+            box-shadow: 0 4px 20px rgba(225, 29, 72, 0.2);
+            border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; margin-bottom: 25px;
+        }
+
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px;}
+        header h2 { font-size: 1.1rem; font-weight: 400; opacity: 0.9; color: #ffe4e6;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--white); padding: 20px; border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin: 0 auto 25px; width: 95%; max-width: 1200px; text-align: center;
+        }
+
+        .test-menusu .link-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 12px; }
+
+        .test-menusu a {
+            color: var(--primary); background: #fff1f2; text-decoration: none; font-weight: 700;
+            font-size: 0.9rem; padding: 10px 20px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid #fecdd3; display: inline-flex; align-items: center; gap: 6px;
+        }
+
+        .test-menusu a:hover {
+            background: var(--primary); color: var(--white); transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(225, 29, 72, 0.2);
+        }
+
+        .test-menusu hr { border: none; height: 1px; background: var(--border); margin: 15px 0; }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--white); padding: 40px 20px; border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin: 0 auto 30px;
+            width: 95%; max-width: 800px; text-align: center; border-top: 6px solid var(--accent);
+        }
+
+        .start-screen h2 { font-family: 'Montserrat', sans-serif; color: var(--dark); margin-bottom: 10px; font-size: 2rem; font-weight: 800; }
+        .start-screen p.desc { color: var(--text-muted); margin-bottom: 20px; font-size: 1.1rem; }
+
+        /* Sınav Analizi Kutusu */
+        .exam-analysis-box {
+            background: linear-gradient(to right, #fffbeb, #fef3c7);
+            border-left: 6px solid var(--accent); padding: 20px 25px; margin: 0 auto 30px;
+            width: 100%; border-radius: 12px; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.1); text-align: left;
+        }
+
+        .exam-analysis-box h3 { color: #b45309; margin-bottom: 12px; font-family: 'Montserrat', sans-serif; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
+        .exam-analysis-box p, .exam-analysis-box ul li { color: var(--dark); font-size: 0.95rem; line-height: 1.5; margin-bottom: 10px; }
+        .exam-analysis-box ul { list-style-type: none; padding-left: 0; }
+        .exam-analysis-box ul li { position: relative; padding-left: 28px; }
+        .exam-analysis-box ul li::before { content: '🔍'; position: absolute; left: 0; top: 0px; font-size: 1.1rem; }
+
+        .btn-start {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none;
+            padding: 18px 45px; font-size: 1.3rem; font-weight: 800; font-family: 'Montserrat', sans-serif;
+            border-radius: 40px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+        .btn-start:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 35px rgba(245, 158, 11, 0.4); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--white); padding: 15px 25px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 6px solid var(--primary); }
+        .timer-box { font-size: 1.5rem; font-weight: 800; font-family: 'Montserrat', sans-serif; color: var(--dark); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: var(--danger); background: var(--danger-light); padding: 6px 18px; border-radius: 12px; }
+        .btn-group button { border: none; padding: 12px 24px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: var(--white); }
+        .btn-finish { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .btn-pdf { background: linear-gradient(135deg, #475569, #334155); box-shadow: 0 4px 15px rgba(71, 85, 105, 0.3); }
+        
+        .result-stats { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .stat-box { padding: 15px 25px; border-radius: 14px; font-size: 1.2rem; font-weight: 800; font-family: 'Montserrat', sans-serif; flex: 1 1 200px; max-width: 250px; text-align: center;}
+        .stat-d { background: var(--success-light); color: #047857; } .stat-y { background: var(--danger-light); color: #b91c1c; }
+        .stat-b { background: #f1f5f9; color: var(--text-muted); } .stat-n { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; font-size: 1.4rem; box-shadow: 0 5px 15px rgba(225, 29, 72, 0.3);}
+
+        /* Soru Kartları */
+        .questions-grid { display: none; grid-template-columns: repeat(auto-fit, minmax(48%, 1fr)); gap: 20px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--white); border-radius: 16px; padding: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid var(--border); border-top: 5px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .q-text { font-weight: 700; font-size: 1.05rem; margin-bottom: 16px; color: var(--dark); }
+        .options { display: flex; flex-direction: column; gap: 10px; flex-grow: 1; margin-bottom: 12px; }
+        
+        .option-label { display: flex; align-items: center; padding: 12px 14px; border-radius: 10px; background: #f8fafc; border: 1px solid #cbd5e1; cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: all 0.2s ease; color: var(--text-main);}
+        .option-label:hover { background: #f1f5f9; border-color: #94a3b8; }
+        .option-label input { margin-right: 12px; transform: scale(1.2); accent-color: var(--primary); cursor: pointer; }
+        .option-label.correct { background: var(--success-light) !important; border-color: var(--success) !important; color: #047857; }
+        .option-label.incorrect { background: var(--danger-light) !important; border-color: var(--danger) !important; color: #b91c1c; text-decoration: line-through; }
+
+        /* GHS GÖRSEL PİKTOGRAM KODLAMASI (CSS) */
+        .visual-flex { display: flex; align-items: center; gap: 15px; width: 100%;}
+        .ghs-box { position: relative; width: 50px; height: 50px; display: inline-flex; justify-content: center; align-items: center; margin: 5px 0;}
+        .ghs-diamond { position: absolute; width: 36px; height: 36px; background: white; border: 4px solid #ef4444; border-radius: 2px; transform: rotate(45deg); }
+        .ghs-symbol { position: relative; z-index: 1; font-size: 1.8rem; font-weight: 900; color: black; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; margin-top:-2px;}
+        
+        .ghs-box-large { width: 80px; height: 80px; margin: 15px auto;}
+        .ghs-box-large .ghs-diamond { width: 56px; height: 56px; border-width: 6px;}
+        .ghs-box-large .ghs-symbol { font-size: 3rem;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f1f5f9; color: var(--primary); border: 1px solid #cbd5e1; padding: 8px 18px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; }
+        .btn-solution:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .solution-box { display: none; margin-top: 10px; padding: 16px; background: #f0fdfa; border-left: 4px solid var(--success); border-radius: 0 10px 10px 0; font-size: 0.9rem; color: var(--dark); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); animation: slideDown 0.3s ease-out forwards; }
+        .solution-box strong { color: var(--success); font-size: 1rem; display: block; margin-bottom: 6px; font-weight: 800; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        footer { text-align: center; padding: 30px; background: var(--dark); color: #94a3b8; margin-top: 40px; font-size: 0.9rem; border-top-left-radius: 24px; border-top-right-radius: 24px; }
+        @media print { body { background: white; padding: 0; color: black; } .test-menusu, .top-panel, .start-screen, footer, #results-board, .btn-solution { display: none !important; } .questions-grid { display: block !important; } .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 12px; box-shadow: none; padding: 12px; } }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>2024 Yaz Okulu Soruları</h2>
+        <h1>2026 Anadolu Üniversitesi İSG Yaz Okulu</h1>
+        <h2>3. Kimya ve Biyoloji Sektörlerinde İSG - 2024 Çıkmış Sorular</h2>
     </header>
-    
-    <main>
-        </main>
-    
-    <footer>
+
+    <nav class="test-menusu">
+        <div class="link-group">
+            <a href="../../index.html">🏠 Tüm Dersler</a>
+            <a href="../index.html">📚 Kimya ve Biyoloji İSG</a>
+            <a href="yaz_okulu_2025.html">Sonraki Yıl (2025) ➡️</a>
+        </div>
         <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="link-group">
+            <a href="yaz_okulu_2023.html">⬅️ Önceki Yıl (2023)</a>
+            <a href="../Unite_1/test_1.html">Ünite 1</a>
+            <a href="../Unite_7/test_2.html">Ünite 7 Piktogram Testi</a>
+            <a href="../Unite_8/test_1.html">Ünite 8 Testi</a>
+        </div>
+    </nav>
+
+    <div id="start-screen" class="start-screen">
+        <h2>2024 Yaz Okulu Sınavı</h2>
+        <p class="desc">Açıköğretim Sistemi Orijinal Çıkmış Sorular<br><br>Test süresi <strong>30 dakikadır</strong>.</p>
+        
+        <div class="exam-analysis-box">
+            <h3>📊 2024 Sınav Analizi ve Çıkarımlar</h3>
+            <p>2024 yılı yaz okulu sınavında <strong>kimyasal etiketleme kuralları, görsel piktogram eşleştirmeleri ve ileri düzey ilk yardım</strong> ön plana çıkmıştır:</p>
+            <ul>
+                <li><strong>Görsel Piktogramlar (Soru 10):</strong> Ünlem İşareti (!) piktogramı verilerek hangisiyle depolanamayacağı sorulmuştur. <i>Patlayıcı (Bomba)</i> amblemi taşıyan maddeler diğer kimyasallardan tamamen ayrı ve yalıtılmış olarak depolanmalıdır.</li>
+                <li><strong>Kimyasal Etiket Boyutları:</strong> MGBF etiketlerinde uyarı sembolünün, etiket boyutunun en az <i>1/10'u</i> kadar (ve 1 cm²'den az olmayacak şekilde) tasarlanması gerektiği kuralı sorulmuştur.</li>
+                <li><strong>Bulaş Yolları ve Hastalıklar:</strong> Bakteriyel zoonoz olan <i>Şarbon</i> ve solunum yolu hastalığı olan <i>Boğmaca (Bordatella pertussis)</i> spesifik etken bazında yoklanmıştır.</li>
+                <li><strong>İlk Yardım Koruma İlkesi:</strong> İlk yardımda temel koruma kuralında önceliğin daima <i>"İlk yardımcının kendi güvenliği"</i> olduğu; yanıklarda ise çeşme suyunun en az <i>20 dakika</i> tutulması gerektiği vurgulanmıştır.</li>
+            </ul>
+        </div>
+
+        <button class="btn-start" onclick="startTest()">🚀 Sınavı Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">30:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Testi Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net: <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 2024 Çıkmış Sorular -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="E">
+            <div class="q-text">1. Aşağıdakilerden hangisi bakteriyel zoonozlar arasında yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Kuduz</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Hantavirüs</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Kuş gribi</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Koronovirüsler</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Şarbon</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kuduz, Kuş Gribi, Hantavirüs ve Koronovirüs hastalıklarının etkenleri "virüs"tür (Viral zoonoz). Şarbon hastalığının etkeni ise Bacillus anthracis adlı bir bakteridir (Bakteriyel zoonoz). Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">2. Bir kimyasalın etiketteki adı ile malzeme güvenlik bilgi formundaki adı aynı olmalıdır. Kimyasalın etikette yer alan tehlike sembolünün boyutu, ------cm²'den az olmayacak şekilde ve etiket boyutunun ------- kadar olmalıdır.<br><br>Yukarıdaki cümlede boş bırakılan yerleri aşağıdakilerden hangisi sırasıyla ve doğru olarak tamamlar?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) 0,5 - 1/2'si</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) 0,5 - 1/5'i</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) 1 - 1/5'i</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) 1 - 1/10'u</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) 2 - 1/20'si</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Yasal standartlara göre kimyasal etiketlerinde yer alan tehlike piktogramının alanı "en az 1 cm²" olmalı ve bu sembol, etiketin toplam yüzey alanının en az "1/10'u (onda biri)" büyüklüğünde tasarlanmalıdır. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">3. Toksik, zehirli veya zararlı maddelerin solunduğunda, deri aracılığı ile emildiğinde, göze temas ettiğinde veya yutulduğunda vücudun çeşitli organlarında birikerek <strong>kalıtımsal genetik hasar</strong> oluşumuna neden olan etki aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Akciğer ödemi etkisi</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Mutajen etki</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Kanserojen etki</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Üreme için toksik etki</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Sinir sistemi zarar etkisi</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kimyasalların vücuda girerek hücrelerin DNA yapısını (genetiğini) bozmasına ve kalıtımsal olarak genetik şifrede kalıcı hasar yaratmasına "Mutajen etki" denir. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">4. Aşağıdakilerden hangisi kimyasal risk etmenlerinde <strong>reaktiviteye</strong> (kimyasal tepkimeye girme özelliğine) göre sınıflandırmada yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Mutajenik</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Teratojenik</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Reprotoksik</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Karsinojenik</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Parlayıcı</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Mutajenik, reprotoksik ve karsinojenik ifadeleri kimyasalın "sağlık etkisine" göre olan sınıflandırmalardır. Ancak maddenin patlayıcılığı, oksitleyiciliği veya "Parlayıcılığı" tamamen o maddenin kimyasal tepkime / alev alma isteğine yani "Reaktivitesine" bağlıdır. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">5. Aşağıdakilerden hangisi kimyasal zehirlenmeye yol açma ihtimali en düşük olan maddedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Hem gaz, hem sıvı içeren karışım</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Gaz</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Sıvı</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Süperkritik akışkan</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Katı</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Fiziksel fazlarına göre gazlar (solunumla) ve sıvılar (deriden veya buharlaşarak) çok daha hızlı zehirlenme yaratırlar. Uçuculuğu ve solunabilirliği en az olan, kana karışması nispeten en zor form "Katı" formdur ve zehirleme ihtimali diğerlerine göre daha düşüktür. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">6. Dünya Sağlık Örgütü'ne (WHO) göre ölümcül radyasyon zehirlenmesine yol açacak limit değer aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) 1.0 Sv</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) 1.8 Sv</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) 2.4 Sv</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) 2.8 Sv</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) 3.0 Sv</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> DSÖ (WHO) verilerine göre, insanın tek seferde tüm vücudunun 1.0 Sievert (Sv) ve üzeri akut radyasyon dozuna maruz kalması ölümcül radyasyon zehirlenmesine (Akut Radyasyon Sendromu) yol açan başlangıç sınırıdır. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">7. <i>Bordatella pertussis</i> adlı bakteri tarafından oluşturulan solunum sistemi hastalığına ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Su çiçeği</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Tüberküloz</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Boğmaca</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Covid 19</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Meningokok Menenjiti</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Özellikle damlacık yoluyla bulaşan ve şiddetli, boğulurcasına öksürük krizleriyle karakterize olan "Boğmaca" hastalığının etkeni <i>Bordatella pertussis</i> bakterisidir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">8. I. Likenler<br>II. Riketsiyalar<br>III. Asbest<br>IV. Mantarlar<br>V. Parazitler<br><br>Yukarıdakilerden hangileri <u>biyolojik risk etmenleri arasında yer almaz</u>?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) I ve II</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) I ve III</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) I, II ve V</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) I, III ve IV</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) III, IV ve V</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Riketsiya, mantar ve parazitler hastalık yapıcı biyolojik etmenlerdir. Ancak "Likenler" ekolojik bir birlikteliktir, doğrudan mesleki patojen sayılmazlar. "Asbest" ise tamamen inorganik lifsi bir toz mineraldir (kimyasal/fiziksel risk). Dolayısıyla I ve III biyolojik patojen risk etmeni değildir. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">9. Sağlık kurumları çalışanlarında kimyasalların cilt yolu ile teması sonucu -------, solunum yolu ile teması sonucu ------- gelişebilmektedir.<br><br>Yukarıdaki cümlede boş bırakılan yerleri aşağıdakilerden hangisi sırasıyla ve doğru olarak tamamlar?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) dermatit - astım</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) hipoksi - kaşıntı</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) kansızlık - döküntü</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) üre artışı - ishal</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) bilinç kaybı - kızarıklık</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kimyasalların (özellikle alerjen ve irritanların) cilde doğrudan teması o bölgede tahrişe yani "dermatite" neden olur. Aynı kimyasalların buharlarının solunması ise solunum yollarını daraltarak mesleki "astıma" yol açar. Doğru cevap A.</div>
+        </div>
+
+        <!-- Görsel Soru Kodlaması (CSS) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">10. Yukarıdaki tehlike sembolünü taşıyan bir kimyasal aşağıdaki tehlike sembollerinden hangisini taşıyan kimyasal ile birlikte depolanamaz?<br>
+                <div style="display:flex; justify-content:center; align-items:center; margin-top: 15px;">
+                    <div class="ghs-box ghs-box-large">
+                        <div class="ghs-diamond"></div>
+                        <span class="ghs-symbol">!</span>
+                    </div>
+                </div>
+            </div>
+            <div class="options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <label class="option-label"><input type="radio" name="q10" value="A"> 
+                    <div class="visual-flex"><div class="ghs-box"><div class="ghs-diamond"></div><span class="ghs-symbol">☠️</span></div> A)</div>
+                </label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> 
+                    <div class="visual-flex"><div class="ghs-box"><div class="ghs-diamond"></div><span class="ghs-symbol">🔥</span></div> B)</div>
+                </label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> 
+                    <div class="visual-flex"><div class="ghs-box"><div class="ghs-diamond"></div><span class="ghs-symbol" style="font-size:1.1rem">🔥<br><span style="font-size: 0.8rem; margin-top:-10px">⭕</span></span></div> C)</div>
+                </label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> 
+                    <div class="visual-flex"><div class="ghs-box"><div class="ghs-diamond"></div><span class="ghs-symbol">💥</span></div> D)</div>
+                </label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> 
+                    <div class="visual-flex"><div class="ghs-box"><div class="ghs-diamond"></div><span class="ghs-symbol" style="font-size:1.1rem">🧪👐</span></div> E)</div>
+                </label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Ünlem (!) sembolü, tahriş edici/zararlı kimyasalları temsil eder. Ancak D şıkkındaki bomba patlaması figürü (💥) "Patlayıcı" maddeleri temsil eder. Patlayıcılar aşırı hassas oldukları için (diğer kimyasallarla olası bir ufak reaksiyonda bile felakete yol açacaklarından) diğer kimyasallardan tamamen yalıtılmış ve ayrı olarak depolanmak zorundadır. Asla yan yana depolanamazlar. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">11. I. Önce olay yeri değerlendirmesi yapar, sonra kendi güvenliğini sağlar.<br>
+            II. Hasta ya da yaralının bilincini kontrol eder, sonra onun güvenliğini sağlar.<br>
+            III. Hasta ya da yaralının bilinci açıksa ve konuşabilecek durumdaysa ondan gerekli bilgileri alır.<br>
+            IV. Etki eden kimyasal maddenin kullanma talimatını okur ve ona göre müdahale eder.<br>
+            V. Kullanılan kimyasal madde suyla temas ettiğinde ikinci bir zarar verici reaksiyon oluşturmayacaksa etkilenen bölgeyi bol su ile en az 15 dakika yıkar.<br><br>
+            Yukarıdakilerden hangileri kimyasal maddelere maruz kalma durumlarında "koruma ilkesine" göre ilk yardımda <u>öncelikli olarak bir ilk yardımcının yapması gerekenler arasında yer almaz</u>?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) I ve II</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) III ve IV</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) III ve V</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) IV ve V</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) III, IV ve V</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İlk yardımın koruma ilkesinde kesin kural; ilk yardımcının daima "önce kendi güvenliğini" sağlamasıdır (Madde I bu yüzden yanlıştır). Aynı şekilde hasta müdahalesinden önce mutlaka çevrenin/hastanın güvenli bölgeye alınması gerekir (Madde II bu yüzden yanlıştır). Kendi güvenliği olmayan ilk yardımcı kurtarıcı olamaz. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">12. Yanıklara müdahale koruma ilkesi birincil ve ikincil değerlendirmeden sonra yanık olan bölge çeşme suyu altında <u>en az</u> kaç dakika tutulur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) 3</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) 5</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) 10</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) 15</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) 20</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Isı kaynaklı oluşan bölgesel yanıklarda, ısının derinin alt dokularına ilerleyerek tahribatı artırmasını durdurmak için tazyiksiz akan çeşme suyu altında en az 20 dakika boyunca tutulması kuraldır. Doğru cevap E.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">13. Aşağıdaki çalışma türlerinin hangisinde lateks eldiven kullanımı uygun olur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) Aromatik çözücülerle çalışırken</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) Mikrobiyoloji laboratuvarlarında biyolojik materyallerle çalışırken</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) Yüksek sıcaklıkta çalışırken</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) Keton vb. ile çalışırken</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) Halojenli olmayan organik çözücülerle çalışırken</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Lateks eldivenler kimyasal solventlere, yüksek ısıya veya asitlere karşı dirençsizdir (erirler). Ancak mikrobiyoloji laboratuvarlarında kan, vücut sıvıları ve biyolojik materyallerle çalışırken bulaşı engellemek için ideal koruma sağlarlar. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">14. Acil durumlarda çalışanların yükümlülükleri ile ilgili aşağıdaki ifadelerden hangisi doğrudur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) Acil durumda önce en yakın amirle veya acil durumdan sorumlu kişi ile temasa geçmek</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) Müdahale gerektiğinde kendi hayatını tehlikeye atmak</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) İş yerinde acil bir durumla karşılaştığında kendi kendine müdahale etmek</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) Müdahale esnasında yetkililere emir vermek</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) Acil durum planında belirtilen uyarılarda esnek davranmak</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Ciddi bir acil durum ve tehlike algılandığında çalışanın yapması gereken ilk yasal adım, kahramanlık yapıp yalnız müdahale etmek yerine derhal üstüne / yetkili sorumluya haber vermektir. Doğru cevap A.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">15. Bir ajanın hastalığa neden olabileceği kantitatif yeteneğini ve bir patojenin hastalığa neden olan şiddetini tanımlayan biyolojik etmen aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) Taşınabilirlik</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) Patojenite-enfeksiyöz</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) Virülans</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) Doz</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) Bulaşıcılık</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Bir mikroorganizmanın hastalık yapabilme yeteneği patojenite; bu hastalığı ne derece ağır ve şiddetli geçirteceği (ölümcüllüğü, hastalık yapma gücü) ise "Virülans" kavramı ile tanımlanır. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">16. Kimyasal ve biyolojik tehlikeleri gösteren uyarı işaretlerine ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) Dozimetre</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) Piktogram</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) Yükseltgen</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) Korozif</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) Prion</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Tehlikeli maddelerin ambalajlarında ve taşıma ünitelerinde bulunan, dünya çapında standartlaştırılmış (GHS) şekilli tehlike uyarı amblemlerinin genel ismine "Piktogram" denir. Doğru cevap B.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">17. Aşağıdakilerden hangisi Kimya ve Biyoloji sektöründe <u>işveren</u> açısından iş sağlığı ve güvenliğini temin etmekle ilgili sorumluluk ve yükümlülüklerden biri <u>değildir</u>?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) Acil durumlara ilişkin çalışmalar yapmak</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) Çalışanlara eğitim verilmesini temin etmek</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) İş güvenliği denetimleri sonrasında eksikler için ceza yaptırımı uygulamak</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) Çalışanların yetkinliği olduğu bölümlerde görev yapmasını temin etmek</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) Çalışanların iş sağlığı ve güvenliği yönetim sürecine katılımlarını sağlamak</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İşverenin yükümlülüğü; tehlikeleri ortadan kaldırmak, riskleri değerlendirmek ve eğitim vermektir. Yapılan denetimler sonrasında "ceza yaptırımı uygulamak" işverenin değil, denetimi yapan yasal kamu otoritelerinin (Çalışma Bakanlığı müfettişlerinin) görevidir. Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">18. Çalışma ortamındaki toz partiküllerinin, solunarak akciğer dokusuna (alveollere) ulaşabilmesi için sahip olması gereken fiziksel boyut aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) 100 µm'den daha büyük</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) 50 µm ile 100 µm arası</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) 20 µm ile 50 µm arası</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) 0.5 µm ile 5 µm arası</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) 10 µm'den daha büyük</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Solunabilir tozlar (pnömokonyoz riski yaratanlar), genellikle solunum yollarındaki siliyer bariyeri aşarak doğrudan akciğer hava keseciklerine (alveollere) inebilen 0.5 mikron ile 5 mikron (µm) arasındaki çok ince partiküllerdir. Doğru cevap D.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">19. Avrupa yönergesi 2000/54/CE'ye göre organizmanın doğal tehlikesine bağlı olarak yapılan biyolojik tehlike sınıflandırmasında; <strong>ciddi oranda insan hastalığına neden olabilen ve çalışanlar için ciddi tehlike oluşturabilen, topluma yayılma riski taşımakla birlikte genellikle etkili profilaksi veya tedavi uygulanabilen</strong> tehlike grubu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) Birinci grup</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) İkinci grup</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) Üçüncü grup</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) Dördüncü grup</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) Beşinci grup</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Grup 3 ve Grup 4 biyolojik ajanlar ağır hastalığa ve topluma yayılma riskine sahiptir. Ancak Grup 4 ajanlarda tedavi/korunma imkanı YOKKEN; Grup 3 (Üçüncü Grup) ajanlarda genellikle "etkili bir korunma/tedavi imkanı mevcuttur". Doğru cevap C.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">20. Aşağıdakilerden hangisi tahriş edici, hassasiyet yaratan kimyasal maddelere bir örnektir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) Sodyum hidroksit</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) Nitrik asit</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) Sülfürik asit</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) Amonyak</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) Hidroklorik asit</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Sülfürik asit, nitrik asit, hidroklorik asit ve sodyum hidroksit "Kuvvetli Aşındırıcı (Korozif)" kimyasallardır. Amonyak (NH3) ise solunum yollarını ve gözleri yüksek derecede irrite eden "Tahriş edici" temel kimyasal grupta yer alır. Doğru cevap D.</div>
+        </div>
+
+    </main>
+
+    <footer>
+        <strong>Hazırlayan: Sıraç Aksan</strong> | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 30 * 60; // 30 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.querySelector('.start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "#1c1917";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Çözümü Göster';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Çözümü Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Süre Doldu / Test Bitti";
+            timerDisplay.style.color = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

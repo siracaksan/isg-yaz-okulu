@@ -1,25 +1,599 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 7 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 7 - Test 3: Zümrüt Yeşili Simülasyonu (20 Soru)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Lora:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary: #064e3b; /* Derin Zümrüt Yeşili */
+            --secondary: #0f766e; /* Parlak Zümrüt */
+            --accent: #10b981; /* Canlı Yeşil */
+            --accent-hover: #059669;
+            --highlight: #a7f3d0; 
+            --gold: #fcd34d; /* Zümrüt Altını */
+            --bg-body: #f0fdf4;
+            --card-bg: #ffffff;
+            --success: #059669;
+            --danger: #e11d48;
+            --text-main: #064e3b;
+            --text-light: #ecfdf5;
+            --border: #6ee7b7;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Lora', serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.8; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(6, 78, 59, 0.4);
+            border-bottom: 6px solid var(--gold); position: relative; overflow: hidden;
+        }
+        header::after { content: '❇️'; position: absolute; right: 5%; top: 5%; font-size: 10rem; opacity: 0.1; color: var(--gold);}
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 2.8rem; font-weight: 800; color: #f0fdf4; margin-bottom: 12px; letter-spacing: 1px;}
+        header h2 { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; font-weight: 600; color: var(--gold); letter-spacing: 3px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); margin: -25px auto 35px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--secondary); background: #ecfdf5; text-decoration: none; font-weight: 600; font-family: 'Montserrat', sans-serif;
+            font-size: 1.05rem; padding: 12px 24px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--secondary); color: white; border-color: var(--secondary); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(15, 118, 110, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Montserrat', sans-serif; font-size: 1.6rem; color: var(--secondary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-weight: 700;}
+        .analysis-box p { font-size: 1.05rem; color: #064e3b; text-align: justify; margin-bottom: 15px; font-family: 'Lora', serif;}
+        .analysis-box ul { padding-left: 20px; margin-top: 15px;}
+        .analysis-box ul li { margin-bottom: 12px; color: #064e3b; font-weight: 600; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;}
+        .highlight-text { color: var(--secondary); font-weight: 800; background: #d1fae5; padding: 2px 6px; border-radius: 4px;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 60px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(6, 78, 59, 0.1); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 4px solid var(--secondary); position: relative; overflow: hidden;
+        }
+        .start-screen::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--gold); }
+        .start-screen h2 { font-family: 'Montserrat', sans-serif; font-size: 2.6rem; color: var(--primary); margin-bottom: 20px; font-weight: 800; text-transform: uppercase;}
+        .start-screen p { font-size: 1.15rem; color: #064e3b; margin-bottom: 40px; line-height: 1.8; font-weight: 500;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%); color: white; border: none;
+            padding: 22px 60px; font-size: 1.5rem; font-weight: 700; font-family: 'Montserrat', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(15, 118, 110, 0.4); text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 35px rgba(15, 118, 110, 0.6); background: var(--primary); color: var(--gold);}
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 25px 35px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.06); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--accent); }
+        .timer-box { font-size: 1.8rem; font-weight: 800; font-family: 'Montserrat', sans-serif; color: var(--primary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--secondary); padding: 6px 20px; border-radius: 12px; font-family: 'Montserrat', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); font-weight: 800; letter-spacing: 1px;}
+        .btn-group button { border: none; padding: 14px 30px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Montserrat', sans-serif; letter-spacing: 1px;}
+        .btn-finish { background: var(--primary); box-shadow: 0 4px 15px rgba(6, 78, 59, 0.3); }
+        .btn-finish:hover { background: #000000; transform: scale(1.05); color: var(--gold);}
+        .btn-pdf { background: var(--secondary); box-shadow: 0 4px 15px rgba(15, 118, 110, 0.3); }
+        .btn-pdf:hover { background: var(--accent); transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 30px; border-radius: 12px; font-size: 1.4rem; font-weight: 800; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border); background: #ecfdf5; font-family: 'Montserrat', sans-serif;}
+        .stat-d { border-bottom: 6px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 6px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 6px solid #94a3b8; color: #475569; } 
+        .stat-n { background: var(--primary); color: var(--gold); font-size: 1.8rem; box-shadow: 0 5px 20px rgba(6, 78, 59, 0.5); border:none;}
+
+        /* Soru Kartları - ZÜMRÜT YEŞİLİ SİMETRİSİ (30 KELİME) */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 40px; width: 95%; max-width: 1200px; margin: 0 auto 50px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 45px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid var(--border); border-left: 8px solid var(--secondary); display: flex; flex-direction: column; transition: all 0.3s ease; position: relative;}
+        .question-card::before { content: '❇️'; position: absolute; top: 15px; right: 20px; font-size: 1.5rem; opacity: 0.1; }
+        .question-card:hover { box-shadow: 0 15px 50px rgba(15, 118, 110, 0.1); border-left-color: var(--accent);}
+        
+        .q-text { font-family: 'Lora', serif; font-weight: 700; font-size: 1.25rem; margin-bottom: 30px; color: var(--primary); line-height: 1.8; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
+        .option-label { display: flex; align-items: flex-start; padding: 22px 28px; border-radius: 12px; background: #f0fdf4; border: 2px solid #a7f3d0; cursor: pointer; font-size: 1.05rem; font-weight: 500; transition: all 0.2s ease; color: #064e3b; line-height: 1.7; text-align: justify; font-family: 'Lora', serif;}
+        .option-label:hover { background: #d1fae5; border-color: var(--secondary); }
+        .option-label input { margin-top: 6px; margin-right: 20px; transform: scale(1.4); accent-color: var(--secondary); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #d1fae5 !important; border-color: var(--success) !important; color: #064e3b; font-weight: 700;}
+        .option-label.incorrect { background: #fff1f2 !important; border-color: var(--danger) !important; color: #9f1239; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #ecfdf5; color: var(--secondary); border: 2px solid var(--secondary); padding: 12px 30px; border-radius: 30px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
+        .btn-solution:hover { background: var(--secondary); color: white; box-shadow: 0 4px 15px rgba(15, 118, 110, 0.3); border-color: var(--secondary);}
+        .solution-box { display: none; margin-top: 20px; padding: 30px; background: #ecfdf5; border-left: 6px solid var(--accent); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #064e3b; animation: slideDown 0.3s ease-out forwards; line-height: 1.8; text-align: justify; box-shadow: inset 0 2px 10px rgba(0,0,0,0.03); font-weight: 500;}
+        .solution-box strong { color: var(--primary); font-size: 1.2rem; display: block; margin-bottom: 12px; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 50px 20px; background: var(--primary); color: #a7f3d0; margin-top: 60px; font-size: 1.05rem; border-top: 6px solid var(--gold); }
+        .imza-kutu { display: inline-block; padding: 20px 45px; border: 2px solid rgba(167, 243, 208, 0.4); border-radius: 12px; background: #000000; box-shadow: 0 8px 25px rgba(0,0,0,0.6); font-weight: 500; letter-spacing: 1px; font-family: 'Lora', serif;}
+        .imza-kutu span { color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.3rem; margin: 0 10px; font-weight: 800; letter-spacing: 2px;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 30px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 7 - Test 3</h2>
+        <h1>Ünite 7: Güvenlik Önlemleri ve Korunma Yolları</h1>
+        <h2>Test 3: Zümrüt Yeşili (Emerald) Simülasyonu</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">❇️ Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_2.html">⬅️ Test 2 (Önceki)</a>
+        <a href="test_4.html">Sonraki Test (Test 4) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>❇️ Ünite 7 İleri Düzey Sınav Analizi</h3>
+            <p>2021-2025 Yılları arasında sorulmuş ve bu teste entegre edilmiş kritik konular:</p>
+            <ul>
+                <li><span class="highlight-text">Sembol Boyutu (2024):</span> Kimyasalın etiketindeki tehlike sembolü 1 cm²'den az olmayacak ve etiket boyutunun 1/10'u kadar olacaktır.</li>
+                <li><span class="highlight-text">Biyogüvenlik Düzeyleri (2025):</span> Özel tanı ve araştırma laboratuvarları "Tecrit Biyogüvenlik Düzeyi 3" standartlarına tabidir.</li>
+                <li><span class="highlight-text">H/R/S Kodları (2025):</span> Tehlikeli (H), Risk (R) ve Güvenlik (S) kodları etiketlemede standarttır.</li>
+                <li><span class="highlight-text">Yükseltgen Maddeler (2025):</span> Peroksi esterler gibi maddeler oksitleyici (yükseltgen) sınıftadır ve alev alıcılarla depolanamazlar.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>⚖️ Kusursuz Simetri 7.1 Algoritması</h3>
+            <p>Tüm şıklar beyninizi yanıltmak ve görsel okumayı zorlaştırmak için <strong>tam 30 kelime</strong> olarak kodlanmıştır:</p>
+            <ul>
+                <li><strong>Ön Ek (21 Kelime):</strong> "İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle..."</li>
+                <li><strong>Cevap (5 Kelime):</strong> Her soruya özel olarak 5 kelimelik net yanıt.</li>
+                <li><strong>Son Ek (4 Kelime):</strong> "...olarak literatürde belirtilmiş durumdadır."</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>❇️ 7. Ünite: Zümrüt Yeşili Simülasyonu</h2>
+        <p>Laboratuvar tasarımı, Biyogüvenlik düzeyleri (Seviye 1-4), FFP maske standartları, eldiven türleri ve kimyasal tehlike işaretlerinin bir araya geldiği, görsel simetrinin sınırlarını zorlayan bu akademik teste hoş geldiniz.<br><br>Sınav süresi <strong>45 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Zümrüt Yeşili Simülasyonunu Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ KALAN SÜRE:</span>
+            <span class="time" id="timer-display">45:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ DOĞRU: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ YANLIŞ: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ BOŞ: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 NET (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 20 SORU - ZÜMRÜT YEŞİLİ SİMETRİSİ (TAM 30 KELİME) -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="A">
+            <div class="q-text">1. 2024 Sınavı: Yönetmeliklere göre, kimyasalın etiketinde yer alan "tehlike sembolünün boyutu", kaç cm²'den az olmayacak şekilde olmalı ve toplam etiket boyutunun ne kadarını kaplamalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle bir santimetrekare ve onda biri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle iki santimetrekare ve beşte biri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle üç santimetrekare ve dörtte biri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle dört santimetrekare ve üçte biri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle beş santimetrekare ve ikide biri olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2024 Sınav sorusudur. Kimyasalın etiketinde yer alan tehlike sembolünün boyutu <strong>1 cm²'den az olmamalı ve etiket boyutunun 1/10'u</strong> kadar olmalıdır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">2. 2024 Sınavı: Biyoloji sektöründe özellikle mikrobiyoloji laboratuvarlarında, temel düzeydeki biyolojik materyallerle çalışırken hassasiyetinden dolayı en çok tercih edilen eldiven türü aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle standart steril lateks eldiven donanımları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle yüksek korumalı nomex eldiven donanımları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle kimyasal dirençli viton eldiven donanımları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle sentetik koruyucu nitril eldiven donanımları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle basit yalıtımlı neopren eldiven donanımları olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2024 Final sorusu. Biyoloji ve mikrobiyoloji laboratuvarlarında kullanım kolaylığı ve parmak hassasiyeti sebebiyle en yaygın kullanılan donanım <strong>Lateks Eldivenlerdir</strong>. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">3. 2025 Sınavı: Özel tanı ve araştırma laboratuvarlarında (insanlarda ağır hastalığa yol açabilen ancak tedavi imkanı olan ajanlarla çalışılırken) kullanılması gereken yasal biyogüvenlik düzeyi aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tecrit özellikli üçüncü biyogüvenlik düzeyi olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle temel özellikli birinci biyogüvenlik düzeyi olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle temel özellikli ikinci biyogüvenlik düzeyi olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle maksimum tecritli dördüncü biyogüvenlik düzeyi olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle gelişmiş özellikli beşinci biyogüvenlik düzeyi olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2025 Sınav Sorusu. Özel tanı ve araştırma laboratuvarları (Grup 3 ajanlar için) <strong>Tecrit (İzolasyon) Biyogüvenlik Düzeyi 3</strong> kurallarına tabidir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">4. 2022 Sınavı: Kimyasalın ambalajında siyah renkli "Çarpı (X)" işareti bulunan piktogram, uluslararası etiketleme standartlarına göre hangi tehlike sınıfını ifade etmektedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tahriş edici ve hassasiyet yaratıcı olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle şiddetli korozif ve aşındırıcı kimyasallar olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle yüksek riskli ölümcül toksik maddeler olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle çevre için tehlikeli zararlı atıklar olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle kendiliğinden alev alıcı uçucu gazlar olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2022 Sınavı ve Tablo 7.1 sorusu. Eski sınıflandırmaya göre siyah (X) işareti (yeni sınıflandırmada ünlem '!'), <strong>Tahriş Edici, Zararlı, Hassasiyet Yaratıcı</strong> kimyasalları gösterir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">5. Avrupa Birliği laboratuvar standartlarına göre; filtreli "FFP3" tipi maskeler, havadaki partiküllerin boyutları kaç mikrometreden küçük olanlarına karşı yüzde doksan dokuz (%99) oranında koruma sağlar?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle iki mikrometreden daha küçük partiküller olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle üç mikrometreden daha küçük partiküller olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle dört mikrometreden daha küçük partiküller olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle beş mikrometreden daha küçük partiküller olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle altı mikrometreden daha küçük partiküller olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> FFP3 maskeler %99 koruma ile <strong>2 µm'den (iki mikrometre) daha küçük</strong> partiküllere karşı koruma sağlayan en üst düzey laboratuvar/endüstriyel maskelerdir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">6. 2023 Sınavı: Endüstride klorlu organik kimyasallar ve aromatik çözücülerle çalışılırken, asitlerin eldiveni eritip cilde geçmesini (geçirgenliği) engellemek amacıyla mecburi olarak tercih edilen kişisel koruyucu ekipman hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle yüksek dayanımlı özel viton eldiven olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle temel koruyucu standart lateks eldiven olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle yalıtımlı yapıdaki sentetik nomex eldiven olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle ameliyathane tipi basit vinil eldiven olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle kimyasal dirençsiz sıradan pamuklu eldiven olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2023 Sınav Sorusu. Aromatik çözücüler ve klorlu organik solventler standart eldivenleri kolayca deler/eritebilir. Bu kimyasallarla çalışırken <strong>Viton eldivenler</strong> kullanılır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">7. 2025 Sınavı: Bir ortamda bulunan tüm tehlikeli mikroorganizmaların, sadece zayıf (vejetatif) formlarının değil, ısıya ve kuraklığa en dirençli olan "spor formları" da dahil tamamen öldürülmesi işlemine ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tıbbi mutlak sterilizasyon temizlik işlemi olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle yüzeysel genel dezenfeksiyon temizlik işlemi olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle arındırıcı lokal dekontaminasyon temizlik işlemi olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle basit hijyenik sanitasyon temizlik işlemi olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle kimyasal reaktif pıhtılaşma temizlik işlemi olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2025 Sınavı. Bir ortamdaki tüm patojenlerin en dirençli yapıları olan "spor" formlarıyla birlikte 0 bırakacak şekilde yok edilmesine <strong>Sterilizasyon</strong> adı verilir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">8. 2022 Sınavı: Üreticilerin sağlamak zorunda olduğu Malzeme Güvenlik Bilgi Formu (MGBF) içerisinde, bir kimyasalın "CAS No, EC No ve yüzde (%) miktarı" gibi formülsel verileri formun hangi alt bölümünde yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle bileşimi ve içeriği hakkındaki bilgiler olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle ekolojik ve çevresel zararlılık bilgileri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle kazara yayılmaya karşı alınacak önlemler olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle ilk yardım ve müdahale bilgileri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle yangınla mücade ve söndürme bilgileri olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2022 Sınav sorusu. MGBF'nin 16 ana başlığından biri olan <strong>"Bileşimi / İçeriği Bilgileri"</strong> kısmı, kimyasalın tam tarifini, CAS no'sunu ve miktar yüzdelerini içerir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">9. 2025 Sınavı: Tehlikeli Maddelerin Sınıflandırılması ve Etiketlenmesi yönetmeliğine göre; maddelerin kodlanmasında kullanılan "H", "R" ve "S" harfleri sırasıyla hangi uluslararası güvenlik kavramlarını temsil etmektedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tehlikeli risk ve güvenlik durumları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle hassasiyet reaksiyon ve sağlık durumları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle hararet risk ve sıcaklık durumları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tehlikeli reaksiyon ve solunum durumları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle hasar risk ve sterilizasyon durumları olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2025 Yılı Sorusu. Etiketlemelerde kullanılan İngilizce baş harfler: <strong>H (Hazard=Tehlikeli), R (Risk=Risk), S (Safety=Güvenlik)</strong> kodlarıdır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">10. 2025 Sınavı: Tek başlarına yanıcı olmamalarına rağmen organik maddelerle temas ettiklerinde yanma reaksiyonunu şiddetlendiren "oksitleyici (yükseltgen)" kimyasallara en belirgin örnek aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle yüksek enerjili aktif peroksi esterler olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle saf haldeki sıvı aseton bileşikleri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle alev alıcı nitelikteki bütan gazı olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle endüstride sıkça kullanılan amonyak sıvısı olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle parlayıcı özellikteki ağır propan gazı olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2025 Sınavı. Aseton, propan ve bütan alev alıcıdır (yanar). Amonyak tahriş edicidir. Kromik asit ve <strong>Peroksi Esterler</strong> oksitleyici (yükseltgen) ajanlardır, yani yanmayı şiddetlendirirler. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">11. Korozif etki gösteren sert kimyasallar ile tahriş edici yoğun alkol ve çözücülerin bulunduğu deneylerde, asitlerin deriye nüfuzunu engellemek için personelin kullanması gereken eldiven çeşidi hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tekrar kullanılabilir sentetik neopren eldiven olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle basınca dayanıklı standart lateks eldiven olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle yüksek ısı yalıtımlı nomex eldiven olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle geçirgenliği oldukça yüksek vinil eldiven olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle basit yapıdaki ince pamuklu eldiven olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kitap Tablo 7.4. Korozif (aşındırıcı) kimyasallar, asitler, alkoller ve genel çözücülerle çalışılırken cilt tahribatını önlemek için <strong>Neopren eldivenler</strong> tercih edilir. Aromatikler için Viton, ısı için Nomex kullanılır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">12. Tıbbi laboratuvarlarda, "sadece insanları etkileyen" ve potansiyel ölümcül hastalık riski barındıran Kategori A sınıfı enfeksiyöz tehlikeli maddelerin uluslararası havayolu/karayolu taşımacılığında kullanılan standart UN numarası kaçtır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle küresel taşımacılık kodu un 2814 olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle küresel taşımacılık kodu un 2900 olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle küresel taşımacılık kodu un 3373 olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle küresel taşımacılık kodu un 1484 olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle küresel taşımacılık kodu un 6554 olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Yalnızca hayvanları etkileyen ajanlar UN 2900 kodunu alırken, insanları etkileyebilen ciddi Kategori A ajanlar (örn: Şarbon, Kuduz) uluslararası alanda <strong>UN 2814</strong> numarasıyla taşınır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">13. Kullanıcıya bir fan mekanizması aracılığıyla filtreden geçirilmiş temiz hava sağlayan, nefes almayı kolaylaştırırken aynı zamanda tehlikeli patojenleri dışarıda tutan özel donanımlı laboratuvar koruyucu maske türü hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle elektrikli gelişmiş hava temizleyici maskeler olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle basit kullanımlı standart cerrahi maskeler olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle filtreli ffp bir partikül maskeleri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle kimyasal kartuşsuz sıradan bez maskeler olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle dışarıdan hava sağlayan oksijen tüpleri olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Bir fan (motor) aracılığıyla havadaki toksik veya patojen partikülleri filtreleyerek içeriye oksijen pompalayan ve kullanıcının eforunu azaltan sistemlere <strong>Elektrikli Hava Temizleyici Maskeler</strong> denir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">14. İnsanlarda ve deney hayvanlarında genetik yapıyı bozarak doğrudan tümör oluşumuna (kanserleşme) neden olabilme potansiyeline sahip olan, biyogüvenlik seviyesi yüksek spesifik biyolojik ajan grubu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tehlikeli ve aktif onkojenik virüsler olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle rekombinant genetik dna molekül yapıları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle parazitik özellik gösteren riketsiya formları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle enfeksiyona neden olan prion proteinleri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tahriş edici reaktif organik çözücüler olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> "Onko" onkolojiden gelir (kanser/tümör). Çalışanların sağlığını tehdit eden, hücre içine girerek tümör mekanizmalarını tetikleyen tehlikeli patojenlere <strong>Onkojenik Virüsler</strong> denir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">15. Avrupa standartlarında FFP2 koduyla bilinen ve partikül boyutu 2 ile 5 mikrometre arasında olan asılı damlacıklara/tozlara karşı kullanılan solunum maskeleri "minimum" yüzde kaç oranında filtreleme sağlamakla yükümlüdür?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle asgari olarak yüzde doksan dört olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle asgari olarak yüzde seksen sıfır olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle asgari olarak yüzde doksan dokuz olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle asgari olarak yüzde yüz tam olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle asgari olarak yüzde yetmiş beş olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Standartlara göre maskelerin koruma oranları; FFP1 için %80, <strong>FFP2 için %94</strong> ve FFP3 için %99 koruma şeklinde kademelendirilmiştir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">16. 2021 ve 2024 Sınavı: Laboratuvar ortamındaki tehlikeli ve toksik kimyasalları tanımlamak amacıyla kullanılan, BM Küresel Uyum Sistemi'nce standardize edilmiş çerçeveli görsel uyarı sembollerine genel olarak ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle standartlaştırılmış evrensel piktogram uyarı sembolleri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle radyoaktif tehlike belirten dozimetre işaretleri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle biyogüvenlik laboratuvar tecrit giriş logoları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tehlikeli kanserojen madde bilgilendirme formları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle ulusal acil durum tahliye levhaları olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2021 ve 2024 Final sınavlarında defalarca çıkmış banko sorudur. Kuru kafa, alev, çarpı gibi tehlikeleri anlatan evrensel çerçeveli görsel sembollere <strong>Piktogram</strong> denir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">17. Endüstride laboratuvar mimarisi güvenliği sağlanırken, muhtemel bir parlama veya patlama riskini tamamen sıfıra indirmek için "aydınlatma ve elektrik sistemleri" ile ilgili alınması gereken en temel yapısal önlem nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle ortam havasıyla temasının tamamen kesilmesi olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle ışıkların sürekli olarak açık bırakılması olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle ortam havasının klimalarla sıcak tutulması olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle aydınlatmaların zemine yakın yerlere kurulması olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle güçlü floresan lambalarla ortamın aydınlatılması olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Tehlikeli kimyasal gazların sızması halinde ufak bir elektrik kıvılcımı bile binayı patlatabilir. Bu yüzden laboratuvardaki elektrik anahtarlarının ve aydınlatmaların ortam havasıyla <strong>temasının tamamen izole edilmiş (kesilmiş)</strong> olması yasal bir zorunluluktur. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">18. Personelin kendi sağlığını koruması için giydiği "laboratuvar önlükleri", deney esnasında dışarı saçılan biyolojik patojenlere ve tehlikeli kimyasallara bariyer görevi görerek öncelikle personelin neresini koruma işlevine sahiptir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle zararlı etmenlerin cilt ile temasını olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle zehirli gazların doğrudan solunum yollarını olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tehlikeli sıvıların göz tabakasına sıçramasını olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle toksik kimyasalların koku yoluyla algılanmasını olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle patojenlerin laboratuvar cihazlarına kalıcı bulaşmasını olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Laboratuvar önlükleri solunumu, gözü veya kokuyu koruyamaz. Temel görevi sıçrayan zararlı mikroorganizmaların ve korozif asitlerin/bazların çalışanın <strong>cilt ile temasını (tenini) koruyarak</strong> bedensel tahribatı engellemektir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">19. İnsanlarda hastalığa neden olma olasılığı hiçbir şekilde bulunmayan "en düşük" riskli mikrobiyolojik ajanlar, Dünya Sağlık Örgütü ve ulusal biyogüvenlik rehberlerine göre hangi risk grubunda sınıflandırılır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle tehlike barındırmayan grup bir organizmaları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle düşük seviyeli grup iki organizmaları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle orta seviyeli grup üç organizmaları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle yüksek seviyeli grup dört organizmaları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle ölümcül düzeyli grup beş organizmaları olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Grup 4 ölümcül (Kırım Kongo), Grup 3 ağır (Salmonella), Grup 2 hafif hastalık yaparken, laboratuvar şartlarında insanlar için tamamen zararsız olanlar <strong>Grup 1</strong> mikroorganizmalarıdır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">20. Maddelerin Sınıflandırılması tüzüğü gereğince, üreticinin temin ettiği 16 başlıklı Malzeme Güvenlik Bilgi Formunda (MGBF); kimyasalın alev alması durumunda kullanılacak söndürücü teknikleri ve yanıcılık özellikleri hangi bölümde açıklanır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle yangınla mücadele ve söndürme bilgileri olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle kimyasal maddenin ekolojik çevresel zararları olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle kaza sonucu yayılmaya karşı önlemler olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle ürünün bertaraf edilme ve depolanması olarak literatürde belirtilmiş durumdadır.</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) İş sağlığı ve güvenliği alanındaki endüstriyel laboratuvar standartları ile akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu sorunun bilimsel ve yasal karşılığı kesinlikle zehirlenmelerdeki toksikolojik ve ilk yardım olarak literatürde belirtilmiş durumdadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Bir kimyasalın alev alması, köpükle mi yoksa suyla mı söndürülmesi gerektiği veya parlama noktası gibi hayati değerler MGBF'nin <strong>Yangınla Mücadele Bilgileri</strong> ana başlığı altında yazılmak zorundadır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.7; font-family: 'Lora', serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 7 / Test 3 (Zümrüt Yeşili İleri Düzey - Kusursuz Simetri 7.1 Algoritması)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 45 * 60; // 45 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Sınav Analizi';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // 4 Yanlış 1 Doğru Akademik Net Sistemi
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

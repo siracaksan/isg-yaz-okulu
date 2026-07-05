@@ -1,25 +1,467 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 4 - Test 2 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 4 - Test 2: Kimyasal Patojenler ve Toksikoloji Simülasyonu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto+Slab:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary: #0f766e; /* Toksik Camgöbeği */
+            --secondary: #134e4a; /* Derin Siyanür */
+            --accent: #f59e0b; /* Uyarı Kehribarı */
+            --accent-hover: #d97706;
+            --highlight: #14b8a6; 
+            --bg-body: #f0fdf4;
+            --card-bg: #ffffff;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --text-main: #1c1917;
+            --text-light: #f8fafc;
+            --border: #cbd5e1;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Roboto Slab', serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.7; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--secondary) 0%, #042f2e 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(19, 78, 74, 0.4);
+            border-bottom: 5px solid var(--accent); position: relative; overflow: hidden;
+        }
+        header::after { content: '🧪'; position: absolute; right: 5%; top: 5%; font-size: 9rem; opacity: 0.08; color: var(--highlight);}
+        header h1 { font-family: 'Oswald', sans-serif; font-size: 2.7rem; font-weight: 700; color: #ccfbf1; margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase;}
+        header h2 { font-size: 1.25rem; font-weight: 400; color: #99f6e4; letter-spacing: 2px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); margin: -25px auto 35px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--secondary); background: #f1f5f9; text-decoration: none; font-weight: 700; font-family: 'Oswald', sans-serif;
+            font-size: 1rem; padding: 12px 24px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px; text-transform: uppercase;
+        }
+        .test-menusu a:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(15, 118, 110, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Oswald', sans-serif; font-size: 1.5rem; color: var(--secondary); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; font-weight: 700; text-transform: uppercase;}
+        .analysis-box p { font-size: 1.05rem; color: #475569; text-align: justify; margin-bottom: 15px; font-family: 'Roboto Slab', serif;}
+        .analysis-box ul { padding-left: 20px; margin-top: 10px;}
+        .analysis-box ul li { margin-bottom: 10px; color: #334155; font-weight: 600;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 50px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 3px solid var(--primary);
+        }
+        .start-screen h2 { font-family: 'Oswald', sans-serif; font-size: 2.3rem; color: var(--secondary); margin-bottom: 20px; font-weight: 700; text-transform: uppercase;}
+        .start-screen p { font-size: 1.15rem; color: #475569; margin-bottom: 35px; line-height: 1.8;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border: none;
+            padding: 20px 55px; font-size: 1.4rem; font-weight: 700; font-family: 'Oswald', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(15, 118, 110, 0.4); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 35px rgba(15, 118, 110, 0.6); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 22px 30px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.05); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--accent); }
+        .timer-box { font-size: 1.7rem; font-weight: 700; font-family: 'Oswald', sans-serif; color: var(--secondary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--danger); padding: 6px 20px; border-radius: 12px; font-family: 'Oswald', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); letter-spacing: 2px;}
+        .btn-group button { border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Oswald', sans-serif;}
+        .btn-finish { background: var(--secondary); box-shadow: 0 4px 15px rgba(19, 78, 74, 0.3); }
+        .btn-finish:hover { background: #042f2e; transform: scale(1.05);}
+        .btn-pdf { background: var(--accent); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); color: #fff;}
+        .btn-pdf:hover { background: #b45309; transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 25px; border-radius: 12px; font-size: 1.25rem; font-weight: 700; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border); background: #f8fafc; font-family: 'Oswald', sans-serif;}
+        .stat-d { border-bottom: 5px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 5px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 5px solid #94a3b8; color: #64748b; } 
+        .stat-n { background: var(--secondary); color: #ccfbf1; font-size: 1.6rem; box-shadow: 0 5px 20px rgba(19, 78, 74, 0.4); border:none;}
+
+        /* Soru Kartları - EŞİT UZUNLUKLU FORMU */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 35px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--border); border-left: 8px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 15px 40px rgba(0,0,0,0.08); border-left-color: var(--accent);}
+        
+        .q-text { font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 1.15rem; margin-bottom: 25px; color: var(--text-main); line-height: 1.7; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; }
+        .option-label { display: flex; align-items: flex-start; padding: 20px 25px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 400; transition: all 0.2s ease; color: #334155; line-height: 1.6; text-align: justify;}
+        .option-label:hover { background: #f0fdfa; border-color: var(--primary); }
+        .option-label input { margin-top: 5px; margin-right: 20px; transform: scale(1.4); accent-color: var(--primary); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: #065f46; font-weight: 600;}
+        .option-label.incorrect { background: #fef2f2 !important; border-color: var(--danger) !important; color: #991b1b; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f8fafc; color: var(--secondary); border: 2px solid var(--secondary); padding: 12px 28px; border-radius: 30px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
+        .btn-solution:hover { background: var(--secondary); color: white; box-shadow: 0 4px 12px rgba(19, 78, 74, 0.3);}
+        .solution-box { display: none; margin-top: 15px; padding: 25px; background: #f0fdfa; border-left: 6px solid var(--highlight); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #0f766e; animation: slideDown 0.3s ease-out forwards; line-height: 1.7; text-align: justify;}
+        .solution-box strong { color: var(--secondary); font-size: 1.15rem; display: block; margin-bottom: 12px; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px; text-transform: uppercase;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 45px 20px; background: var(--secondary); color: #94a3b8; margin-top: 50px; font-size: 1.05rem; border-top: 5px solid var(--accent); }
+        .imza-kutu { display: inline-block; padding: 18px 40px; border: 2px solid rgba(20, 184, 166, 0.3); border-radius: 12px; background: #042f2e; box-shadow: 0 6px 20px rgba(0,0,0,0.5); font-weight: 600; letter-spacing: 0.5px;}
+        .imza-kutu span { color: #5eead4; font-family: 'Oswald', sans-serif; font-size: 1.25rem; margin: 0 8px; text-transform: uppercase; letter-spacing: 1px;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 25px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 4 - Test 2</h2>
+        <h1>Ünite 4: Kimyasal Risk Etmenleri ve Bulaş Yolları</h1>
+        <h2>Test 2: Toksikoloji ve Geçmiş Yıllar Çıkmış Soru Analizi</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">🧪 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_1.html">⬅️ Test 1 (Önceki)</a>
+        <a href="test_3.html">Sonraki Test (Test 3) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>📈 Çıkmış Sınav Soruları Analizi (2021-2025)</h3>
+            <p>Bu testteki tüm kurgular, geçmiş 5 yılın İSG yaz okulu sınavlarındaki 10 adet "Kimyasal Risk Etmenleri" sorusunun birebir analizinden türetilmiştir:</p>
+            <ul>
+                <li><strong>Kimyasal Temas Yolları:</strong> 2021 yılında doğrudan "Tablo 4.1" üzerinden solunumla bulaşmayan (Fosforik asit) kimyasal sorulmuştur.</li>
+                <li><strong>Etki Mekanizmaları:</strong> 2022, 2023 ve 2024 yıllarında sırasıyla "Sistemik Etki", "Mutajen Etki" ve "Dermatit/Astım" tanımları doğrudan sınav sorusu olmuştur.</li>
+                <li><strong>Hastalık Eşleştirmeleri:</strong> 2022 ve 2025 yıllarında "Anemik Anoksemi - Anilin" sorusu iki kez tekrarlanmış, ayrıca "Cıva - Titreme" ilişkisi sorulmuştur.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>⚖️ Kusursuz Eşit Uzunluk Algoritması</h3>
+            <p>Seçenekleri görsel hafızayla değil, tamamen akademik bilgiyle çözmeniz için özel bir mühendislik uygulanmıştır:</p>
+            <ul>
+                <li><strong>30 Kelimelik Simetri:</strong> Testte yer alan istisnasız tüm şıklar tam olarak <strong>30 veya 31 kelimelik</strong> birbirine eş uzunluktaki paragraflardan oluşturulmuştur.</li>
+                <li><strong>Net Sistemi:</strong> Sınavda standart "4 yanlış 1 doğruyu götürür" algoritması otomatik olarak işlemektedir.</li>
+                <li><strong>Süre Yönetimi:</strong> Uzun okuma parçaları odaklanmanızı zorlayacağı için sınav <strong>25 dakika</strong> ile sınırlandırılmıştır.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>🧪 4. Ünite 2. Test: Toksikolojik Algoritma</h2>
+        <p>Cıva zehirlenmelerinden Anemik Anoksemiye, Mutajenik gen hasarlarından Sistemik dolaşım mekanizmalarına uzanan; çıkmış sınav formatına birebir uyumlu zorlu simülasyon.<br><br>Sınav süresi <strong>25 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Analiz Testini Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ KALAN SÜRE:</span>
+            <span class="time" id="timer-display">25:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ DOĞRU: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ YANLIŞ: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ BOŞ: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 NET (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 10 SORULUK KUSURSUZ EŞİT UZUNLUKTA TEST -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="A">
+            <div class="q-text">1. İş sağlığı ve güvenliği literatüründe (Tablo 4.1) kimyasal risk etmenlerinin başlıca temas yolları incelendiğinde; buharlaşma özelliği bulunmadığı için vücuda <u>solunum yoluyla giremeyen</u>, yalnızca "cilt teması, göz teması ve yutma (sindirim)" yollarıyla enfeksiyon veya doku hasarı yaratan kimyasal madde aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Kimyasal risk analizleri detaylı biçimde incelendiğinde, buharlaşma veya gaz formuna dönüşme özelliği bulunmadığı için vücuda solunum yoluyla girmeyen, yalnızca cilt, göz ve yutma yoluyla sistemik hasar bırakan madde Fosforik asittir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Kimyasal risk analizleri detaylı biçimde incelendiğinde, buharlaşma veya gaz formuna dönüşme özelliği bulunmadığı için vücuda solunum yoluyla girmeyen, yalnızca cilt, göz ve yutma yoluyla sistemik hasar bırakan madde Karbonmonoksittir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Kimyasal risk analizleri detaylı biçimde incelendiğinde, buharlaşma veya gaz formuna dönüşme özelliği bulunmadığı için vücuda solunum yoluyla girmeyen, yalnızca cilt, göz ve yutma yoluyla sistemik hasar bırakan madde Etilenoksittir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Kimyasal risk analizleri detaylı biçimde incelendiğinde, buharlaşma veya gaz formuna dönüşme özelliği bulunmadığı için vücuda solunum yoluyla girmeyen, yalnızca cilt, göz ve yutma yoluyla sistemik hasar bırakan madde Karbondioksittir.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Kimyasal risk analizleri detaylı biçimde incelendiğinde, buharlaşma veya gaz formuna dönüşme özelliği bulunmadığı için vücuda solunum yoluyla girmeyen, yalnızca cilt, göz ve yutma yoluyla sistemik hasar bırakan madde Hidrojen sülfürdür.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Toksikolojik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2021 Yılı Sınav Sorusu: Ders kitabı Tablo 4.1'e göre Karbonmonoksit, Karbondioksit, Etilenoksit ve Hidrojen Sülfür gibi gazların ana giriş yolu <strong>Solunum</strong>'dur. Ancak sıvı/asit formda olan <strong>Fosforik asit</strong> solunumla değil; dökülme/sıçrama neticesinde "Cilt teması, Göz teması ve Yutma" yollarıyla vücuda hasar verir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">2. Boğucu gazlar, dokuların oksijenlenmesini engelleyerek hücresel hasar oluşturan tehlikeli kimyasallardır. Solunduğunda kana geçerek kandaki hemoglobinin oksijen taşıma kapasitesini doğrudan bozan ve tıp literatüründe <u>"Anemik Anoksemi"</u> tablosuna yol açan spesifik kimyasal boğucu madde aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Kanın oksijen taşıma yeteneğini bloke ederek dokularda şiddetli hipoksiye ve hücresel ölüme zemin hazırlayan, literatürde Anemik Anoksemi tablosu oluşturduğu bilimsel olarak kanıtlanmış olan bu spesifik kimyasal boğucu ajan Metan gazıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Kanın oksijen taşıma yeteneğini bloke ederek dokularda şiddetli hipoksiye ve hücresel ölüme zemin hazırlayan, literatürde Anemik Anoksemi tablosu oluşturduğu bilimsel olarak kanıtlanmış olan bu spesifik kimyasal boğucu ajan Helyum gazıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Kanın oksijen taşıma yeteneğini bloke ederek dokularda şiddetli hipoksiye ve hücresel ölüme zemin hazırlayan, literatürde Anemik Anoksemi tablosu oluşturduğu bilimsel olarak kanıtlanmış olan bu spesifik kimyasal boğucu ajan Azot bileşiğidir.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Kanın oksijen taşıma yeteneğini bloke ederek dokularda şiddetli hipoksiye ve hücresel ölüme zemin hazırlayan, literatürde Anemik Anoksemi tablosu oluşturduğu bilimsel olarak kanıtlanmış olan bu spesifik kimyasal boğucu ajan Hidrojen gazıdır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Kanın oksijen taşıma yeteneğini bloke ederek dokularda şiddetli hipoksiye ve hücresel ölüme zemin hazırlayan, literatürde Anemik Anoksemi tablosu oluşturduğu bilimsel olarak kanıtlanmış olan bu spesifik kimyasal boğucu ajan Anilin bileşiğidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Toksikolojik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2022 ve 2025 Yılı (İki kez sorulmuş) Sınav Sorusu: Basit boğucular havada oksijenin yerini alan Helyum, Metan, Azot, Hidrojen gibi gazlardır. Kimyasal boğucular ise kana karışıp oksijenin hücrelere gidişini zehirler. Hemoglobini bozup "Anemik Anoksemi" yapan en bilinen kimyasal ajanlar Karbonmonoksit ve <strong>Anilin</strong>'dir. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">3. Solunum yolu veya doğrudan cilt teması ile vücuda giren zehirli bir kimyasal maddenin, temas ettiği ilk bölgede lokal hasar bırakmak yerine; kan dolaşımına katılarak karaciğer, böbrek veya beyin gibi <u>hedef iç organlarda tahribat yaratması</u> süreci hangi etki mekanizması ile açıklanır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Vücuda alınan kimyasal maddelerin başlangıç noktasından bağımsız biçimde, kan dolaşımı üzerinden spesifik iç organlara taşınarak bu organlarda hücresel yıkım veya yetmezlik meydana getirmesi sürecine doğrudan irritan etki mekanizması denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Vücuda alınan kimyasal maddelerin başlangıç noktasından bağımsız biçimde, kan dolaşımı üzerinden spesifik iç organlara taşınarak bu organlarda hücresel yıkım veya yetmezlik meydana getirmesi sürecine doğrudan fibrotik etki mekanizması denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Vücuda alınan kimyasal maddelerin başlangıç noktasından bağımsız biçimde, kan dolaşımı üzerinden spesifik iç organlara taşınarak bu organlarda hücresel yıkım veya yetmezlik meydana getirmesi sürecine doğrudan kanserojen etki mekanizması denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Vücuda alınan kimyasal maddelerin başlangıç noktasından bağımsız biçimde, kan dolaşımı üzerinden spesifik iç organlara taşınarak bu organlarda hücresel yıkım veya yetmezlik meydana getirmesi sürecine doğrudan sistemik etki mekanizması denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Vücuda alınan kimyasal maddelerin başlangıç noktasından bağımsız biçimde, kan dolaşımı üzerinden spesifik iç organlara taşınarak bu organlarda hücresel yıkım veya yetmezlik meydana getirmesi sürecine doğrudan alerjik etki mekanizması denilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Toksikolojik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2022 ve 2023 Yılları Sınav Sorusu: Kimyasalın deriye veya akciğere değip orada yara yapmasına lokal (irritan) etki denir. Ancak maddenin kan yoluyla dolaşıma katılıp bütün "sistemi" dolaşarak iç organları (karaciğer vb.) vurmasına <strong>Sistemik Etki Mekanizması</strong> denir. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">4. Toksik, zehirli veya son derece zararlı kimyasal maddelerin solunduğunda, deri aracılığı ile emildiğinde veya ağız yoluyla yutulduğunda vücudun çeşitli organlarında birikerek <u>DNA üzerinde "kalıtımsal genetik hasar" oluşumuna (mutasyonlara)</u> neden olan etki türü aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Laboratuvar ve sanayi ortamlarında maruz kalınan çeşitli toksik kimyasalların, hücresel DNA diziliminde ve kromozom yapılarında geri döndürülemez kalıtımsal hücresel hasarlar meydana getirmesi durumu tıp terminolojisinde spesifik olarak mutajen etki sayılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Laboratuvar ve sanayi ortamlarında maruz kalınan çeşitli toksik kimyasalların, hücresel DNA diziliminde ve kromozom yapılarında geri döndürülemez kalıtımsal hücresel hasarlar meydana getirmesi durumu tıp terminolojisinde spesifik olarak kanserojen etki sayılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Laboratuvar ve sanayi ortamlarında maruz kalınan çeşitli toksik kimyasalların, hücresel DNA diziliminde ve kromozom yapılarında geri döndürülemez kalıtımsal hücresel hasarlar meydana getirmesi durumu tıp terminolojisinde spesifik olarak reprotoksik etki sayılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Laboratuvar ve sanayi ortamlarında maruz kalınan çeşitli toksik kimyasalların, hücresel DNA diziliminde ve kromozom yapılarında geri döndürülemez kalıtımsal hücresel hasarlar meydana getirmesi durumu tıp terminolojisinde spesifik olarak korozif etki sayılmaktadır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Laboratuvar ve sanayi ortamlarında maruz kalınan çeşitli toksik kimyasalların, hücresel DNA diziliminde ve kromozom yapılarında geri döndürülemez kalıtımsal hücresel hasarlar meydana getirmesi durumu tıp terminolojisinde spesifik olarak asfeksiyan etki sayılmaktadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Toksikolojik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2024 Yılı Sınav Sorusu: Doğurganlığı etkileyen maddelere Reprotoksik, kanser oluşumunu tetikleyenlere Kanserojen, asit gibi yakıp yıkanlara Korozif denir. Hücrenin genetiğini, DNA ve kromozom yapısını bozarak "kalıtımsal genetik hasar" bırakan toksik etkiye ise tam ve net olarak <strong>Mutajen Etki</strong> denilmektedir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">5. Sağlık kurumlarında deterjanlar, dezenfektanlar (glutaraldehit, etilen oksit) ve antineoplastik ilaçlar yoğun olarak kullanılmaktadır. İSG verilerine göre, sağlık kurumu çalışanlarında bu kimyasalların <u>cilt yolu ile sürekli teması sonucu -----, solunum yolu ile sürekli teması sonucu ise -----</u> meslek hastalıkları gelişebilmektedir.</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Hastanelerde yoğun kullanılan sterilizasyon sıvıları ve anestezik kimyasal ajanların mesleki maruziyet bağlamında sağlık personellerinin cildinde yarattığı kronik tahribat bulgularına hipoksi, solunum yollarında meydana getirdiği tıkayıcı kronik sendromlara ise kaşıntı denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Hastanelerde yoğun kullanılan sterilizasyon sıvıları ve anestezik kimyasal ajanların mesleki maruziyet bağlamında sağlık personellerinin cildinde yarattığı kronik tahribat bulgularına dermatit, solunum yollarında meydana getirdiği tıkayıcı kronik sendromlara ise astım denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Hastanelerde yoğun kullanılan sterilizasyon sıvıları ve anestezik kimyasal ajanların mesleki maruziyet bağlamında sağlık personellerinin cildinde yarattığı kronik tahribat bulgularına kansızlık, solunum yollarında meydana getirdiği tıkayıcı kronik sendromlara ise döküntü denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Hastanelerde yoğun kullanılan sterilizasyon sıvıları ve anestezik kimyasal ajanların mesleki maruziyet bağlamında sağlık personellerinin cildinde yarattığı kronik tahribat bulgularına üre artışı, solunum yollarında meydana getirdiği tıkayıcı kronik sendromlara ise ishal denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Hastanelerde yoğun kullanılan sterilizasyon sıvıları ve anestezik kimyasal ajanların mesleki maruziyet bağlamında sağlık personellerinin cildinde yarattığı kronik tahribat bulgularına bilinç kaybı, solunum yollarında meydana getirdiği tıkayıcı kronik sendromlara kızarıklık denilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Toksikolojik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2024 Yılı Çıkmış Boşluk Doldurma Sorusu: Kimyasalların (özellikle etilen oksit, deterjan ve formaldehit gibi dezenfektanların) el ve cilde sürekli teması, deride açık yaralar ve tahriş olan <strong>Dermatit</strong>'e sebep olur. Aynı kimyasalların buharlarının akciğere çekilmesi ise hava yollarını daraltarak mesleki <strong>Astım</strong>'a yol açar. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">6. Ağır metal endüstrisinde, laboratuvar termometre üretiminde veya amalgam uygulamalarında çalışan personelde yavaş yavaş birikerek merkezi sinir sistemini geri dönüşümsüz olarak tahrip eden; <u>"Uzun süreli kronik cıva (Hg) zehirlenmesine"</u> maruz kalmanın en belirgin klasik işareti aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Ağır metal toksisitesi bağlamında değerlendirildiğinde, sanayi ortamında maruz kalınan bu tehlikeli inorganik ve organik cıva bileşiklerinin merkezi sinir sistemine yerleşerek ortaya çıkardığı en temel klasik bulgu göz bebeklerinin büyümesidir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Ağır metal toksisitesi bağlamında değerlendirildiğinde, sanayi ortamında maruz kalınan bu tehlikeli inorganik ve organik cıva bileşiklerinin merkezi sinir sistemine yerleşerek ortaya çıkardığı en temel klasik bulgu kalp atış hızının azalmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Ağır metal toksisitesi bağlamında değerlendirildiğinde, sanayi ortamında maruz kalınan bu tehlikeli inorganik ve organik cıva bileşiklerinin merkezi sinir sistemine yerleşerek ortaya çıkardığı en temel klasik bulgu kan basıncının düşmesidir.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Ağır metal toksisitesi bağlamında değerlendirildiğinde, sanayi ortamında maruz kalınan bu tehlikeli inorganik ve organik cıva bileşiklerinin merkezi sinir sistemine yerleşerek ortaya çıkardığı en temel klasik bulgu vücutta titremenin başlamasıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Ağır metal toksisitesi bağlamında değerlendirildiğinde, sanayi ortamında maruz kalınan bu tehlikeli inorganik ve organik cıva bileşiklerinin merkezi sinir sistemine yerleşerek ortaya çıkardığı en temel klasik bulgu inatçı öksürük başlamasıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Toksikolojik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2025 Yılı Sınav Sorusu: Cıva (Hg) zehirlenmesi, sinir sistemini (nörotoksik) vuran bir ağır metal zehirlenmesidir. Tarihte şapkacılarda sık görüldüğü için "Çılgın Şapkacı Hastalığı" olarak da bilinir. En belirgin, karakteristik (klasik) işareti ellerde, dudaklarda ve tüm <strong>vücutta istemsiz titremelerin (tremor) başlamasıdır</strong>. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">7. Kimyasal risk faktörlerinin uzun yıllar boyu ciltle doğrudan temas etmesi çeşitli cilt hastalıklarına ve nihayetinde cilt kanserlerine yol açabilmektedir. Aşağıdakilerden hangisi doğrudan <u>"kimyasal maddelere bağlı cilt kanserine neden olan riskli çalışma alanları"</u> arasında yer almaktadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Toksikolojik veriler ışığında, çalışanlarda kronik dermatit üzerinden tehlikeli cilt kanseri lezyonlarının gelişmesine ortam sağlayan en tehlikeli mesleki alanlar sırasıyla zirai tarım ilaçlama, baca temizleme ve polisiklik hidrokarbonlu rafineri çalışmalarıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Toksikolojik veriler ışığında, çalışanlarda kronik dermatit üzerinden tehlikeli cilt kanseri lezyonlarının gelişmesine ortam sağlayan en tehlikeli mesleki alanlar sırasıyla fide ekimi çalışması, gıda ambalajlama ve sadece basit ofis sekreterliği çalışmalarıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Toksikolojik veriler ışığında, çalışanlarda kronik dermatit üzerinden tehlikeli cilt kanseri lezyonlarının gelişmesine ortam sağlayan en tehlikeli mesleki alanlar sırasıyla beyaz yaka ofis masaları, ahşap mobilya montajı ve pamuk tekstil dokumalarıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Toksikolojik veriler ışığında, çalışanlarda kronik dermatit üzerinden tehlikeli cilt kanseri lezyonlarının gelişmesine ortam sağlayan en tehlikeli mesleki alanlar sırasıyla perakende satış mağazaları, çağrı merkezi yönetimi ve lokal bilgisayar programcılığıdır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Toksikolojik veriler ışığında, çalışanlarda kronik dermatit üzerinden tehlikeli cilt kanseri lezyonlarının gelişmesine ortam sağlayan en tehlikeli mesleki alanlar sırasıyla soğuk hava depo görevliliği, unlu mamül üretimi ve sera sebzeciliğidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Toksikolojik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2025 Yılı Çıkmış Soru (I, III ve IV öncülleri): Ders kitabı Kimyasal Madde Kaynaklı Kanserler bölümünde; kimyasala yoğun ve direkt temasın olduğu <strong>Zirai ilaçlama</strong> (pestisitler), <strong>Baca temizleme</strong> (is ve katran) ve <strong>Rafineri çalışması</strong> (polisiklik aromatik hidrokarbonlar) personellerinde cilt kanserine (katran keratozu vb.) çok yüksek oranda rastlandığı belirtilmektedir. Fide ekimi temiz toprakta yapıldığından bu riskli grupta değildir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">8. Kimyasalların cilt temasından kaynaklanan hastalıklar incelendiğinde; tarım alanında mantar öldürücü (fungisit) veya tohum koruyucu olarak kullanılan <u>"Hekzaklorobenzen" (HCB) teması ile ortaya çıkan ve kişinin cilt renginin giderek koyulaşması ile karakterize olan</u> cilt hastalığı/sendromu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Kimya ve biyoloji sektörlerinde çalışan personelin cildine doğrudan temas eden tehlikeli hekzaklorobenzen kimyasal bileşiklerinin hücresel düzeyde yarattığı melanin artışıyla birlikte cilt rengini ciddi biçimde karartarak ortaya çıkardığı sendroma Asbestozis denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Kimya ve biyoloji sektörlerinde çalışan personelin cildine doğrudan temas eden tehlikeli hekzaklorobenzen kimyasal bileşiklerinin hücresel düzeyde yarattığı melanin artışıyla birlikte cilt rengini ciddi biçimde karartarak ortaya çıkardığı sendroma Bisinosis denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Kimya ve biyoloji sektörlerinde çalışan personelin cildine doğrudan temas eden tehlikeli hekzaklorobenzen kimyasal bileşiklerinin hücresel düzeyde yarattığı melanin artışıyla birlikte cilt rengini ciddi biçimde karartarak ortaya çıkardığı sendroma Onkoliz denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Kimya ve biyoloji sektörlerinde çalışan personelin cildine doğrudan temas eden tehlikeli hekzaklorobenzen kimyasal bileşiklerinin hücresel düzeyde yarattığı melanin artışıyla birlikte cilt rengini ciddi biçimde karartarak ortaya çıkardığı sendroma Porfiri denilmektedir.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Kimya ve biyoloji sektörlerinde çalışan personelin cildine doğrudan temas eden tehlikeli hekzaklorobenzen kimyasal bileşiklerinin hücresel düzeyde yarattığı melanin artışıyla birlikte cilt rengini ciddi biçimde karartarak ortaya çıkardığı sendroma Lökonişi denilmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Toksikolojik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Ders kitabındaki (Bölüm 4) özel bilgi notlarından biridir. Hekzaklorobenzen (HCB) gibi mantar öldürücü tarım kimyasallarına sürekli temas eden işçilerin ciltlerinde kararma (pigmentasyon bozukluğu) meydana gelir. Karaciğer enzimlerinin ve porfirin metabolizmasının bozulduğu bu hastalığa "Akkiz kazanılmış porfiria kutanea tarda" yani <strong>Porfiri</strong> hastalığı adı verilmektedir. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">9. Epidemiyolojik kanser haritalarına (Tablo 4.3) göre; Asfalt çalışanları, kok kömüründen havagazı elde edenler, çatı yapımında izolasyon materyali serenler ve uranyum madencilerinin mesleki kimyasallara maruz kalması sonucunda <u>hedef organ olarak "en çok kanser gelişimi görülen" bölge</u> neresidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Asfalt, zift, asbest lifleri ve uranyum radyasyon gazlarına yoğun maruziyet sonucunda ince partiküllerin doğrudan tahrip ederek hücresel karsinojenik gen mutasyonlarını ve ölümcül tümör hücrelerini en şiddetli şekilde başlattığı hedef organ Akciğerdir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Asfalt, zift, asbest lifleri ve uranyum radyasyon gazlarına yoğun maruziyet sonucunda ince partiküllerin doğrudan tahrip ederek hücresel karsinojenik gen mutasyonlarını ve ölümcül tümör hücrelerini en şiddetli şekilde başlattığı hedef organ Karaciğerdir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Asfalt, zift, asbest lifleri ve uranyum radyasyon gazlarına yoğun maruziyet sonucunda ince partiküllerin doğrudan tahrip ederek hücresel karsinojenik gen mutasyonlarını ve ölümcül tümör hücrelerini en şiddetli şekilde başlattığı hedef organ Pankreastır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Asfalt, zift, asbest lifleri ve uranyum radyasyon gazlarına yoğun maruziyet sonucunda ince partiküllerin doğrudan tahrip ederek hücresel karsinojenik gen mutasyonlarını ve ölümcül tümör hücrelerini en şiddetli şekilde başlattığı hedef organ Midedir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Asfalt, zift, asbest lifleri ve uranyum radyasyon gazlarına yoğun maruziyet sonucunda ince partiküllerin doğrudan tahrip ederek hücresel karsinojenik gen mutasyonlarını ve ölümcül tümör hücrelerini en şiddetli şekilde başlattığı hedef organ Böbrektir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Toksikolojik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Tablo 4.3'te "Yerleşim Yerine Göre Mesleki Kanser Nedenleri" incelendiğinde; Asfalt çalışanları (Mineral yağlar/Benzpiren), Uranyum madenciliği (Radon) ve Çatı yapımı (Asbest) faaliyetlerinde yoğun olarak çıkan buharlar, dumanlar ve ince asılı gazlar (lifler) doğrudan solunduğu için mutlak hedef organ <strong>Akciğer</strong> olmaktadır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">10. "Moleküler boyutları bağırsak villus duvarlarından geçemeyecek kadar büyük olan, suda ya da lipitte çözünmeyen bazı inorganik ağır kimyasalların, <u>hiçbir ölçüde kana karışmadan doğrudan dışkı ile vücuttan dışarı atıldığı</u>" fizyolojik kimyasal maruziyet bulaş yolu aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Moleküler çapı geniş olan bu dev kimyasalların epitel veya mukoza engellerini aşamayarak lokal reaksiyon dışında kan akımına dâhil olamadan dışarı atılmasını sağlayan temel fizyolojik maruziyet şekline tıpta solunum (inhalasyon) yolu denmektedir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Moleküler çapı geniş olan bu dev kimyasalların epitel veya mukoza engellerini aşamayarak lokal reaksiyon dışında kan akımına dâhil olamadan dışarı atılmasını sağlayan temel fizyolojik maruziyet şekline tıpta enjeksiyon (batma) yolu denmektedir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Moleküler çapı geniş olan bu dev kimyasalların epitel veya mukoza engellerini aşamayarak lokal reaksiyon dışında kan akımına dâhil olamadan dışarı atılmasını sağlayan temel fizyolojik maruziyet şekline tıpta cilt (deri) yolu denmektedir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Moleküler çapı geniş olan bu dev kimyasalların epitel veya mukoza engellerini aşamayarak lokal reaksiyon dışında kan akımına dâhil olamadan dışarı atılmasını sağlayan temel fizyolojik maruziyet şekline tıpta sindirim (yutma) yolu denmektedir.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Moleküler çapı geniş olan bu dev kimyasalların epitel veya mukoza engellerini aşamayarak lokal reaksiyon dışında kan akımına dâhil olamadan dışarı atılmasını sağlayan temel fizyolojik maruziyet şekline tıpta radyasyon (ışıma) yolu denmektedir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Toksikolojik Analiz</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasalların vücuda giriş yolları; Solunum, Cilt, Sindirim (yutma) ve Enjeksiyon olmak üzere 4'e ayrılır. Eğer bir kimyasal mideden bağırsaklara geçiyor ancak yapısı (molekül boyutu) büyük olduğu için bağırsak kıllarından (villuslarından) kana emilemiyorsa, dışkı ile dışarı atılır. Bahsedilen bu yol "Ağız yolu ile temas" yani <strong>Sindirim (Yutma) Yolu</strong>dur. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.6; font-family: 'Roboto Slab', serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 4 / Test 2 (Çıkmış Sorular Toksikoloji Simülasyonu)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 25 * 60; // 25 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Toksikolojik Analiz';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            timerDisplay.style.borderColor = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // 4 Yanlış 1 Doğru Akademik Net Sistemi
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
+
+

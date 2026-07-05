@@ -1,25 +1,599 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 7 - Test 2 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 7 - Test 2: Mavi Safir Simülasyonu (20 Soru)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap');
+
+        :root {
+            --primary: #0f172a; /* Derin Safir Mavisi */
+            --secondary: #1e3a8a; /* Gece Mavisi */
+            --accent: #3b82f6; /* Parlak Safir */
+            --accent-hover: #2563eb;
+            --highlight: #bfdbfe; 
+            --gold: #cbd5e1; /* Metalik Gümüş */
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --success: #059669;
+            --danger: #e11d48;
+            --text-main: #0f172a;
+            --text-light: #f1f5f9;
+            --border: #bfdbfe;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Merriweather', serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.8; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.4);
+            border-bottom: 6px solid var(--gold); position: relative; overflow: hidden;
+        }
+        header::after { content: '🔷'; position: absolute; right: 5%; top: 5%; font-size: 10rem; opacity: 0.08; color: var(--gold);}
+        header h1 { font-family: 'Oswald', sans-serif; font-size: 2.8rem; font-weight: 700; color: #f8fafc; margin-bottom: 12px; letter-spacing: 1px;}
+        header h2 { font-family: 'Oswald', sans-serif; font-size: 1.3rem; font-weight: 500; color: var(--gold); letter-spacing: 3px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); margin: -25px auto 35px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--secondary); background: #eff6ff; text-decoration: none; font-weight: 600; font-family: 'Oswald', sans-serif;
+            font-size: 1.05rem; padding: 12px 24px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--secondary); color: white; border-color: var(--secondary); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(30, 58, 138, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Oswald', sans-serif; font-size: 1.6rem; color: var(--secondary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-weight: 600;}
+        .analysis-box p { font-size: 1.05rem; color: #475569; text-align: justify; margin-bottom: 15px; font-family: 'Merriweather', serif;}
+        .analysis-box ul { padding-left: 20px; margin-top: 15px;}
+        .analysis-box ul li { margin-bottom: 12px; color: #1e293b; font-weight: 700; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px;}
+        .highlight-text { color: var(--accent); font-weight: 700; background: #eff6ff; padding: 2px 6px; border-radius: 4px;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 60px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(30, 58, 138, 0.1); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 4px solid var(--secondary); position: relative; overflow: hidden;
+        }
+        .start-screen::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--accent); }
+        .start-screen h2 { font-family: 'Oswald', sans-serif; font-size: 2.6rem; color: var(--primary); margin-bottom: 20px; font-weight: 700; text-transform: uppercase;}
+        .start-screen p { font-size: 1.15rem; color: #475569; margin-bottom: 40px; line-height: 1.8; font-weight: 400;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%); color: white; border: none;
+            padding: 22px 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Oswald', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4); text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 35px rgba(30, 58, 138, 0.6); background: var(--primary); color: var(--gold);}
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 25px 35px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.06); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--accent); }
+        .timer-box { font-size: 1.8rem; font-weight: 700; font-family: 'Oswald', sans-serif; color: var(--primary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--secondary); padding: 6px 20px; border-radius: 12px; font-family: 'Oswald', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); font-weight: 700; letter-spacing: 1px;}
+        .btn-group button { border: none; padding: 14px 30px; border-radius: 30px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Oswald', sans-serif; letter-spacing: 1px;}
+        .btn-finish { background: var(--primary); box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3); }
+        .btn-finish:hover { background: #000000; transform: scale(1.05); color: var(--gold);}
+        .btn-pdf { background: var(--secondary); box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3); }
+        .btn-pdf:hover { background: var(--accent); transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 30px; border-radius: 12px; font-size: 1.4rem; font-weight: 700; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border); background: #eff6ff; font-family: 'Oswald', sans-serif;}
+        .stat-d { border-bottom: 6px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 6px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 6px solid #94a3b8; color: #475569; } 
+        .stat-n { background: var(--primary); color: var(--gold); font-size: 1.8rem; box-shadow: 0 5px 20px rgba(15, 23, 42, 0.5); border:none;}
+
+        /* Soru Kartları - MAVİ SAFİR SİMETRİSİ (30 KELİME) */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 40px; width: 95%; max-width: 1200px; margin: 0 auto 50px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 45px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid var(--border); border-left: 8px solid var(--secondary); display: flex; flex-direction: column; transition: all 0.3s ease; position: relative;}
+        .question-card::before { content: '🔷'; position: absolute; top: 15px; right: 20px; font-size: 1.5rem; opacity: 0.1; }
+        .question-card:hover { box-shadow: 0 15px 50px rgba(30, 58, 138, 0.1); border-left-color: var(--accent);}
+        
+        .q-text { font-family: 'Merriweather', serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 30px; color: var(--primary); line-height: 1.8; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
+        .option-label { display: flex; align-items: flex-start; padding: 22px 28px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 400; transition: all 0.2s ease; color: #334155; line-height: 1.7; text-align: justify; font-family: 'Merriweather', serif;}
+        .option-label:hover { background: #eff6ff; border-color: var(--secondary); }
+        .option-label input { margin-top: 6px; margin-right: 20px; transform: scale(1.4); accent-color: var(--secondary); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: #065f46; font-weight: 700;}
+        .option-label.incorrect { background: #fef2f2 !important; border-color: var(--danger) !important; color: #9f1239; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #eff6ff; color: var(--secondary); border: 2px solid var(--secondary); padding: 12px 30px; border-radius: 30px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
+        .btn-solution:hover { background: var(--secondary); color: white; box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3); border-color: var(--secondary);}
+        .solution-box { display: none; margin-top: 20px; padding: 30px; background: #eff6ff; border-left: 6px solid var(--accent); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #1e3a8a; animation: slideDown 0.3s ease-out forwards; line-height: 1.8; text-align: justify; box-shadow: inset 0 2px 10px rgba(0,0,0,0.03); font-weight: 400;}
+        .solution-box strong { color: var(--primary); font-size: 1.2rem; display: block; margin-bottom: 12px; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 50px 20px; background: var(--primary); color: #cbd5e1; margin-top: 60px; font-size: 1.05rem; border-top: 6px solid var(--gold); }
+        .imza-kutu { display: inline-block; padding: 20px 45px; border: 2px solid rgba(203, 213, 225, 0.4); border-radius: 12px; background: #000000; box-shadow: 0 8px 25px rgba(0,0,0,0.6); font-weight: 400; letter-spacing: 1px; font-family: 'Merriweather', serif;}
+        .imza-kutu span { color: var(--gold); font-family: 'Oswald', sans-serif; font-size: 1.3rem; margin: 0 10px; font-weight: 700; letter-spacing: 2px;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 30px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 7 - Test 2</h2>
+        <h1>Ünite 7: Güvenlik Önlemleri ve Korunma Yolları</h1>
+        <h2>Test 2: Mavi Safir Simülasyonu (20 Soru)</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">🔷 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_1.html">⬅️ Test 1 (Önceki)</a>
+        <a href="test_3.html">Sonraki Test (Test 3) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>🔷 2021-2025 Ünite 7 Sınav Analizi</h3>
+            <p>Son 5 yılın İSG Kimya ve Biyoloji final/yaz okulu havuzu incelendiğinde 7. Ünite ile ilgili şu spesifik kavramlar tespit edilmiştir:</p>
+            <ul>
+                <li><span class="highlight-text">Uyarı İşaretleri (2021, 2024):</span> Kimyasal ve biyolojik tehlikeleri gösteren sembollere "Piktogram" adı verilir.</li>
+                <li><span class="highlight-text">MGBF/SDS (2022, 2025):</span> CAS No, EC No ve miktar yüzdeleri MGBF'nin "Bileşimi / İçeriği Bilgileri" kısmında yer alır.</li>
+                <li><span class="highlight-text">Koruyucu Eldivenler (2023):</span> Aromatik ve klorlu organik çözücülerle çalışılırken yüksek dayanımlı "Viton Eldiven" kullanılmalıdır.</li>
+                <li><span class="highlight-text">H-R-S Kodları (2025):</span> Tehlikeli Madde Yönetmeliğinde; H=Tehlikeli, R=Risk, S=Güvenlik anlamına gelir.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>⚖️ Kusursuz Simetri 7.0 Algoritması</h3>
+            <p>Şık uzunluğuna bakarak doğru cevabı tahmin etmeyi imkânsız hale getiren matematiksel formül:</p>
+            <ul>
+                <li><strong>Kesin 30 Kelime Kuralı:</strong> Bu testteki 100 seçeneğin tamamı; giriş, gövde (cevap) ve çıkış argümanları kullanılarak virgülüne kadar <strong>tam 30 kelime</strong> olarak yazılmıştır.</li>
+                <li><strong>Görsel Kamuflaj:</strong> Zihin, uzun metinler arasında yorulacak ve salt akademik bilgiye muhtaç kalacaktır.</li>
+                <li><strong>Odaklanma Süresi:</strong> Soruların okunması ve analiz edilmesi uzun süreceğinden sınav süresi <strong>45 dakika</strong> olarak belirlenmiştir.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>🔷 7. Ünite: Mavi Safir Simülasyonu</h2>
+        <p>Laboratuvar tehlikeleri, piktogramlar, maskeler, KKE türleri ve dekontaminasyon kurallarının yer aldığı bu zorlu sınav, sizi final düzeyindeki sorulara hazırlayacaktır. Şıkların hepsi eşit uzunluktadır.<br><br>Sınav süresi <strong>45 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Mavi Safir Simülasyonunu Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ KALAN SÜRE:</span>
+            <span class="time" id="timer-display">45:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ DOĞRU: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ YANLIŞ: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ BOŞ: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 NET (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 20 SORU - MAVİ SAFİR SİMETRİSİ (TAM 30 KELİME) -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="A">
+            <div class="q-text">1. 2021 ve 2024 yılları sınav sorusu: Kimyasal ve biyolojik tehlikeleri göstermek amacıyla uluslararası kabul görmüş olan, görsel algıyı artırarak riskleri minimize etmeyi hedefleyen uyarı işaretlerine genel olarak ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle piktogram uyarı sembolleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle korozif madde ikonları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle dozimetre ölçüm cihazları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle biyolojik tehlike işaretleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle toksik zehir görselleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2021 ve 2024 sınavlarında çıkmış temel tanımdır. Kimyasal ve biyolojik tehlikeleri göstermek amacıyla kullanılan, BM Küresel Uyum Sistemi'ne (UN GHS) göre standartlaştırılmış uyarı sembollerine <strong>Piktogram</strong> adı verilir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">2. 2025 Yılı Sınav Sorusu: Bir ortamda bulunan mikroorganizmaların sadece vejetatif formlarının değil, en dirençli yapıları olan "spor formlarının da dâhil olmak üzere" tamamının öldürülmesi işlemine ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle genel sanitasyon uygulaması olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle tıbbi sterilizasyon işlemi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle lokal dezenfeksiyon eylemi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle hücresel dejenerasyon adımı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle protein denatürasyon fazı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2025 Final sorusudur. Sadece hastalık yapıcı bakterileri değil, onların dayanıklı "spor" formları da dahil olmak üzere ortamdaki tüm mikroorganizmaların yok edilmesi işlemine <strong>Sterilizasyon</strong> adı verilir. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">3. 2023 Yılı Sınav Sorusu: Yüksek düzeyde tehlike barındıran aromatik çözücüler ve klorlu organik kimyasal maddelerle çalışılırken, geçirgenliği engellemek amacıyla personelin kullanması zorunlu olan spesifik eldiven türü hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle sentetik lateks eldivenler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle koruyucu nomex eldivenler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle özel viton eldivenler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle standart nitril eldivenler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle basit pamuklu eldivenler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2023 sınavında çıkan KKE (Kişisel Koruyucu Ekipman) sorusudur. Aromatik çözücüler ve klorlu organik solventler standart eldivenleri eritir. Bu maddelerle çalışırken yüksek korumalı <strong>Viton eldivenler</strong> kullanılmalıdır. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">4. 2025 Yılı Sınav Sorusu: Tehlikeli Maddelerin Sınıflandırılması ve Etiketlenmesi yönetmeliğine göre; maddelerin kodlanmasında kullanılan "H", "R" ve "S" harflerinin uluslararası standartlardaki doğru anlam sıralaması aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle tehlikeli risk güvenlik olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle hassas risk sembolü olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle tehlikeli reaktif sınıfı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle riskli hassas güvenlik olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle koruyucu risk tehlikesi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2025 Sınav Sorusu. Tehlikeli maddeler ve müstahzarların sınıflandırılmasında kullanılan kodlardan; <strong>H: Tehlikeli (Hazard), R: Risk (Risk), S: Güvenlik (Safety)</strong> anlamına gelir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">5. 2022 Yılı Sınav Sorusu: MGBF (Malzeme Güvenlik Bilgi Formu) içerisinde kimyasal maddenin CAS No, EC No ve yüzde (%) miktarı gibi spesifik veriler formun hangi alt bölümünde yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle bileşimi içeriği bilgileri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle yangınla mücadele bilgileri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle toksikolojik etkiler bilgileri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle ekolojik zararlar bilgileri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle ilk yardım bilgileri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2022 Sınav Sorusu. Bir kimyasalın saflığı, yüzde (%) miktarı, uluslararası CAS kayıt numarası ve EC numarası gibi kimyasal formül yapısına ait detaylar Malzeme Güvenlik Bilgi Formunun <strong>"Bileşimi / İçeriği Bilgileri"</strong> kısmında bulunur. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">6. 2025 Yılı Sınav Sorusu: İş yerinde kullanılan kimyasalların potansiyel tehlikelerini, ilk yardım bilgilerini, taşıma ve depolama şartlarını detaylıca barındıran, üretici tarafından sağlanması zorunlu olan teknik dokümanın adı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle acil durum planı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle malzeme güvenlik formu olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle risk değerlendirme raporu olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle iş sağlığı tutanağı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle laboratuvar saha dokümanı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasalların güvenli bir şekilde kullanımı, reaktivitesi, fiziksel özellikleri, ilk yardım, yangın ve bertaraf gibi tüm potansiyel risklerini içeren bu 16 maddelik rehbere <strong>Malzeme Güvenlik Bilgi Formu (MGBF/SDS)</strong> denir. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">7. 2024 Yılı Sınav Sorusu: Endüstriyel faaliyetlerde sıkça kullanılan ve solunduğunda veya temasta insan dokularında ciddi bir "tahriş edici, hassasiyet yaratıcı" etkiyle ön plana çıkan tehlikeli kimyasal maddeye en net örnek hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle saf amonyak çözeltisi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle sülfürik asit maddesi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle nitrik asit birleşiği olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle hidroklorik asit sıvısı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle sodyum hidroksit bazı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2024 Sınav sorusudur. Asitler (nitrik, sülfürik, hidroklorik) ve Sodyum hidroksit "korozif-aşındırıcı" kimyasallar sınıfındadır. Ancak <strong>Amonyak</strong> doğrudan solunum yollarını ve gözleri vuran şiddetli bir "tahriş edici ve hassasiyet yaratıcı" olarak sınıflandırılır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">8. 2025 Yılı Sınav Sorusu: Patlayıcı ve alev alıcı olmamakla birlikte, organik maddelerle temasında şiddetli reaksiyon gösteren "oksitleyici (yükseltgen)" özellikli tehlikeli kimyasallara en belirgin örnek aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle güçlü aseton kimyasalı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle ağır bütan maddesi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle yoğun propan gazı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle aktif peroksi esterler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle sıvı hidrojen yakıtı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Aseton, Bütan, Propan ve Hidrojen alev alıcı/yanıcı kimyasallardır. Ancak kromik asit, permanganatlar ve <strong>Peroksi Esterler</strong>, organik maddelerle yanmayı şiddetlendiren "oksitleyici (yükseltgen)" ajanlardır. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">9. Laboratuvar ortamlarında toksik gazların, tehlikeli asit buharlarının ve solunması zararlı uçucu kimyasalların güvenli bir şekilde emilerek çalışma ortamından dışarı atılmasını sağlayan hayati fiziksel koruma donanımı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle güçlü santrifüj cihazları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle vakumlu etüv fırınları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle otomatik vorteks makineleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle güvenli çeker ocaklar olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle kül fırını sistemleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Uçucu, buharlaşan, toksik veya koku yayan tehlikeli kimyasallarla çalışılırken bu gazların solunmasını engelleyerek laboratuvar dışına güvenle atan sistemler <strong>Çeker Ocak (Fume Hood)</strong> sistemleridir. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">10. Biyolojik güvenlik önlemleri kapsamında değerlendirilen, insanlarda ve hayvanlarda doğrudan tümör oluşumuna (kanserleşme) neden olabilme potansiyeline sahip olan ve laboratuvarda çok yüksek koruma gerektiren patojen grubu hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle aktif onkojenik virüsler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle tehlikeli mantar sporları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle zararlı riketsiya bakterileri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle parazitik riketsiya formları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle enfeksiyöz prion proteinleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> "Onko" kelimesi tümör (kanser) anlamına gelir (Onkoloji). İnsanlarda veya hayvanlarda hücre genetiğini bozarak tümör oluşumuna neden olan biyolojik risk etmenlerine <strong>Onkojenik Virüsler</strong> adı verilir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">11. Mikrobiyoloji laboratuvarlarında tehlikesi nispeten daha düşük olan rutin biyolojik materyallerle (standart kan ve vücut sıvıları) çalışılırken, ince yapısı ve kullanım kolaylığı sebebiyle en sık tercih edilen eldiven türü hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle güçlü viton eldivenler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle standart lateks eldivenler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle koruyucu neopren eldivenler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle termal nomex eldivenler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle yalıtımlı nitril eldivenler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasal direnci düşük olsa da; parmak hassasiyeti gerektiren temel mikrobiyolojik işlemlerde, hastanelerde ve biyolojik sıvı temaslarında en yaygın ve rahat kullanılan koruyucu donanım <strong>Lateks Eldivenlerdir.</strong> Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">12. Avrupa standartlarına göre solunum koruyucu donanımlar arasında yer alan ve boyutu "5 mikrometreye kadar olan (en kaba) partiküllere" karşı yaklaşık %80 oranında en düşük temel korumayı sağlayan maske sınıfı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle filtreli hepa maskeleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle standart bez maskeler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle basit cerrahi maskeler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle koruyucu ffpüç maskeleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle temel ffpbir maskeleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> FFP serisi filtreli yüz maskeleridir. FFP3 %99 koruma (2 mikron altı), FFP2 %94 koruma (2-5 mikron), <strong>FFP1 (FFPBir) ise %80 ile en düşük seviye korumayı</strong> (5 mikrona kadar) sağlar. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">13. 2023 Yılı Sınav Sorusu: Tehlikeli Maddelerin etiketlenmesi ve sınıflandırılması yönetmeliği kapsamında; maddelerin insan sağlığına ve çevreye olan etkileri listelenirken mevzuatta "kesinlikle yer almayan" (asılsız) kategori aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle aşındırıcı korozif maddeler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle şiddetli toksik kimyasallar olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle bedene yararlı kimyasallar olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle tahriş edici ürünler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle tehlikeli zararlı maddeler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> 2023 sınavında çıkan bir dikkat sorusudur. Toksik, zararlı, tahriş edici veya aşındırıcı etiketleri Tehlikeli Madde Yönetmeliğinin tanımlarıdır. Ancak bir kimyasalın <strong>"Yararlı"</strong> olduğu yönünde bir tehlike/sınıflandırma etiketi bulunmaz. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">14. İnsan vücudu, çalışma eşyaları ve çevreye kazara bulaşan zararlı kimyasal, biyolojik, radyolojik veya nükleer ajanların, güvenliği yeniden tesis etmek amacıyla ortamdan tamamen uzaklaştırılması (etkisizleştirilmesi) işlemine ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle genel dezenfeksiyon çalışması olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle aktif sterilizasyon işlemi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle tam dekontaminasyon süreci olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle yüzeysel sanitasyon uygulaması olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle biyolojik izolasyon protokolü olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Kimyasal, biyolojik, radyolojik ve nükleer ajanların kazara bulaşması sonucu, bu zararlıların ortamdan, kıyafetlerden ve insan cildinden tamamen temizlenmesi/arındırılması olayına <strong>Dekontaminasyon</strong> denir. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">15. Modern ve güvenli bir laboratuvarın mimari tasarım aşamasında; içeride çıkabilecek yangın, patlama veya sızıntı gibi kriz anlarında yaşanacak panik izdihamını ve zaman kaybını önlemek amacıyla laboratuvar kapıları nasıl olmalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle içeriye doğru açılması olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle dışarı kaçış yönünde olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle yukarıya doğru kayması olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle otomatik kilitlenir yapıda olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle ağır çelikten üretilmesi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Fiziksel koruma yöntemlerine göre laboratuvar kapıları; içeridekilerin hızla alanı terk edebilmesi ve kapının önünde yığılma olmaması için iterek açılacak şekilde, yani <strong>dışarı (kaçış) yönünde</strong> açılacak şekilde tasarlanmalıdır. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">16. Kimyasal ve biyolojik maddelerin ambalajlanmasında, 20 Ocak 2009'da BM Küresel Uyum Sistemi'ne (UN GHS) paralel olarak Avrupa Birliği tarafından "etiketlemede standartlaştırmayı sağlayan" yürürlükteki tüzüğün (EC/1272/2008) literatürdeki kısa adı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle uluslararası ghs sözleşmesi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle avrupa clp tüzüğü olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle küresel un yönergesi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle sağlık osha standardı olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle bölgesel hse bildirgesi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Classification, Labelling and Packaging (Sınıflandırma, Etiketleme ve Ambalajlama) kelimelerinin baş harflerinden oluşan, AB tarafından uyumlaştırılmış bu standart etiketleme kuralları silsilesine <strong>CLP Tüzüğü</strong> adı verilir. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">17. Üzerinde bir alev topu değil; ancak "O" harfi (veya bir daire) üzerinde yükselen ve organik maddelerle yanmayı şiddetlendiren bir alev piktogramı bulunan kimyasal maddeler, hangi spesifik tehlike sınıfını ifade etmektedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle patlayıcı reaktif maddeler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle korozif aşındırıcı bileşikler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle toksik zehirli sıvıları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle alev alıcı gazları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle oksitleyici yükseltgen kimyasalları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Piktogram okuma sorusudur. Çizgili bir zeminde alev varsa "alev alıcı", ancak "O" harfi (Oksijen) üzerinden yükselen bir alev varsa bu madde <strong>"Oksitleyici (Yükseltgen)"</strong> tehlike sınıfındadır. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">18. Canlı dokulara veya cansız laboratuvar çalışma yüzeylerine doğrudan temas etmesi halinde, bu yüzeyleri kimyasal reaksiyonla hızla eriten, parçalayan ve geri dönüşümsüz olarak tahrip eden güçlü asit/baz maddelerine ne denir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle tahriş edici gazlar olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle korozif aşındırıcı maddeler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle biyolojik enfeksiyöz ajanlar olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle patlayıcı reaktif kimyasallar olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle mutajenik kanserojen toksinler olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Temas ettiği yüzeyi (ister eliniz, ister laboratuvar mermeri olsun) kimyasal olarak parçalayan, yakan ve eriten sülfürik asit gibi maddelere <strong>Korozif (Aşındırıcı)</strong> maddeler denir. Piktogramında ele damlayan bir asit şişesi vardır. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">19. Endüstriyel tesislerde havaya karışan veya sızıntı yapan uçucu gazların birikmesine bağlı olarak oluşabilecek büyük çaplı parlamaları ve patlamaları önlemek için; aydınlatma sistemlerinde uygulanması zorunlu olan en kritik teknik altyapı kuralı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle sürekli havalandırma çalıştırılması olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle aydınlatmanın havadan izolesi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle klimaların sıcak üflemesi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle statik elektriğin boşaltılması olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle kabloların zeminden çekilmesi olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Tehlikeli kimyasal gazların bulunduğu ortamlarda lamba açılıp kapanırken çıkan ufak bir kıvılcım bile ortamı patlatabilir. Bu yüzden laboratuvardaki aydınlatma ve elektrik sistemlerinin laboratuvar ortamı havasıyla temasının <strong>tamamen kesilmesi (izole edilmesi)</strong> zorunludur. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">20. Kimya ve biyoloji tesislerinde radyasyon kaynaklarıyla veya radyoaktif ajanlarla aktif olarak çalışan sağlık/laboratuvar personelinin, tehlikeli alandayken maruz kaldığı toplam radyasyon miktarını ölçmek için üzerine taktığı kişisel takip cihazının adı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle dijital spektrofotometre sistemleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle hassas ampermetre araçları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle elektronik ph metreleri olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle radyasyon dozimetre cihazları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) İş sağlığı ve güvenliği temel endüstriyel laboratuvar standartları akademik mevzuatlar çerçevesinde detaylıca incelendiğinde; bu kritik güvenlik unsurunun bilimsel teorik karşılığı kesinlikle özel dansimetre ekipmanları olarak literatürde açıkça kanunlaşmış ve sınıflandırılmıştır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Sınav Analizi</button>
+            <div class="solution-box"><strong>Analiz:</strong> Radyoaktif ışımaya maruz kalan laboratuvar çalışanlarının (örn. röntgen, nükleer tıp, radyoloji kimyagerleri) aldıkları radyasyon dozunun miktarını ölçmek ve yasal sınırları aşıp aşmadıklarını belirlemek için <strong>Kişisel Dozimetre</strong> cihazları kullanılır. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.6; font-family: 'Merriweather', serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 7 / Test 2 (Mavi Safir - Kusursuz Simetri 7.0 Algoritması)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 45 * 60; // 45 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Sınav Analizi';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // 4 Yanlış 1 Doğru Akademik Net Sistemi
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

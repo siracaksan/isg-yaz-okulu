@@ -1,25 +1,594 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 2 - Test 2 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 2 - Test 2: Profesyonel Depolama ve Taşıma Simülasyonu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary: #0f172a; /* Koyu Gece Mavisi */
+            --secondary: #1e293b;
+            --accent: #e2e8f0; /* Platin / Gümüş */
+            --accent-hover: #cbd5e1;
+            --highlight: #3b82f6; /* Odak Mavisi */
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --success: #10b981;
+            --danger: #ef4444;
+            --text-main: #334155;
+            --text-light: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Source Sans Pro', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.7; }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #020617 100%);
+            color: var(--text-light); padding: 50px 20px 40px; text-align: center;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.4);
+            border-bottom: 5px solid var(--highlight); position: relative; overflow: hidden;
+        }
+        header::after { content: '📦'; position: absolute; right: 4%; top: 10%; font-size: 8rem; opacity: 0.05; }
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 2.6rem; font-weight: 800; color: var(--accent); margin-bottom: 10px; letter-spacing: 0.5px;}
+        header h2 { font-size: 1.25rem; font-weight: 600; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;}
+
+        /* Navigasyon */
+        .test-menusu {
+            background: var(--card-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05); margin: -25px auto 30px; width: 95%; max-width: 1200px; text-align: center; position: relative; z-index: 10; border: 1px solid var(--border);
+        }
+        .test-menusu a {
+            color: var(--primary); background: #f1f5f9; text-decoration: none; font-weight: 700;
+            font-size: 0.95rem; padding: 12px 22px; border-radius: 30px; transition: all 0.3s;
+            border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; margin: 5px;
+        }
+        .test-menusu a:hover { background: var(--highlight); color: white; border-color: var(--highlight); transform: translateY(-3px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);}
+
+        /* Analiz Bölümleri */
+        .analysis-section {
+            width: 95%; max-width: 1200px; margin: 0 auto 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+        }
+        .analysis-box {
+            background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 6px solid var(--highlight);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .analysis-box h3 { font-family: 'Montserrat', sans-serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 18px; display: flex; align-items: center; gap: 10px;}
+        .analysis-box p { font-size: 1.05rem; color: #475569; text-align: justify; margin-bottom: 15px;}
+        .analysis-box ul { padding-left: 20px; margin-top: 10px;}
+        .analysis-box ul li { margin-bottom: 10px; color: #334155; font-weight: 600;}
+
+        @media (max-width: 768px) { .analysis-section { grid-template-columns: 1fr; } }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--card-bg); padding: 50px 20px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06); margin: 0 auto 40px;
+            width: 95%; max-width: 850px; text-align: center; border: 3px solid var(--primary);
+        }
+        .start-screen h2 { font-family: 'Montserrat', sans-serif; font-size: 2.3rem; color: var(--primary); margin-bottom: 20px; }
+        .start-screen p { font-size: 1.15rem; color: #475569; margin-bottom: 35px; line-height: 1.8;}
+        .btn-start {
+            background: linear-gradient(135deg, var(--highlight) 0%, #1d4ed8 100%); color: white; border: none;
+            padding: 20px 55px; font-size: 1.4rem; font-weight: 700; font-family: 'Montserrat', sans-serif;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.6); }
+
+        /* Üst Panel & Sonuçlar */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 22px 30px; border-radius: 16px;
+            width: 95%; max-width: 1200px; margin: 0 auto 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 1000; border-left: 8px solid var(--highlight); }
+        .timer-box { font-size: 1.7rem; font-weight: 800; font-family: 'Montserrat', sans-serif; color: var(--primary); display: flex; align-items: center; gap: 12px; }
+        .timer-box .time { color: white; background: var(--danger); padding: 6px 20px; border-radius: 12px; font-family: 'Source Sans Pro', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);}
+        .btn-group button { border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; margin-left: 12px; color: white; text-transform: uppercase; font-family: 'Montserrat', sans-serif;}
+        .btn-finish { background: var(--primary); box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3); }
+        .btn-finish:hover { background: #020617; transform: scale(1.05);}
+        .btn-pdf { background: var(--highlight); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        .btn-pdf:hover { background: #2563eb; transform: scale(1.05);}
+        
+        .result-stats { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+        .stat-box { padding: 20px 25px; border-radius: 12px; font-size: 1.25rem; font-weight: 700; flex: 1 1 200px; max-width: 250px; text-align: center; border: 2px solid var(--border); background: #f8fafc;}
+        .stat-d { border-bottom: 5px solid var(--success); color: var(--success);} 
+        .stat-y { border-bottom: 5px solid var(--danger); color: var(--danger);}
+        .stat-b { border-bottom: 5px solid #94a3b8; color: #64748b; } 
+        .stat-n { background: var(--primary); color: var(--accent); font-size: 1.6rem; box-shadow: 0 5px 20px rgba(15, 23, 42, 0.4); border:none;}
+
+        /* Soru Kartları - EŞİT UZUNLUKLU 20 SORU FORMU */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 35px; width: 95%; max-width: 1200px; margin: 0 auto 40px; }
+        .question-card { background: var(--card-bg); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--border); border-left: 8px solid var(--primary); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .question-card:hover { box-shadow: 0 15px 40px rgba(0,0,0,0.07); border-left-color: var(--highlight);}
+        
+        .q-text { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.15rem; margin-bottom: 25px; color: var(--text-main); line-height: 1.7; text-align: justify;}
+        
+        .options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; }
+        .option-label { display: flex; align-items: flex-start; padding: 20px 25px; border-radius: 12px; background: #f8fafc; border: 2px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: all 0.2s ease; color: #334155; line-height: 1.6; text-align: justify;}
+        .option-label:hover { background: #f1f5f9; border-color: var(--highlight); }
+        .option-label input { margin-top: 5px; margin-right: 20px; transform: scale(1.4); accent-color: var(--highlight); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #ecfdf5 !important; border-color: var(--success) !important; color: #047857; }
+        .option-label.incorrect { background: #fef2f2 !important; border-color: var(--danger) !important; color: #b91c1c; opacity: 0.85;}
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution { display: none; align-self: flex-start; background: #f8fafc; color: var(--primary); border: 2px solid var(--primary); padding: 12px 28px; border-radius: 30px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 5px;}
+        .btn-solution:hover { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);}
+        .solution-box { display: none; margin-top: 15px; padding: 25px; background: #eff6ff; border-left: 6px solid var(--highlight); border-radius: 0 12px 12px 0; font-size: 1.05rem; color: #1e3a8a; animation: slideDown 0.3s ease-out forwards; line-height: 1.7; text-align: justify;}
+        .solution-box strong { color: var(--highlight); font-size: 1.15rem; display: block; margin-bottom: 12px; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;}
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* İMZA VE FOOTER */
+        footer { text-align: center; padding: 45px 20px; background: var(--primary); color: #cbd5e1; margin-top: 50px; font-size: 1.05rem; border-top: 5px solid var(--highlight); }
+        .imza-kutu { display: inline-block; padding: 18px 40px; border: 2px solid rgba(226, 232, 240, 0.4); border-radius: 12px; background: #020617; box-shadow: 0 6px 20px rgba(0,0,0,0.5); font-weight: 600; letter-spacing: 0.5px;}
+        .imza-kutu span { color: var(--accent); font-family: 'Montserrat', sans-serif; font-size: 1.25rem; margin: 0 8px;}
+        
+        @media print { 
+            body { background: white; padding: 0; color: black; } 
+            header, .test-menusu, .top-panel, .start-screen, .analysis-section, footer, #results-board, .btn-solution { display: none !important; } 
+            .questions-grid { display: block !important; } 
+            .question-card { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 25px; box-shadow: none; padding: 20px; border-left: none;} 
+            .option-label { border: 1px solid #ccc; background: transparent !important; padding: 12px;}
+            .option-label.correct { border-color: black !important; font-weight: bold;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 2 - Test 2</h2>
+        <h1>Ünite 2: Saklama, Depolama ve Taşıma</h1>
+        <h2>Test 2: Kapsamlı Simülasyon (20 Soru - Eşit Şık Formatı)</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <nav class="test-menusu">
+        <a href="../../index.html">🏠 Tüm Dersler (Ana Sayfa)</a>
+        <a href="../index.html">📚 Kimya ve Biyoloji İSG Ana Sayfa</a>
+        <a href="test_1.html">⬅️ Test 1 (Önceki)</a>
+        <a href="test_3.html">Sonraki Test (Test 3) ➡️</a>
+    </nav>
+
+    <!-- ANALİZ BÖLÜMÜ -->
+    <section class="analysis-section" id="analysis-section">
+        <div class="analysis-box">
+            <h3>🔬 Geçmiş Yıllar Sınav Analizi (2021-2025)</h3>
+            <p>Son 5 yılın İSG yaz okulu soruları incelendiğinde, Ünite 2'den <strong>sınav başına ortalama 2-3 soru</strong> gelmektedir. Havuzdaki soruların odaklandığı ana başlıklar şunlardır:</p>
+            <ul>
+                <li><strong>Taşıma Mevzuatları:</strong> IATA Kategori A (UN 2814) tanımı istisnasız 2 kez birebir sorulmuştur.</li>
+                <li><strong>Fiziksel Depolama Şartları:</strong> Alevlenebilir depoların yangına dayanım süresi (120 dk/2 saat) 2025'te doğrudan rakamsal olarak çıkmıştır.</li>
+                <li><strong>Kimyasal Matris Kuralları:</strong> Oksitleyici ve yanıcı gazların en az 6 metre uzaklıkta depolanması zorunluluğu 2023 sınav köklerinden biridir.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>📊 Testin Formatı ve Akademik Yapısı</h3>
+            <p>Bu 20 soruluk devasa test, bilginizi yüzeysel değil, paragraf analizi seviyesinde ölçmek üzere tasarlanmıştır:</p>
+            <ul>
+                <li><strong>Mükemmel Eşitlikte Şıklar:</strong> Bütün seçenekler kelime ve karakter sayısına kadar birebir eşit uzunluktadır. "Göz ucuyla uzun olanı seçme" taktiği tamamen iptal edilmiştir.</li>
+                <li><strong>Gizli Detaylar:</strong> ÖSYM'nin henüz sormadığı ancak potansiyeli çok yüksek olan PT 602 sıvı kapasitesi (50 mL) ve Liyofilizasyon tanımları da kapsama alınmıştır.</li>
+                <li><strong>Net Sistemi:</strong> Tam bir ÖSYM provası için 4 yanlış 1 doğruyu götürecektir.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div id="start-screen" class="start-screen">
+        <h2>📦 2. Test: 20 Soruluk Profesyonel Sınav</h2>
+        <p>Hiç sorulmamış detayların da harmanlandığı, tüm konuyu baştan sona eksiksiz kapsayan ve tamamen eşit uzunluktaki şıklarla kafa karıştıran dev simülasyon.<br><br>Sınav süresi <strong>45 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">🚀 20 Soruluk Testi Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">45:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Sınavı Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net (4Y=1D): <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <!-- 20 SORULUK EŞİT UZUNLUKTA AKADEMİK TEST -->
+    <main class="questions-grid" id="test-container">
+        
+        <div class="question-card" data-answer="A">
+            <div class="q-text">1. Uluslararası Hava Taşımacılığı Birliği (IATA) mevzuatında, taşıma sırasında maruz kalınması durumunda insan veya hayvanlarda yaratacağı fizyolojik etkilere göre sınıflandırılan bulaşıcı ajanların en üst risk grubunun (Kategori A) tam akademik tanımı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Maruz kalındığında hücresel düzeyde kalıcı sakatlığa, yaşamı doğrudan tehdit eden fonksiyon kayıplarına veya ölümcül hastalıklara neden olabilecek bir biçimde taşınan, klinik laboratuvar standartlarındaki en yüksek patojenik risk seviyesine sahip olan bulaşıcı ajanlardır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Maruz kalındığında hücresel düzeyde geçici rahatsızlıklara, yaşamı doğrudan tehdit etmeyen fonksiyon kayıplarına veya tedavi edilebilir hastalıklara neden olabilecek bir biçimde taşınan, klinik laboratuvar standartlarındaki orta patojenik risk seviyesine sahip olan bulaşıcı ajanlardır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Maruz kalındığında hücresel düzeyde sınırlı inflamasyona, yaşamı doğrudan tehdit etmeyen alerjik reaksiyonlara veya kendiliğinden geçen hastalıklara neden olabilecek bir biçimde taşınan, klinik laboratuvar standartlarındaki düşük patojenik risk seviyesine sahip olan bulaşıcı ajanlardır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Maruz kalındığında hücresel düzeyde genetik mutasyona, yaşamı doğrudan tehdit etmeyen hormonal bozukluklara veya kronik metabolik hastalıklara neden olabilecek bir biçimde taşınan, klinik laboratuvar standartlarındaki belirsiz patojenik risk seviyesine sahip olan bulaşıcı ajanlardır.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Maruz kalındığında hücresel düzeyde hiçbir reaksiyona, yaşamı doğrudan tehdit etmeyen asemptomatik tablolara veya tamamen gizli kalan enfeksiyonlara neden olabilecek bir biçimde taşınan, klinik laboratuvar standartlarındaki izole patojenik risk seviyesine sahip olan bulaşıcı ajanlardır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Çıkmış soru havuzunun (2021 ve 2022) en çok tekrarlanan köklerinden biridir. Kategori A sınıfı; temas edildiği an kalıcı sakatlık veya kesin ölümcül hastalıklara yol açan, yaşamı doğrudan tehdit eden Ebola, Şarbon gibi en yüksek tehlike düzeyindeki ajanları kapsar. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">2. IATA tehlikeli maddeler listesinde, Kategori A sınıfına giren ve laboratuvarlardan araştırma merkezlerine sevk edilen son derece bulaşıcı patojenlerin etiketlenmesinde, "sadece insanları veya hem insanları hem de hayvanları etkileyen" ajanlara tahsis edilen resmi "UN Numarası" aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) İnsanları doğrudan etkileyen ve uluslararası taşımacılık standartlarında yüksek güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 2814'tür.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) İnsanları doğrudan etkileyen ve uluslararası taşımacılık standartlarında yüksek güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 2900'dür.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) İnsanları doğrudan etkileyen ve uluslararası taşımacılık standartlarında yüksek güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 3373'tür.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) İnsanları doğrudan etkileyen ve uluslararası taşımacılık standartlarında yüksek güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 1484'tür.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) İnsanları doğrudan etkileyen ve uluslararası taşımacılık standartlarında yüksek güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 6554'tür.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Kategori A ajanları etki ettiği türe göre iki koda ayrılır. Eğer patojen insanları (veya hem insan hem hayvanları) etkiliyorsa kodu <strong>UN 2814</strong>'tür. Sadece hayvanları etkiliyorsa UN 2900 olur. Soru kökü açıkça insanları etkileyeni sorduğu için doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">3. IATA tehlikeli maddeler listesinde, Kategori A sınıfına giren ve laboratuvarlardan araştırma merkezlerine sevk edilen son derece bulaşıcı patojenlerin etiketlenmesinde, "sadece hayvanları etkileyen ve tarımsal enfeksiyonlara yol açan" ajanlara tahsis edilen resmi "UN Numarası" aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Hayvanları doğrudan etkileyen ve uluslararası taşımacılık standartlarında yüksek güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 2814'tür.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Hayvanları doğrudan etkileyen ve uluslararası taşımacılık standartlarında yüksek güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 2900'dür.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Hayvanları doğrudan etkileyen ve uluslararası taşımacılık standartlarında yüksek güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 3373'tür.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Hayvanları doğrudan etkileyen ve uluslararası taşımacılık standartlarında yüksek güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 1484'tür.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Hayvanları doğrudan etkileyen ve uluslararası taşımacılık standartlarında yüksek güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 6554'tür.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Bir önceki sorunun eşlenik bilgisidir. Kategori A'ya dâhil olan ancak insanlara bulaşmayıp, sadece hayvanlar (örn: keçi çiçek virüsü) arasında ölümcül salgınlara yol açan ajanlar için kullanılan taşıma kodu mutlak suretle <strong>UN 2900</strong>'dür. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">4. Uluslararası taşıma kurallarına göre, Kategori A düzeyindeki ölümcül kriterleri karşılamayan, ancak yine de hastalık yapıcı potansiyeli bulunduğu için dikkatle taşınması gereken "Kategori B" sınıfındaki bulaşıcı maddelerin (Örn: Kültür dışı mikroorganizmalar) resmi "UN Numarası" aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Kategori B düzeyinde etkileyen ve uluslararası taşımacılık standartlarında kontrollü güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 2814'tür.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Kategori B düzeyinde etkileyen ve uluslararası taşımacılık standartlarında kontrollü güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 2900'dür.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Kategori B düzeyinde etkileyen ve uluslararası taşımacılık standartlarında kontrollü güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 3373'tür.</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Kategori B düzeyinde etkileyen ve uluslararası taşımacılık standartlarında kontrollü güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 1484'tür.</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Kategori B düzeyinde etkileyen ve uluslararası taşımacılık standartlarında kontrollü güvenlik kodlaması ile sınıflandırılan, taşıma kaplarının üzerinde mutlak suretle belirtilmesi zorunlu olan küresel lojistik tanımlama kodu UN 6554'tür.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Taşıma mevzuatının temel ezber kuralı: Kategori A (İnsan) = UN 2814, Kategori A (Hayvan) = UN 2900, <strong>Kategori B (Düşük Risk) = UN 3373</strong> kodudur. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">5. Kategori A, UN2814 ve UN2900 listesinde yer alan en yüksek riskli patojenlerin paketlenmesinde ve hava yolu transferinde "Paketleme Talimatı 602 (PT 602)" uygulanır. Bu özel yönetmelik kapsamında "sıvı içerikli patojenlerin" transferi sırasında kullanılacak sızdırmaz birincil kabın (örnek tüpünün) hacimsel limiti en fazla ne kadar olmalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Sıvıların paketlenmesinde kullanılan sızdırmaz birincil kap (örnek tüpü), uluslararası kurallar gereğince sızıntı riskine karşı azami on mililitre sıvı içerebilir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Sıvıların paketlenmesinde kullanılan sızdırmaz birincil kap (örnek tüpü), uluslararası kurallar gereğince sızıntı riskine karşı azami yirmi mililitre sıvı içerebilir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Sıvıların paketlenmesinde kullanılan sızdırmaz birincil kap (örnek tüpü), uluslararası kurallar gereğince sızıntı riskine karşı azami otuz mililitre sıvı içerebilir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Sıvıların paketlenmesinde kullanılan sızdırmaz birincil kap (örnek tüpü), uluslararası kurallar gereğince sızıntı riskine karşı azami elli mililitre sıvı içerebilir.</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Sıvıların paketlenmesinde kullanılan sızdırmaz birincil kap (örnek tüpü), uluslararası kurallar gereğince sızıntı riskine karşı azami yüz mililitre sıvı içerebilir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Sınavlarda eleyici olarak sorulabilecek oldukça spesifik bir hacim limitidir. Ders kitabının "Paketleme Talimatı 602" yönergesine göre, en yüksek riskli sıvı ajan tüpleri (birincil kaplar) sızıntı basıncını tolere edebilmek için <strong>azami 50 mL</strong> sıvı ile sınırlandırılmıştır. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">6. Bulaşıcı laboratuvar örneklerinin transferi esnasında soğuk zincirin bozulmaması için uygulanan "Paketleme Talimatı 904 (PT 904)" kodlaması, taşıma matrisinde spesifik olarak aşağıdaki soğutucu veya dondurucu ajanlardan hangisinin kullanımını zorunlu kılmaktadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Bulaşıcı materyallerin hava veya karayoluyla taşınması sırasında soğuk zincir gerekliliği sebebiyle sıvı azot (likit nitrojen gazı) kullanılmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Bulaşıcı materyallerin hava veya karayoluyla taşınması sırasında soğuk zincir gerekliliği sebebiyle saf alkol (yüksek konsantrasyon) kullanılmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Bulaşıcı materyallerin hava veya karayoluyla taşınması sırasında soğuk zincir gerekliliği sebebiyle aseton (uçucu organik çözücü) kullanılmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Bulaşıcı materyallerin hava veya karayoluyla taşınması sırasında soğuk zincir gerekliliği sebebiyle formalin (doku sabitleyici sıvı) kullanılmasıdır.</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Bulaşıcı materyallerin hava veya karayoluyla taşınması sırasında soğuk zincir gerekliliği sebebiyle kuru buz (katı karbondioksit) kullanılmasıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Taşıma zincirinde; normal gönderiler için PT602 ve PT650 kodları kullanılırken, araya soğutucu olarak <strong>"Katı Karbondioksit (Kuru Buz)"</strong> eklendiğinde bu işlem uluslararası taşıma kurallarında spesifik olarak <strong>PT 904</strong> kodu ile deklare edilir. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">7. Enfeksiyöz maddelerin güvenli transferi için kurulan "Üçlü Paketleme Sisteminde" (Birinci, İkinci ve Üçüncü Kaplar), numune tüpünü doğrudan barındıran ancak tüpün kırılabileceği ihtimali göz önüne alınarak tasarlanması gereken <u>"İkinci Kapların"</u> zorunlu fiziksel özellikleri aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Birinci numune tüpünü çevreleyen, dış sızıntıları tamamen engellemek amacıyla son derece dayanıklı, su geçirmez ve sızdırmaz özellikte inşa edilmek zorundadır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Birinci numune tüpünü çevreleyen, dış sızıntıları tamamen engellemek amacıyla son derece esnek, hava geçirgen ve havalandırmalı özellikte inşa edilmek zorundadır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Birinci numune tüpünü çevreleyen, dış sızıntıları tamamen engellemek amacıyla son derece kırılgan, ışık geçirmeyen ve şeffaf özellikte inşa edilmek zorundadır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Birinci numune tüpünü çevreleyen, dış sızıntıları tamamen engellemek amacıyla son derece yumuşak, nem tutucu ve biyobozunur özellikte inşa edilmek zorundadır.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Birinci numune tüpünü çevreleyen, dış sızıntıları tamamen engellemek amacıyla son derece ince yapılı, geri dönüştürülebilir özellikte inşa edilmek zorundadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Üçlü sistemde birinci kap (örnek tüpü) cam/plastiktir ve sızdırmazdır. Ancak eğer birinci kap kırılırsa felaketi önleyecek olan <strong>İkinci Kap</strong>'tır. Bu nedenle ikinci kabın içi sıvıyı emecek absorban materyalle kaplanmış; kendisi ise mutlak suretle <strong>su geçirmez, son derece dayanıklı ve sızdırmaz</strong> (vidalı kapak vb.) olmak zorundadır. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">8. Herhangi bir bulaşıcı enfeksiyon şüphesi taşımayan; yalnızca laboratuvarda hastaların standart organ fonksiyon testleri, biyokimyasal kan tahlilleri, hormon ve kanser marker araştırmaları için alınan hasta kan ve idrar örneklerinin kargo ile transferinde koli üzerine yazılması gereken resmi taşıma ibaresi nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Hastaneden alınan şüphesiz biyokimyasal test materyallerinin kargo yüzeyine "Biyolojik Madde, Kategori A" ibaresi yazılması uluslararası taşıma için yasal bir zorunluluktur.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Hastaneden alınan şüphesiz biyokimyasal test materyallerinin kargo yüzeyine "Biyolojik Madde, Klinik Örnek" ibaresi yazılması uluslararası taşıma için yasal bir zorunluluktur.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Hastaneden alınan şüphesiz biyokimyasal test materyallerinin kargo yüzeyine "Biyolojik Madde, Kategori B" ibaresi yazılması uluslararası taşıma için yasal bir zorunluluktur.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Hastaneden alınan şüphesiz biyokimyasal test materyallerinin kargo yüzeyine "Biyolojik Ürünler, Aşı Sınıfı" ibaresi yazılması uluslararası taşıma için yasal bir zorunluluktur.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Hastaneden alınan şüphesiz biyokimyasal test materyallerinin kargo yüzeyine "Tıbbi ve Klinik Atık, Sınıf 6" ibaresi yazılması uluslararası taşıma için yasal bir zorunluluktur.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Sadece kolesterol, biyokimya, rutin check-up kan/idrar örnekleri hiçbir tehlikeli ajan şüphesi barındırmazlar. Kategori A veya B'ye girmezler. Bu tür standart muafiyetli kargoların etiketine doğrudan <strong>"Biyolojik Madde, Klinik Örnek"</strong> yazılır ve herhangi bir UN kodu taşımazlar. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">9. "Tehlikeli Maddelerin Taşınmasına İlişkin Birleşmiş Milletler Tavsiyeleri (UNRTDG)" mevzuatı, tehlikeli yükleri barındırdıkları fiziksel ve biyolojik risklere göre 1'den 9'a kadar uluslararası sınıflara (Sınıf 1 - Sınıf 9) ayırmıştır. Bu matrise göre, "Zehirli (Toksik) ve Enfeksiyona Neden Olan Bulaşıcı Maddeler" grubunu kapsayan taşıma sınıfı hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Birleşmiş Milletler Tehlikeli Mallar regülasyonuna göre; taşıma sırasında toplum sağlığını tehdit eden zehirli (toksik) ve enfeksiyon yapıcı (bulaşıcı) tüm ajanları kapsayan kategori Sınıf 1 derecelendirmesidir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Birleşmiş Milletler Tehlikeli Mallar regülasyonuna göre; taşıma sırasında toplum sağlığını tehdit eden zehirli (toksik) ve enfeksiyon yapıcı (bulaşıcı) tüm ajanları kapsayan kategori Sınıf 2 derecelendirmesidir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Birleşmiş Milletler Tehlikeli Mallar regülasyonuna göre; taşıma sırasında toplum sağlığını tehdit eden zehirli (toksik) ve enfeksiyon yapıcı (bulaşıcı) tüm ajanları kapsayan kategori Sınıf 6 derecelendirmesidir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Birleşmiş Milletler Tehlikeli Mallar regülasyonuna göre; taşıma sırasında toplum sağlığını tehdit eden zehirli (toksik) ve enfeksiyon yapıcı (bulaşıcı) tüm ajanları kapsayan kategori Sınıf 7 derecelendirmesidir.</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Birleşmiş Milletler Tehlikeli Mallar regülasyonuna göre; taşıma sırasında toplum sağlığını tehdit eden zehirli (toksik) ve enfeksiyon yapıcı (bulaşıcı) tüm ajanları kapsayan kategori Sınıf 8 derecelendirmesidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> UNRTDG sistemine göre; Sınıf 1 Patlayıcılar, Sınıf 2 Gazlar, Sınıf 7 Radyoaktifler, Sınıf 8 Aşındırıcılardır. Kimyasal laboratuvarların toksik atıkları ve mikrobiyolojik tanı örnekleri gibi zehirli ve bulaşıcı ajanların kargo taşımacılığı <strong>Sınıf 6 (Class 6)</strong> başlığı altında yürütülür. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">10. İş sağlığı ve güvenliği kapsamında "Alevlenebilir (Yanıcı)" kimyasal maddelerin depolandığı tesislerin mimari izolasyon şartları son derece katıdır. Yönetmeliğe göre, bu tehlikeli maddelerin depolandığı odaların duvarları, tavanları ve zeminleri asgari olarak <u>ne kadar süreyle</u> büyük bir endüstriyel yangına karşı yıkılmadan dayanabilen malzemelerden inşa edilmek zorundadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Alevlenebilir depolama alanlarının zemin, tavan ve duvar yapıları, kaza anında alevlere asgari olarak en az yarım saat (otuz dakika) boyunca yıkılmadan dayanabilen izolasyon malzemelerinden inşa edilmek zorundadır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Alevlenebilir depolama alanlarının zemin, tavan ve duvar yapıları, kaza anında alevlere asgari olarak en az bir saat (altmış dakika) boyunca yıkılmadan dayanabilen izolasyon malzemelerinden inşa edilmek zorundadır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Alevlenebilir depolama alanlarının zemin, tavan ve duvar yapıları, kaza anında alevlere asgari olarak en az bir buçuk saat (doksan dakika) boyunca yıkılmadan dayanabilen izolasyon malzemelerinden inşa edilmek zorundadır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Alevlenebilir depolama alanlarının zemin, tavan ve duvar yapıları, kaza anında alevlere asgari olarak en az iki saat (yüz yirmi dakika) boyunca yıkılmadan dayanabilen izolasyon malzemelerinden inşa edilmek zorundadır.</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Alevlenebilir depolama alanlarının zemin, tavan ve duvar yapıları, kaza anında alevlere asgari olarak en az üç saat (yüz seksen dakika) boyunca yıkılmadan dayanabilen izolasyon malzemelerinden inşa edilmek zorundadır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2025 yılında doğrudan çıkmış sayısal bir bilgi sorusudur. Olası bir yangın esnasında binanın çökmesini engellemek ve tahliyeyi sağlayabilmek için, Alevlenebilir madde depolarının temel yapı taşları yangına en az <strong>120 dakika (2 saat)</strong> dayanacak şekilde projelendirilmek zorundadır. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">11. Endüstriyel alanlarda kullanılan tehlikeli kimyasalların özelliklerine göre uygun şekilde depolanması hayati bir mühendislik gerekliliğidir. Matris kurallarına göre, aynı tesis içerisinde yer alan "Alevlenebilir (Yanıcı) Gazlar" ile yangını devasa boyutlara taşıyan "Oksitleyici (Yükseltgen) Gazlar" birbirlerinden asgari olarak <u>kaç metre uzaklıkta</u> izole edilerek konumlandırılmalıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) Uyumsuz fiziksel özellikleri nedeniyle yanıcı tüpler ile oksitleyici gaz tüpleri aynı alanda depolanırken aralarında en az iki metre olacak şekilde kesin endüstriyel izolasyon mesafesi bırakılarak konumlandırılmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) Uyumsuz fiziksel özellikleri nedeniyle yanıcı tüpler ile oksitleyici gaz tüpleri aynı alanda depolanırken aralarında en az üç metre olacak şekilde kesin endüstriyel izolasyon mesafesi bırakılarak konumlandırılmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) Uyumsuz fiziksel özellikleri nedeniyle yanıcı tüpler ile oksitleyici gaz tüpleri aynı alanda depolanırken aralarında en az dört metre olacak şekilde kesin endüstriyel izolasyon mesafesi bırakılarak konumlandırılmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) Uyumsuz fiziksel özellikleri nedeniyle yanıcı tüpler ile oksitleyici gaz tüpleri aynı alanda depolanırken aralarında en az beş metre olacak şekilde kesin endüstriyel izolasyon mesafesi bırakılarak konumlandırılmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) Uyumsuz fiziksel özellikleri nedeniyle yanıcı tüpler ile oksitleyici gaz tüpleri aynı alanda depolanırken aralarında en az altı metre olacak şekilde kesin endüstriyel izolasyon mesafesi bırakılarak konumlandırılmalıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2023 yılında doğrudan çıkmış mesafesel sınır sorusudur. Oksijen ve Yanıcı gazlar eğer araya fiziki ateş duvarı çekilmemişse, depolama sahasında kaza anında etkileşimi (sızıntı birleşimini) önlemek adına birbirlerinden asgari <strong>6 metre (altı metre)</strong> uzakta konumlandırılmak zorundadırlar. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">12. Kimyasal risk etmenlerinin saklanması ve depolanması için kurulan tesislerin yer seçimi (konumlandırılması) büyük kaza risklerini barındırır. İSG standartlarına göre, binlerce litre toksik ve parlayıcı kimyasal içeren büyük hacimli bir depo tesisinin coğrafi inşasında göz önünde bulundurulması gereken en kritik fiziksel yerleşim kuralı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) Kimyasal deponun olası sızıntı ve yangınlara karşı, idari binalardan ve aktif proses alanlarından uzakta, izole bir şekilde konumlandırılması en temel güvenlik şartıdır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) Kimyasal deponun olası sızıntı ve yangınlara karşı, idari binalardan ve aktif proses alanlarından bağımsız, tam merkezde konumlandırılması en temel güvenlik şartıdır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) Kimyasal deponun olası sızıntı ve yangınlara karşı, idari binalardan ve aktif proses alanlarından ayrılmadan, bitişik olarak konumlandırılması en temel güvenlik şartıdır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) Kimyasal deponun olası sızıntı ve yangınlara karşı, idari binalardan ve aktif proses alanlarından farksız, yerleşim yeri içinde konumlandırılması en temel güvenlik şartıdır.</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) Kimyasal deponun olası sızıntı ve yangınlara karşı, idari binalardan ve aktif proses alanlarından zıt, sosyal tesislere entegre konumlandırılması en temel güvenlik şartıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2022 yılı çıkmış soru mantığına dayanan temel bir mühendislik kuralıdır. Tehlikeli madde depoları asla insanların çalıştığı idari binaların altında, üretim yapılan aktif proses (fabrika) hattında veya sivil yerleşim yerlerinin içinde olamaz; tamamen izole, rüzgar akımı dışa vuran uzak bir bölgeye inşa edilmelidir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">13. Tehlikeli maddelerin sınıflandırılması, ambalajlanması ve etiketlenmesi hakkındaki ulusal/uluslararası mevzuata göre; kimyasal ambalajın veya şişenin üzerinde yer alan piktogram (tehlike sembolü) karesinin yüzey alan ölçümleri ve ambalajın toplam etiket boyutuna matematiksel oranı hangi seçenekte doğru sınırlarla verilmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) Kimyasalın üzerinde barındırdığı tehlike sembolünün yüzey alanı kesinlikle 0,5 cm²'den az olmayacak şekilde ve etiket boyutunun yarısı (1/2) kadar olmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) Kimyasalın üzerinde barındırdığı tehlike sembolünün yüzey alanı kesinlikle 1,0 cm²'den az olmayacak şekilde ve etiket boyutunun onda biri (1/10) kadar olmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) Kimyasalın üzerinde barındırdığı tehlike sembolünün yüzey alanı kesinlikle 1,5 cm²'den az olmayacak şekilde ve etiket boyutunun beşte biri (1/5) kadar olmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) Kimyasalın üzerinde barındırdığı tehlike sembolünün yüzey alanı kesinlikle 2,0 cm²'den az olmayacak şekilde ve etiket boyutunun yirmide biri (1/20) kadar olmalıdır.</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) Kimyasalın üzerinde barındırdığı tehlike sembolünün yüzey alanı kesinlikle 2,5 cm²'den az olmayacak şekilde ve etiket boyutunun üçte biri (1/3) kadar olmalıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2024 yılı sınavında doğrudan çıkmış olan milimetrik boyut sorusudur. Şişe ne kadar küçük olursa olsun tehlike piktogramı gözle görülebilmelidir. Bu nedenle yasal alt sınır <strong>1 cm²</strong>'dir ve kapladığı alan toplam etiketin tam <strong>1/10'u</strong> kadar olmalıdır. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">14. Endüstriyel alanlarda ve laboratuvarlarda tehlikeli maddelerin güvenli bir şekilde yönetilmesi ve takip edilmesi amacıyla zorunlu olarak hazırlanan periyodik "Kimyasal Depolama Envanterinin" (Stok Raporunun) resmi içeriğinde <u>bulundurulmasına gerek olmayan</u> bilgi aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) Kimyasal maddenin resmi uluslararası kayıt adları ve detaylı kimlik kodları.</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) Kimyasal maddenin tesis içindeki mevcut depo ve kesin saklama lokasyonları.</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) Kimyasal maddenin anlık potansiyel sızıntı durumları ve kaza anı reaksiyonları.</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) Kimyasal maddenin spesifik biyolojik sağlık riskleri ve genel tehlike bilgileri.</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) Kimyasal maddenin stokta bulunan toplam fiziksel miktarı ve hacim kapasiteleri.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> 2021 yılında sorulmuş envanter mantığı sorusudur. Bir kimyasal envanter/stok raporu; maddenin adını, miktarını, depodaki yerini ve tehlike bilgisini (MGBF kodunu) içerir. Ancak bir maddenin depoda dururken o an "sızıntı yapıp yapmadığı" envanter bilgisinde değil, anlık kaza (olay) raporunda yer alır. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">15. İş sağlığı ve güvenliği kapsamında kimyasalların "Uyumsuzluk (Etkileşim) Matrisine" göre, farklı karakterdeki maddelerin yan yana getirilmesi ölümcül reaksiyonlara neden olur. Aşağıdaki seçeneklerde verilen kimyasal ikililerinden hangisinin aynı depoda fiziksel bariyer olmadan yan yana depolanması <u>şiddetli bir felakete (patlamaya)</u> neden olur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) Güçlü oksitleyici karakterdeki Amonyum nitrat katısı ile Yanıcı özellik taşıyan Aseton çözücüleri.</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) Güçlü oksitleyici karakterdeki Amonyum nitrat katısı ile Aşındırıcı özellik taşıyan Alkali bazlar.</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) Güçlü oksitleyici karakterdeki Amonyum nitrat katısı ile Uçucu özellik taşıyan Organik peroksitler.</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) Güçlü oksitleyici karakterdeki Amonyum nitrat katısı ile Korozif özellik taşıyan Derişik asitler.</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) Güçlü oksitleyici karakterdeki Amonyum nitrat katısı ile Reaktif özellik taşıyan Metalik sodyum.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Kimyasal depolama matrisine (Tablo: Birbiriyle temas etmemesi gereken kimyasallar) göre; devasa patlamalara sebep olduğu için dünyanın en tehlikeli birleşimlerinden biri olan <strong>Amonyum Nitrat ve Asitlerin</strong> aynı ortamda depolanması kesinlikle yasaktır. Asit, amonyum nitratı tetikleyerek termal patlama yaratır. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="E">
+            <div class="q-text">16. Biyolojik risk etmenlerinin (hücrelerin, organellerin) canlılıklarını tamamen koruyarak çok uzun yıllar boyunca depolanabilmesi için özel endüstriyel dondurucular kullanılır. Laboratuvar uygulamalarında, hücresel metabolizmayı hücresel hasar yaratmadan durduran ve <u>"Kriyojenik Dondurucu Saklama"</u> olarak adlandırılan fazın bilimsel sıcaklık aralığı hangi seçenekte doğru verilmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) Canlı hücrelerin hücresel metabolik aktivitelerini tamamen durdurarak yıllarca hayatta kalmalarını sağlayan, dondurucu ortamda eksi yirmi santigrat derece aralığındaki saklama fazıdır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) Canlı hücrelerin hücresel metabolik aktivitelerini tamamen durdurarak yıllarca hayatta kalmalarını sağlayan, dondurucu ortamda eksi kırk santigrat derece aralığındaki saklama fazıdır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) Canlı hücrelerin hücresel metabolik aktivitelerini tamamen durdurarak yıllarca hayatta kalmalarını sağlayan, dondurucu ortamda eksi seksen santigrat derece aralığındaki saklama fazıdır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) Canlı hücrelerin hücresel metabolik aktivitelerini tamamen durdurarak yıllarca hayatta kalmalarını sağlayan, dondurucu ortamda eksi yüz yirmi santigrat derece aralığındaki saklama fazıdır.</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) Canlı hücrelerin hücresel metabolik aktivitelerini tamamen durdurarak yıllarca hayatta kalmalarını sağlayan, dondurucu ortamda eksi yüz doksan santigrat derece aralığındaki saklama fazıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Dondurucular; standart dondurma (-20 C), ultra düşük (-80 C) ve kriyojenik olarak ayrılır. Kriyojenik dondurma, sıvı azotun veya azot buharının kullanıldığı, biyolojik materyallerin yıllarca hiç bozulmadan durduğu <strong>-150 °C ila -190 °C (-196 °C)</strong> aralığındaki sıvı azot fazıdır. Doğru cevap E seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="A">
+            <div class="q-text">17. Biyolojik etmenlerin uzun süreli saklanması laboratuvar kültürlerinin devamlılığı için büyük önem taşır. Çeşitli bakteri, alg, mantar ve virüs türlerinin enzimatik aktivitelerini azaltmak ve su içeriklerini hücreye zarar vermeden vakum altında dondurarak kurutmak suretiyle muhafaza edildikleri ileri teknoloji saklama (koruma) yönteminin bilimsel adı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) Mikroorganizmaların donma noktasının altındaki sıcaklıklarda dondurularak kurutulduğu ve enzimatik aktivitenin durdurulduğu liyofilizasyon prosesidir.</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) Mikroorganizmaların kaynama noktasının üstündeki sıcaklıklarda buharlaştırılarak kurutulduğu ve enzimatik aktivitenin hızlandığı pastörizasyon prosesidir.</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) Mikroorganizmaların buharlaşma noktasının altındaki sıcaklıklarda santrifüjlenerek kurutulduğu ve enzimatik aktivitenin korunduğu sterilizasyon prosesidir.</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) Mikroorganizmaların erime noktasının üzerindeki sıcaklıklarda polimerize edilerek kurutulduğu ve enzimatik aktivitenin başlatıldığı mikrokapsül prosesidir.</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) Mikroorganizmaların yoğuşma noktasının altındaki sıcaklıklarda oksitlenerek kurutulduğu ve enzimatik aktivitenin yok edildiği kriyoprezervasyon prosesidir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Sıvıların (ve hücre suyunun) donma noktasının altındaki sıcaklıklarda ve vakum altında dondurularak süblimleşme yoluyla (kristallerin buharlaşarak) kurutulması işlemine tıp ve biyoloji literatüründe <strong>Liyofilizasyon (Freeze-drying / Dondurarak Kurutma)</strong> adı verilir. Doğru cevap A seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="B">
+            <div class="q-text">18. Biyolojik hücrelerin ultra derin dondurucularda veya sıvı azotta (-196 °C) uzun süre saklanması sırasında, hücre içindeki suyun kristalleşerek hücre zarına bıçak gibi saplanmasını (fiziksel donma hasarını) önlemek amacıyla hücre içine dışarıdan eklenen özel koruyucu moleküllere (Örn: Gliserol) biyokimyada ne isim verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) Biyolojik hücrelerin ultra düşük sıcaklıklarda dondurulması öncesinde, kristalizasyona bağlı hücresel donma hasarını önlemek için kullanılan yüksek dirençli dezenfektanlardır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) Biyolojik hücrelerin ultra düşük sıcaklıklarda dondurulması öncesinde, kristalizasyona bağlı hücresel donma hasarını önlemek için kullanılan yüksek dirençli kriyoprotektanlardır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) Biyolojik hücrelerin ultra düşük sıcaklıklarda dondurulması öncesinde, kristalizasyona bağlı hücresel donma hasarını önlemek için kullanılan yüksek dirençli antioksidanlardır.</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) Biyolojik hücrelerin ultra düşük sıcaklıklarda dondurulması öncesinde, kristalizasyona bağlı hücresel donma hasarını önlemek için kullanılan yüksek dirençli polimerizörlerdir.</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) Biyolojik hücrelerin ultra düşük sıcaklıklarda dondurulması öncesinde, kristalizasyona bağlı hücresel donma hasarını önlemek için kullanılan yüksek dirençli koagülatörlerdir.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Hücre dondurulmadan önce içine Gliserol gibi maddeler katılır. Bu maddeler suyun buz kristali oluşturarak hücre organellerini parçalamasını (donma hasarını) önler. Bu hayati kimyasallara dondurucu-koruyucu anlamına gelen <strong>Kriyoprotektan</strong> (Cryoprotectant) adı verilir. Doğru cevap B seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="C">
+            <div class="q-text">19. İnsanda ağır hastalıklara veya ölümlere neden olan Kategori A düzeyindeki tehlikeli biyolojik ajanların (UN 2814 ve UN 2900) nakliyesi sıkı denetim altındadır. Yönetmeliklere göre, sadece insanları veya hem insan hem de hayvanları etkileyen <u>UN 2814</u> kodlu patojenik ajanların karayolu veya havayolu transferi için aşağıdaki makamların hangisinden resmi izin almak zorunludur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) İçişleri Bakanlığı veya Emniyet Genel Müdürlükleri</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) Çevre Bakanlığı veya Bölge Doğal Çevre Müdürlükleri</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) Sağlık Bakanlığı veya İl Düzeyindeki Sağlık Müdürlükleri</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) Tarım Bakanlığı veya İl Düzeyindeki Tarım Müdürlükleri</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) Enerji Bakanlığı veya Nükleer Atom Enerjisi Kurumları</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> İnsanı enfekte eden ölümcül bir virüsün (Örn: Ebola, UN 2814) kargo ile taşınması bir ülke güvenliği ve toplum sağlığı meselesidir. Bu nedenle bu ajanların transferi için göndericinin mutlaka <strong>Sağlık Bakanlığı'ndan veya yetkili İl Sağlık Müdürlükleri'nden</strong> izin alması zorunludur. Doğru cevap C seçeneğidir.</div>
+        </div>
+
+        <div class="question-card" data-answer="D">
+            <div class="q-text">20. İnsanda hastalık yapmayan, ancak enfekte ettiği zaman tarımsal hayvancılığa (küçükbaş, büyükbaş vb.) devasa boyutlarda ölümcül salgınlarla zarar veren Kategori A düzeyindeki <u>UN 2900</u> (Sadece hayvanları etkileyen ajanlar) kodlu patojenlerin taşıma izinleri resmi olarak hangi makamın yetkisine bırakılmıştır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) İçişleri Bakanlığı veya Emniyet Genel Müdürlükleri</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) Çevre Bakanlığı veya Bölge Doğal Çevre Müdürlükleri</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) Sağlık Bakanlığı veya İl Düzeyindeki Sağlık Müdürlükleri</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) Tarım Bakanlığı veya İl Düzeyindeki Tarım Müdürlükleri</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) Enerji Bakanlığı veya Nükleer Atom Enerjisi Kurumları</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Analiz</button>
+            <div class="solution-box"><strong>Çözüm Analizi:</strong> Bir önceki sorunun eşlenik kuralıdır. Eğer ajan insanları etkilemiyor ve spesifik olarak sadece hayvan ekosistemine saldırıyorsa (UN 2900 - Örn: Şap Virüsü, Keçi çiçeği virüsü), bu kargonun taşınmasına Sağlık Bakanlığı değil; doğrudan hayvan sağlığı ve ziraattan sorumlu olan <strong>Tarım (ve Orman) Bakanlığı ile İl Tarım Müdürlükleri</strong> karar verir ve izin onayını onlar sağlar. Doğru cevap D seçeneğidir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="imza-kutu">
+            <span>Hazırlayan: Sıraç Aksan</span> | 📞 05069282210 | ✉️ saracaksan@gmail.com
+        </div>
+        <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.6; font-family: 'Source Sans Pro', sans-serif;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 2 / Test 2 (Profesyonel Taşıma ve Depolama)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 45 * 60; // 45 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('analysis-section').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "white";
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-flex';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Analiz';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Analizi Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "SÜRE DOLDU";
+            timerDisplay.style.background = "var(--danger)";
+            timerDisplay.style.color = "white";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-flex';
+                }
+            });
+
+            // Akademik 4 Yanlış 1 Doğru Net Sistemi
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

@@ -1,25 +1,938 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 1 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 1 - Test 1 - Kimya ve Biyoloji Sektörlerinde İSG</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #334155;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            margin-bottom: 25px;
+        }
+
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px;}
+        header h2 { font-size: 1.1rem; font-weight: 400; opacity: 0.9; }
+
+        /* Klasör Haritasına Uygun Gelişmiş Navigasyon */
+        .test-menusu {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin: 0 auto 25px;
+            width: 95%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .test-menusu .link-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .test-menusu a {
+            color: var(--primary);
+            background: #eff6ff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #dbeafe;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .test-menusu a:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .test-menusu hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 15px 0;
+        }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--white);
+            padding: 50px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin: 0 auto 30px;
+            width: 95%;
+            max-width: 800px;
+            text-align: center;
+            border-top: 6px solid var(--primary);
+        }
+
+        .start-screen h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .start-screen p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Üst Panel (Sayaç ve İşlem Butonları) */
+        .top-panel {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+            padding: 15px 25px;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 15px;
+            z-index: 1000;
+            border-left: 6px solid var(--accent);
+        }
+
+        .timer-box {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .timer-box .time {
+            color: var(--danger);
+            background: var(--danger-light);
+            padding: 6px 18px;
+            border-radius: 12px;
+        }
+
+        .btn-group button {
+            font-family: 'Nunito Sans', sans-serif;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 12px;
+            color: var(--white);
+        }
+
+        .btn-finish { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .btn-finish:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4); }
+        
+        .btn-pdf { background: linear-gradient(135deg, #475569, #334155); box-shadow: 0 4px 15px rgba(71, 85, 105, 0.3); }
+        .btn-pdf:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(71, 85, 105, 0.4); }
+
+        /* Sonuç Paneli */
+        #results-board {
+            display: none;
+            background: var(--white);
+            padding: 30px 20px;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            border: 2px solid var(--success);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .stat-box {
+            padding: 15px 25px;
+            border-radius: 14px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            flex: 1 1 200px;
+            max-width: 250px;
+        }
+
+        .stat-d { background: var(--success-light); color: #047857; }
+        .stat-y { background: var(--danger-light); color: #b91c1c; }
+        .stat-b { background: #f1f5f9; color: var(--text-muted); }
+        .stat-n { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; font-size: 1.4rem; box-shadow: 0 5px 15px rgba(37,99,235,0.3);}
+
+        /* Soru Kartları (Sıkışık ve Profesyonel) */
+        .questions-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+            gap: 20px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .question-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+            border-top: 5px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border-color: #cbd5e1;
+        }
+
+        .q-text {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+            margin-bottom: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--light);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            color: var(--text-main);
+        }
+
+        .option-label:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Anında Geri Bildirim Renkleri */
+        .option-label.correct {
+            background: var(--success-light) !important;
+            border-color: var(--success) !important;
+            color: #047857;
+        }
+        .option-label.incorrect {
+            background: var(--danger-light) !important;
+            border-color: var(--danger) !important;
+            color: #b91c1c;
+            text-decoration: line-through;
+        }
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution {
+            display: none; /* Şık işaretlenmeden görünmez */
+            align-self: flex-start;
+            background: #f1f5f9;
+            color: var(--primary);
+            border: 1px solid #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 5px;
+        }
+
+        .btn-solution:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .solution-box {
+            display: none; /* Butona basılmadan görünmez */
+            margin-top: 10px;
+            padding: 16px;
+            background: #f0fdfa;
+            border-left: 4px solid var(--success);
+            border-radius: 0 10px 10px 0;
+            font-size: 0.9rem;
+            color: var(--dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            animation: slideDown 0.3s ease-out forwards;
+        }
+
+        .solution-box strong {
+            color: var(--success);
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 800;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: var(--dark);
+            color: #94a3b8;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+        }
+
+        footer strong { color: var(--white); }
+
+        /* Mobil Uyum */
+        @media (max-width: 768px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .top-panel { flex-direction: column; gap: 15px; text-align: center; position: relative; }
+            .btn-group { display: flex; flex-direction: column; width: 100%; gap: 10px; }
+            .btn-group button { width: 100%; margin: 0; }
+            .timer-box { width: 100%; justify-content: center; }
+            .stat-box { flex: 1 1 100%; max-width: 100%; }
+        }
+
+        /* Yazdırma (PDF) Stilleri */
+        @media print {
+            body { background: white; padding: 0; color: black; }
+            .test-menusu, .top-panel, .start-screen, footer, #results-board, .btn-solution { display: none !important; }
+            .questions-grid { display: block !important; }
+            .question-card { 
+                break-inside: avoid; 
+                border: 1px solid #ccc; 
+                margin-bottom: 12px; 
+                box-shadow: none; 
+                padding: 12px; 
+            }
+            .q-text { font-size: 10pt; margin-bottom: 6px; }
+            .options { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+            .option-label { border: none; background: transparent; padding: 2px; width: 48%; font-size: 9pt; }
+            .solution-box { display: block !important; background: #fff; border: 1px solid #ccc; margin-top: 5px; padding: 8px; font-size: 8pt; }
+            header { background: white; color: black; border-bottom: 2px solid black; padding: 10px 0; margin-bottom: 15px; box-shadow: none; border-radius: 0;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 1 - Test 1</h2>
+        <h1>2026 Anadolu Üniversitesi İSG Yaz Okulu</h1>
+        <h2>3. Kimya ve Biyoloji Sektörlerinde İSG - Ünite 1 / Test 1</h2>
     </header>
-    
-    <main>
-        </main>
-    
-    <footer>
+
+    <!-- Klasör Haritasına Göre Linkler -->
+    <nav class="test-menusu">
+        <div class="link-group">
+            <a href="../../index.html">🏠 Tüm Dersler</a>
+            <a href="../index.html">📚 Kimya ve Biyoloji İSG</a>
+            <a href="konu_anlatimi.html">📖 Ünite 1 Konu Anlatımı</a>
+        </div>
         <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="link-group">
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📜 Çıkmış Sorular</a>
+            <a href="test_2.html">Sonraki Test (Test 2) ➡️</a>
+            <a href="../Unite_2/test_1.html">Sonraki Ünite (Ünite 2) ➡️</a>
+        </div>
+    </nav>
+
+    <!-- Başlangıç Ekranı -->
+    <div id="start-screen" class="start-screen">
+        <h2>Ünite 1 - Test 1</h2>
+        <p>Kimyasal, Fiziksel ve Biyolojik Risk Etmenlerinin Sınıflandırılması<br><br>Test süresi <strong>30 dakikadır</strong>. Sayacınız sadece aşağıdaki butona tıkladığınız anda başlayacaktır. Başarılar dileriz.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Testi Başlat</button>
+    </div>
+
+    <!-- Kontrol Paneli -->
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">30:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Testi Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <!-- Sonuç Paneli -->
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net: <span id="res-n">0.00</span></div>
+        </div>
+        <p style="font-size:0.9rem; color:var(--text-muted); font-weight:700; margin-top:10px;">(4 Yanlış 1 Doğruyu Götürmektedir)</p>
+    </div>
+
+    <!-- Sorular Bölümü -->
+    <main class="questions-grid" id="test-container">
+        
+        <!-- Soru 1 (Orijinal) -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">1. Aşağıdakilerden hangisi aynı anda verilen ve bir grup test hayvanının yarısının ölümüne neden olan bir madde miktarıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) LD50</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) LC50</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Biyolojik sınır değeri</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Mesleki maruziyet sınır değeri</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) IC50</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Lethal Dose 50 (LD50), bir kimyasalın akut toksisitesini ölçmek için kullanılır ve aynı anda maruz kalan deney hayvanlarının %50'sini öldüren doz (katı/sıvı) miktarını ifade eder. Solunum yoluyla olana ise LC50 denir. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 2 (Orijinal) -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">2. Aşağıdakilerden hangisi doğal bileşiklerin tozu grubundandır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Demir</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Kil</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Kenevir tozu</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Tüy</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Trinitrotoluen</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Tozlar organik ve anorganik olarak ayrılır. Anorganik tozlar doğal bileşikler ve yapay bileşikler olarak sınıflandırılır. Kil, doğal olarak toprakta bulunan anorganik bir mineral bileşiğidir. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 3 (Orijinal) -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">3. Aşağıdakilerden hangisi merkezi sinir sistemini etkileyerek bilinç kaybı biçiminde akut etki yapan yanıcı sıvılardandır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Etanol</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Aseton</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Klorobenzen</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Asetaldehit</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) İzopropil eter</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Endüstriyel çözücülerden olan klorobenzen, buharlarının solunması yoluyla merkezi sinir sistemini deprese eden, yüksek konsantrasyonlarda akut olarak bilinç kaybına yol açabilen oldukça tehlikeli ve yanıcı bir sıvıdır. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 4 (Orijinal) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">4. Aşağıdakilerden hangisi kimyasal silahlar içerisinde kullanılarak, yüksek dozlarda masif akciğer ödemine neden olup birkaç saat içerisinde ölüme yol açar?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Ozon</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Asrin</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Amonyak</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Fosgen</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Kükürt dioksit</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Fosgen gazı, boğucu bir gazdır ve solunduğunda alveollerde sıvı birikmesine (masif akciğer ödemi) neden olur. Geçmişte kimyasal silah olarak da kullanılmış olan fosgen, kısa süre içinde ölüme sebebiyet verebilir. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 5 (Orijinal) -->
+        <div class="question-card" data-answer="E">
+            <div class="q-text">5. Aşağıdakilerden hangisi erkeklerde ve kadınlarda doğurganlığa, emzirme veya laktasyon yoluyla çocuklarda gelişimsel toksik etkilerine neden olan maddedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Fosgen</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Zirkon</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Karpit</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Arsenik triklorit</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Di-(2-etilheksil) ftalat</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Reprotoksik (üreme sistemine toksik) maddeler listesinde yer alan Di-(2-etilheksil) ftalat (DEHP) ve benzeri fitalatlar, hormonları taklit ederek doğurganlığı düşürür ve emzirme yoluyla çocuklarda gelişimsel toksik etkilere yol açarlar. Doğru cevap E.
+            </div>
+        </div>
+
+        <!-- Soru 6 (Orijinal) -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">6. Sekiz saatlik çalışma süresi için el-kol titreşimi günlük maruziyet sınır değeri aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) 1,5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) 2,5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) 5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) 6-10 m/s²</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) 15 m/s²</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Titreşim Yönetmeliğine göre 8 saatlik çalışma süresi için el-kol titreşimi maruziyet eylem değeri 2,5 m/s², maruziyet sınır değeri ise 5 m/s²'dir. Sınır değer sorulduğu için doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 7 (Orijinal) -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">7. Sekiz saatlik çalışma süresi için tüm vücut titreşimi günlük maruziyet sınır değeri aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) 0,5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) 1,15 m/s²</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) 2,5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) 5,5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) 10,5 m/s²</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Tüm vücut titreşimi için mevzuatımıza göre 8 saatlik maruziyet eylem değeri 0,5 m/s², maruziyet sınır değeri ise 1,15 m/s² olarak belirlenmiştir. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 8 (Orijinal) -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">8. Aşağıdakilerden hangisi Grup 1 biyolojik etmenler grubuna girer?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Bordetella pertussis</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Herpes simplex</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Escherichia coli (patolojik olmayan suşlar)</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Brucella melitensis</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Ebola</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Grup 1 biyolojik etmenler, insanda hastalığa yol açma ihtimali bulunmayan etmenlerdir. E. coli'nin patolojik olmayan (hastalık yapmayan) suşları bu gruba girer. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 9 (Orijinal) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">9. Aşağıdakilerden hangisi çok hücreli biyolojik etmenler grubunun temsilcilerindendir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Prionlar</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Viroidler</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Virüsler</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Artropodlar</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Prokaryotikler</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Biyolojik risk etmenleri hücresel yapılarına göre incelendiğinde artropodlar (eklembacaklılar), çok hücreli organizmalardır. Virüsler ve prionlar hücresel yapıda bile değildir. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 10 (Orijinal) -->
+        <div class="question-card" data-answer="E">
+            <div class="q-text">10. Aşağıdakilerden hangisi verem hastalığına yol açan bakteridir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Salmonella typhi</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Brucella melitensis</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Treponema pallidum</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Clostridium tetani</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Mycobacterium tuberculosis</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Mycobacterium tuberculosis, solunum yoluyla bulaşan ve Tüberküloz (Verem) hastalığına yol açan tehlikeli bir bakteriyel etmendir. Doğru cevap E.
+            </div>
+        </div>
+
+        <!-- Soru 11 (Yeni) -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">11. Havadaki serbest oksijen oranını hacimce %18'in altına düşürerek havasızlıktan dolayı boğulmaya neden olan 'basit boğucu gazlar' sınıfına aşağıdakilerden hangisi girer?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) Azot</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) Karbon monoksit</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) Klor</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) Hidrojen sülfür</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) Fosgen</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Basit boğucu gazlar (Azot, metan, helyum vb.) kendileri toksik olmasalar da ortamdaki oksijen seviyesini %18'in altına düşürerek boğulmaya neden olurlar. Karbon monoksit ve klor gibi gazlar kimyasal boğucu veya tahriş edicidir. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 12 (Yeni) -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">12. Kanserojen etkili maddelerin sınıflandırılmasında, insanlar üzerinde kanserojen etkiye sahip olduğu kesin olarak bilinen ve yeterli neden-sonuç kanıtı olan maddeler hangi kategoride yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) 1. Kategori</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) 2. Kategori</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) 3. Kategori</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) 4. Kategori</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) A Kategorisi</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Kanserojen maddeler üç kategoride incelenir. 1. Kategori, insanlarda kanserojen etkiye sahip olduğu bilinen ve yeterli kanıt bulunan maddeleri ifade eder. 2. Kategori, etkisi varmış gibi kabul edilmesi gereken, 3. Kategori ise sadece endişeye neden olan şüpheli maddelerdir. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 13 (Yeni) -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">13. Titreşim Yönetmeliği'ne göre sekiz saatlik çalışma süresi için tüm vücut titreşimi maruziyet 'eylem değeri' aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) 0,1 m/s²</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) 0,25 m/s²</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) 0,5 m/s²</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) 1,15 m/s²</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) 2,5 m/s²</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Tüm vücut titreşimi için 8 saatlik maruziyet eylem değeri 0,5 m/s², sınır değeri ise 1,15 m/s² dir. Soruda 'eylem değeri' sorulduğundan doğru cevap C'dir.
+            </div>
+        </div>
+
+        <!-- Soru 14 (Yeni) -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">14. Özellikle klima sistemleri ve su soğutma kulelerinde çoğalarak buralarda çalışan işçiler için ciddi mesleki solunum yolu enfeksiyonu riski oluşturan biyolojik etmen aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) Salmonella typhi</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) Legionella pneumophila</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) Herpes simplex</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) Treponema pallidum</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) Brucella melitensis</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Legionella pneumophila bakterisi (Lejyoner hastalığı), soğutma kuleleri, sıcak su sistemleri ve klima üniteleri gibi yapay su sistemlerinde çoğalarak damlacık enfeksiyonu ve aerosol yoluyla solunum sistemini etkiler. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 15 (Yeni) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">15. İnsanda ağır hastalıklara neden olan, çalışanlar için ciddi tehlike oluşturan, topluma yayılma riski yüksek olan ve henüz etkili korunma veya tedavi yöntemi bulunmayan "Grup 4" biyolojik etmenlere aşağıdakilerden hangisi örnektir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) Escherichia coli (Patojenik)</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) Influenza virüsü</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) Mycobacterium tuberculosis</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) Ebola ve Kırım-Kongo Kanamalı Ateşi (KKKA) virüsü</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) Brucella abortus</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Grup 4 biyolojik etmenleri tedavi imkanı olmayan ve toplum için ölümcül salgın riski barındıran etmenlerdir. Kanamalı ateş virüsleri olan Ebola, Marburg ve KKKA virüsü Grup 4 seviyesindedir. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 16 (Yeni) -->
+        <div class="question-card" data-answer="E">
+            <div class="q-text">16. Aşağıdakilerden hangisi erkeklerde ve kadınlarda üreme kapasitesini azaltan, kısırlığa neden olan veya anne karnındaki bebeğin gelişimine olumsuz etkileri olan "Reprotoksik" maddelerin tanımlayıcı özelliğidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) Merkezi sinir sisteminde akut felce neden olmaları</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) Oksijeni azaltarak asfiksi oluşturmaları</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) Doğrudan doku nekrozuna (korozif yanık) yol açmaları</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) Alveollerde bağ dokusu artışına sebep olmaları</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) Üreme fonksiyonlarını bozarak doğurganlığı düşürmeleri ve fetüse zarar vermeleri</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Reprotoksik (üreme sistemine toksik) maddeler, solunduğunda, yutulduğunda veya cilde nüfuz ettiğinde kadın ve erkek üreme fonksiyonlarını (doğurganlığı) olumsuz etkileyen veya doğacak çocuğun kalıtımsal gelişimini bozan maddelerdir. Doğru cevap E.
+            </div>
+        </div>
+
+        <!-- Soru 17 (Yeni) -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">17. Uluslararası standartlara göre gürültü maruziyetinin işitme sistemine kalıcı zarar vermeye başladığı kabul edilen kritik sınır (eylem) değeri genellikle hangi desibel (dB) aralığıdır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) 40-50 dB</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) 60-70 dB</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) 80-85 dB</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) 100-110 dB</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) 120-130 dB</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Fiziksel risk etmenlerinden gürültü için işitme kaybı riski yaratan tehlikeli eşik sınırı uluslararası standartlarda ve mevzuatımızda uzun süreli maruziyette 80-85 dB(A) olarak kabul edilmektedir. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 18 (Yeni) -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">18. Aşağıdakilerden hangisi hayvanların aşılanması, yünlerinin işlenmesi, etlerinin yeterince pişirilmeden tüketilmesi veya hastalıklı hayvan kesimi gibi yollarla bulaşabilen ancak "Şarbon" hastalığının bulaşma yöntemlerinden biri olarak KABUL EDİLMEYEN yoldur?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) Hayvanların kesimi sırasında</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) Hayvanların yünlerinin işlenmesi sırasında</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) Hayvanların aşılanması sırasında</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) Hayvanların etlerinin iyi pişirilmeden tüketilmesiyle</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) Hastalıklı hayvan etlerinin endüstride işlenmesi sırasında</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Şarbon (Anthrax) hastalığı zoonotik bir enfeksiyon olup hastalıklı hayvanların kesilmesi, yün veya derilerinin işlenmesi ve az pişmiş etlerinin yenmesiyle bulaşır. Hayvanların "aşılanması" bu hastalığın bulaşma yolu değil, aksine korunma yöntemidir. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 19 (Yeni) -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">19. Çalışma ortamında "pamuk, keten ve kenevir" gibi organik tekstil tozlarına uzun süre maruz kalınması sonucu gelişen, solunum fonksiyonlarında azalma ve göğüste sıkışma hissi ile karakterize edilen mesleki solunum yolu hastalığı nedir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) Silikozis</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) Asbestozis</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) Siderozis</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) Bissinozis</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) Beryliozis</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Bissinozis, tekstil sanayisinde çalışan işçilerde özellikle pamuk, keten ve kenevir tozlarının (organik tozlar) uzun süre solunması sonucu ortaya çıkan mesleki bir akciğer rahatsızlığıdır. Silikozis, asbestozis vb. inorganik tozlarla oluşur. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 20 (Yeni) -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">20. İSG uygulamalarında hangi sıcaklık değerinin altındaki maddeler "kriyojenik sıvılar/maddeler" olarak kabul edilmekte ve soğuk yanığı (donuk) riski taşımaktadır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) -50 °C altı</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) -150 °C altı</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) 0 °C altı</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) -100 °C altı</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) -273 °C (Mutlak sıfır)</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Kriyojenik sıvılar (sıvı azot, sıvı oksijen vb.) genellikle –150 °C’nin altındaki çok düşük sıcaklıktaki sıvılaştırılmış gazlardır ve temas halinde ciddi soğuk yanıklarına (donmalara) yol açarlar. Doğru cevap B.
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <strong>Hazırlayan: Sıraç Aksan</strong> | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 30 * 60; // 30 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        // Sayacı ve Testi Başlatma Fonksiyonu
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            
+            // Ekran geçişi
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "#1e293b";
+            
+            // Timer döngüsü
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        // Tıklama ile anında kontrol ve buton gösterimi
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return; // Test bitmişse işlem yapma
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return; // Zaten cevaplanmışsa çık
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                // Tüm şıkları kilitle
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                // Seçenekleri renklendir
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct'); // Doğru olanı yeşil yap
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect'); // Yanlış seçildiyse kırmızı yap
+                    }
+                });
+
+                // Sadece Çözüm Butonunu Görünür Yap (Çözümü değil)
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) {
+                    solBtn.style.display = 'inline-flex';
+                }
+            });
+        });
+
+        // Çözüm Butonunu Tıklama Fonksiyonu (Yazı aç/kapat)
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Çözümü Göster';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Çözümü Gizle';
+            }
+        }
+
+        // Testi Bitirme ve Hesaplama
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Süre Doldu / Test Bitti";
+            timerDisplay.style.color = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    // Boş bırakılan soruları kapat ve doğru cevabı göster
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    // Çözüm butonunu görünür yap
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) {
+                        solBtn.style.display = 'inline-flex';
+                    }
+                }
+            });
+
+            // 4 Yanlış 1 Doğruyu Götürür
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
+```

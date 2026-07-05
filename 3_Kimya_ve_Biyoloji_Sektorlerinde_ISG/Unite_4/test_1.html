@@ -1,25 +1,937 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 4 - Test 1 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 4 - Test 1 - Kimya ve Biyoloji Sektörlerinde İSG</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #334155;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Üst Bilgi (Header) */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            margin-bottom: 25px;
+        }
+
+        header h1 { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px;}
+        header h2 { font-size: 1.1rem; font-weight: 400; opacity: 0.9; }
+
+        /* Klasör Haritasına Uygun Gelişmiş Navigasyon */
+        .test-menusu {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin: 0 auto 25px;
+            width: 95%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .test-menusu .link-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .test-menusu a {
+            color: var(--primary);
+            background: #eff6ff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #dbeafe;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .test-menusu a:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .test-menusu hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 15px 0;
+        }
+
+        /* Başlangıç Ekranı */
+        .start-screen {
+            background: var(--white);
+            padding: 50px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin: 0 auto 30px;
+            width: 95%;
+            max-width: 800px;
+            text-align: center;
+            border-top: 6px solid var(--primary);
+        }
+
+        .start-screen h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .start-screen p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Üst Panel (Sayaç ve İşlem Butonları) */
+        .top-panel {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+            padding: 15px 25px;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 15px;
+            z-index: 1000;
+            border-left: 6px solid var(--accent);
+        }
+
+        .timer-box {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .timer-box .time {
+            color: var(--danger);
+            background: var(--danger-light);
+            padding: 6px 18px;
+            border-radius: 12px;
+        }
+
+        .btn-group button {
+            font-family: 'Nunito Sans', sans-serif;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 12px;
+            color: var(--white);
+        }
+
+        .btn-finish { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .btn-finish:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4); }
+        
+        .btn-pdf { background: linear-gradient(135deg, #475569, #334155); box-shadow: 0 4px 15px rgba(71, 85, 105, 0.3); }
+        .btn-pdf:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(71, 85, 105, 0.4); }
+
+        /* Sonuç Paneli */
+        #results-board {
+            display: none;
+            background: var(--white);
+            padding: 30px 20px;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            border: 2px solid var(--success);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .stat-box {
+            padding: 15px 25px;
+            border-radius: 14px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            flex: 1 1 200px;
+            max-width: 250px;
+        }
+
+        .stat-d { background: var(--success-light); color: #047857; }
+        .stat-y { background: var(--danger-light); color: #b91c1c; }
+        .stat-b { background: #f1f5f9; color: var(--text-muted); }
+        .stat-n { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; font-size: 1.4rem; box-shadow: 0 5px 15px rgba(37,99,235,0.3);}
+
+        /* Soru Kartları (Sıkışık ve Profesyonel) */
+        .questions-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+            gap: 20px;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .question-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+            border-top: 5px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border-color: #cbd5e1;
+        }
+
+        .q-text {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+            margin-bottom: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--light);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            color: var(--text-main);
+        }
+
+        .option-label:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Anında Geri Bildirim Renkleri */
+        .option-label.correct {
+            background: var(--success-light) !important;
+            border-color: var(--success) !important;
+            color: #047857;
+        }
+        .option-label.incorrect {
+            background: var(--danger-light) !important;
+            border-color: var(--danger) !important;
+            color: #b91c1c;
+            text-decoration: line-through;
+        }
+
+        /* Çözüm Butonu ve Kutusu */
+        .btn-solution {
+            display: none; /* Şık işaretlenmeden görünmez */
+            align-self: flex-start;
+            background: #f1f5f9;
+            color: var(--primary);
+            border: 1px solid #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 5px;
+        }
+
+        .btn-solution:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .solution-box {
+            display: none; /* Butona basılmadan görünmez */
+            margin-top: 10px;
+            padding: 16px;
+            background: #f0fdfa;
+            border-left: 4px solid var(--success);
+            border-radius: 0 10px 10px 0;
+            font-size: 0.9rem;
+            color: var(--dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            animation: slideDown 0.3s ease-out forwards;
+        }
+
+        .solution-box strong {
+            color: var(--success);
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 800;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: var(--dark);
+            color: #94a3b8;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+        }
+
+        footer strong { color: var(--white); }
+
+        /* Mobil Uyum */
+        @media (max-width: 768px) {
+            .questions-grid { grid-template-columns: 1fr; }
+            .top-panel { flex-direction: column; gap: 15px; text-align: center; position: relative; }
+            .btn-group { display: flex; flex-direction: column; width: 100%; gap: 10px; }
+            .btn-group button { width: 100%; margin: 0; }
+            .timer-box { width: 100%; justify-content: center; }
+            .stat-box { flex: 1 1 100%; max-width: 100%; }
+        }
+
+        /* Yazdırma (PDF) Stilleri */
+        @media print {
+            body { background: white; padding: 0; color: black; }
+            .test-menusu, .top-panel, .start-screen, footer, #results-board, .btn-solution { display: none !important; }
+            .questions-grid { display: block !important; }
+            .question-card { 
+                break-inside: avoid; 
+                border: 1px solid #ccc; 
+                margin-bottom: 12px; 
+                box-shadow: none; 
+                padding: 12px; 
+            }
+            .q-text { font-size: 10pt; margin-bottom: 6px; }
+            .options { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+            .option-label { border: none; background: transparent; padding: 2px; width: 48%; font-size: 9pt; }
+            .solution-box { display: block !important; background: #fff; border: 1px solid #ccc; margin-top: 5px; padding: 8px; font-size: 8pt; }
+            header { background: white; color: black; border-bottom: 2px solid black; padding: 10px 0; margin-bottom: 15px; box-shadow: none; border-radius: 0;}
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 4 - Test 1</h2>
+        <h1>2026 Anadolu Üniversitesi İSG Yaz Okulu</h1>
+        <h2>3. Kimya ve Biyoloji Sektörlerinde İSG - Ünite 4 / Test 1</h2>
     </header>
-    
-    <main>
-        </main>
-    
-    <footer>
+
+    <!-- Klasör Haritasına Göre Linkler -->
+    <nav class="test-menusu">
+        <div class="link-group">
+            <a href="../../index.html">🏠 Tüm Dersler</a>
+            <a href="../index.html">📚 Kimya ve Biyoloji İSG</a>
+            <a href="konu_anlatimi.html">📖 Ünite 4 Konu Anlatımı</a>
+        </div>
         <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <div class="link-group">
+            <a href="../Cikmis_Sorular/yaz_okulu_2021.html">📜 Çıkmış Sorular</a>
+            <a href="test_2.html">Sonraki Test (Test 2) ➡️</a>
+            <a href="../Unite_5/test_1.html">Sonraki Ünite (Ünite 5) ➡️</a>
+        </div>
+    </nav>
+
+    <!-- Başlangıç Ekranı -->
+    <div id="start-screen" class="start-screen">
+        <h2>Ünite 4 - Test 1</h2>
+        <p>Kimyasal Risk Etmenlerinin Bulaş Yolları ve Ortaya Çıkan Meslek Hastalıkları<br><br>Test süresi <strong>30 dakikadır</strong>. Sayacınız sadece aşağıdaki butona tıkladığınız anda başlayacaktır. Başarılar dileriz.</p>
+        <button class="btn-start" onclick="startTest()">🚀 Testi Başlat</button>
+    </div>
+
+    <!-- Kontrol Paneli -->
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">
+            <span>⏱️ Kalan Süre:</span>
+            <span class="time" id="timer-display">30:00</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-finish" id="btn-finish" onclick="finishTest()">📝 Testi Bitir</button>
+            <button class="btn-pdf" onclick="window.print()">🖨️ PDF Kaydet</button>
+        </div>
+    </div>
+
+    <!-- Sonuç Paneli -->
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box stat-d">✔️ Doğru: <span id="res-d">0</span></div>
+            <div class="stat-box stat-y">❌ Yanlış: <span id="res-y">0</span></div>
+            <div class="stat-box stat-b">⚪ Boş: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">🎯 Net: <span id="res-n">0.00</span></div>
+        </div>
+        <p style="font-size:0.9rem; color:var(--text-muted); font-weight:700; margin-top:10px;">(4 Yanlış 1 Doğruyu Götürmektedir)</p>
+    </div>
+
+    <!-- Sorular Bölümü -->
+    <main class="questions-grid" id="test-container">
+        
+        <!-- Soru 1 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">1. Aşağıdakilerden hangisi kanser yapıcı bir kimyasaldır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Aseton</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Asbest</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Karbonmonoksit</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Civa</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Berilyum</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Asbest, uzun süre solunduğunda akciğer dokusunda fibrozise yol açan ve akciğer zarı kanserine (Mezotelyoma) sebep olan oldukça tehlikeli kanserojen bir kimyasal risk etmenidir. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 2 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">2. Aşağıdakilerden hangisi kimyasalların vücuda girebileceği temel temas yollarından biri KABUL EDİLMEZ?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Solunum yolu teması</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Cinsel temas</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Cilt yolu teması</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Enjeksiyon yolu teması</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Yutma (Ağız) yolu teması</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Çalışma ortamında kimyasal maddelerin vücuda girebileceği 4 ana temas yolu vardır: Solunum (nefes alma), Cilt veya göz teması, Yutma (ağız) ve Enjeksiyon yolu. Cinsel temas, kimyasal risk etmenleri için mesleki bir bulaş yolu değildir. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 3 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">3. Sağlık kurumları çalışanlarında kimyasalların cilt yolu ile teması sonucu genellikle -------, solunum yolu ile teması sonucu ise ------- gelişebilmektedir. Boşluklara sırasıyla ne gelmelidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) dermatit - astım</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) hipoksi - kaşıntı</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) kansızlık - döküntü</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) bilinç kaybı - kızarıklık</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) üre artışı - ishal</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Özellikle sağlık kurumlarında dezenfektanlar, sterilizasyon ajanları ve kimyasal çözücüler sıklıkla kullanılır. Bunların ciltle temas etmesi dermatit gibi deri hastalıklarına, buharlarının solunması ise mesleki astım gibi solunum yolu rahatsızlıklarına neden olur. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 4 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">4. Daha önce herhangi bir solunum sorunu olmayan bir kişide, ani ve yoğun bir kimyasal veya gaz teması sonrası 24 saat içinde ortaya çıkan ve ortalama 3-6 ay süren astım tablosuna ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Pnömokonyoz</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Mesleğin ortaya çıkardığı astım</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Reaktif havayolu disfonksiyonu sendromu (RADS)</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) KOAH</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Silikozis</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Daha önce astım veya alerji şikayeti olmayan bir kişinin iş yerinde ani ve yoğun irritan/kimyasal bir gaza maruz kaldıktan hemen sonra (24 saat içinde) astım krizleri geliştirmesi tablosuna Reaktif Havayolu Disfonksiyonu Sendromu (RADS) denir. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 5 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">5. Aşağıdakilerden hangisi mesleki kimyasal maruziyet sonucu cilt kanserine öncü (prekanseröz) olan deri hastalıklarından biridir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Kronik dermatit</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Foto-toksik dermatitler</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) İrritan kontakt dermatit</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) Kontakt ürtiker</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) Alerjik kontakt dermatit</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Cilt kanserine veya kanserleşme eğilimine giden cilt değişikliklerinin gelişmesi yılları bulur. Kanser öncüsü cilt hastalıklarından en yaygını kronik dermatittir. Katran keratozu da diğer bir prekanseröz hastalıktır. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 6 -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">6. I. İrritan<br>II. Elektrolitik<br>III. Alerjik<br>IV. Kanserojen<br>V. Sistemik<br>Yukarıdakilerden hangileri solunum sistemi ile temas edilen kimyasal maddenin sistemik dolaşıma katılması sonucu ortaya çıkan hasarlanma mekanizmaları arasında yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) I, II ve III</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) I, III ve V</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) III, IV ve V</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) I, III, IV ve V</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) I, II, III, IV ve V</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Solunum yoluyla alınan bir kimyasal sistemik dolaşıma katıldığında İrritan (tahriş), Alerjik, Kanserojen ve Sistemik hasarlanma mekanizmaları tetiklenebilir. Elektrolitik bir kimyasal solunum hasar mekanizması değildir. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 7 -->
+        <div class="question-card" data-answer="D">
+            <div class="q-text">7. Aşağıdakilerden hangisi 'Anemik Anoksemi'ye (kanın oksijen taşıma kapasitesinin düşmesine) neden olan kimyasal boğuculardandır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Metan</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Helyum</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Hidrojen</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Anilin</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Azot</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Anilin gibi kimyasal boğucular sistemik etki yaparak kanda hemoglobinin oksijen bağlamasını engeller ve "Anemik Anoksemi"ye yol açarlar. Metan, helyum, azot gibi gazlar ise oksijen oranını düşüren "basit boğucu" gazlardır. Doğru cevap D.
+            </div>
+        </div>
+
+        <!-- Soru 8 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">8. Doğal grafit, mika, silika, demir oksit vb. inorganik tozların çalışma ortamında solunmasıyla akciğerlerde gelişen fibrotik hastalıklara genel olarak ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Pnömokonyoz</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) RADS</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Amfizem</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Kontakt Dermatit</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Mezotelyoma</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> İnorganik tozlara (asbest, silika, mika, vb.) bağlı olarak akciğer dokusunda bağ dokusu artışıyla karakterize olan ve kalıcı hasar bırakan mesleki solunum yolu hastalıklarının genel adı "Pnömokonyoz"dur. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 9 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">9. Aşağıdakilerden hangisi doğrudan dermatit yapması BEKLENMEYEN kimyasal madde gruplarından biridir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Toksik kimyasallar</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Zararlı kimyasallar</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Kokulu kimyasallar</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) Alerjik kimyasallar</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) Korozif etkilere yol açan kimyasallar</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Toksik, zararlı, alerjik ve korozif kimyasallar cilde temas ettiklerinde İrritan veya Alerjik Kontakt Dermatit oluşturabilirler. Ancak bir kimyasalın sadece "kokulu" olması doğrudan cildi tahriş edeceği anlamına gelmez. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 10 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">10. Aşağıdakilerden hangisi kimyasalların çalışma ortamında solunan havadan alınma (bulunma) formlarından biri DEĞİLDİR?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Toz</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Duman</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Kesecik</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) Gaz</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) Buhar</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Kimyasallar çalışma ortamı havasında gaz, buhar, sis, duman ve toz partikülleri şeklinde bulunarak solunum yolu ile vücuda girerler. "Kesecik" solunum yoluyla alınan bir kimyasal form değildir. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 11 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">11. Fenoller, katekoller veya hidrokinonlar gibi kimyasallarla temas sonucu, cilt renginin yamalı ve simetrik tarzda kaybolmasıyla karakterize olan mesleki pigmentasyon bozukluğu durumuna ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) Katran keratozu</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) Vitiligo benzeri Lökodermi</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) Hiperpigmentasyon</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) Kontakt ürtiker</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) Erisepeloid</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Depigmentasyon (cilt renginin kaybolması), fotoğraf kimyasalları, boya, mürekkep vb. maddelerdeki fenoller nedeniyle gelişebilir. Temas yerlerinde vitiligo benzeri yamalı renk kaybı tablosuna "Kimyasal hipo-Lökodermi" denir. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 12 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">12. Genellikle vücudun açık temas bölgelerinde tahrişle başlayan şişme, iltihaplanma ve kuruma durumuna ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) Fibrojenik etki</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) Granuloma</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) Dermatit</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) Noduler fibrozis</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) Difuz fibrozis</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Cilt ile temas sonucu ciltte kuruluk, çatlama, kızarıklıkla başlayan ve nadiren şişlik ile iltihaplanmaya giden inflamasyon tablosuna genel olarak "Dermatit" denir. Meslek hastalıklarının büyük bir çoğunluğunu oluşturur. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 13 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">13. Lösemi (kan kanseri) gelişiminde en çok bilinen ve etkili olan mesleki kimyasal maruziyet etmeni aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) Silika</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) Asbest</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) Benzen</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) Talk</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) Zeolit</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Uluslararası listelere ve mesleki kanser nedenleri tablolarına göre Benzen (ve eşdeğeri çözücüler), sistemik dolaşıma katılarak kemik iliğini etkilemesi sonucu doğrudan "Lösemi" (kan kanseri) tablosuna yol açan güçlü bir kanserojendir. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 14 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">14. Patoloji, biyokimya ve hematoloji laboratuvarlarında yaygın olarak kullanılan ve göze sıçradığı durumlarda "körlüğe" neden olabildiği bilinen kimyasal çözücü aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) Ksilen</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) Karbonmonoksit</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) Asbest</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) Helyum</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) Oksijen</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Özellikle sağlık sektörü patoloji laboratuvarlarında yaygın olarak kullanılan ksilen tipi güçlü organik solventler/kimyasallar, gözle temas ettiğinde veya göze sıçradığında ciddi yanık ve körlüğe neden olmaktadır. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 15 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-text">15. I. Zirai ilaçlama<br>II. Fide ekimi çalışması<br>III. Baca temizleme<br>IV. Polisiklik hidrokarbonlara teması olan rafineri çalışması<br><br>Yukarıdakilerden hangisi/hangileri kimyasal maddelere bağlı "cilt kanserine" neden olan riskli çalışma alanları arasında yer alır?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) Yalnız I</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) III ve IV</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) I, II ve III</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) I, III ve IV</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) I, II, III ve IV</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Cilt kanseri mesleki cilt hastalıkları arasında sık görülür. Özellikle polisiklik aromatik hidrokarbonlara temasın olduğu rafineri çalışanları, asfalt/zift işçileri ve kömür katranına maruz kalan baca temizleyicileri en riskli gruptur. Doğru cevap B.
+            </div>
+        </div>
+
+        <!-- Soru 16 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">16. Canlı doku ile temasında dokunun tahribatına neden olan; ciltte kalıcı yara, gözde körlük ve yutulduğunda mide ve sindirim borusunda yanıklar/kramplar gibi ağır hasarlar bırakan kimyasal madde sınıfı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) Alerjik</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) Tahriş edici</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) Aşındırıcı (Korozif)</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) Asfeksan (Boğucu)</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) Mutajen</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Aşındırıcı (Korozif) maddeler; asitler ve kuvvetli bazlar gibi canlı dokuya doğrudan kimyasal yanık yapan, temas ettiği proteini ve dokuyu eriten çok tehlikeli tahribat yapıcılardır. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 17 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">17. Tekstil sanayisinde çalışan işçilerde özellikle pamuk, keten ve kenevir tozlarının uzun süre solunmasıyla ortaya çıkan 'organik tozlara' bağlı mesleki solunum yolu hastalığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) Bissinozis</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) Asbestozis</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) Pnömokonyoz</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) Siderozis</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) Silikozis</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Bissinozis pamuk, keten ve kenevir tozlarına maruz kalanlarda görülen organik toz kaynaklı bir hastalıktır. Sürekli öksürük ve göğüste sıkışma hissiyle başlar ve geri dönüşümsüz solunum azalmasına neden olur. Doğru cevap A.
+            </div>
+        </div>
+
+        <!-- Soru 18 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">18. Burun boşluğu ve paranazal sinüs kanserleri açısından en riskli kimyasal maruziyetler ve iş kolları aşağıdakilerin hangisinde doğru olarak eşleştirilmiştir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) Asbest / İnşaat Çalışanları</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) Benzen / Boya Sanayii</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) Krom bileşikleri ve Nikel oksit / Kaynakçılar ve Nikel Arıtma</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) Mineral yağlar / Tarım Çalışanları</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) Talk / Seramik Sanayisi</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Mesleki kanserler tablosuna göre krom bileşikleri, nikel oksit, kaynak dumanı ve sülfürik asit dumanları spesifik olarak burun boşluğu ve paranazal sinüslerde kanser oluşumuna neden olur. Bu etkenler de kaynakçılarda ve madencilerde sıktır. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 19 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-text">19. Cilt kanserinin öncüsü (prekanseröz) olan, tek veya çoklu boyutlarda siğilimsi lezyonlarla karakterize olan ve özellikle yüzde, kulaklarda, el sırtında, önkolda gözlenen mesleki cilt hastalığı aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) İrritan kontakt dermatit</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) Klorakne</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) Katran keratozu</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) Vitiligo</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) Lökodermi</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Cilt kanseri öncüsü (prekanseröz) cilt hastalıklarından kronik dermatit dışında yaygın olanı 'katran keratozu'dur. Temas bölgelerinde zamanla siğilimsi yapılara dönüşerek kanserleşme eğilimi gösterirler. Doğru cevap C.
+            </div>
+        </div>
+
+        <!-- Soru 20 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-text">20. Solunum sistemi ile temas edilen kimyasal maddenin sistemik dolaşıma katılması sonucu ortaya çıkan hasarlanma mekanizmasına genel olarak ne ad verilir?</div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) Sistemik etki mekanizması</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) Kanserojen etki mekanizması</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) Alerjik etki mekanizması</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) İrritan etki mekanizması</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) Fibrotik etki mekanizması</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">💡 Çözümü Göster</button>
+            <div class="solution-box">
+                <strong>Detaylı Çözüm:</strong> Etkenin akciğer yoluyla kana karışıp tüm vücut organlarını (karaciğer, böbrek, beyin vb.) etkileyerek zehirlenmeye yol açtığı bu tabloya 'sistemik etki mekanizması' denir. Doğru cevap A.
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <strong>Hazırlayan: Sıraç Aksan</strong> | 📞 05069282210 | ✉️ saracaksan@gmail.com
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 30 * 60; // 30 Dakika
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        // Sayacı ve Testi Başlatma Fonksiyonu
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            
+            // Ekran geçişi
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            timerDisplay.style.color = "#1e293b";
+            
+            // Timer döngüsü
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        // Tıklama ile anında kontrol ve buton gösterimi
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return; // Test bitmişse işlem yapma
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return; // Zaten cevaplanmışsa çık
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                // Tüm şıkları kilitle
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                // Seçenekleri renklendir
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct'); // Doğru olanı yeşil yap
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect'); // Yanlış seçildiyse kırmızı yap
+                    }
+                });
+
+                // Sadece Çözüm Butonunu Görünür Yap (Çözümü değil)
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) {
+                    solBtn.style.display = 'inline-flex';
+                }
+            });
+        });
+
+        // Çözüm Butonunu Tıklama Fonksiyonu (Yazı aç/kapat)
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = '💡 Çözümü Göster';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = '👁️ Çözümü Gizle';
+            }
+        }
+
+        // Testi Bitirme ve Hesaplama
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Süre Doldu / Test Bitti";
+            timerDisplay.style.color = "var(--danger)";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    // Boş bırakılan soruları kapat ve doğru cevabı göster
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    // Çözüm butonunu görünür yap
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) {
+                        solBtn.style.display = 'inline-flex';
+                    }
+                }
+            });
+
+            // 4 Yanlış 1 Doğruyu Götürür
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

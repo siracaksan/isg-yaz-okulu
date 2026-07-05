@@ -1,25 +1,646 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ünite 8 - Test 3 - 2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Ünite 8 - Test 3: Akademik ve Örtücü Değerlendirme</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Noto+Serif:wght@400;700&display=swap');
+
+        :root {
+            --primary: #0f172a; /* Obsidyen Siyahı */
+            --secondary: #1e293b; /* Koyu Arduvaz */
+            --accent: #4338ca; /* İndigo Vurgu */
+            --bg-body: #f8fafc; /* Çok Açık Gri */
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --success: #166534;
+            --danger: #991b1b;
+            --border: #cbd5e1;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'Noto Serif', serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.7; }
+
+        /* --- KAPSAMLI NAVİGASYON MENÜSÜ --- */
+        .master-nav {
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            border-bottom: 4px solid var(--accent);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-row a {
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Üst Satır Linkleri (Ana Sayfalar ve Denemeler) */
+        .nav-top-links a {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+        .nav-top-links a:hover { background: #e2e8f0; border-color: #94a3b8; }
+
+        /* Alt Satır Linkleri (Testler) */
+        .nav-test-links a {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+        .nav-test-links a:hover {
+            background: #e0e7ff;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .nav-test-links a.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.3);
+            pointer-events: none;
+        }
+
+        /* --- BAŞLIK & VİTRİN --- */
+        header {
+            background: var(--primary); color: white; padding: 40px 20px; text-align: center;
+            border-bottom: 1px solid #334155; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        header h1 { font-family: 'Inter', sans-serif; font-size: 2.2rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 10px;}
+        header h2 { font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 600; color: #818cf8; letter-spacing: 1px; text-transform: uppercase;}
+
+        /* --- BAŞLANGIÇ EKRANI --- */
+        .start-screen {
+            background: var(--card-bg); padding: 50px; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06); margin: 0 auto 40px;
+            max-width: 800px; text-align: center; border: 1px solid var(--border); border-top: 6px solid var(--accent);
+        }
+        .start-screen h3 { font-family: 'Inter', sans-serif; font-size: 1.8rem; color: var(--primary); margin-bottom: 15px; font-weight: 800;}
+        .start-screen p { font-size: 1.1rem; color: #475569; margin-bottom: 30px;}
+        .btn-start {
+            background: var(--accent); color: white; border: none; padding: 16px 45px; 
+            font-size: 1.2rem; font-family: 'Inter', sans-serif; font-weight: 800; border-radius: 8px; 
+            cursor: pointer; transition: 0.3s; box-shadow: 0 6px 15px rgba(67, 56, 202, 0.3);
+        }
+        .btn-start:hover { background: var(--primary); transform: translateY(-3px); }
+
+        /* --- KONTROL PANELİ --- */
+        .top-panel, #results-board {
+            display: none; background: var(--card-bg); padding: 20px 30px; border-radius: 8px;
+            max-width: 1000px; margin: 0 auto 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border);
+        }
+        .top-panel { flex-wrap: wrap; justify-content: space-between; align-items: center; position: sticky; top: 120px; z-index: 1000;}
+        .timer-box { font-size: 1.4rem; font-weight: 800; font-family: 'Inter', sans-serif; color: var(--primary); }
+        .timer-box .time { color: white; padding: 4px 10px; border-radius: 6px; background: var(--accent); margin-left: 8px;}
+        .btn-finish { background: var(--danger); color: white; border: none; padding: 10px 25px; border-radius: 6px; font-weight: 800; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.2s;}
+        .btn-finish:hover { background: #7f1d1d; }
+        
+        .result-stats { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .stat-box { padding: 15px 25px; border-radius: 6px; font-size: 1.1rem; font-weight: 800; font-family: 'Inter', sans-serif; border: 1px solid var(--border); background: var(--bg-body); color: var(--primary);}
+        .stat-n { background: var(--primary); color: white; border:none;}
+
+        /* --- SORU KARTLARI --- */
+        .questions-grid { display: none; grid-template-columns: 1fr; gap: 30px; max-width: 1000px; margin: 0 auto 50px; }
+        .question-card { background: var(--card-bg); border-radius: 8px; padding: 35px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid var(--border); border-left: 6px solid var(--primary);}
+        
+        .q-header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 25px; }
+        .q-text { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.15rem; color: var(--text-main); line-height: 1.6;}
+        
+        .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .option-label { display: flex; align-items: flex-start; padding: 14px 20px; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0; cursor: pointer; font-size: 1.05rem; font-family: 'Noto Serif', serif; transition: all 0.2s ease;}
+        .option-label:hover { background: #e0e7ff; border-color: #a5b4fc; }
+        .option-label input { margin-top: 5px; margin-right: 15px; transform: scale(1.2); accent-color: var(--accent); cursor: pointer; flex-shrink: 0;}
+        .option-label.correct { background: #dcfce7 !important; border-color: var(--success) !important; color: #14532d; font-weight: 700;}
+        .option-label.incorrect { background: #fee2e2 !important; border-color: var(--danger) !important; color: #7f1d1d;}
+
+        /* --- ÇÖZÜM --- */
+        .btn-solution { display: none; background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 8px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.2s;}
+        .btn-solution:hover { background: var(--accent); color: white; }
+        .solution-box { display: none; margin-top: 15px; padding: 20px; background: #f8fafc; border-left: 4px solid var(--success); border-radius: 4px; font-size: 1rem; color: #334155; font-family: 'Inter', sans-serif;}
+
+        footer { text-align: center; padding: 40px 20px; background: var(--primary); color: #94a3b8; margin-top: 50px; font-family: 'Inter', sans-serif; font-size: 0.9rem;}
+        @media (max-width: 768px) { .nav-row { flex-direction: column; } .top-panel { top: 160px; } }
+    </style>
 </head>
 <body>
+
+    <!-- KAPSAMLI VE AKTİF NAVİGASYON MENÜSÜ -->
+    <nav class="master-nav">
+        <div class="nav-container">
+            <!-- Ana Dizin Linkleri -->
+            <div class="nav-row nav-top-links">
+                <a href="../../../index.html">🌐 Site Ana Sayfası</a>
+                <a href="../index.html">📚 Üniteler (Ders Ana Sayfası)</a>
+                <a href="../Cikmis_Sorular/yaz_okulu_2025.html">📜 Çıkmış Sorular (2025)</a>
+                <a href="../Zor_Denemeler/deneme_1.html">🎯 Zor Denemeler</a>
+            </div>
+            <!-- Test Linkleri -->
+            <div class="nav-row nav-test-links">
+                <a href="test_1.html">Test 1</a>
+                <a href="test_2.html">Test 2</a>
+                <a href="test_3.html" class="active">🔬 Test 3 (Akademik & Zor)</a>
+                <a href="test_4.html">Test 4</a>
+                <a href="test_5.html">Test 5</a>
+            </div>
+        </div>
+    </nav>
+
     <header>
-        <h1>2026 Anadolu Üniversitesi İş Sağlığı ve Güvenliği Yaz Okulu</h1>
-        <h2>Ünite 8 - Test 3</h2>
+        <h1>Ünite 8: Temel İlk Yardım Bilgisi</h1>
+        <h2>Örtücü Profesyonel Bilgi Değerlendirmesi</h2>
     </header>
-    
-    <main>
-        </main>
-    
+
+    <div id="start-screen" class="start-screen">
+        <h3>Tam Odaklı Bilgi Sınaması</h3>
+        <p>İpuçlarından arındırılmış, kavramsal netliği ve protokol sınırlarını ölçen bu kapsayıcı sınav, ders kitabındaki İlk Yardım (Ünite 8) verilerini katı bir tıbbi/akademik dille sorgulamaktadır. Çeldiriciler bilimsel gerçeklere göre oluşturulmuştur.<br><br>Sınav süresi <strong>45 dakikadır</strong>.</p>
+        <button class="btn-start" onclick="startTest()">Değerlendirmeyi Başlat</button>
+    </div>
+
+    <div class="top-panel" id="top-panel">
+        <div class="timer-box">Kalan Süre: <span class="time" id="timer-display">45:00</span></div>
+        <button class="btn-finish" id="btn-finish" onclick="finishTest()">Sınavı Bitir</button>
+    </div>
+
+    <div id="results-board">
+        <div class="result-stats">
+            <div class="stat-box">DOĞRU: <span id="res-d">0</span></div>
+            <div class="stat-box">YANLIŞ: <span id="res-y">0</span></div>
+            <div class="stat-box">BOŞ: <span id="res-b">0</span></div>
+            <div class="stat-box stat-n">NET: <span id="res-n">0.00</span></div>
+        </div>
+    </div>
+
+    <main class="questions-grid" id="test-container">
+        
+        <!-- Soru 1 -->
+        <div class="question-card" data-answer="D">
+            <div class="q-header">
+                <div class="q-text">1. İlk yardım ve acil tedavi (tıbbi müdahale) arasındaki kavramsal fark göz önüne alındığında, aşağıdakilerden hangisi sağlık personeli olmayan bir ilk yardımcının görev tanımları arasında yer almaz?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Hayati tehlikeyi oluşturan dış etkenleri ortamdan uzaklaştırmak.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Hastanın ya da yaralının fizyolojik durumunun kötüleşmesini engellemek.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Yaşamsal fonksiyonların sürmesini sağlamak adına temel yaşam desteği sağlamak.</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> D) Yaralıya uygun farmakolojik ajanları (ilaçları) uygulayarak definitif (kesin) tedavi sağlamak.</label>
+                <label class="option-label"><input type="radio" name="q1" value="E"> E) Hastanın iyileşme sürecini kolaylaştıracak temel stabilizasyon adımlarını atmak.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İlk yardım tıbbi bir tedavi süreci değildir. Olay yerindeki imkanlarla, "ilaçsız" olarak uygulanan geçici müdahalelerdir. Farmakolojik ajan kullanımı ve definitif (kesin) tedavi sağlık profesyonellerinin uzmanlık alanına (Acil Tedavi) girer.</div>
+        </div>
+
+        <!-- Soru 2 -->
+        <div class="question-card" data-answer="E">
+            <div class="q-header">
+                <div class="q-text">2. Şiddetli abdominal (karın) travmalarına bağlı eviserasyon (iç organların karın dışına çıkması) durumunda, ilk yardımcı tarafından uygulanacak eylem protokolünde hangisi mutlak suretle kontrendikedir (yapılmamalıdır)?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Yaralının bacakları dizlerden bükülerek sırtüstü yatırılıp karın içi basıncının azaltılması.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Ortaya çıkan sıvı ve elektrolit kaybına rağmen hastaya kesinlikle oral (ağızdan) yolla su veya gıda verilmemesi.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Hastanın bilinç durumu ve yaşamsal bulgularının (ABC) sürekli izlenmesi.</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> D) Açığa çıkan dokuların (bağırsaklar vb.) kurumaması için üzerlerinin nemli ve steril/temiz bir bezle örtülmesi.</label>
+                <label class="option-label"><input type="radio" name="q2" value="E"> E) Dışarı fırlamış organların enfeksiyon riskine karşı aseptik eldivenle anatomik boşluklarına geri itilmesi.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Abdominal yaralanmalarda dışarı çıkan organlar kesinlikle batın (karın) içine geri itilmeye çalışılmaz. Bu eylem masif enfeksiyonlara ve geriye döndürülemez ciddi organ hasarlarına yol açar.</div>
+        </div>
+
+        <!-- Soru 3 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-header">
+                <div class="q-text">3. Yenidoğan ve infantil (0-1 yaş bebek) dönemde kardiyopulmoner arrest (kalp ve solunum durması) gelişen vakalarda uygulanan Temel Yaşam Desteği (CPR) algoritmaları, yetişkinlerden hangi açıdan farklılık gösterir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) CPR uygulamasına doğrudan 30 göğüs basısı ile başlanması.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Nabız ölçümünün karotis (şah) arteri yerine radyal (el bileği) arterinden yapılması.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Müdahaleye 2 kurtarıcı soluk verilerek başlanması ve nabzın brakial (dirsek üstü kol) arterden alınması.</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> D) Kalp masajının sadece göğüs kafesinin alt kısmına başparmaklarla yapılması ve oranın 15:2 olması.</label>
+                <label class="option-label"><input type="radio" name="q3" value="E"> E) Solunum yolunun açılması için baş-çene pozisyonunun yetişkinlerdeki gibi tam 90 derece verilmesi.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Bebeklerde ve çocuklarda arrestin ana sebebi genellikle asfiksi (solunum durması) olduğu için, müdahaleye 2 kurtarıcı soluk verilerek başlanır. Ayrıca boyun kısa ve yağlı olduğu için nabız şah damarından değil, brakial (kol) arterden alınır. CPR oranı 30:2'dir ve baş-çene açısı 60 derece civarında tutulur.</div>
+        </div>
+
+        <!-- Soru 4 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-header">
+                <div class="q-text">4. Turnike (boğucu sargı) uygulaması esnasında ekstremite (uzuv) dokularında meydana gelebilecek iskemik nekrozu (oksijensizliğe bağlı doku ölümü) engellemek amacıyla, turnike bağının spesifik aralıklarla gevşetilmesi gerekmektedir. Literatürde önerilen bu aralık aşağıdakilerden hangisidir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Her 5-10 dakikada bir</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Her 10-15 dakikada bir</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Her 20-30 dakikada bir</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> D) Her 45-60 dakikada bir</label>
+                <label class="option-label"><input type="radio" name="q4" value="E"> E) Hastaneye ulaşana dek turnike kesinlikle açılmamalıdır.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Turnike arteriyel akımı tamamen kestiği için distaldeki dokuların oksijensiz kalarak nekroza (kangrene) uğrama riski yüksektir. Bu sebeple kural olarak her 10-15 dakikada bir gevşetilip doku kanlanmasına izin verilmelidir.</div>
+        </div>
+
+        <!-- Soru 5 -->
+        <div class="question-card" data-answer="D">
+            <div class="q-header">
+                <div class="q-text">5. Bilinci kapalı (koma halinde) bir hastada, solunum mevcudiyetini doğrulamak için uygulanan "Bak-Dinle-Hisset" metodunda, göğüs kafesi hareketlerinin izlenmesi ve soluk sesinin/sıcaklığının hissedilmesi eylemi kesintisiz olarak "en az" ne kadar süreyle gerçekleştirilmelidir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) 3 saniye</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) 5 saniye</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) 7 saniye</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> D) 10 saniye</label>
+                <label class="option-label"><input type="radio" name="q5" value="E"> E) 15 saniye</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> AÖF 2021 ve 2025 sınavlarında da vurgulandığı üzere, Bak-Dinle-Hisset yöntemi ile solunum kontrolü kesintisiz olarak en az 10 saniye boyunca yapılmalıdır.</div>
+        </div>
+
+        <!-- Soru 6 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-header">
+                <div class="q-text">6. Dışarıdan gelen fiziksel bir etkiyle veya toksik bir ajan sebebiyle bilinci kapanan, ancak "spontan solunumu ve nabzı stabil olarak devam eden" hastalarda; kas tonusu kaybına bağlı dilin hipofarinkse kaymasını ve aspirasyon (kusmuğun akciğere kaçması) riskini ekarte etmek için verilmesi gereken medikal pozisyon hangisidir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Koma pozisyonu (Yarı yan yatar)</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Şok pozisyonu (Sırtüstü, alt ekstremiteler 30 cm yüksekte)</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Fowler pozisyonu (Yarı oturur)</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> D) Prone pozisyonu (Tam yüzüstü yatar)</label>
+                <label class="option-label"><input type="radio" name="q6" value="E"> E) Baş-çene pozisyonu (Sırtüstü, boyun ekstansiyonda)</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Bilinci kapalı (refleksleri kaybolmuş) ancak solunumu olan hastaya; sekresyonun (kusmuk vb.) dışarı akabilmesi ve solunum yolunun açık kalabilmesi için yarı yan yatar pozisyon olan Koma Pozisyonu verilir.</div>
+        </div>
+
+        <!-- Soru 7 -->
+        <div class="question-card" data-answer="E">
+            <div class="q-header">
+                <div class="q-text">7. Laboratuvar ortamında korozif karakterli (derişik asit veya baz) bir kimyasal ajanın kazara oküler (göz) bölgeye sıçraması durumunda, kimyasalın penetrasyonunu ve kornea hasarını minimuma indirmek için yapılması gereken majör ilk yardım müdahalesi nedir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Termal reaksiyonu engellemek için gözün karanlık ortamda steril bir bezle derhal kapatılması.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Kimyasal nötralizasyon sağlamak amacıyla, antagonistik (zayıf asit/baz) bir solüsyonun göze damlatılması.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Kuru ve hidrofilik bir pamuk kullanılarak göz içindeki kimyasalın mekanik olarak silinmesi.</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> D) Yüksek basınçlı (tazyikli) sıcak su kullanılarak göz kapaklarının kapalı halde yıkanması.</label>
+                <label class="option-label"><input type="radio" name="q7" value="E"> E) Göz kapaklarının mekanik olarak açık tutularak, tazyiksiz çeşme suyu altında asgari 15-20 dakika yıkanması.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kimyasal oküler (göz) yanıklarında, kimyasalın konsantrasyonunu seyreltmek en kritik adımdır. Nötralizasyon (B) ısı açığa çıkarıp korneayı tamamen yakabilir. Tazyikli su hasar verir. Göz kapakları zorla açık tutularak tazyiksiz akan su altında en az 15-20 dakika yıkanmalıdır.</div>
+        </div>
+
+        <!-- Soru 8 -->
+        <div class="question-card" data-answer="D">
+            <div class="q-header">
+                <div class="q-text">8. Zehirli faunaya (yılan, akrep vb.) maruziyet sonrasında, toksinin lenfatik ve sistemik dolaşıma karışarak yayılımını yavaşlatmak amacıyla uygulanan prosedürler arasında, geleneksel ancak modern tıpta "kesinlikle kontrendike (yasaklı)" olan yöntem hangisidir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Etkilenen ekstremitenin (uzvun) hareketini kısıtlamak için atele alınması.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Hastanın efor sarfetmesini engelleyerek taşikardinin (nabız artışının) önüne geçilmesi.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Yara bölgesinin su ve sabun kullanılarak sadece yüzeysel yıkanması.</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> D) Toksini mekanik olarak dışarı tahliye etmek amacıyla insizyon (kesik) atılması ve emilmesi.</label>
+                <label class="option-label"><input type="radio" name="q8" value="E"> E) Yaranın proksimaline (üst kısmına), arteriyel akımı kesmeyecek düzeyde lenf akımını yavaşlatacak elastik bandaj uygulanması.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Yılan veya akrep sokmalarında yara bölgesine bıçakla kesik atmak ve emmek; sekonder enfeksiyonlara, toksinin derin dokulara penetrasyonuna ve emen kişiye de toksin geçişine sebep olduğundan tamamen yasaklanmıştır.</div>
+        </div>
+
+        <!-- Soru 9 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-header">
+                <div class="q-text">9. Pediatrik (çocuk) hastalarda temel yaşam desteği uygulamalarında anatomik ve fizyolojik farklılıklar dikkate alınmaktadır. İlk yardım protokolleri bağlamında "Çocuk" kategorisi hangi spesifik yaş aralığını tanımlar?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) 1 - 4 Yaş</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) 1 - 8 Yaş</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) 3 - 12 Yaş</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> D) 5 - 15 Yaş</label>
+                <label class="option-label"><input type="radio" name="q9" value="E"> E) 8 - 18 Yaş</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> (AÖF Çıkmış Sorusu). İlk yardım standartlarına göre 0-1 yaş (0-12 ay) bebek, 1-8 yaş arası çocuk, fiziksel gelişimine de bağlı olarak 8 yaş ve üzeri ise yetişkin kategorisinde değerlendirilir.</div>
+        </div>
+
+        <!-- Soru 10 -->
+        <div class="question-card" data-answer="C">
+            <div class="q-header">
+                <div class="q-text">10. Olası bir kimyasal ajan (gaz, sıvı veya katı fazda) maruziyeti neticesinde intoksikasyon (zehirlenme) şüphesi bulunan durumlarda, spesifik farmakolojik ve toksikolojik danışmanlık hizmeti sunan "Ulusal Zehir Danışma Merkezi" (UZEM) acil telefon hattı aşağıdakilerden hangisidir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) 110</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) 112</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) 114</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> D) 155</label>
+                <label class="option-label"><input type="radio" name="q10" value="E"> E) 184</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> (AÖF 2022 Çıkmış Sorusu). 112 genel acil sağlık numarası iken; kimyasal maruziyetler, panzehirler ve toksisite süreçleri hakkında doğrudan tıbbi toksikoloji uzmanlarından bilgi almak için 114 (UZEM) aranır.</div>
+        </div>
+
+        <!-- Soru 11 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-header">
+                <div class="q-text">11. Spontan solunum eforu mevcut olan ancak asfiksi (boğulma) tehlikesi geçiren kısmi (parsiyel) hava yolu tıkanıklığı vakalarında; hastanın efor sarf ederek öksürebildiği ve dispneik de olsa konuşabildiği saptanmıştır. Bu klinik tabloda rasyonel olan tek müdahale nedir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q11" value="A"> A) Hastaya fiziksel müdahalede bulunmadan, spontan öksürük refleksini teşvik etmek ve yakından izlemek.</label>
+                <label class="option-label"><input type="radio" name="q11" value="B"> B) Obstrüksiyona (tıkanıklığa) neden olan materyali disloke etmek için sırta şiddetli 5 darbe uygulamak.</label>
+                <label class="option-label"><input type="radio" name="q11" value="C"> C) Heimlich manevrası (subdiyafragmatik abdominal itme) uygulayarak rezidüel hacimle cismi fırlatmak.</label>
+                <label class="option-label"><input type="radio" name="q11" value="D"> D) Hipoksiye girmesini engellemek için derhal baş-çene pozisyonu ile suni solunuma başlamak.</label>
+                <label class="option-label"><input type="radio" name="q11" value="E"> E) Ağız içine parmakla kör dalış yapılarak yabancı cismin manuel ekstraksiyonunu (çıkarılmasını) denemek.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Parsiyel (kısmi) hava yolu tıkanıklıklarında hasta öksürebiliyor ve ses çıkarabiliyorsa; sırta vurma, Heimlich manevrası veya kör dalış yapılmaz. Zira bu müdahaleler cismi larenkse daha da iterek tam tıkanıklığa (Total obstrüksiyon) yol açabilir. Sadece öksürmeye teşvik edilir.</div>
+        </div>
+
+        <!-- Soru 12 -->
+        <div class="question-card" data-answer="E">
+            <div class="q-header">
+                <div class="q-text">12. Nörolojik disfonksiyona bağlı gelişen Epilepsi (Sara) nöbeti (Tonik-klonik konvülsiyon) sırasında, kas spazmlarına bağlı bedensel kontrolünü yitiren ve çenesi kitlenen bir hastaya uygulanan hatalı müdahale hangisidir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q12" value="A"> A) Travmatik yaralanmaları engellemek adına hastanın başının altına yastık veya yumuşak bir materyal yerleştirmek.</label>
+                <label class="option-label"><input type="radio" name="q12" value="B"> B) Çevredeki kesici, delici veya tehlike arz eden objeleri güvenli mesafeye taşımak.</label>
+                <label class="option-label"><input type="radio" name="q12" value="C"> C) Konvülsiyon (çırpınma) fazının kendiliğinden geçmesini beklemek, fiziksel kısıtlama uygulamamak.</label>
+                <label class="option-label"><input type="radio" name="q12" value="D"> D) Postiktal evrede (nöbet sonrası bilincin bulanık olduğu dönem) hastayı koma (yarı yan) pozisyonuna almak.</label>
+                <label class="option-label"><input type="radio" name="q12" value="E"> E) Hastanın dilini ısırmasını önlemek amacıyla kilitlenen çeneyi güç uygulayarak açmak ve arasına sert bir cisim koymak.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Epilepsi krizlerinde hastanın çenesi asla güç kullanılarak açılmaya çalışılmaz; dişlerin kırılarak aspire edilmesine (akciğere kaçmasına) veya temporomandibular eklem (çene) çıkıklarına sebep olur. Kriz anında kasılmalar durdurulmaya çalışılmaz.</div>
+        </div>
+
+        <!-- Soru 13 -->
+        <div class="question-card" data-answer="D">
+            <div class="q-header">
+                <div class="q-text">13. Ciddi kinetik enerjinin transfer olduğu araç içi trafik kazalarında; araçta yanma, patlama tehlikesinin belirdiği veya kazazedenin kardiyopulmoner arrest (solunum durması) tablosunda olduğu durumlarda, spinal kord (omurilik) hasarını önleyerek acil ekstrikasyon (araçtan çıkarma) sağlayan spesifik manevranın adı nedir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q13" value="A"> A) Heimlich Manevrası</label>
+                <label class="option-label"><input type="radio" name="q13" value="B"> B) Jaw-Thrust (Çene itme) Manevrası</label>
+                <label class="option-label"><input type="radio" name="q13" value="C"> C) Fowler Taşıma Yöntemi</label>
+                <label class="option-label"><input type="radio" name="q13" value="D"> D) Rentek Manevrası</label>
+                <label class="option-label"><input type="radio" name="q13" value="E"> E) Log-Roll (Kütük çevirme) Manevrası</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Acil bir tehlike (patlama/yanma vb.) veya hastanın solunumunun durduğu hallerde, omurilik felcini engellemek amacıyla kişinin baş-boyun-gövde eksenini koruyarak araçtan tek hamlede çıkarılma yöntemine Rentek Manevrası denir.</div>
+        </div>
+
+        <!-- Soru 14 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-header">
+                <div class="q-text">14. Ekstrem soğuk (kriyojenik) şartlara maruziyet neticesinde doku bütünlüğünün bozulduğu donuk lezyonlarının klinik derecelendirmesinde; epidermisin bütünlüğünü kaybettiği, şiddetli ağrının gözlendiği ve ciltte "içi sıvı dolu büllerin (kabarcıkların)" oluştuğu patolojik evre aşağıdakilerden hangisidir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q14" value="A"> A) Birinci derece donuk</label>
+                <label class="option-label"><input type="radio" name="q14" value="B"> B) İkinci derece donuk</label>
+                <label class="option-label"><input type="radio" name="q14" value="C"> C) Üçüncü derece donuk</label>
+                <label class="option-label"><input type="radio" name="q14" value="D"> D) Nekrotizan (Dördüncü derece) donuk</label>
+                <label class="option-label"><input type="radio" name="q14" value="E"> E) Hipotermik şok evresi</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Donuk patolojisinde 1. derece kızarıklık; 2. derece doku hasarına bağlı içi su dolu kabarcıklar (büller) ile karakterizedir. 3. derece ise duyusal his kaybı ve doku siyahlaşması (nekroz) evresidir.</div>
+        </div>
+
+        <!-- Soru 15 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-header">
+                <div class="q-text">15. Hipoglisemik atak (şeker düşmesi) gelişen bir hastanın klinik değerlendirmesinde, şahsın "bilincinin açık (konuşabilen ve yutkunabilen) durumda olduğu" tespit edilmiştir. İnsülin/glukagon regülasyonunu sağlamak için endike olan ilk yardım uygulaması nedir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q15" value="A"> A) Glikoz emilimini beyne yönlendirmek için şok pozisyonu (bacakların elevasyonu) verilmesi.</label>
+                <label class="option-label"><input type="radio" name="q15" value="B"> B) Glikozun sistemik dolaşıma hızla karışması için kesme şeker veya şekerli sıvı formların oral (ağızdan) yolla verilmesi.</label>
+                <label class="option-label"><input type="radio" name="q15" value="C"> C) Aspirasyon komplikasyonlarına karşı oral yoldan mutlak suretle hiçbir gıda veya içecek verilmemesi.</label>
+                <label class="option-label"><input type="radio" name="q15" value="D"> D) Kandaki glikojen deposunun serbestleşmesi için prekordiyal (kalp üstü) alana hafif masaj yapılması.</label>
+                <label class="option-label"><input type="radio" name="q15" value="E"> E) Sindirim sistemini boşaltarak insülin şokunu engellemek amacıyla kusturucu hipertonik sıvı (tuzlu su) içirilmesi.</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Hipoglisemide hasta bilinci AÇIK ve yutkunabiliyorsa, şeker seviyesini hızla yükseltmek için oral yoldan basit şekerler verilir. Eğer bilinç KAPALI ise (hasta yutkunamayacağı için) soluk borusuna kaçmasını önlemek adına kesinlikle oral yoldan sıvı veya gıda verilmez.</div>
+        </div>
+
+        <!-- Soru 16 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-header">
+                <div class="q-text">16. Miyokard infarktüsü (Kalp krizi) klinik tablosu sergileyen; göğüs kafesinde sol kola ve mandibulaya (çeneye) yayılan iskemik ağrıdan şikayet eden bilinci açık bir hastada, miyokardın (kalp kasının) iş yükünü azaltmak amacıyla 112 beklenirken verilmesi gereken fizyolojik postür hangisidir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q16" value="A"> A) Yarı Oturur (Fowler) Pozisyon</label>
+                <label class="option-label"><input type="radio" name="q16" value="B"> B) Şok Pozisyonu (Sırtüstü, alt ekstremiteler yukarıda)</label>
+                <label class="option-label"><input type="radio" name="q16" value="C"> C) Yarı Yan Yatar (Koma) Pozisyonu</label>
+                <label class="option-label"><input type="radio" name="q16" value="D"> D) Prone (Yüzüstü tam yatış) Pozisyon</label>
+                <label class="option-label"><input type="radio" name="q16" value="E"> E) Trendelenburg Pozisyonu</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Kalp krizi belirtileri gösteren ve bilinci açık olan hastalarda; kalbe venöz dönüşü azaltarak kalbin pompalama yükünü hafifletmek ve rahat solunum (oksijenasyon) sağlamak amacıyla "Yarı Oturur (Fowler) Pozisyon" verilmelidir.</div>
+        </div>
+
+        <!-- Soru 17 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-header">
+                <div class="q-text">17. Olay yeri güvenliği (Koruma) evresinde bir ilk yardımcı; potansiyel risk faktörlerinin izolesini gerçekleştirirken güvenlik hiyerarşisini hangi algoritmik sıralamaya göre inşa etmekle yükümlüdür?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q17" value="A"> A) Olay Yeri Güvenliği - Hasta Güvenliği - İlk Yardımcı Güvenliği</label>
+                <label class="option-label"><input type="radio" name="q17" value="B"> B) İlk Yardımcı Güvenliği - Olay Yeri Güvenliği - Hasta Güvenliği</label>
+                <label class="option-label"><input type="radio" name="q17" value="C"> C) Hasta Güvenliği - İlk Yardımcı Güvenliği - Olay Yeri Güvenliği</label>
+                <label class="option-label"><input type="radio" name="q17" value="D"> D) İlk Yardımcı Güvenliği - Hasta Güvenliği - Olay Yeri Güvenliği</label>
+                <label class="option-label"><input type="radio" name="q17" value="E"> E) Hasta Güvenliği - Olay Yeri Güvenliği - İlk Yardımcı Güvenliği</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> İlk yardım müdahalelerinde rasyonel olan altın kural, ilk yardımcının "önce kendi güvenliğini" sağlamasıdır (Ölü bir kurtarıcı kimseye yardım edemez). Ardından çevresel riskler (olay yeri) izole edilir ve en son hastanın/kazazedenin güvenliği sağlanır.</div>
+        </div>
+
+        <!-- Soru 18 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-header">
+                <div class="q-text">18. Kardiyovasküler sistem (ABC'nin "C" aşaması - Circulation) değerlendirilmesinde, yetişkin bir bireyde sistolik atımların palpe edildiği (nabız kontrolü) majör arter ve palpe (ölçüm) süresi/yöntemi aşağıdakilerden hangisidir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q18" value="A"> A) Radyal arterden, başparmak kullanılarak 10 saniye boyunca</label>
+                <label class="option-label"><input type="radio" name="q18" value="B"> B) Karotis (şah) arterinden, en az 3 parmakla hafif baskı ile 5 saniye boyunca</label>
+                <label class="option-label"><input type="radio" name="q18" value="C"> C) Femoral arterden, avuç içi kullanılarak 10 saniye boyunca</label>
+                <label class="option-label"><input type="radio" name="q18" value="D"> D) Brakial arterden (dirsek üstü), 2 parmakla 5 saniye boyunca</label>
+                <label class="option-label"><input type="radio" name="q18" value="E"> E) Karotis (şah) arterinden, 2 parmakla 15 saniye boyunca</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Yetişkinlerde ve çocuklarda dolaşım değerlendirmesi (nabız), boynun iki yanında bulunan karotis (şah) damarından en az 3 parmak kullanılarak hafif baskı ile 5 saniye boyunca yapılır. Bebeklerde ise boyun anatomisi nedeniyle Brakial (dirsek üstü) arter tercih edilir.</div>
+        </div>
+
+        <!-- Soru 19 -->
+        <div class="question-card" data-answer="A">
+            <div class="q-header">
+                <div class="q-text">19. Normoksi şartlarında sağlıklı bir erişkinin dinlenik haldeki respiratuvar (solunum) hızı frekansı ile nabız (kalp atım) frekansı fizyolojik referans aralığı olarak sırasıyla nasıldır?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q19" value="A"> A) Solunum: 12 - 20 / dakika | Nabız: 60 - 100 / dakika</label>
+                <label class="option-label"><input type="radio" name="q19" value="B"> B) Solunum: 15 - 25 / dakika | Nabız: 100 - 120 / dakika</label>
+                <label class="option-label"><input type="radio" name="q19" value="C"> C) Solunum: 8 - 12 / dakika  | Nabız: 40 - 60 / dakika</label>
+                <label class="option-label"><input type="radio" name="q19" value="D"> D) Solunum: 25 - 35 / dakika | Nabız: 60 - 100 / dakika</label>
+                <label class="option-label"><input type="radio" name="q19" value="E"> E) Solunum: 20 - 40 / dakika | Nabız: 80 - 140 / dakika</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Sağlıklı bir yetişkinde normal solunum sayısı dakikada 12 ile 20 arasındadır (Çocuklarda 15-20, bebeklerde 18-25). Normal nabız sayısı ise yetişkinlerde dakikada 60 ile 100 atım arasındadır.</div>
+        </div>
+
+        <!-- Soru 20 -->
+        <div class="question-card" data-answer="B">
+            <div class="q-header">
+                <div class="q-text">20. Akut hipovolemi (ağır kanama) veya senkop (bayılma) sendromu sonucunda, serebral perfüzyonun (beyne giden kan miktarının) azalması tablosunda, beynin iskemik (oksijensiz) kalmasını önlemek için yerçekimi desteği sağlayan pozisyon aşağıdakilerden hangisidir?</div>
+            </div>
+            <div class="options">
+                <label class="option-label"><input type="radio" name="q20" value="A"> A) Koma Pozisyonu</label>
+                <label class="option-label"><input type="radio" name="q20" value="B"> B) Şok Pozisyonu (Ayaklar 30 cm havada)</label>
+                <label class="option-label"><input type="radio" name="q20" value="C"> C) Fowler Pozisyonu</label>
+                <label class="option-label"><input type="radio" name="q20" value="D"> D) Trendelenburg Pozisyonu (Ameliyat masası ters çevrimi)</label>
+                <label class="option-label"><input type="radio" name="q20" value="E"> E) Supine Pozisyonu</label>
+            </div>
+            <button class="btn-solution" onclick="toggleSolution(this)">Akademik Analiz</button>
+            <div class="solution-box"><strong>Çözüm:</strong> Şok tablosunda beyin dahil hayati organlara giden kan akımı azalır. Bunu telafi etmek ve kanın yerçekimi etkisiyle beyne yönelmesini sağlamak için kazazede sırtüstü yatırılıp bacakları 30 cm yüksekte tutulur. Bu işleme Şok Pozisyonu denir.</div>
+        </div>
+
+    </main>
+
     <footer>
-        <hr>
-        <p>Hazırlayan: Sıraç Aksan | Tel: 05069282210 | E-posta: saracaksan@gmail.com</p>
+        <p>👨‍🏫 <strong>Hazırlayan: Sıraç Aksan</strong> | 📞 05069282210 | ✉️ saracaksan@gmail.com</p>
+        <p style="margin-top: 10px; color: #64748b;">🎓 Kimya ve Biyoloji Sektörlerinde İSG - Ünite 8 / Test 3 (Akademik & Zor Simülasyon)</p>
     </footer>
-    
-    <script src="../../js/app.js"></script>
+
+    <script>
+        let timerStarted = false;
+        let timerInterval;
+        let totalSeconds = 45 * 60; 
+        const timerDisplay = document.getElementById('timer-display');
+        let testFinished = false;
+
+        function startTest() {
+            if (timerStarted || testFinished) return;
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('top-panel').style.display = 'flex';
+            document.getElementById('test-container').style.display = 'grid';
+            
+            timerStarted = true;
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let m = Math.floor(totalSeconds / 60);
+                let s = totalSeconds % 60;
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+                timerDisplay.textContent = m + ":" + s;
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (testFinished) return;
+                
+                let qCard = this.closest('.question-card');
+                if (qCard.classList.contains('answered')) return;
+                qCard.classList.add('answered');
+                
+                let correctAns = qCard.getAttribute('data-answer');
+                qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                
+                qCard.querySelectorAll('.option-label').forEach(label => {
+                    let input = label.querySelector('input');
+                    if (input.value === correctAns) {
+                        label.classList.add('correct');
+                    }
+                    if (input.checked && input.value !== correctAns) {
+                        label.classList.add('incorrect');
+                    }
+                });
+
+                let solBtn = qCard.querySelector('.btn-solution');
+                if (solBtn) solBtn.style.display = 'inline-block';
+            });
+        });
+
+        function toggleSolution(btn) {
+            let solBox = btn.nextElementSibling;
+            if (solBox.style.display === 'block') {
+                solBox.style.display = 'none';
+                btn.innerHTML = 'Akademik Analiz';
+            } else {
+                solBox.style.display = 'block';
+                btn.innerHTML = 'Gizle';
+            }
+        }
+
+        function finishTest() {
+            if (testFinished) return;
+            testFinished = true;
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Sınav Bitti";
+            document.getElementById('btn-finish').style.display = 'none';
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let emptyCount = 0;
+
+            document.querySelectorAll('.question-card').forEach(qCard => {
+                let isAnswered = qCard.classList.contains('answered');
+                let correctAns = qCard.getAttribute('data-answer');
+                
+                if (isAnswered) {
+                    let selected = qCard.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAns) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    emptyCount++;
+                    qCard.classList.add('answered');
+                    qCard.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    qCard.querySelectorAll('.option-label').forEach(label => {
+                        if (label.querySelector('input').value === correctAns) {
+                            label.classList.add('correct');
+                        }
+                    });
+                    let solBtn = qCard.querySelector('.btn-solution');
+                    if (solBtn) solBtn.style.display = 'inline-block';
+                }
+            });
+
+            let net = correctCount - (incorrectCount / 4);
+
+            document.getElementById('res-d').textContent = correctCount;
+            document.getElementById('res-y').textContent = incorrectCount;
+            document.getElementById('res-b').textContent = emptyCount;
+            document.getElementById('res-n').textContent = net.toFixed(2);
+
+            document.getElementById('results-board').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
